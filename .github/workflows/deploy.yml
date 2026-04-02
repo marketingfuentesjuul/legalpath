@@ -13,6 +13,18 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build del proyecto
+        run: npm run build
+
       - name: Configurar clave SSH
         run: |
           mkdir -p ~/.ssh
@@ -24,10 +36,5 @@ jobs:
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no" \
-            src/pages/ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/www/legalpath.cl/public_html/
-
-          rsync -avz \
-            -e "ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no" \
-            public/ \
+            dist/ \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/www/legalpath.cl/public_html/

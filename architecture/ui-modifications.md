@@ -1,24 +1,19 @@
-# SOP: UI Modifications (Stylize Phase)
+# UI Modification SOP
 
-## Goal
-Explain the protocol for modifying the frontend of the LegalPath landing page to ensure consistency and high-quality design.
+## Process
+1.  **Identify Target:** Determine the specific component or section needing adjustment.
+2.  **Define Goal:** Clarify the visual or functional outcome (e.g., "Add title," "Change color").
+3.  **Execute CSS:** Update global styles in `index.css` or component-level styles.
+4.  **Update JSX:** Modify the React component to reflect the changes.
+5.  **Verify:** Check the UI layout, responsiveness, and interaction.
 
-## Inputs
-- User UI request (e.g., adding sections, changing colors).
-- Existing `index.html` structure.
-- Tailwind CSS configuration.
+## Conventions
+-   **Color:** Use the dual-branding palette (Mint for users, Orange for lawyers).
+-   **Typography:** Use "Plus Jakarta Sans" for headlines and "Inter" for body text.
+-   **Spacing:** Maintain consistent vertical rhythm (Standard: 80px - 120px between major sections).
 
-## Tool Logic
-1. **Research**: Locate the HTML section in `index.html` using comments or IDs.
-2. **Design Alignment**: Ensure the request aligns with the "Stylize" rules in `gemini.md` (curated color palettes, premium animations).
-3. **Execution**:
-   - Use Tailwind CSS classes for styling.
-   - Use horizontal rules or separators to group files by component.
-   - For new sections, ensure semantic HTML (e.g., `<h2>` for section titles).
-4. **Verification**:
-   - Validate the layout in the browser.
-   - Check responsiveness (mobile/desktop).
-
-## Edge Cases
-- **Color Mismatch**: If the user requests a color not in the brand, propose a close match from the `tailwind.config` or define a new specialized color.
-- **Breaking Layout**: Ensure that absolute-positioned elements (like floating cards) don't overlap with new content.
+## Recent Modifications
+-   Added H2 "¿Cómo funciona?" to the Home Page vertical process section.
+-   Updated step number colors to Mint (#1ECCA7) for the user-facing landing page.
+-   Added H2 "¿Cómo funciona?" to the Lawyers Page process section.
+-   Updated step number colors to Orange (#EE6C4D) for the lawyer-facing landing page.

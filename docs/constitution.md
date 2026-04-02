@@ -1,79 +1,43 @@
-# Gemini: Project Constitution
+# Project Constitution: LegalPath
 
 ## Data Schemas
 
-```json
-{
-  "project": "LegalPath Landing Page",
-  "version": "1.0",
-  "stakeholders": {
-    "users": "General public seeking legal advice",
-    "abogados": "Legal professionals"
-  },
-  "ui_components": {
-    "sections": [
-      {
-        "id": "hero",
-        "title": "Publica tu caso y que los abogados te encuentren."
-      },
-      {
-        "id": "how_it_works",
-        "title": "¿Cómo funciona?",
-        "steps": [
-          {"id": "01", "text": "Publica tu caso"},
-          {"id": "02", "text": "Recibe Propuestas"},
-          {"id": "03", "text": "Elige y Actúa"}
-        ]
-      }
-    ]
-  },
-  "supabase_schema": {
-    "profiles": {
-      "id": "uuid (pk)",
-      "email": "text",
-      "full_name": "text",
-      "role": "enum ('user', 'abogado')",
-      "avatar_url": "text",
-      "created_at": "timestamp"
-    },
-    "cases": {
-      "id": "uuid (pk)",
-      "user_id": "uuid (fk profiles.id)",
-      "description": "text",
-      "status": "enum ('open', 'processing', 'closed')",
-      "category": "text",
-      "created_at": "timestamp"
-    },
-    "case_attachments": {
-      "id": "uuid (pk)",
-      "case_id": "uuid (fk cases.id)",
-      "file_path": "text",
-      "file_name": "text",
-      "created_at": "timestamp"
-    },
-    "proposals": {
-      "id": "uuid (pk)",
-      "case_id": "uuid (fk cases.id)",
-      "abogado_id": "uuid (fk profiles.id)",
-      "message": "text",
-      "status": "enum ('pending', 'accepted', 'rejected')",
-      "created_at": "timestamp"
-    }
-  }
-}
-```
+### Profiles (`profiles`)
+- `id`: uuid
+- `full_name`: string
+- `email`: string (unique)
+- `role`: enum ('user', 'lawyer')
+- `rut`: string (optional, verified)
+- `specialties`: array of strings (lawyers only)
+- `academic_background`: jsonb (lawyers only)
+- `status`: enum ('pending', 'active', 'suspended')
+
+### Cases (`cases`)
+- `id`: uuid
+- `user_id`: uuid (references profiles)
+- `description`: text
+- `status`: enum ('published', 'draft', 'resolved', 'closed')
+- `area`: string (auto-detected/manual)
+- `created_at`: timestamp
+
+### Proposals (`proposals`)
+- `id`: uuid
+- `lawyer_id`: uuid (references profiles)
+- `case_id`: uuid (references cases)
+- `message`: text
+- `budget_range`: string
+- `status`: enum ('sent', 'accepted', 'rejected')
 
 ## Behavioral Rules
-- System Pilot Identity: Deterministic, self-healing, reliable.
-- Protocol: B.L.A.S.T.
-- Architecture: A.N.T. (3-Layer)
-- **Stylize Rule**: Use curated color palettes (celeste/mint) and premium animations.
+- **Privacy First:** User identity is ALWAYS anonymous until they choose a lawyer.
+- **Verification Loop:** All lawyers must be verified against CJUD/Supreme Court data within 24 hours.
+- **Branding Sync:**
+  - User Flow: Mint (#1ECCA7)
+  - Lawyer Flow: Orange (#EE6C4D)
+- **Deterministic Logic:** Use Supabase for data integrity and RLS for security.
 
 ## Architectural Invariants
-- Logic lives in `architecture/` (SOPs).
-- Execution lives in `tools/` (Python).
-- Intermediate files live in `.tmp/`.
-
-## Maintenance Log
-- **2026-03-31**: Alignment with B.L.A.S.T. protocol. Redesign of "How it works" section started.
-- **2026-04-01**: Created `abogados.html` landing page. Added Supabase data schema to constitution. Token-based pricing system defined (4 plans). Refined Hero/Mockups and pricing CTAs for lawyers.
+- **React 19:** Functional components only.
+- **Vite:** Build tool for fast dev experience.
+- **Tailwind v4:** Standard for styling.
+- **A.N.T. Protocol:** Separate Architecture, Navigation, and Tools.

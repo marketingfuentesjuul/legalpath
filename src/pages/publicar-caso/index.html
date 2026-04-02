@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com https://www.svgrepo.com https://ui-avatars.com https://lh3.googleusercontent.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com https://www.svgrepo.com https://lh3.googleusercontent.com;">
+<title>Publica tu caso | LegalPath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#dbe2f9",
+                "tertiary": "#a7391e",
+                "surface-container-highest": "#dbe2f9",
+                "outline-variant": "#bbcac3",
+                "primary-fixed-dim": "#3edeb8",
+                "inverse-on-surface": "#edf0ff",
+                "on-tertiary-container": "#872108",
+                "background": "#f9f9ff",
+                "tertiary-container": "#ff9b83",
+                "primary-fixed": "#63fbd3",
+                "on-secondary-fixed-variant": "#3f4759",
+                "on-error-container": "#93000a",
+                "on-background": "#141b2c",
+                "surface-tint": "#006b56",
+                "surface-dim": "#d2daf0",
+                "surface": "#f9f9ff",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed-variant": "#872108",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed-dim": "#ffb4a3",
+                "secondary-fixed-dim": "#bfc6dc",
+                "inverse-primary": "#3edeb8",
+                "inverse-surface": "#293041",
+                "surface-container-lowest": "#ffffff",
+                "on-surface": "#141b2c",
+                "primary": "#006b56",
+                "on-primary-fixed": "#002018",
+                "error": "#ba1a1a",
+                "on-primary-fixed-variant": "#005140",
+                "surface-variant": "#dbe2f9",
+                "surface-container-high": "#e0e8ff",
+                "secondary-container": "#d8dff6",
+                "primary-container": "#1ecca7",
+                "outline": "#6c7a74",
+                "on-secondary-container": "#5b6276",
+                "on-secondary-fixed": "#141b2c",
+                "on-primary-container": "#005140",
+                "tertiary-fixed": "#ffdad2",
+                "on-tertiary-fixed": "#3d0700",
+                "error-container": "#ffdad6",
+                "on-surface-variant": "#3c4a44",
+                "surface-container": "#e9edff",
+                "on-error": "#ffffff",
+                "surface-container-low": "#f1f3ff",
+                "secondary": "#575e71",
+                "on-tertiary": "#ffffff",
+                "surface-bright": "#f9f9ff"
+              },
+              fontFamily: {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .mint-gradient {
+            background: linear-gradient(135deg, #006b56 0%, #1ecca7 100%);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff;
+            color: #141b2c;
+        }
+        h1, h2, h3, .font-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Typing animation styles */
+        .mockup-typing { display: inline; }
+        .typing-caret {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: #94a3b8;
+            animation: pulse 1s infinite alternate;
+            vertical-align: text-bottom;
+            margin-left: 4px;
+        }
+        @keyframes pulse {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Progress bar animation */
+        #progress-fill {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Step content transitions */
+        .step-content {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .step-content.hidden-step {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            position: absolute;
+            left: 0; right: 0;
+        }
+        .step-content.active-step {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            position: relative;
+        }
+        /* Social button hover effects */
+        .social-btn {
+            transition: all 0.2s ease;
+        }
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        /* Benefit item animation */
+        .benefit-item {
+            transition: all 0.2s ease;
+        }
+        .benefit-item:hover {
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- Header -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg shadow-[0_20px_40px_rgba(20,27,44,0.06)]">
+<nav class="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center font-['Plus_Jakarta_Sans'] text-sm font-medium tracking-tight">
+<div class="flex items-center hover:opacity-80 transition-opacity">
+<a href="../">
+<img src="../../../public/assets/images/logo-light.png" alt="LegalPath Logo" class="h-[40.8px] w-auto">
+</a>
+</div>
+<div class="hidden md:flex items-center gap-8">
+</div>
+<div class="flex items-center gap-4">
+<a href="../abogados/" class="bg-[#EE6C4D] text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block">Soy abogado</a>
+</div>
+</nav>
+<div class="bg-slate-100/50 dark:bg-slate-800/50 h-px w-full"></div>
+</header>
+
+<main class="pt-40 pb-20 min-h-screen flex flex-col justify-center relative overflow-hidden">
+    <!-- Soft background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#e0e8ff]/80 via-[#f1f3ff] to-[#f9f9ff] -z-10"></div>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary-container/20 blur-[130px] rounded-full -z-10"></div>
+
+    <div class="max-w-5xl mx-auto w-full px-4 sm:px-8 relative z-10">
+
+        <!-- Title Section -->
+        <div id="page-title" class="text-center mb-12 mt-16">
+            <h1 id="main-title" class="text-4xl md:text-[3.5rem] leading-tight font-extrabold tracking-tight text-[#141b2c] mb-4 font-headline">
+                Describe con <span class="text-[#1ECCA7]">detalle</span> tu caso
+            </h1>
+            <p id="main-subtitle" class="text-secondary text-lg max-w-2xl mx-auto font-medium">
+                Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a entender tu caso.
+            </p>
+        </div>
+
+        <!-- The White Modern Card -->
+        <div class="bg-white rounded-[2rem] p-8 md:p-14 shadow-[0_15px_50px_-10px_rgba(0,107,86,0.08)] border border-[#e0e8ff]/80">
+            
+            <!-- Steps Indicator -->
+            <div class="flex items-start justify-between relative mb-14 max-w-3xl mx-auto">
+                <div class="absolute top-[20px] left-[5%] w-[90%] h-[3px] bg-slate-200 rounded-full overflow-hidden">
+                    <div id="progress-fill" class="h-full bg-[#1ECCA7]" style="width: 25%"></div>
+                </div>
+                
+                <div class="flex flex-col items-center gap-3 relative z-10">
+                    <div id="step-circle-1" class="w-10 h-10 rounded-full bg-primary-container text-white font-bold flex items-center justify-center text-sm shadow-[0_4px_15px_rgba(30,204,167,0.4)] transition-all duration-500">
+                        1
+                    </div>
+                    <span id="step-label-1" class="text-[13px] font-bold text-on-background text-center max-w-[140px] leading-[1.2] text-balance transition-all duration-300">Describe el caso</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-3 relative z-10">
+                    <div id="step-circle-2" class="w-10 h-10 rounded-full bg-slate-100/80 text-slate-400 font-bold flex items-center justify-center text-sm border border-slate-200 transition-all duration-500">
+                        2
+                    </div>
+                    <span id="step-label-2" class="text-[13px] font-medium text-slate-400 text-center max-w-[160px] leading-[1.2] text-balance transition-all duration-300">Ingresa como visitante o como usuario</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-3 relative z-10">
+                    <div id="step-circle-3" class="w-10 h-10 rounded-full bg-slate-100/80 text-slate-400 font-bold flex items-center justify-center text-sm border border-slate-200 transition-all duration-500">
+                        3
+                    </div>
+                    <span id="step-label-3" class="text-[13px] font-medium text-slate-400 text-center max-w-[140px] leading-[1.2] text-balance transition-all duration-300">Caso publicado</span>
+                </div>
+            </div>
+
+            <!-- Steps Content Container -->
+            <div class="relative max-w-4xl mx-auto" style="min-height: 400px;">
+
+                <!-- ============= STEP 1 CONTENT ============= -->
+                <div id="step-1-content" class="step-content active-step">
+                    <!-- Interactive Text Container -->
+                    <div class="relative group mt-2 mb-8">
+                        <!-- Typing placeholder with soft blur -->
+                        <div id="typing-placeholder" class="absolute inset-0 px-8 py-6 pointer-events-none text-[13px] md:text-[15px] text-slate-400 font-medium leading-[1.6] opacity-65 blur-[0.4px] transition-opacity duration-300">
+                            <span class="mockup-typing"></span><span class="typing-caret"></span>
+                        </div>
+                        
+                        <textarea id="case-textarea" rows="4" class="w-full bg-transparent border-[1.5px] border-slate-200 focus:border-[#1ECCA7]/60 focus:ring-4 focus:ring-[#1ECCA7]/10 rounded-[2.5rem] px-8 py-6 text-[13px] md:text-[15px] leading-[1.6] text-on-background font-medium resize-none transition-all outline-none placeholder-transparent relative z-10 shadow-sm hover:border-slate-300/80 hover:shadow-md"></textarea>
+                    </div>
+
+                    <!-- Footer row with Action Buttons -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2">
+                        <!-- Attach Button -->
+                        <button class="flex items-center gap-3 py-3 px-5 -ml-3 rounded-2xl border-2 border-transparent border-dashed hover:border-slate-200 hover:bg-slate-50 transition-all text-slate-500 hover:text-on-background group text-left">
+                            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-200 transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">attach_file</span>
+                            </div>
+                            <div class="flex flex-col leading-tight">
+                                <span class="text-[15px] font-bold">Adjuntar documentos</span>
+                                <span class="text-[13px] text-slate-400 font-medium">(imágenes, pantallazos, PDF)</span>
+                            </div>
+                        </button>
+
+                        <!-- Next Step Button -->
+                        <button id="btn-next-step" class="mint-gradient text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all text-[16px] flex items-center justify-center gap-2">
+                            Siguiente paso
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ============= STEP 2 CONTENT ============= -->
+                <div id="step-2-content" class="step-content hidden-step">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                        
+                        <!-- LEFT: Registration Form -->
+                        <div class="space-y-6">
+                            <div>
+                                <h2 class="text-2xl md:text-[28px] font-extrabold text-on-background tracking-tight font-headline">Crea tu cuenta</h2>
+                                <p class="text-[14px] text-slate-500 mt-2 leading-relaxed font-medium">Regístrate para acceder a todas las funcionalidades de LegalPath.</p>
+                            </div>
+
+                            <!-- Social Login Buttons -->
+                            <div class="space-y-3">
+                                <button class="social-btn w-full flex items-center justify-center gap-3 py-3.5 px-6 bg-white border-[1.5px] border-slate-200 rounded-2xl font-semibold text-[15px] text-on-background hover:bg-slate-50">
+                                    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                                    Continuar con Google
+                                </button>
+                                <button class="social-btn w-full flex items-center justify-center gap-3 py-3.5 px-6 bg-[#1877F2] border-[1.5px] border-[#1877F2] rounded-2xl font-semibold text-[15px] text-white hover:bg-[#166FE5]">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                    Continuar con Facebook
+                                </button>
+                            </div>
+
+                            <!-- Divider -->
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1 h-px bg-slate-200"></div>
+                                <span class="text-[13px] text-slate-400 font-medium">o regístrate con tu correo</span>
+                                <div class="flex-1 h-px bg-slate-200"></div>
+                            </div>
+
+                            <!-- Email/Password Form -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-[13px] font-bold text-on-background mb-1.5">Nombre completo</label>
+                                    <input type="text" placeholder="Ej: Juan Pérez" class="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300"/>
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] font-bold text-on-background mb-1.5">Correo electrónico</label>
+                                    <input type="email" placeholder="tu@correo.com" class="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300"/>
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] font-bold text-on-background mb-1.5">Contraseña</label>
+                                    <input type="password" placeholder="••••••••" class="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300"/>
+                                </div>
+                                <button class="w-full mint-gradient text-white py-4 rounded-full font-bold text-[16px] shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                                    Crear cuenta y publicar caso
+                                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                                </button>
+                            </div>
+
+                            <!-- Benefits of Registration -->
+                            <div class="bg-[#f0fdf9] border border-[#1ECCA7]/20 rounded-2xl p-5 space-y-3">
+                                <p class="text-[13px] font-bold text-[#006b56] uppercase tracking-wider">Beneficios de crear tu cuenta</p>
+                                <div class="space-y-2.5">
+                                    <div class="benefit-item flex items-start gap-2.5">
+                                        <span class="material-symbols-outlined text-[#1ECCA7] text-[18px] mt-0.5" style='font-variation-settings: "FILL" 1;'>check_circle</span>
+                                        <span class="text-[13px] text-[#141b2c] font-medium">Acceso a todas las funcionalidades del sistema</span>
+                                    </div>
+                                    <div class="benefit-item flex items-start gap-2.5">
+                                        <span class="material-symbols-outlined text-[#1ECCA7] text-[18px] mt-0.5" style='font-variation-settings: "FILL" 1;'>check_circle</span>
+                                        <span class="text-[13px] text-[#141b2c] font-medium">Contacto directo con el abogado</span>
+                                    </div>
+                                    <div class="benefit-item flex items-start gap-2.5">
+                                        <span class="material-symbols-outlined text-[#1ECCA7] text-[18px] mt-0.5" style='font-variation-settings: "FILL" 1;'>check_circle</span>
+                                        <span class="text-[13px] text-[#141b2c] font-medium">Gestión digital de documentos y evidencias</span>
+                                    </div>
+                                    <div class="benefit-item flex items-start gap-2.5">
+                                        <span class="material-symbols-outlined text-[#1ECCA7] text-[18px] mt-0.5" style='font-variation-settings: "FILL" 1;'>check_circle</span>
+                                        <span class="text-[13px] text-[#141b2c] font-medium">Máxima protección y respaldo de LegalPath</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: Guest Mode -->
+                        <div class="space-y-6">
+                            <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-8 space-y-5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-[20px] text-slate-500">person_outline</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-extrabold text-on-background tracking-tight font-headline">Continuar como invitado</h3>
+                                        <p class="text-[12px] text-slate-400 font-medium">Acceso limitado</p>
+                                    </div>
+                                </div>
+
+                                <p class="text-[14px] text-slate-500 leading-relaxed font-medium">
+                                    Si prefieres no crear una cuenta, puedes publicar tu caso ingresando solo tu correo electrónico. Lo usaremos <strong class="text-on-background">únicamente para notificarte</strong> cuando un abogado te contacte.
+                                </p>
+
+                                <div>
+                                    <label class="block text-[13px] font-bold text-on-background mb-1.5">Correo electrónico</label>
+                                    <input id="guest-email" type="email" placeholder="tu@correo.com" class="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 bg-white text-[15px] font-medium focus:border-slate-400 focus:ring-2 focus:ring-slate-200 outline-none transition-all placeholder:text-slate-300"/>
+                                </div>
+
+                                <div class="flex items-start gap-2.5 bg-amber-50/80 border border-amber-200/50 rounded-xl p-3.5">
+                                    <span class="material-symbols-outlined text-amber-500 text-[18px] mt-0.5">info</span>
+                                    <p class="text-[12px] text-amber-700 leading-relaxed font-medium">Tu correo será utilizado exclusivamente para enviarte notificaciones cuando un abogado responda a tu caso. No compartimos tu información.</p>
+                                </div>
+
+                                <button id="btn-guest-publish" class="w-full bg-white text-on-background border-[1.5px] border-slate-200 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+                                    Publicar como invitado
+                                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                </button>
+                            </div>
+
+                            <!-- Back Button -->
+                            <button id="btn-back-step" class="flex items-center gap-2 text-[14px] text-slate-400 font-semibold hover:text-on-background transition-colors ml-1">
+                                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                                Volver al paso anterior
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============= STEP 3 CONTENT ============= -->
+                <div id="step-3-content" class="step-content hidden-step">
+                    <div class="flex flex-col items-center justify-center text-center py-10 space-y-8">
+                        <!-- Success Icon -->
+                        <div class="w-24 h-24 rounded-full bg-[#f0fdf9] border-2 border-[#1ECCA7]/30 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[#1ECCA7] text-[48px]" style='font-variation-settings: "FILL" 1;'>check_circle</span>
+                        </div>
+
+                        <!-- Confirmation Message -->
+                        <div class="space-y-4 max-w-lg">
+                            <h2 class="text-2xl md:text-[32px] font-extrabold text-on-background tracking-tight font-headline leading-tight">¡Tu caso ha sido <span class="text-[#1ECCA7]">publicado</span>!</h2>
+                            <p class="text-[16px] text-slate-500 leading-relaxed font-medium">
+                                Muchas gracias por haber publicado tu caso con nosotros. Te notificaremos vía correo electrónico cuando un abogado haya postulado para poder llevar tu caso.
+                            </p>
+                        </div>
+
+                        <!-- Email Confirmation -->
+                        <div class="bg-[#f0fdf9] border border-[#1ECCA7]/20 rounded-2xl px-8 py-5 inline-flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[#1ECCA7] text-[22px]" style='font-variation-settings: "FILL" 1;'>mail</span>
+                            <p class="text-[14px] text-[#006b56] font-semibold">Las notificaciones llegarán a: <span id="confirmed-email" class="text-[#141b2c]"></span></p>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                            <a href="../" class="mint-gradient text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all text-[16px] flex items-center justify-center gap-2">
+                                Volver al inicio
+                                <span class="material-symbols-outlined text-[20px]">home</span>
+                            </a>
+                            <button onclick="location.reload()" class="bg-white text-on-background border-[1.5px] border-slate-200 px-8 py-4 rounded-full font-bold text-[16px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+                                Publicar otro caso
+                                <span class="material-symbols-outlined text-[20px]">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end steps content container -->
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full bg-[#0F141E] text-slate-300 mt-20 font-['Inter'] pt-16 pb-8">
+<div class="max-w-7xl mx-auto px-8 lg:px-12 flex flex-col md:flex-row justify-between gap-12 mb-12">
+    <div class="flex flex-col gap-6 md:w-1/3">
+        <a href="../">
+            <img src="../../../public/assets/images/logo-dark.png" alt="LegalPath Logo" class="h-[76.8px] w-auto object-contain self-start hover:opacity-90 transition-opacity">
+        </a>
+        <p class="text-sm leading-relaxed text-slate-400">
+            Conectamos a personas que necesitan ayuda legal con abogados especialistas validados. Defendemos tus derechos de forma transparente y segura.
+        </p>
+    </div>
+    <div class="flex flex-col gap-4">
+        <h4 class="text-xs font-bold text-white tracking-widest mb-2 uppercase">Enlaces</h4>
+        <a href="../#faq" class="text-sm hover:text-primary-container transition-colors">¿Cómo Funciona?</a>
+        <a href="../#" class="text-sm hover:text-primary-container transition-colors">Nosotros</a>
+        <a href="../#" class="text-sm hover:text-primary-container transition-colors">Beneficios</a>
+        <a href="../#faq" class="text-sm hover:text-primary-container transition-colors">FAQ</a>
+    </div>
+    <div class="flex flex-col gap-4">
+        <h4 class="text-xs font-bold text-white tracking-widest mb-2 uppercase">Contacto</h4>
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container text-xl" style='font-variation-settings: "FILL" 0;'>call</span>
+            <span class="text-sm">+56 9 4052 2563</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container text-xl" style='font-variation-settings: "FILL" 0;'>mail</span>
+            <span class="text-sm">contacto@legalpath.cl</span>
+        </div>
+        <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary-container text-xl" style='font-variation-settings: "FILL" 0;'>location_on</span>
+            <span class="text-sm leading-tight">Providencia 1234, Of. 501,<br>Santiago</span>
+        </div>
+    </div>
+</div>
+<div class="max-w-7xl mx-auto px-8 lg:px-12 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+    <p>© 2024 LegalPath. Todos los derechos reservados.</p>
+    <div class="flex gap-6">
+        <a href="#" class="hover:text-white transition-colors">Términos y Condiciones</a>
+        <a href="#" class="hover:text-white transition-colors">Política de Privacidad</a>
+    </div>
+</div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================
+        // TYPING ANIMATION (Step 1)
+        // ==========================================
+        const placeholderContainer = document.getElementById('typing-placeholder');
+        const mockupTyping = placeholderContainer.querySelector('.mockup-typing');
+        const textarea = document.getElementById('case-textarea');
+        const caret = placeholderContainer.querySelector('.typing-caret');
+        
+        const fullText = "Necesito ayuda con un contrato de arriendo que no se ha cumplido. El arrendatario no ha pagado en 3 meses y necesito asesoría para...";
+        let i = 0;
+        let typingTimeout;
+        let isTyping = true;
+        
+        function typeChar() {
+            if (!isTyping) return;
+            if (i < fullText.length) {
+                mockupTyping.textContent += fullText.charAt(i);
+                i++;
+                caret.style.animation = 'none';
+                caret.style.opacity = '1';
+                typingTimeout = setTimeout(typeChar, 35 + Math.random() * 45);
+            } else {
+                caret.style.animation = 'pulse 0.8s infinite alternate';
+                typingTimeout = setTimeout(function() {
+                    if(!isTyping) return;
+                    mockupTyping.textContent = '';
+                    i = 0;
+                    typeChar();
+                }, 5000);
+            }
+        }
+        
+        setTimeout(typeChar, 1000);
+
+        function checkTextarea() {
+            if(textarea.value.length > 0 || document.activeElement === textarea) {
+                placeholderContainer.style.opacity = '0';
+                isTyping = false;
+                clearTimeout(typingTimeout);
+            } else {
+                placeholderContainer.style.opacity = '0.65';
+                if (!isTyping) {
+                    isTyping = true;
+                    mockupTyping.textContent = '';
+                    i = 0;
+                    typeChar();
+                }
+            }
+        }
+
+        textarea.addEventListener('input', checkTextarea);
+        textarea.addEventListener('focus', checkTextarea);
+        textarea.addEventListener('blur', checkTextarea);
+
+        // ==========================================
+        // MULTI-STEP NAVIGATION
+        // ==========================================
+        const btnNext = document.getElementById('btn-next-step');
+        const btnBack = document.getElementById('btn-back-step');
+        const btnGuestPublish = document.getElementById('btn-guest-publish');
+        const guestEmail = document.getElementById('guest-email');
+        const step1Content = document.getElementById('step-1-content');
+        const step2Content = document.getElementById('step-2-content');
+        const step3Content = document.getElementById('step-3-content');
+        const progressFill = document.getElementById('progress-fill');
+        const mainTitle = document.getElementById('main-title');
+        const mainSubtitle = document.getElementById('main-subtitle');
+
+        // Step circles and labels
+        const stepCircle1 = document.getElementById('step-circle-1');
+        const stepCircle2 = document.getElementById('step-circle-2');
+        const stepCircle3 = document.getElementById('step-circle-3');
+        const stepLabel1 = document.getElementById('step-label-1');
+        const stepLabel2 = document.getElementById('step-label-2');
+        const stepLabel3 = document.getElementById('step-label-3');
+
+        function goToStep2() {
+            // Animate progress bar to 50% (reaching step 2)
+            progressFill.style.width = '50%';
+
+            // Update step 2 circle to active (celeste)
+            stepCircle2.className = 'w-10 h-10 rounded-full bg-primary-container text-white font-bold flex items-center justify-center text-sm shadow-[0_4px_15px_rgba(30,204,167,0.4)] transition-all duration-500';
+            stepLabel2.className = 'text-[13px] font-bold text-on-background text-center max-w-[160px] leading-[1.2] text-balance transition-all duration-300';
+
+            // Fade out Step 1, fade in Step 2
+            step1Content.classList.remove('active-step');
+            step1Content.classList.add('hidden-step');
+
+            setTimeout(function() {
+                step2Content.classList.remove('hidden-step');
+                step2Content.classList.add('active-step');
+            }, 200);
+
+            // Update title
+            mainTitle.innerHTML = 'Ingresa como visitante o como <span class="text-[#1ECCA7]">usuario</span>';
+            mainSubtitle.textContent = 'Crea una cuenta para acceder a todas las funcionalidades, o continúa como invitado para publicar tu caso rápidamente.';
+
+            // Stop typing animation
+            isTyping = false;
+            clearTimeout(typingTimeout);
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToStep1() {
+            // Animate progress bar back to 25%
+            progressFill.style.width = '25%';
+
+            // Reset step 2 circle to inactive
+            stepCircle2.className = 'w-10 h-10 rounded-full bg-slate-100/80 text-slate-400 font-bold flex items-center justify-center text-sm border border-slate-200 transition-all duration-500';
+            stepLabel2.className = 'text-[13px] font-medium text-slate-400 text-center max-w-[160px] leading-[1.2] text-balance transition-all duration-300';
+
+            // Fade out Step 2, fade in Step 1
+            step2Content.classList.remove('active-step');
+            step2Content.classList.add('hidden-step');
+
+            setTimeout(function() {
+                step1Content.classList.remove('hidden-step');
+                step1Content.classList.add('active-step');
+            }, 200);
+
+            // Restore title
+            mainTitle.innerHTML = 'Describe con <span class="text-[#1ECCA7]">detalle</span> tu caso';
+            mainSubtitle.textContent = 'Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a entender tu caso.';
+
+            // Resume typing animation
+            isTyping = true;
+            mockupTyping.textContent = '';
+            i = 0;
+            setTimeout(typeChar, 600);
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToStep3() {
+            var email = guestEmail.value.trim();
+            if (!email || !email.includes('@')) {
+                guestEmail.style.borderColor = '#ef4444';
+                guestEmail.focus();
+                setTimeout(function() { guestEmail.style.borderColor = ''; }, 2000);
+                return;
+            }
+
+            // Animate progress bar to 100%
+            progressFill.style.width = '100%';
+
+            // Update step 3 circle to active (celeste)
+            stepCircle3.className = 'w-10 h-10 rounded-full bg-primary-container text-white font-bold flex items-center justify-center text-sm shadow-[0_4px_15px_rgba(30,204,167,0.4)] transition-all duration-500';
+            stepLabel3.className = 'text-[13px] font-bold text-on-background text-center max-w-[140px] leading-[1.2] text-balance transition-all duration-300';
+
+            // Fade out Step 2, fade in Step 3
+            step2Content.classList.remove('active-step');
+            step2Content.classList.add('hidden-step');
+
+            setTimeout(function() {
+                step3Content.classList.remove('hidden-step');
+                step3Content.classList.add('active-step');
+            }, 200);
+
+            // Update title
+            mainTitle.innerHTML = 'Caso <span class="text-[#1ECCA7]">publicado</span>';
+            mainSubtitle.textContent = 'Tu caso ha sido publicado exitosamente. Pronto recibirás propuestas de abogados especializados.';
+
+            // Show confirmed email
+            document.getElementById('confirmed-email').textContent = email;
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        btnNext.addEventListener('click', goToStep2);
+        btnBack.addEventListener('click', goToStep1);
+        btnGuestPublish.addEventListener('click', goToStep3);
+    });
+</script>
+</body></html>

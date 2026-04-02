@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <!-- Security Headers -->
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com https://www.svgrepo.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.svgrepo.com;">
+    <title>Completar Perfil | LegalPath</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#dbe2f9",
+                "tertiary": "#EE6C4D",
+                "surface-container-highest": "#dbe2f9",
+                "outline-variant": "#bbcac3",
+                "primary-fixed-dim": "#3edeb8",
+                "inverse-on-surface": "#edf0ff",
+                "on-tertiary-container": "#9c3c24",
+                "background": "#f9f9ff",
+                "tertiary-container": "#ff9b83",
+                "primary-fixed": "#63fbd3",
+                "on-secondary-fixed-variant": "#3f4759",
+                "on-error-container": "#93000a",
+                "on-background": "#141b2c",
+                "surface-tint": "#006b56",
+                "surface-dim": "#d2daf0",
+                "surface": "#f9f9ff",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed-variant": "#872108",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed-dim": "#ffb4a3",
+                "secondary-fixed-dim": "#bfc6dc",
+                "inverse-primary": "#3edeb8",
+                "inverse-surface": "#293041",
+                "surface-container-lowest": "#ffffff",
+                "on-surface": "#141b2c",
+                "primary": "#006b56",
+                "on-primary-fixed": "#002018",
+                "error": "#ba1a1a",
+                "on-primary-fixed-variant": "#005140",
+                "surface-variant": "#dbe2f9",
+                "surface-container-high": "#e0e8ff",
+                "secondary-container": "#d8dff6",
+                "primary-container": "#1ecca7",
+                "outline": "#6c7a74",
+                "on-secondary-container": "#5b6276",
+                "on-secondary-fixed": "#141b2c",
+                "on-primary-container": "#005140",
+                "tertiary-fixed": "#ffdad2",
+                "on-tertiary-fixed": "#3d0700",
+                "error-container": "#ffdad6",
+                "on-surface-variant": "#3c4a44",
+                "surface-container": "#e9edff",
+                "on-error": "#ffffff",
+                "surface-container-low": "#f1f3ff",
+                "secondary": "#575e71",
+                "on-tertiary": "#ffffff",
+              },
+            },
+          },
+        };
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: var(--background); }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .abogado-gradient { background: linear-gradient(135deg, #EE6C4D 0%, #ff8a6d 100%); }
+        .abogado-gradient-text { background: linear-gradient(135deg, #EE6C4D 0%, #ff8a6d 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .step-number { background-color: rgba(238, 108, 77, 0.1); color: #EE6C4D; }
+        .drag-drop-zone { border: 1px dashed #EE6C4D; background-color: rgba(238, 108, 77, 0.05); }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen bg-background pb-20">
+
+    <!-- Top Navigation / Logo -->
+    <header class="w-full bg-white border-b border-slate-200 py-4 px-8 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-4xl mx-auto flex items-center gap-2">
+            <img src="../../../public/assets/images/logo-light.png" alt="LegalPath Logo" class="h-8 w-auto">
+            <span class="text-secondary font-medium text-[15px] mb-0.5 tracking-tight">Abogados</span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 mt-12">
+        
+        <!-- Header Section -->
+        <div class="mb-10">
+            <h1 class="text-[32px] sm:text-[36px] font-extrabold text-on-background tracking-tight mb-3">Únete a la Red Legal</h1>
+            <p class="text-secondary text-[15px] max-w-2xl leading-relaxed">
+                Completa tu perfil profesional para comenzar a recibir referidos de casos y gestionar tu práctica.
+            </p>
+        </div>
+
+        <form id="perfil-form" action="../validacion/" method="POST" class="space-y-6" novalidate>
+
+            <!-- Card 1: Información Personal -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-6 h-6 rounded-full step-number flex items-center justify-center font-bold text-xs">1</div>
+                    <h2 class="text-xl font-bold text-on-background tracking-tight">Información Personal</h2>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-10">
+                    <!-- Photo Upload -->
+                    <div class="flex flex-col items-center shrink-0 w-[140px]">
+                        <span class="text-[11px] font-extrabold text-[#8A95AA] uppercase tracking-wider mb-3">FOTO DE PERFIL</span>
+                        <div class="relative mb-3">
+                            <div class="w-[124px] h-[124px] rounded-full border-[3px] border-dashed border-slate-200 flex flex-col items-center justify-center bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors">
+                                <span class="material-symbols-outlined text-[#8A95AA] text-[28px] mb-1">cloud_upload</span>
+                                <span class="text-[10px] font-bold text-[#8A95AA] tracking-wide uppercase">SUBIR</span>
+                            </div>
+                            <div class="absolute bottom-1 right-2 w-7 h-7 bg-[#EE6C4D] rounded-full border-2 border-white flex items-center justify-center cursor-pointer hover:scale-105 transition-transform shadow-sm">
+                                <span class="material-symbols-outlined text-white text-[14px]">edit</span>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-center text-[#8A95AA] leading-tight">
+                            JPG, PNG or GIF. Max 5MB. Face must be visible.
+                        </p>
+                    </div>
+
+                    <!-- Personal Info Fields -->
+                    <div class="flex-1 space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="space-y-1.5">
+                                <label for="firstName" class="block text-[13px] font-bold text-on-background">Nombres</label>
+                                <input type="text" id="firstName" name="firstName" required autocomplete="given-name" maxlength="80" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Elena">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label for="lastName" class="block text-[13px] font-bold text-on-background">Apellidos</label>
+                                <input type="text" id="lastName" name="lastName" required autocomplete="family-name" maxlength="80" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Ramirez">
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label for="email" class="block text-[13px] font-bold text-on-background">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" required autocomplete="email" maxlength="254" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="elena.ramirez@legal.com">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Antecedentes Académicos -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-6 h-6 rounded-full step-number flex items-center justify-center font-bold text-xs">2</div>
+                    <h2 class="text-xl font-bold text-on-background tracking-tight">Antecedentes Académicos</h2>
+                </div>
+
+                <div id="estudios-container">
+                    <!-- Default Entry -->
+                    <div class="estudio-entry relative bg-slate-50/70 border border-slate-200/60 p-5 rounded-xl mb-5 space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div class="space-y-1.5">
+                                <label class="block text-[13px] font-bold text-on-background">Nivel de Estudio</label>
+                                <div class="relative">
+                                    <select name="studyLevel[]" required class="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow appearance-none text-on-background bg-none">
+                                        <option value="" disabled selected>Seleccionar nivel...</option>
+                                        <option value="grado">Licenciatura / Grado</option>
+                                        <option value="diplomado">Diplomado</option>
+                                        <option value="postgrado">Magíster / Postgrado</option>
+                                        <option value="doctorado">Doctorado</option>
+                                    </select>
+                                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none select-none text-[20px]">unfold_more</span>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="block text-[13px] font-bold text-on-background">Universidad / Institución</label>
+                                <input type="text" name="university[]" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Yale Law School">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="block text-[13px] font-bold text-on-background">Año de titulación</label>
+                                <input type="number" name="gradYear[]" min="1950" max="2026" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. 2018">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-[13px] font-bold text-on-background">Certificado de Título <span class="text-red-500">*</span></label>
+                            <div class="drag-drop-zone bg-white rounded-xl px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 cursor-pointer hover:bg-[#EE6C4D]/10 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-[#EE6C4D] text-[20px]">description</span>
+                                    <span class="text-[13px] text-slate-500 text-center sm:text-left">Subir PDF o documento JPG</span>
+                                </div>
+                                <span class="text-[11px] font-extrabold text-[#EE6C4D] tracking-wide uppercase">SELECCIONAR ARCHIVO</span>
+                            </div>
+                        </div>
+
+                        <!-- Botón para eliminar (Oculto en el primero) -->
+                        <button type="button" class="remove-estudio-btn hidden absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors p-1 bg-white rounded-full shadow-sm border border-slate-200" title="Eliminar estudio">
+                            <span class="material-symbols-outlined text-[16px] block">close</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" id="add-estudio-btn" class="flex items-center gap-2 text-[#EE6C4D] font-bold text-[13px] hover:text-[#EE6C4D]/80 transition-colors mt-2">
+                    <span class="material-symbols-outlined text-[18px]">add_circle</span> Agregar más estudios
+                </button>
+            </div>
+
+            <!-- Card 3: Datos Legales y Profesionales -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-6 h-6 rounded-full step-number flex items-center justify-center font-bold text-xs">3</div>
+                    <h2 class="text-xl font-bold text-on-background tracking-tight">Datos Legales y Profesionales</h2>
+                </div>
+
+                <!-- Specialties -->
+                <div class="space-y-2 mb-6">
+                    <label class="block text-[13px] font-bold text-on-background">Áreas de Especialidad <span class="text-[#EE6C4D]">*</span></label>
+                    <div class="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 min-h-[52px] flex items-center gap-2 flex-wrap" id="specialties-container">
+                        
+                        <!-- Tags Container -->
+                        <div id="tags-wrapper" class="flex flex-wrap gap-2">
+                             <!-- Tags will be injected here via JS -->
+                        </div>
+                        
+                        <!-- Dropdown to add tags -->
+                        <div class="relative inline-block mt-1 sm:mt-0">
+                            <select id="specialty-selector" class="appearance-none bg-white border border-slate-200 text-secondary text-[12px] font-medium rounded-full px-3 py-1.5 focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none cursor-pointer pr-8 shadow-sm">
+                                <option value="" disabled selected>+ Agregar Área</option>
+                                <option value="Derecho Penal">Derecho Penal</option>
+                                <option value="Derecho Civil">Derecho Civil</option>
+                                <option value="Derecho Laboral">Derecho Laboral</option>
+                                <option value="Derecho de Familia">Derecho de Familia</option>
+                                <option value="Derecho Corporativo">Derecho Corporativo</option>
+                                <option value="Derecho Tributario">Derecho Tributario</option>
+                                <option value="Derecho Inmobiliario">Derecho Inmobiliario</option>
+                                <option value="Derecho Administrativo">Derecho Administrativo</option>
+                                <option value="Ley de Migración">Ley de Migración</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[16px] select-none">expand_more</span>
+                        </div>
+                    </div>
+                    <!-- Hidden input to store final array of specialties for form submission -->
+                    <input type="hidden" name="specialties" id="specialties-input" required value="">
+                </div>
+
+                <!-- Other Legal Data -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                    <div class="space-y-1.5">
+                        <label for="rut" class="block text-[13px] font-bold text-on-background">RUT (Personal) <span class="text-[#EE6C4D]">*</span></label>
+                        <input type="text" id="rut" name="rut" required autocomplete="off" maxlength="12" pattern="^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="12.345.678-9">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label for="rutAsociado" class="block text-[13px] font-bold text-on-background">RUT (Asociado PJUD) <span class="text-[#EE6C4D]">*</span></label>
+                        <input type="text" id="rutAsociado" name="rutAsociado" required autocomplete="off" maxlength="12" pattern="^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="76.543.210-K">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="space-y-1.5">
+                        <label for="geografia" class="block text-[13px] font-bold text-on-background">Región Geográfica <span class="text-[#EE6C4D]">*</span></label>
+                        <div class="relative">
+                            <select id="geografia" name="geografia" required class="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow appearance-none text-on-background bg-none">
+                                <option value="" disabled selected>Seleccionar región...</option>
+                                <option value="Arica y Parinacota">XV de Arica y Parinacota</option>
+                                <option value="Tarapacá">I de Tarapacá</option>
+                                <option value="Antofagasta">II de Antofagasta</option>
+                                <option value="Atacama">III de Atacama</option>
+                                <option value="Coquimbo">IV de Coquimbo</option>
+                                <option value="Valparaíso">V de Valparaíso</option>
+                                <option value="Metropolitana">RM de Santiago</option>
+                                <option value="O'Higgins">VI del Libertador Gral. Bernardo O'Higgins</option>
+                                <option value="Maule">VII del Maule</option>
+                                <option value="Ñuble">XVI de Ñuble</option>
+                                <option value="Biobío">VIII del Biobío</option>
+                                <option value="Araucanía">IX de la Araucanía</option>
+                                <option value="Los Ríos">XIV de Los Ríos</option>
+                                <option value="Los Lagos">X de Los Lagos</option>
+                                <option value="Aysén">XI de Aysén del Gral. Carlos Ibáñez del Campo</option>
+                                <option value="Magallanes">XII de Magallanes y de la Antártica Chilena</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none select-none text-[20px]">unfold_more</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label for="ciudad" class="block text-[13px] font-bold text-on-background">Ciudad (Opcional)</label>
+                        <input type="text" id="ciudad" name="ciudad" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Providencia">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label for="colegio" class="block text-[13px] font-bold text-on-background">Colegio de Abogados</label>
+                        <input type="text" id="colegio" name="colegio" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="ID de miembro (Opcional)">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Submit Action -->
+            <div class="flex justify-end pt-4">
+                <button type="submit" class="abogado-gradient text-white px-10 py-4 rounded-xl font-bold text-[15px] shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all flex justify-center items-center gap-2">
+                    Finalizar proceso de registro <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- Security: Read step-1 data from sessionStorage (NOT URL params), use createElement to prevent XSS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- SECURITY FIX: Read from sessionStorage instead of URL params ---
+            const firstName = sessionStorage.getItem('lp_firstName') || '';
+            const lastName  = sessionStorage.getItem('lp_lastName')  || '';
+            const email     = sessionStorage.getItem('lp_email')     || '';
+
+            if (firstName) document.getElementById('firstName').value = firstName;
+            if (lastName)  document.getElementById('lastName').value  = lastName;
+            if (email)     document.getElementById('email').value     = email;
+
+            // Dynamic "Agregar más estudios" functionality
+            const addEstudioBtn     = document.getElementById('add-estudio-btn');
+            const estudiosContainer = document.getElementById('estudios-container');
+
+            if (addEstudioBtn && estudiosContainer) {
+                addEstudioBtn.addEventListener('click', () => {
+                    const entries  = estudiosContainer.querySelectorAll('.estudio-entry');
+                    const newEntry = entries[0].cloneNode(true);
+
+                    newEntry.querySelectorAll('input, select').forEach(input => {
+                        if (input.tagName === 'SELECT') { input.selectedIndex = 0; }
+                        else { input.value = ''; }
+                    });
+
+                    const removeBtn = newEntry.querySelector('.remove-estudio-btn');
+                    removeBtn.classList.remove('hidden');
+                    removeBtn.addEventListener('click', function() { newEntry.remove(); });
+
+                    estudiosContainer.appendChild(newEntry);
+                });
+            }
+
+            // Dynamic Specialties Tags
+            const specialtySelector = document.getElementById('specialty-selector');
+            const tagsWrapper       = document.getElementById('tags-wrapper');
+            const specialtiesInput  = document.getElementById('specialties-input');
+            let selectedSpecialties = new Set();
+
+            const updateHiddenInput = () => {
+                specialtiesInput.value = Array.from(selectedSpecialties).join(',');
+            };
+
+            // --- SECURITY FIX: createElement instead of innerHTML to prevent XSS ---
+            const addTag = (text) => {
+                // Sanitize: only allow values from the predefined dropdown list
+                const allowedValues = [
+                    'Derecho Penal', 'Derecho Civil', 'Derecho Laboral', 'Derecho de Familia',
+                    'Derecho Corporativo', 'Derecho Tributario', 'Derecho Inmobiliario',
+                    'Derecho Administrativo', 'Ley de Migración'
+                ];
+                if (!allowedValues.includes(text)) return;
+                if (selectedSpecialties.has(text)) return;
+
+                selectedSpecialties.add(text);
+                updateHiddenInput();
+
+                // Build tag DOM safely — no innerHTML
+                const tag = document.createElement('span');
+                tag.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-white bg-[#EE6C4D] text-[12px] font-bold shadow-sm mb-1';
+
+                const label = document.createTextNode(text + ' ');
+                tag.appendChild(label);
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'hover:text-white/80 select-none flex items-center justify-center remove-tag-btn';
+                btn.setAttribute('aria-label', 'Eliminar ' + text);
+
+                const icon = document.createElement('span');
+                icon.className = 'material-symbols-outlined text-[14px]';
+                icon.textContent = 'close';
+
+                btn.appendChild(icon);
+                tag.appendChild(btn);
+
+                btn.addEventListener('click', () => {
+                    selectedSpecialties.delete(text);
+                    tag.remove();
+                    updateHiddenInput();
+                });
+
+                tagsWrapper.appendChild(tag);
+            };
+
+            // Pre-fill defaults
+            addTag('Derecho Penal');
+            addTag('Derecho Civil');
+
+            if (specialtySelector) {
+                specialtySelector.addEventListener('change', function() {
+                    const val = this.value;
+                    if (val) {
+                        addTag(val);
+                        this.selectedIndex = 0;
+                    }
+                });
+            }
+
+            // Form submit: validate specialties, then navigate to Step 3
+            document.getElementById('perfil-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                if (selectedSpecialties.size === 0) {
+                    alert('Por favor, selecciona al menos una Área de Especialidad.');
+                    document.getElementById('specialties-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    document.getElementById('specialties-container').classList.add('ring-2', 'ring-red-500');
+                    setTimeout(() => {
+                        document.getElementById('specialties-container').classList.remove('ring-2', 'ring-red-500');
+                    }, 3000);
+                    return;
+                }
+
+                // Clear step-1 session data after use
+                sessionStorage.removeItem('lp_firstName');
+                sessionStorage.removeItem('lp_lastName');
+                sessionStorage.removeItem('lp_email');
+
+                window.location.href = '../validacion/';
+            });
+
+        });
+    </script>
+</body>
+</html>

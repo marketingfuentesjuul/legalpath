@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com https://www.svgrepo.com https://ui-avatars.com https://lh3.googleusercontent.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com https://www.svgrepo.com https://lh3.googleusercontent.com;">
+<title>LegalPath | La justicia, simplificada.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#dbe2f9",
+                "tertiary": "#a7391e",
+                "surface-container-highest": "#dbe2f9",
+                "outline-variant": "#bbcac3",
+                "primary-fixed-dim": "#3edeb8",
+                "inverse-on-surface": "#edf0ff",
+                "on-tertiary-container": "#872108",
+                "background": "#f9f9ff",
+                "tertiary-container": "#ff9b83",
+                "primary-fixed": "#63fbd3",
+                "on-secondary-fixed-variant": "#3f4759",
+                "on-error-container": "#93000a",
+                "on-background": "#141b2c",
+                "surface-tint": "#006b56",
+                "surface-dim": "#d2daf0",
+                "surface": "#f9f9ff",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed-variant": "#872108",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed-dim": "#ffb4a3",
+                "secondary-fixed-dim": "#bfc6dc",
+                "inverse-primary": "#3edeb8",
+                "inverse-surface": "#293041",
+                "surface-container-lowest": "#ffffff",
+                "on-surface": "#141b2c",
+                "primary": "#006b56",
+                "on-primary-fixed": "#002018",
+                "error": "#ba1a1a",
+                "on-primary-fixed-variant": "#005140",
+                "surface-variant": "#dbe2f9",
+                "surface-container-high": "#e0e8ff",
+                "secondary-container": "#d8dff6",
+                "primary-container": "#1ecca7",
+                "outline": "#6c7a74",
+                "on-secondary-container": "#5b6276",
+                "on-secondary-fixed": "#141b2c",
+                "on-primary-container": "#005140",
+                "tertiary-fixed": "#ffdad2",
+                "on-tertiary-fixed": "#3d0700",
+                "error-container": "#ffdad6",
+                "on-surface-variant": "#3c4a44",
+                "surface-container": "#e9edff",
+                "on-error": "#ffffff",
+                "surface-container-low": "#f1f3ff",
+                "secondary": "#575e71",
+                "on-tertiary": "#ffffff",
+                "surface-bright": "#f9f9ff"
+              },
+              fontFamily: {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .mint-gradient {
+            background: linear-gradient(135deg, #006b56 0%, #1ecca7 100%);
+        }
+        .soft-mint-glow {
+            box-shadow: 0 20px 40px rgba(30, 204, 167, 0.15);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff;
+            color: #141b2c;
+        }
+        h1, h2, h3, .font-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        .floating-delayed {
+            animation: floating 7s ease-in-out 1s infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        /* Typing animation for mockup */
+        .mockup-typing {
+            display: inline;
+            border-right: none;
+        }
+        @keyframes blink-caret {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const el = document.querySelector('.mockup-typing');
+            if (!el) return;
+            const fullText = el.textContent;
+            let i = 0;
+            el.textContent = '';
+
+            function typeChar() {
+                if (i < fullText.length) {
+                    el.textContent += fullText.charAt(i);
+                    i++;
+                    setTimeout(typeChar, 45 + Math.random() * 35);
+                } else {
+                    // Pause, then reset and retype
+                    setTimeout(function() {
+                        el.textContent = '';
+                        i = 0;
+                        setTimeout(typeChar, 800);
+                    }, 4000);
+                }
+            }
+            // Start after a short delay
+            setTimeout(typeChar, 1200);
+        });
+    </script>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg shadow-[0_20px_40px_rgba(20,27,44,0.06)]">
+<nav class="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center font-['Plus_Jakarta_Sans'] text-sm font-medium tracking-tight">
+<div class="flex items-center">
+<img src="../../public/assets/images/logo-light.png" alt="LegalPath Logo" class="h-[40.8px] w-auto">
+</div>
+<div class="hidden md:flex items-center gap-8">
+</div>
+<div class="flex items-center gap-4">
+<a href="abogados/" class="bg-[#EE6C4D] text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block">Soy abogado</a>
+<a href="publicar-caso/" class="mint-gradient text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block" style="">Publicar mi caso</a>
+</div>
+</nav>
+<div class="bg-slate-100/50 dark:bg-slate-800/50 h-px w-full"></div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 py-20">
+<!-- Background Decorative Blurs -->
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container/10 blur-[120px] rounded-full -z-10"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-secondary-container/20 blur-[120px] rounded-full -z-10"></div>
+<div class="max-w-4xl w-full text-center space-y-10 relative z-10">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/10 text-primary-container rounded-full text-xs font-bold tracking-widest uppercase mx-auto" style="">
+<span class="material-symbols-outlined text-sm" style='font-variation-settings: "FILL" 1;'>verified</span>
+                    Justicia accesible para todos
+                </div>
+<h1 class="text-[51px] md:text-[81.6px] font-extrabold tracking-tighter leading-[1] text-on-background" style="">Publica tu caso y que los abogados te <span class="text-[#1ECCA7]">encuentren</span>.</h1>
+<p class="text-xl text-secondary leading-relaxed max-w-2xl mx-auto" style="">
+                    Publica tu caso de <b>forma anónima y gratuita, </b>espera a que los abogados te contacten y tú eres el que <b>elige</b> a cuál de los especialistas tomar<b>.</b></p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<a href="publicar-caso/" class="mint-gradient text-on-primary px-10 py-5 rounded-full text-xl font-bold shadow-2xl hover:scale-105 transition-transform text-center inline-block" style="">
+                        Publicar mi caso
+                    </a>
+<button class="bg-white text-on-secondary-container border border-slate-200 px-10 py-5 rounded-full text-xl font-bold hover:bg-slate-50 transition-colors shadow-sm" style="">
+                        ¿Cómo funciona?
+                    </button>
+</div>
+<div class="flex items-center justify-center gap-4 pt-6">
+<div class="flex -space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-white" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI" style=""/>
+<img class="w-10 h-10 rounded-full border-2 border-white" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvREyG3tmjBSqXfmUxfvfT905OfRk5znbhwRt9xTq3jP7JWvpwQIgCPgZbxaKnUix6eL5tcpso8KdM-aMYgjRf8PQ0xhyyQOqb1FbEYTRKBQhNauh_0BGz9xmPNgE_QgHSbIJ2d0X60oarFQ02AZ-LlTtZVp9iCF8QU6MN98xlshkH_zO3il8blRajGQ00SOAPXNMVYfRGuFBmclkE320JLQBgLVIJ8fSBtwoGzF_jYblOOGWUF6qdCD73OZxyj7GVijILaeUdKUk" style=""/>
+<img class="w-10 h-10 rounded-full border-2 border-white" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmUTLayHNnlAwhhAnw3VZJVeJkggFeIbhVB5NpJ_bS8mZE9kgRyI46kBR3fk14LBh9gWUgWDU5kbLg9Qc_S8TDU5iFjC0fFdxY_W7iWH0mb5ypLzmVn_LERXosIWrFMxb28Jr8EWWiuabmQgqaYJfoCdpEtK4tTXX5_HSLpefXq1Ou8thbKXBC3ckFWO69iqMHOUzNFndigIa8JFqets3S7idfKFdrThXVSDuuIIlP0bVOa4Grd-MGdT5-RqFeYVaQid2vccPHpxY" style=""/>
+</div>
+<p class="text-sm font-medium text-secondary" style=""><font color="#141b2c"><b>+2000 abogados registrados</b></font> listos para ayudarte.
+                    </p>
+</div>
+</div>
+<!-- Floating UI Elements -->
+<div class="absolute left-10 md:left-[10%] top-[45%] floating hidden lg:block">
+<div class="glass-card p-3 rounded-full border border-white/50 shadow-xl flex items-center gap-3 pr-6">
+<img alt="Lawyer" class="w-14 h-14 rounded-full object-cover border-2 border-primary-container" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0" style=""/>
+<div>
+<p class="text-xs font-bold text-on-background leading-none" style="">Ricardo M.</p>
+<p class="text-[10px] text-primary-container font-medium" style="">Experto Civil</p>
+</div>
+</div>
+</div>
+<div class="absolute right-10 md:right-[8%] top-[35%] floating-delayed hidden lg:block">
+<div class="glass-card p-5 rounded-3xl border border-white/80 shadow-2xl space-y-3 w-56 text-center">
+<img alt="Lawyer" class="w-20 h-20 rounded-full mx-auto object-cover border-4 border-white shadow-md" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI" style=""/>
+<div>
+<div class="flex items-center justify-center gap-1">
+<p class="text-sm font-bold" style="">Elena R.</p>
+<span class="material-symbols-outlined text-[14px] text-blue-500" style='font-variation-settings: "FILL" 1;'>verified</span>
+</div>
+<p class="text-[10px] text-secondary font-medium mt-1" style="">✨ Especialista en Familia</p>
+</div>
+<button class="w-full py-2 bg-on-background text-white text-[10px] font-bold rounded-full" style="">Ver Perfil</button>
+</div>
+</div>
+</section>
+<!-- Vertical Process Section (Redesigned from 3 steps) -->
+<section class="max-w-7xl mx-auto px-8 py-20 space-y-32">
+    <div class="text-center mb-16">
+        <h2 class="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
+        <div class="w-16 h-1 bg-primary-container mx-auto mt-4 rounded-full"></div>
+    </div>
+<!-- Step 01 -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-8">
+<div class="text-[120px] font-extrabold leading-none text-primary-container/20 dark:text-primary-container/30 font-headline" style="color: #1ECCA7; opacity: 0.15;">01</div>
+<h3 class="text-[30.7px] font-extrabold tracking-tight text-on-background" style="">Publica tu caso</h3>
+<p class="text-xl text-secondary leading-relaxed max-w-lg" style="">
+                        Describe tu situación legal de<b> forma anónima</b>. No necesitas ser un experto, solo cuéntanos qué pasó y nosotros te ayudaremos a definir cuál es el área de legal del experto que necesitas.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3" style="">
+<span class="material-symbols-outlined text-primary-container mt-1" style="">check_circle</span>
+<p class="text-secondary"><span class="font-bold text-on-background">100% Anónimo:</span> Tus datos están protegidos en todo momento.</p>
+</li>
+<li class="flex items-start gap-3" style="">
+<span class="material-symbols-outlined text-primary-container mt-1" style="">check_circle</span>
+<p class="text-secondary"><span class="font-bold text-on-background">Sin Compromiso:</span> Publicar es gratis y no te obliga a contratar.</p>
+</li>
+<li class="flex items-start gap-3" style="">
+<span class="material-symbols-outlined text-primary-container mt-1" style="">check_circle</span>
+<p class="text-secondary"><span class="font-bold text-on-background">Tú Eliges:</span> Tú eliges al profesional que quieras.</p>
+</li>
+</ul>
+</div>
+<!-- Software Mockup: Case Submission UI -->
+<div class="relative rounded-2xl overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,107,86,0.18)] border border-slate-200/60 bg-[#f8fafc] min-h-[440px]">
+    <!-- Browser Chrome Bar -->
+    <div class="bg-[#e8ecf1] px-4 py-2.5 flex items-center gap-3 border-b border-slate-200/60">
+        <div class="flex gap-1.5">
+            <div class="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-[#febc2e]"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-[#28c840]"></div>
+        </div>
+        <div class="flex-1 bg-white rounded-md px-3 py-1 text-[10px] text-slate-400 font-medium text-center truncate border border-slate-100">
+            app.legalpath.cl/publicar-caso
+        </div>
+    </div>
+    <!-- App Content -->
+    <div class="p-6 space-y-5">
+        <!-- Step indicator -->
+        <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-full bg-primary-container text-white text-[10px] font-bold flex items-center justify-center">1</div>
+            <div class="h-px flex-1 bg-slate-200"></div>
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-400 text-[10px] font-bold flex items-center justify-center">2</div>
+            <div class="h-px flex-1 bg-slate-200"></div>
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-400 text-[10px] font-bold flex items-center justify-center">3</div>
+        </div>
+        <!-- Title -->
+        <div>
+            <h3 class="text-lg font-extrabold text-on-background tracking-tight">Describe con detalle tu caso</h3>
+            <p class="text-xs text-slate-400 mt-1">Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos, todo lo que estimes conveniente para ayudarnos a entender tu caso.</p>
+        </div>
+        <!-- Textarea Mockup with Typing Animation -->
+        <div class="bg-white rounded-xl border border-slate-200 p-4 min-h-[110px] relative shadow-sm">
+            <div class="text-sm text-slate-600 leading-relaxed">
+                <span class="mockup-typing">Necesito ayuda con un contrato de arriendo que no se ha cumplido. El arrendatario no ha pagado en 3 meses y necesito asesoría para...</span>
+                <span class="inline-block w-[2px] h-4 bg-primary-container animate-pulse ml-0.5 align-text-bottom"></span>
+            </div>
+        </div>
+        <!-- Attachment + Submit Row -->
+        <div class="flex items-center justify-between pt-1">
+            <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium bg-slate-50 px-3 py-2 rounded-lg border border-dashed border-slate-200 cursor-default">
+                    <span class="material-symbols-outlined text-sm">attach_file</span>
+                    Adjuntar documentos
+                </div>
+                <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2.5 py-1.5 rounded-lg border border-emerald-200/60">
+                    <span class="material-symbols-outlined text-xs">check_circle</span>
+                    contrato.pdf
+                </div>
+            </div>
+            <a href="publicar-caso/" class="mint-gradient text-white px-5 py-2.5 rounded-full text-xs font-extrabold shadow-lg flex items-center gap-1.5 hover:scale-105 transition-transform">
+                Enviar caso
+                <span class="material-symbols-outlined text-sm">send</span>
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Step 02 -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="lg:order-2 space-y-8">
+<div class="text-[120px] font-extrabold leading-none text-primary-container/20 dark:text-primary-container/30 font-headline" style="color: #1ECCA7; opacity: 0.15;">02</div>
+<h3 class="text-[30.7px] font-extrabold tracking-tight text-on-background" style="">Recibe Propuestas</h3>
+<p class="text-xl text-secondary leading-relaxed max-w-lg" style="">
+                        Una vez que envías tu caso, se publica. Los abogados que estén registrados en la página, especialistas en el área específica de tu caso, podrán postularse para que tú elijas con cuál de ellos trabajar.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3" style="">
+<span class="material-symbols-outlined text-primary-container mt-1" style="">check_circle</span>
+<p class="text-secondary"><span class="font-bold text-on-background">Match Inteligente:</span> Solo expertos validados en tu área específica.</p>
+</li>
+<li class="flex items-start gap-3" style="">
+<span class="material-symbols-outlined text-primary-container mt-1" style="">check_circle</span>
+<p class="text-secondary"><span class="font-bold text-on-background">Ahorro de Tiempo:</span> Recibe hasta 5 propuestas en menos de 24 horas.</p>
+</li>
+</ul>
+</div>
+<div class="lg:order-1 relative bg-surface-container-low rounded-3xl p-8 shadow-inner overflow-hidden min-h-[450px]">
+<div class="space-y-3">
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200"></div>
+<div>
+<div class="text-sm font-bold" style="">Carlos P.</div>
+<div class="text-[10px] text-slate-400" style="">Propuesta enviada</div>
+</div>
+</div>
+<div class="text-primary-container font-bold" style=""><br/></div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-md border border-primary-container/30 flex items-center justify-between scale-105 z-10 relative">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0" style=""/>
+<div>
+<div class="text-sm font-bold" style="">Elena R.</div>
+<div class="text-[10px] text-primary-container font-bold" style="">Recomendada ✨</div>
+</div>
+</div>
+<div class="text-primary-container font-bold" style=""><br/></div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform translate-x-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200"></div>
+<div>
+<div class="text-sm font-bold" style="">Sonia M.</div>
+<div class="text-[10px] text-slate-400" style="">Propuesta enviada</div>
+</div>
+</div>
+<div class="text-primary-container font-bold" style=""><br/></div>
+</div>
+</div>
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-6 py-3 rounded-full border border-primary-container/20 shadow-xl flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<span class="text-xs font-bold text-on-background whitespace-nowrap" style="">Tienes tres propuestas nuevas...</span>
+</div>
+</div>
+</div>
+<!-- Step 03 -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-8">
+<div class="text-[120px] font-extrabold leading-none text-primary-container/20 dark:text-primary-container/30 font-headline" style="color: #1ECCA7; opacity: 0.15;">03</div>
+<h3 class="text-[30.7px] font-extrabold tracking-tight text-on-background" style="">Elige y Actúa</h3>
+<p class="text-xl text-secondary leading-relaxed max-w-lg" style="">
+                        Compara perfiles, lee opiniones verificadas de otros usuarios y contrata al profesional que te dé más confianza para llevar tu caso.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3" style="">
+<span class="material-symbols-outlined text-primary-container mt-1" style="">check_circle</span>
+<p class="text-secondary"><span class="font-bold text-on-background">Mayor Seguridad:</span> Los abogados que se publican están certificados y verificados.</p>
+</li>
+<li class="flex items-start gap-3" style="">
+<span class="material-symbols-outlined text-primary-container mt-1" style="">check_circle</span>
+<p class="text-secondary"><span class="font-bold text-on-background">Acompañamiento:</span> Soporte en cada etapa de tu proceso legal.</p>
+</li>
+</ul>
+</div>
+<div class="relative bg-on-background rounded-3xl p-12 text-white overflow-hidden min-h-[400px] flex items-center justify-center">
+<div class="space-y-6 w-full max-w-sm">
+<div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/10">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" style="">handshake</span>
+</div>
+<div>
+<div class="text-sm font-bold" style="">Abogado Seleccionado</div>
+<div class="text-xs text-slate-400" style="">Abogado: Elena R.</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs">
+<span class="" style="">Progreso del caso</span>
+<span class="text-primary-container" style="">65%</span>
+</div>
+<div class="h-2 w-full bg-white/10 rounded-full">
+<div class="h-full w-[65%] bg-primary-container rounded-full"></div>
+</div>
+</div>
+<button class="w-full py-4 bg-primary-container text-on-primary-container font-black rounded-full shadow-lg" style="">Chat con mi Abogado</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Value Propositions -->
+<section class="max-w-7xl mx-auto px-8 py-20">
+<div class="text-center mb-16 space-y-4">
+<h2 class="text-[41.4px] font-extrabold tracking-tight">¿Por qué elegir LegalPath?</h2>
+<p class="text-secondary max-w-2xl mx-auto" style="">Diseñamos una experiencia que pone el poder de nuevo en tus manos, eliminando la incertidumbre y los costos ocultos.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
+<div class="md:col-span-2 bg-white rounded-xl p-10 flex flex-col justify-between shadow-sm border border-slate-50 relative overflow-hidden group">
+<div class="relative z-10 space-y-4">
+<div class="w-14 h-14 bg-primary-container/10 rounded-2xl flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-3xl" style="">security</span>
+</div>
+<h3 class="text-3xl font-bold" style="">Privacidad Absoluta</h3>
+<p class="text-secondary max-w-sm text-lg" style="">Tu identidad permanece oculta hasta que tú decidas contactar a un abogado. Sin llamadas molestas, sin spam.</p>
+</div>
+<div class="absolute right-0 bottom-0 translate-y-12 translate-x-12 opacity-10 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[20rem]" style='font-variation-settings: "FILL" 1;'>shield</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center justify-center shadow-sm border border-slate-100 space-y-6">
+<div class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-primary-container shadow-inner">
+<span class="material-symbols-outlined text-4xl" style="">verified_user</span>
+</div>
+<h3 class="text-2xl font-bold" style="">Abogados Certificados</h3>
+<p class="text-secondary" style="">Validamos cada título y antecedente profesional ante la Corte Suprema antes de permitirles el ingreso.</p>
+<button class="text-primary-container font-bold flex items-center gap-1 hover:gap-2 transition-all" style="">Saber más <span class="material-symbols-outlined" style="">chevron_right</span></button>
+</div>
+<div class="bg-primary-container text-on-primary-container rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden">
+<div class="absolute top-4 right-4 opacity-20">
+<span class="material-symbols-outlined text-6xl" style="">how_to_reg</span>
+</div>
+<h3 class="text-xl font-bold mb-2" style="">Elección Libre</h3>
+<p class="text-sm opacity-90" style="">Tú puedes elegir al abogado con el que te sientas más cómodo para llevar tu proceso legal.</p>
+</div>
+<div class="bg-on-background text-white rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden md:col-span-2">
+<div class="flex items-center gap-8">
+<div class="space-y-2">
+<h3 class="text-xl font-bold" style="">Gestión de Propuestas</h3>
+<p class="text-sm text-slate-400" style="">Recibe hasta 5 propuestas simultáneas; si no te gusta ninguna, descártala y nuevas opciones se añadirán automáticamente. Nuestro sistema garantiza que tu caso siempre tenga atención activa.</p>
+</div>
+<div class="hidden lg:flex gap-2">
+<div class="h-16 w-1 bg-primary-container rounded-full opacity-20"></div>
+<div class="h-20 w-1 bg-primary-container rounded-full opacity-40"></div>
+<div class="h-24 w-1 bg-primary-container rounded-full"></div>
+<div class="h-20 w-1 bg-primary-container rounded-full opacity-40"></div>
+<div class="h-16 w-1 bg-primary-container rounded-full opacity-20"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Section -->
+<!-- FAQ Section -->
+<section id="faq" class="max-w-4xl mx-auto px-8 py-20">
+    <div class="text-center mb-12">
+        <span class="inline-block bg-primary-container/10 text-primary-container font-bold text-xs tracking-widest uppercase px-4 py-2 rounded-full mb-5">Preguntas Frecuentes</span>
+        <h2 class="text-[41.4px] font-extrabold text-on-background tracking-tight">Todo lo que necesitas saber</h2>
+    </div>
+    <div class="space-y-3" id="faq-list">
+        <!-- FAQ Item -->
+        <div class="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left gap-4" onclick="toggleFaq(this)">
+                <span class="font-semibold text-on-background text-base">¿Cuánto cuesta publicar mi caso?</span>
+                <span class="faq-icon flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg transition-all duration-200">+</span>
+            </button>
+            <div class="faq-answer hidden px-7 pb-6">
+                <p class="text-secondary text-sm leading-relaxed">Publicar tu caso en LegalPath es completamente <strong>gratis y sin compromiso</strong>. No pagas nada hasta que elijas al abogado con quien quieras trabajar. El costo de los honorarios profesionales lo acuerdan directamente tú y el abogado.</p>
+            </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left gap-4" onclick="toggleFaq(this)">
+                <span class="font-semibold text-on-background text-base">¿En cuánto tiempo recibiré propuestas de abogados?</span>
+                <span class="faq-icon flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg transition-all duration-200">+</span>
+            </button>
+            <div class="faq-answer hidden px-7 pb-6">
+                <p class="text-secondary text-sm leading-relaxed">En promedio, nuestros usuarios reciben sus primeras propuestas en <strong>menos de 24 horas</strong>. El tiempo exacto depende del área legal de tu caso y la disponibilidad de los especialistas.</p>
+            </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left gap-4" onclick="toggleFaq(this)">
+                <span class="font-semibold text-on-background text-base">¿Mi información es confidencial?</span>
+                <span class="faq-icon flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg transition-all duration-200">+</span>
+            </button>
+            <div class="faq-answer hidden px-7 pb-6">
+                <p class="text-secondary text-sm leading-relaxed">Sí, 100%. Tu caso es publicado de forma anónima y solo los abogados registrados en nuestra plataforma pueden ver los detalles. Tu identidad <strong>jamás es revelada sin tu autorización</strong>.</p>
+            </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left gap-4" onclick="toggleFaq(this)">
+                <span class="font-semibold text-on-background text-base">¿Los abogados de la plataforma están verificados?</span>
+                <span class="faq-icon flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg transition-all duration-200">+</span>
+            </button>
+            <div class="faq-answer hidden px-7 pb-6">
+                <p class="text-secondary text-sm leading-relaxed">Sí. Todos los abogados en LegalPath pasan por un proceso de verificación donde confirmamos su <strong>título profesional, registro en el Colegio de Abogados y especialidad</strong>. Puedes ver su perfil, reseñas y experiencia antes de elegir.</p>
+            </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left gap-4" onclick="toggleFaq(this)">
+                <span class="font-semibold text-on-background text-base">¿Qué tipo de casos puedo publicar?</span>
+                <span class="faq-icon flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg transition-all duration-200">+</span>
+            </button>
+            <div class="faq-answer hidden px-7 pb-6">
+                <p class="text-secondary text-sm leading-relaxed">Puedes publicar cualquier tipo de caso legal: derecho de familia, civil, laboral, inmobiliario, penal, comercial, entre otros. No necesitas saber a qué área corresponde tu problema; <strong>nuestro sistema te ayuda a identificarlo</strong>.</p>
+            </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left gap-4" onclick="toggleFaq(this)">
+                <span class="font-semibold text-on-background text-base">¿Qué pasa si no me convence ninguna propuesta?</span>
+                <span class="faq-icon flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg transition-all duration-200">+</span>
+            </button>
+            <div class="faq-answer hidden px-7 pb-6">
+                <p class="text-secondary text-sm leading-relaxed">No hay problema. <strong>No tienes ninguna obligación de contratar</strong>. Si las propuestas recibidas no te convencen, puedes cerrar tu publicación, modificarla para atraer más abogados o simplemente no hacer nada.</p>
+            </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left gap-4" onclick="toggleFaq(this)">
+                <span class="font-semibold text-on-background text-base">¿Puedo adjuntar documentos a mi caso?</span>
+                <span class="faq-icon flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg transition-all duration-200">+</span>
+            </button>
+            <div class="faq-answer hidden px-7 pb-6">
+                <p class="text-secondary text-sm leading-relaxed">Sí. Al publicar tu caso puedes adjuntar imágenes, pantallazos, correos, contratos o cualquier documento relevante. <strong>Más contexto = mejores propuestas</strong> de los abogados especializados.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Toggle Script -->
+<script>
+    function toggleFaq(btn) {
+        const item = btn.closest('.faq-item');
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-icon');
+        const isOpen = !answer.classList.contains('hidden');
+
+        // Close all others
+        document.querySelectorAll('.faq-item').forEach(function(el) {
+            el.querySelector('.faq-answer').classList.add('hidden');
+            el.querySelector('.faq-icon').textContent = '+';
+            el.querySelector('.faq-icon').classList.remove('bg-primary-container', 'text-white');
+            el.querySelector('.faq-icon').classList.add('bg-slate-100', 'text-slate-500');
+            el.querySelector('.faq-trigger').classList.remove('text-primary');
+        });
+
+        if (!isOpen) {
+            answer.classList.remove('hidden');
+            icon.textContent = '×';
+            icon.classList.add('bg-primary-container', 'text-white');
+            icon.classList.remove('bg-slate-100', 'text-slate-500');
+            btn.classList.add('text-primary');
+        }
+    }
+</script>
+
+<!-- Final CTA -->
+<section class="max-w-7xl mx-auto px-8 py-20">
+<div class="mint-gradient rounded-xl p-12 md:p-24 text-center text-white relative overflow-hidden shadow-2xl">
+<div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
+<div class="relative z-10 space-y-8">
+<h2 class="text-[41.4px] font-extrabold tracking-tight max-w-3xl mx-auto">¿Listo para resolver tu situación legal?</h2>
+<p class="text-xl opacity-90 max-w-xl mx-auto" style="">Únete a miles de personas que ya encontraron la tranquilidad legal que necesitaban.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+<a href="publicar-caso/" class="bg-white text-primary px-10 py-5 rounded-full text-xl font-black shadow-xl hover:scale-105 transition-transform text-center inline-block" style="">Publicar mi caso gratis</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-[#0F141E] text-slate-300 mt-20 font-['Inter'] pt-16 pb-8">
+<div class="max-w-7xl mx-auto px-8 lg:px-12 flex flex-col md:flex-row justify-between gap-12 mb-12">
+    <!-- Brand / Description -->
+    <div class="flex flex-col gap-6 md:w-1/3">
+        <img src="../../public/assets/images/logo-dark.png" alt="LegalPath Logo" class="h-[76.8px] w-auto object-contain self-start">
+        <p class="text-sm leading-relaxed text-slate-400">
+            Conectamos a personas que necesitan ayuda legal con abogados especialistas validados. Defendemos tus derechos de forma transparente y segura.
+        </p>
+    </div>
+    
+    <!-- Links -->
+    <div class="flex flex-col gap-4">
+        <h4 class="text-xs font-bold text-white tracking-widest mb-2 uppercase">Enlaces</h4>
+        <a href="#" class="text-sm hover:text-primary-container transition-colors">¿Cómo Funciona?</a>
+        <a href="#" class="text-sm hover:text-primary-container transition-colors">Nosotros</a>
+        <a href="#" class="text-sm hover:text-primary-container transition-colors">Beneficios</a>
+        <a href="#" class="text-sm hover:text-primary-container transition-colors">FAQ</a>
+    </div>
+
+    <!-- Contact -->
+    <div class="flex flex-col gap-4">
+        <h4 class="text-xs font-bold text-white tracking-widest mb-2 uppercase">Contacto</h4>
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container text-xl" style='font-variation-settings: "FILL" 0;'>call</span>
+            <span class="text-sm">+56 9 4052 2563</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container text-xl" style='font-variation-settings: "FILL" 0;'>mail</span>
+            <span class="text-sm">contacto@legalpath.cl</span>
+        </div>
+        <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary-container text-xl" style='font-variation-settings: "FILL" 0;'>location_on</span>
+            <span class="text-sm leading-tight">Providencia 1234, Of. 501,<br>Santiago</span>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Bar -->
+<div class="max-w-7xl mx-auto px-8 lg:px-12 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+    <p>© 2024 LegalPath. Todos los derechos reservados.</p>
+    <div class="flex gap-6">
+        <a href="#" class="hover:text-white transition-colors">Términos y Condiciones</a>
+        <a href="#" class="hover:text-white transition-colors">Política de Privacidad</a>
+    </div>
+</div>
+</footer>
+</body></html>

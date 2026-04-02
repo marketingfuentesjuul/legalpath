@@ -1,0 +1,22 @@
+# Sistema Operativo
+.DS_Store
+Thumbs.db
+
+# Entornos y Secretos
+.env
+.env.local
+.env.*.local
+
+# Dependencias (para cuando se agregue npm/node)
+node_modules/
+
+# Archivos temporales del proyecto
+.tmp/
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

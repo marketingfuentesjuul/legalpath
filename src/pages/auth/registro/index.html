@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <!-- Security Headers -->
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com https://www.svgrepo.com https://ui-avatars.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com https://www.svgrepo.com;">
+    <title>Registro para Abogados | LegalPath</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#dbe2f9",
+                "tertiary": "#EE6C4D",
+                "surface-container-highest": "#dbe2f9",
+                "outline-variant": "#bbcac3",
+                "primary-fixed-dim": "#3edeb8",
+                "inverse-on-surface": "#edf0ff",
+                "on-tertiary-container": "#9c3c24",
+                "background": "#f9f9ff",
+                "tertiary-container": "#ff9b83",
+                "primary-fixed": "#63fbd3",
+                "on-secondary-fixed-variant": "#3f4759",
+                "on-error-container": "#93000a",
+                "on-background": "#141b2c",
+                "surface-tint": "#006b56",
+                "surface-dim": "#d2daf0",
+                "surface": "#f9f9ff",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed-variant": "#872108",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed-dim": "#ffb4a3",
+                "secondary-fixed-dim": "#bfc6dc",
+                "inverse-primary": "#3edeb8",
+                "inverse-surface": "#293041",
+                "surface-container-lowest": "#ffffff",
+                "on-surface": "#141b2c",
+                "primary": "#006b56",
+                "on-primary-fixed": "#002018",
+                "error": "#ba1a1a",
+                "on-primary-fixed-variant": "#005140",
+                "surface-variant": "#dbe2f9",
+                "surface-container-high": "#e0e8ff",
+                "secondary-container": "#d8dff6",
+                "primary-container": "#1ecca7",
+                "outline": "#6c7a74",
+                "on-secondary-container": "#5b6276",
+                "on-secondary-fixed": "#141b2c",
+                "on-primary-container": "#005140",
+                "tertiary-fixed": "#ffdad2",
+                "on-tertiary-fixed": "#3d0700",
+                "error-container": "#ffdad6",
+                "on-surface-variant": "#3c4a44",
+                "surface-container": "#e9edff",
+                "on-error": "#ffffff",
+                "surface-container-low": "#f1f3ff",
+                "secondary": "#575e71",
+                "on-tertiary": "#ffffff",
+              },
+            },
+          },
+        };
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: var(--background); }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .abogado-gradient { background: linear-gradient(135deg, #EE6C4D 0%, #ff8a6d 100%); }
+        .abogado-gradient-text { background: linear-gradient(135deg, #EE6C4D 0%, #ff8a6d 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex bg-background">
+
+    <!-- Left Side: Branding / Visual (Hidden on mobile) -->
+    <div class="hidden lg:flex w-1/2 bg-surface text-on-background relative flex-col items-center pt-24 lg:pt-[15vh] p-12 overflow-hidden border-r border-slate-200/60">
+        <!-- Decoration background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-[#EE6C4D]/5 flex-col pointer-events-none"></div>
+        <div class="absolute top-[20%] -left-[10%] w-[500px] h-[500px] bg-[#EE6C4D] rounded-full blur-[100px] opacity-[0.05] pointer-events-none"></div>
+
+        <!-- Content Wrapper -->
+        <div class="relative z-10 w-full max-w-[480px] flex flex-col gap-10 xl:gap-12 py-10">
+            <!-- Logo -->
+            <div class="flex items-end gap-2">
+                <img src="../../../public/assets/images/logo-light.png" alt="LegalPath Logo" class="h-9 w-auto">
+                <span class="text-secondary font-medium text-[16px] mb-0.5 tracking-tight">Abogados</span>
+            </div>
+
+            <!-- Headline and text -->
+            <div>
+                <h1 class="text-4xl lg:text-[44px] font-extrabold tracking-tighter leading-[1.1] mb-6">
+                    El ecosistema diseñado para hacer crecer <span class="text-[#EE6C4D]">tu práctica legal</span>.
+                </h1>
+                <p class="text-lg text-secondary leading-relaxed">
+                    Únete a la red donde los clientes calificados vienen a ti. Olvídate del marketing y enfócate en lo que mejor haces: <b>resolver casos</b>.
+                </p>
+
+                <div class="space-y-4 mt-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full bg-[#EE6C4D]/10 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-[#EE6C4D] text-[12px]">check</span>
+                        </div>
+                        <span class="text-sm font-medium text-on-surface-variant">Acceso a cientos de casos pre-filtrados al mes.</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full bg-[#EE6C4D]/10 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-[#EE6C4D] text-[12px]">check</span>
+                        </div>
+                        <span class="text-sm font-medium text-on-surface-variant">Sistema Just-in-Time: paga sólo por los prospectos que eliges.</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full bg-[#EE6C4D]/10 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-[#EE6C4D] text-[12px]">check</span>
+                        </div>
+                        <span class="text-sm font-medium text-on-surface-variant">Herramientas gratuitas para gestión y seguimiento de cartera.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Indicator -->
+            <div class="flex items-center gap-3 bg-white/60 p-4 rounded-xl border border-slate-200/50 backdrop-blur-md w-fit shadow-sm">
+                <div class="flex -space-x-2">
+                    <img src="https://ui-avatars.com/api/?name=Dr+C&background=1ecca7&color=fff&size=32" alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white shadow-sm">
+                    <img src="https://ui-avatars.com/api/?name=Abog&background=EE6C4D&color=fff&size=32" alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white shadow-sm">
+                    <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 shadow-sm">+2k</div>
+                </div>
+                <div class="text-[11px] text-secondary font-medium leading-tight">
+                    Más de <span class="font-bold text-on-background">2,000 profesionales</span> ya confían en LegalPath.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Registration Form -->
+    <div class="w-full lg:w-1/2 flex justify-center pt-24 lg:pt-[15vh] p-6 sm:p-12 relative overflow-y-auto bg-white">
+        <!-- Logo for mobile only -->
+        <div class="absolute top-6 left-6 lg:hidden flex items-end gap-2">
+            <img src="../../../public/assets/images/logo-light.png" alt="LegalPath Logo" class="h-7 w-auto">
+            <span class="text-secondary font-medium text-xs mb-0.5 tracking-tight">Abogados</span>
+        </div>
+
+        <div class="w-full max-w-md mt-10 md:mt-0">
+            <!-- Header section -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-[30px] font-extrabold tracking-tight text-on-background mb-2">Comienza ahora.</h2>
+                <p class="text-sm text-secondary">Crea tu cuenta profesional y recibe acceso inmediato al panel de casos.</p>
+            </div>
+
+            <!-- Social Providers -->
+            <div class="space-y-3 mb-6">
+                <button type="button" class="w-full flex items-center justify-center gap-3 border border-slate-300 rounded-xl px-4 py-3 bg-white hover:bg-slate-50 transition-colors shadow-sm focus:ring-2 focus:ring-[#EE6C4D]/20 focus:outline-none">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-5 h-5">
+                    <span class="text-[14px] font-bold text-slate-700">Registrarse con Google</span>
+                </button>
+                <button type="button" class="w-full flex items-center justify-center gap-3 border border-slate-300 rounded-xl px-4 py-3 bg-white hover:bg-slate-50 transition-colors shadow-sm focus:ring-2 focus:ring-[#EE6C4D]/20 focus:outline-none">
+                    <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook Logo" class="w-5 h-5">
+                    <span class="text-[14px] font-bold text-slate-700">Registrarse con Facebook</span>
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-3 mb-6">
+                <hr class="flex-1 border-t border-slate-200">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest">O continúa con tu mail</span>
+                <hr class="flex-1 border-t border-slate-200">
+            </div>
+
+            <!-- Standard Form -->
+            <form id="registro-form" action="../perfil/" method="POST" class="space-y-4" novalidate>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label for="firstName" class="block text-[13px] font-bold text-on-background">Nombre(s) <span class="text-[#EE6C4D]">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required autocomplete="given-name" maxlength="80" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="Ej. Ignacio">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label for="lastName" class="block text-[13px] font-bold text-on-background">Apellidos <span class="text-[#EE6C4D]">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required autocomplete="family-name" maxlength="80" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="Ej. Torres">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="email" class="block text-[13px] font-bold text-on-background">Correo electrónico <span class="text-[#EE6C4D]">*</span></label>
+                    <input type="email" id="email" name="email" required autocomplete="email" maxlength="254" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="tucorreo@ejemplo.com">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="password" class="block text-[13px] font-bold text-on-background">Contraseña <span class="text-[#EE6C4D]">*</span></label>
+                    <input type="password" id="password" name="password" required autocomplete="new-password" maxlength="128" minlength="8" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="••••••••">
+                </div>
+
+                <!-- Legal/TOS -->
+                <div class="flex items-start gap-2 pt-2">
+                    <input id="terms" name="terms" type="checkbox" required class="mt-1 h-4 w-4 bg-slate-50 border-slate-300 rounded text-[#EE6C4D] focus:ring-[#EE6C4D]">
+                    <label for="terms" class="text-[12px] text-secondary leading-snug">
+                        Al registrarme, acepto los <a href="#" class="font-bold text-[#EE6C4D] hover:underline">Términos de Servicio</a> y la <a href="#" class="font-bold text-[#EE6C4D] hover:underline">Política de Privacidad</a> de LegalPath. Confirmo que soy un profesional legal debidamente habilitado.
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full mt-6 abogado-gradient text-white py-3.5 rounded-xl font-bold text-[15px] shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all flex justify-center items-center gap-2">
+                    Completar primer paso <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+            </form>
+
+            <div class="mt-8 text-center text-[13px] text-secondary">
+                ¿Ya tienes una cuenta? <a href="#" class="font-bold text-on-background hover:text-[#EE6C4D] underline decoration-2 underline-offset-2 transition-colors">Iniciar sesión aquí</a>.
+            </div>
+        </div>
+    </div>
+
+    <!-- Security: Intercept form, store non-sensitive data in sessionStorage, redirect without exposing credentials in URL -->
+    <script>
+        document.getElementById('registro-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName  = document.getElementById('lastName').value.trim();
+            const email     = document.getElementById('email').value.trim();
+            const password  = document.getElementById('password').value;
+            const terms     = document.getElementById('terms').checked;
+
+            // Basic client-side validation
+            if (!firstName || !lastName || !email || !password || !terms) return;
+            if (password.length < 8) {
+                alert('La contraseña debe tener al menos 8 caracteres.');
+                return;
+            }
+
+            // Store ONLY non-sensitive data in sessionStorage (NEVER the password)
+            sessionStorage.setItem('lp_firstName', firstName);
+            sessionStorage.setItem('lp_lastName',  lastName);
+            sessionStorage.setItem('lp_email',     email);
+
+            // Navigate to Step 2 — no data in the URL
+            window.location.href = '../perfil/';
+        });
+    </script>
+
+</body>
+</html>

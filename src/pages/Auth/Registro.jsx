@@ -1,157 +1,141 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Registro = () => {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState({
-    nombre: '',
-    email: '',
-    password: ''
-  })
-  const [error, setError] = useState('')
+  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', terms: false })
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
-
-  const validateEmail = (email) => {
-    // RFC 5322 compliant regex
-    return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email)
-  }
-
-  const validatePassword = (password) => {
-    // At least 8 characters, one letter and one number
-    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+]{8,}$/.test(password)
+    const { name, value, type, checked } = e.target
+    setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setError('')
-
-    if (!validateEmail(formData.email)) {
-      setError('Por favor, ingresa un correo electrónico válido.')
+    const { firstName, lastName, email, password, terms } = form
+    if (!firstName || !lastName || !email || !password || !terms) return
+    if (password.length < 8) {
+      alert('La contraseña debe tener al menos 8 caracteres.')
       return
     }
-
-    if (!validatePassword(formData.password)) {
-      setError('La contraseña debe tener al menos 8 caracteres, incluir una letra y un número.')
-      return
-    }
-    
-    // Store in transition storage (temporary)
-    sessionStorage.setItem('temp_user_data', JSON.stringify({
-      nombre: formData.nombre,
-      email: formData.email
-    }))
-    
+    sessionStorage.setItem('lp_firstName', firstName)
+    sessionStorage.setItem('lp_lastName', lastName)
+    sessionStorage.setItem('lp_email', email)
     navigate('/auth/perfil')
   }
 
   return (
-    <div className="min-h-screen flex items-stretch">
-      {/* Visual side */}
-      <div className="hidden lg:flex lg:w-1/2 abogado-gradient p-20 flex-col justify-between text-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
-        <div className="relative z-10">
-          <Link to="/">
-            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-10 w-auto brightness-0 invert" />
-          </Link>
-        </div>
-        <div className="relative z-10 space-y-6">
-          <h1 className="text-6xl font-black tracking-tight leading-tight">Únete a la red legal más grande de Chile.</h1>
-          <p className="text-xl opacity-80 max-w-md font-medium">Digitaliza tu práctica jurídica, accede a cientos de clientes y gestiona tus casos en un solo lugar.</p>
-        </div>
-        <div className="relative z-10 flex items-center gap-4">
-          <div className="flex -space-x-3">
-            <div className="w-10 h-10 rounded-full border-2 border-white bg-slate-200"></div>
-            <div className="w-10 h-10 rounded-full border-2 border-white bg-slate-300"></div>
-            <div className="w-10 h-10 rounded-full border-2 border-white bg-slate-400"></div>
+    <div className="antialiased min-h-screen flex bg-background">
+      {/* Left Side: Branding */}
+      <div className="hidden lg:flex w-1/2 bg-surface text-on-background relative flex-col items-center pt-[15vh] p-12 overflow-hidden border-r border-slate-200/60">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#EE6C4D]/5 pointer-events-none"></div>
+        <div className="absolute top-[20%] -left-[10%] w-[500px] h-[500px] bg-[#EE6C4D] rounded-full blur-[100px] opacity-[0.05] pointer-events-none"></div>
+
+        <div className="relative z-10 w-full max-w-[480px] flex flex-col gap-10 xl:gap-12 py-10">
+          <div className="flex items-end gap-2">
+            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-9 w-auto" />
+            <span className="text-secondary font-medium text-[16px] mb-0.5 tracking-tight">Abogados</span>
           </div>
-          <p className="text-sm font-bold">+2000 abogados ya confían en nosotros</p>
+
+          <div>
+            <h1 className="text-4xl lg:text-[44px] font-extrabold tracking-tighter leading-[1.1] mb-6">
+              El ecosistema diseñado para hacer crecer <span className="text-[#EE6C4D]">tu práctica legal</span>.
+            </h1>
+            <p className="text-lg text-secondary leading-relaxed">
+              Únete a la red donde los clientes calificados vienen a ti. Olvídate del marketing y enfócate en lo que mejor haces: <b>resolver casos</b>.
+            </p>
+            <div className="space-y-4 mt-8">
+              {[
+                'Acceso a cientos de casos pre-filtrados al mes.',
+                'Sistema Just-in-Time: paga sólo por los prospectos que eliges.',
+                'Herramientas gratuitas para gestión y seguimiento de cartera.'
+              ].map((text, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#EE6C4D]/10 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-[#EE6C4D] text-[12px]">check</span>
+                  </div>
+                  <span className="text-sm font-medium text-on-surface-variant">{text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 bg-white/60 p-4 rounded-xl border border-slate-200/50 backdrop-blur-md w-fit shadow-sm">
+            <div className="flex -space-x-2">
+              <img src="https://ui-avatars.com/api/?name=Dr+C&background=1ecca7&color=fff&size=32" alt="Avatar" className="w-8 h-8 rounded-full border-2 border-white shadow-sm" />
+              <img src="https://ui-avatars.com/api/?name=Abog&background=EE6C4D&color=fff&size=32" alt="Avatar" className="w-8 h-8 rounded-full border-2 border-white shadow-sm" />
+              <div className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 shadow-sm">+2k</div>
+            </div>
+            <div className="text-[11px] text-secondary font-medium leading-tight">
+              Más de <span className="font-bold text-on-background">2,000 profesionales</span> ya confían en LegalPath.
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Form side */}
-      <div className="w-full lg:w-1/2 bg-white p-8 lg:p-24 flex flex-col justify-center">
-        <div className="max-w-md w-full mx-auto space-y-10">
-          <div className="space-y-4">
-            <h2 className="text-4xl font-extrabold tracking-tight text-on-background">Crear cuenta</h2>
-            <p className="text-secondary font-medium">¿Ya tienes cuenta? <Link to="/auth/registro" className="text-[#EE6C4D] font-bold hover:underline">Inicia sesión aquí</Link></p>
+      {/* Right Side: Form */}
+      <div className="w-full lg:w-1/2 flex justify-center pt-[15vh] p-6 sm:p-12 relative overflow-y-auto bg-white">
+        <div className="absolute top-6 left-6 lg:hidden flex items-end gap-2">
+          <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-7 w-auto" />
+          <span className="text-secondary font-medium text-xs mb-0.5 tracking-tight">Abogados</span>
+        </div>
+
+        <div className="w-full max-w-md mt-10 md:mt-0">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-[30px] font-extrabold tracking-tight text-on-background mb-2">Comienza ahora.</h2>
+            <p className="text-sm text-secondary">Crea tu cuenta profesional y recibe acceso inmediato al panel de casos.</p>
           </div>
 
-          {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl flex items-center gap-3">
-              <span className="material-symbols-outlined text-red-500">error</span>
-              <p className="text-sm text-red-700 font-medium">{error}</p>
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center gap-3 py-3.5 border-2 border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors font-bold text-sm">
-                <img src="https://www.vectorlogo.zone/logos/google/google-icon.svg" className="w-5 h-5" alt="Google" />
-                Google
+          <div className="space-y-3 mb-6">
+            <button type="button" className="w-full flex items-center justify-center gap-3 border border-slate-300 rounded-xl px-4 py-3 bg-white hover:bg-slate-50 transition-colors shadow-sm focus:ring-2 focus:ring-[#EE6C4D]/20 focus:outline-none">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" className="w-5 h-5" />
+              <span className="text-[14px] font-bold text-slate-700">Registrarse con Google</span>
             </button>
-            <button className="flex items-center justify-center gap-3 py-3.5 border-2 border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors font-bold text-sm text-[#1877F2]">
-                <img src="https://www.vectorlogo.zone/logos/facebook/facebook-f.svg" className="w-5 h-5" alt="Facebook" />
-                Facebook
+            <button type="button" className="w-full flex items-center justify-center gap-3 border border-slate-300 rounded-xl px-4 py-3 bg-white hover:bg-slate-50 transition-colors shadow-sm focus:ring-2 focus:ring-[#EE6C4D]/20 focus:outline-none">
+              <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook Logo" className="w-5 h-5" />
+              <span className="text-[14px] font-bold text-slate-700">Registrarse con Facebook</span>
             </button>
           </div>
 
-          <div className="relative flex items-center justify-center">
-            <div className="w-full h-px bg-slate-100"></div>
-            <span className="absolute bg-white px-4 text-xs font-bold text-slate-300 uppercase tracking-widest">o usa tu correo</span>
+          <div className="flex items-center gap-3 mb-6">
+            <hr className="flex-1 border-t border-slate-200" />
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">O continúa con tu mail</span>
+            <hr className="flex-1 border-t border-slate-200" />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Nombre completo</label>
-              <input 
-                type="text" 
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-[#EE6C4D] focus:bg-white outline-none transition-all font-medium" 
-                placeholder="Ej: Juan Pérez"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Email profesional</label>
-              <input 
-                type="email" 
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-[#EE6C4D] focus:bg-white outline-none transition-all font-medium" 
-                placeholder="juan@estudio.cl"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center px-1">
-                  <label className="text-xs font-black uppercase tracking-widest text-slate-400">Contraseña</label>
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label htmlFor="firstName" className="block text-[13px] font-bold text-on-background">Nombre(s) <span className="text-[#EE6C4D]">*</span></label>
+                <input type="text" id="firstName" name="firstName" required autoComplete="given-name" maxLength={80} value={form.firstName} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="Ej. Ignacio" />
               </div>
-              <input 
-                type="password" 
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-[#EE6C4D] focus:bg-white outline-none transition-all font-medium" 
-                placeholder="••••••••"
-                required
-              />
-              <p className="text-[10px] text-slate-400 mt-1 ml-1 italic">Mínimo 8 caracteres, 1 número y 1 letra.</p>
+              <div className="space-y-1.5">
+                <label htmlFor="lastName" className="block text-[13px] font-bold text-on-background">Apellidos <span className="text-[#EE6C4D]">*</span></label>
+                <input type="text" id="lastName" name="lastName" required autoComplete="family-name" maxLength={80} value={form.lastName} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="Ej. Torres" />
+              </div>
             </div>
-
-            <div className="flex items-start gap-3 px-1">
-                <input type="checkbox" className="mt-1 accent-[#EE6C4D]" required id="terms" />
-                <label htmlFor="terms" className="text-xs text-secondary leading-relaxed">Al registrarme, acepto los <a href="#" className="text-[#EE6C4D] font-bold">Términos de Servicio</a> y la <a href="#" className="text-[#EE6C4D] font-bold">Política de Privacidad</a> de LegalPath.</label>
+            <div className="space-y-1.5">
+              <label htmlFor="email" className="block text-[13px] font-bold text-on-background">Correo electrónico <span className="text-[#EE6C4D]">*</span></label>
+              <input type="email" id="email" name="email" required autoComplete="email" maxLength={254} value={form.email} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="tucorreo@ejemplo.com" />
             </div>
-
-            <button type="submit" className="w-full py-5 abogado-gradient text-white font-black rounded-2xl shadow-xl shadow-[#EE6C4D]/20 hover:scale-[1.02] active:scale-95 transition-all text-lg">
-                Crear mi cuenta
+            <div className="space-y-1.5">
+              <label htmlFor="password" className="block text-[13px] font-bold text-on-background">Contraseña <span className="text-[#EE6C4D]">*</span></label>
+              <input type="password" id="password" name="password" required autoComplete="new-password" maxLength={128} minLength={8} value={form.password} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="••••••••" />
+            </div>
+            <div className="flex items-start gap-2 pt-2">
+              <input id="terms" name="terms" type="checkbox" required checked={form.terms} onChange={handleChange} className="mt-1 h-4 w-4 bg-slate-50 border-slate-300 rounded text-[#EE6C4D] focus:ring-[#EE6C4D]" />
+              <label htmlFor="terms" className="text-[12px] text-secondary leading-snug">
+                Al registrarme, acepto los <a href="#" className="font-bold text-[#EE6C4D] hover:underline">Términos de Servicio</a> y la <a href="#" className="font-bold text-[#EE6C4D] hover:underline">Política de Privacidad</a> de LegalPath. Confirmo que soy un profesional legal debidamente habilitado.
+              </label>
+            </div>
+            <button type="submit" className="w-full mt-6 abogado-gradient text-white py-3.5 rounded-xl font-bold text-[15px] shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all flex justify-center items-center gap-2">
+              Completar primer paso <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
             </button>
           </form>
+
+          <div className="mt-8 text-center text-[13px] text-secondary">
+            ¿Ya tienes una cuenta? <a href="#" className="font-bold text-on-background hover:text-[#EE6C4D] underline decoration-2 underline-offset-2 transition-colors">Iniciar sesión aquí</a>.
+          </div>
         </div>
       </div>
     </div>

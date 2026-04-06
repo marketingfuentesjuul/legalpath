@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 const Header = () => {
   const { pathname } = useLocation()
   const isAbogado = pathname.includes('/abogados')
+  const isPublicarCaso = pathname.includes('/publicar-caso')
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -26,22 +27,30 @@ const Header = () => {
             <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-[40.8px] w-auto" />
           </Link>
         </div>
-        <div className="hidden md:flex items-center gap-8">
-          {isAbogado ? (
-            <>
-              <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors">¿Cómo funciona?</a>
-              <a href="#pricing" className="text-secondary hover:text-on-background transition-colors">Planes</a>
-            </>
-          ) : (
-            <>
-              <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors">¿Cómo Funciona?</a>
-              <a href="#por-que-legalpath" className="text-secondary hover:text-on-background transition-colors">¿Por qué LegalPath?</a>
-              <a href="#faq" className="text-secondary hover:text-on-background transition-colors">Preguntas frecuentes</a>
-            </>
-          )}
-        </div>
+
+        {!isPublicarCaso && (
+          <div className="hidden md:flex items-center gap-8">
+            {isAbogado ? (
+              <>
+                <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors">¿Cómo funciona?</a>
+                <a href="#pricing" className="text-secondary hover:text-on-background transition-colors">Planes</a>
+              </>
+            ) : (
+              <>
+                <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors">¿Cómo Funciona?</a>
+                <a href="#por-que-legalpath" className="text-secondary hover:text-on-background transition-colors">¿Por qué LegalPath?</a>
+                <a href="#faq" className="text-secondary hover:text-on-background transition-colors">Preguntas frecuentes</a>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center gap-4">
-          {isAbogado ? (
+          {isPublicarCaso ? (
+            <Link to="/auth/login" className="bg-[#EE6C4D] text-white px-8 py-3 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block">
+              Ingresar a mi cuenta
+            </Link>
+          ) : isAbogado ? (
             <>
               <Link to="/" className="bg-primary-container text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block">
                 Soy usuario

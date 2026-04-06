@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const ALLOWED_SPECIALTIES = [
-  'Derecho Penal', 'Derecho Civil', 'Derecho Laboral', 'Derecho de Familia',
-  'Derecho Corporativo', 'Derecho Tributario', 'Derecho Inmobiliario',
-  'Derecho Administrativo', 'Ley de Migración'
+  'Derecho Civil', 'Derecho Penal', 'Derecho Laboral', 'Derecho de Familia',
+  'Derecho Comercial / Mercantil', 'Derecho Tributario', 'Derecho Administrativo',
+  'Derecho Ambiental', 'Derecho de Aguas', 'Derecho de Minería',
+  'Derecho de Propiedad Intelectual', 'Derecho del Consumidor', 'Derecho Constitucional',
+  'Derecho de Seguros', 'Derecho Marítimo', 'Derecho de Salud', 'Derecho de Migración',
+  'Libre Competencia', 'Arbitraje y Mediación', 'Derecho Inmobiliario'
 ]
 
 const defaultStudy = () => ({ studyLevel: '', university: '', gradYear: '' })
@@ -46,13 +49,7 @@ const Perfil = () => {
 
   return (
     <div className="antialiased min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="w-full bg-white border-b border-slate-200 py-4 px-8 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-4xl mx-auto flex items-center gap-2">
-          <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-8 w-auto" />
-          <span className="text-secondary font-medium text-[15px] mb-0.5 tracking-tight">Abogados</span>
-        </div>
-      </header>
+
 
       <main className="max-w-4xl mx-auto px-6 mt-12">
         <div className="mb-10">

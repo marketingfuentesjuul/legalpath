@@ -63,7 +63,11 @@ const PublicarCaso = () => {
     }
   }
 
-  const goToStep2 = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); setStep(2) }
+  const goToStep2 = () => {
+    if (!caseText.trim()) return
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setStep(2)
+  }
   const goToStep1 = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); setStep(1) }
   const goToStep3 = () => {
     if (!guestEmail || !guestEmail.includes('@')) {

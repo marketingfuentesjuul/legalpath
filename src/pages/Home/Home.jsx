@@ -202,7 +202,7 @@ const Home = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-extrabold text-on-background tracking-tight">Describe con detalle tu caso</h3>
-                  <p className="text-xs text-slate-400 mt-1">Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos, todo lo que estimes conveniente para ayudarnos a entender tu caso.</p>
+                  <p className="text-xs text-slate-400 mt-1">Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos, contratos, todo lo que estimes conveniente para ayudarnos a entender tu caso.</p>
                 </div>
                 <div className="bg-white rounded-xl border border-slate-200 p-4 min-h-[110px] relative shadow-sm">
                   <div className="text-sm text-slate-600 leading-relaxed">
@@ -341,7 +341,7 @@ const Home = () => {
             <p className="text-secondary max-w-2xl mx-auto">Diseñamos una experiencia que pone el poder de nuevo en tus manos, eliminando la incertidumbre y los costos ocultos.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
-            <div className="md:col-span-2 bg-white rounded-xl p-10 flex flex-col justify-between shadow-sm border border-slate-50 relative overflow-hidden group">
+            <div className="md:col-span-2 bg-white rounded-xl p-10 flex flex-col justify-between shadow-sm border border-slate-50 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300">
               <div className="relative z-10 space-y-4">
                 <div className="w-14 h-14 bg-primary-container/10 rounded-2xl flex items-center justify-center text-primary-container">
                   <span className="material-symbols-outlined text-3xl">security</span>
@@ -353,7 +353,7 @@ const Home = () => {
                 <span className="material-symbols-outlined text-[20rem]" style={{ fontVariationSettings: '"FILL" 1' }}>shield</span>
               </div>
             </div>
-            <div className="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center justify-center shadow-sm border border-slate-100 space-y-6">
+            <div className="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center justify-center shadow-sm border border-slate-100 space-y-6 hover:scale-[1.02] transition-all duration-300">
               <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-primary-container shadow-inner">
                 <span className="material-symbols-outlined text-4xl">verified_user</span>
               </div>
@@ -361,14 +361,14 @@ const Home = () => {
               <p className="text-secondary">Validamos cada título y antecedente profesional ante la Corte Suprema antes de permitirles el ingreso.</p>
               <button className="text-primary-container font-bold flex items-center gap-1 hover:gap-2 transition-all">Saber más <span className="material-symbols-outlined">chevron_right</span></button>
             </div>
-            <div className="bg-primary-container text-on-primary-container rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden">
+            <div className="bg-primary-container text-on-primary-container rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden hover:scale-[1.02] transition-all duration-300">
               <div className="absolute top-4 right-4 opacity-20">
                 <span className="material-symbols-outlined text-6xl">how_to_reg</span>
               </div>
               <h3 className="text-xl font-bold mb-2">Elección Libre</h3>
               <p className="text-sm opacity-90">Tú puedes elegir al abogado con el que te sientas más cómodo para llevar tu proceso legal.</p>
             </div>
-            <div className="bg-on-background text-white rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden md:col-span-2">
+            <div className="bg-on-background text-white rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden md:col-span-2 hover:scale-[1.02] transition-all duration-300">
               <div className="flex items-center gap-8">
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold">Gestión de Propuestas</h3>

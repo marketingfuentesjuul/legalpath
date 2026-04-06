@@ -37,10 +37,10 @@ const Registro = () => {
 
         {/* Content */}
         <div className="relative z-10">
-          <h1 className="text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] mb-8 max-w-xl">
+          <h1 className="text-5xl xl:text-6xl font-black tracking-tight leading-[1.05] mb-8 max-w-xl">
             Únete a la red legal más grande de Chile.
           </h1>
-          <p className="text-xl xl:text-2xl opacity-90 leading-relaxed font-medium max-w-md">
+          <p className="text-lg xl:text-xl opacity-90 leading-relaxed font-medium max-w-md">
             Digitaliza tu práctica jurídica, accede a cientos de clientes y gestiona tus casos en un solo lugar.
           </p>
         </div>

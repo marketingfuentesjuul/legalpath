@@ -151,7 +151,7 @@ const Home = () => {
         </section>
 
         {/* Vertical Process Section */}
-        <section className="max-w-7xl mx-auto px-8 py-20 space-y-32">
+        <section id="como-funciona" className="max-w-7xl mx-auto px-8 py-20 space-y-32">
           <div className="text-center mb-16">
             <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
             <div className="w-16 h-1 bg-primary-container mx-auto mt-4 rounded-full"></div>

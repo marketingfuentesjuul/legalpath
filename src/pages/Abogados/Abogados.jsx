@@ -20,10 +20,10 @@ const Abogados = () => {
         .token-badge { animation: count-pulse 3s ease-in-out infinite; }
       `}</style>
 
-      <main className="pt-20">
+      <main className="pt-14">
 
         {/* ======================== HERO SECTION ======================== */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 py-20">
+        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 pt-10 pb-24">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#EE6C4D]/8 blur-[120px] rounded-full -z-10"></div>
           <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary-container/10 blur-[120px] rounded-full -z-10"></div>
 

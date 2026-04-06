@@ -89,9 +89,9 @@ const Home = () => {
         @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
       `}</style>
 
-      <main className="pt-20">
+      <main className="pt-14">
         {/* Hero Section */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 py-20">
+        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 pt-10 pb-24">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container/10 blur-[120px] rounded-full -z-10"></div>
           <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-secondary-container/20 blur-[120px] rounded-full -z-10"></div>
           <div className="max-w-4xl w-full text-center space-y-10 relative z-10">

@@ -335,7 +335,7 @@ const Home = () => {
         </section>
 
         {/* Bento Value Propositions */}
-        <section className="max-w-7xl mx-auto px-8 py-20">
+        <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-[41.4px] font-extrabold tracking-tight">¿Por qué elegir LegalPath?</h2>
             <p className="text-secondary max-w-2xl mx-auto">Diseñamos una experiencia que pone el poder de nuevo en tus manos, eliminando la incertidumbre y los costos ocultos.</p>

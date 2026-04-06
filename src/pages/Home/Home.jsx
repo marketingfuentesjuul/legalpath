@@ -109,9 +109,9 @@ const Home = () => {
               <Link to="/publicar-caso" className="mint-gradient text-on-primary px-10 py-5 rounded-full text-xl font-bold shadow-2xl hover:scale-105 transition-transform text-center inline-block">
                 Publicar mi caso
               </Link>
-              <button className="bg-white text-on-secondary-container border border-slate-200 px-10 py-5 rounded-full text-xl font-bold hover:bg-slate-50 transition-colors shadow-sm">
+              <a href="#como-funciona" className="bg-white text-on-secondary-container border border-slate-200 px-10 py-5 rounded-full text-xl font-bold hover:bg-slate-50 transition-colors shadow-sm text-center inline-block">
                 ¿Cómo funciona?
-              </button>
+              </a>
             </div>
             <div className="flex items-center justify-center gap-4 pt-6">
               <div className="flex -space-x-3">

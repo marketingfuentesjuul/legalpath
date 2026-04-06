@@ -31,7 +31,7 @@ const Registro = () => {
         {/* Logo */}
         <div className="relative z-10">
           <div className="flex items-center gap-2">
-            <img src="/assets/images/logo-white.png" alt="LegalPath Logo" className="h-10 w-auto" />
+            <img src="/assets/images/legalpath_white.png" alt="LegalPath Logo" className="h-10 w-auto" />
           </div>
         </div>
 

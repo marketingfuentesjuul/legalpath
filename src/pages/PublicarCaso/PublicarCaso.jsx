@@ -1,13 +1,28 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { supabase } from '../../lib/supabaseClient'
 
 const TYPING_TEXT = "Necesito ayuda con un contrato de arriendo que no se ha cumplido. El arrendatario no ha pagado en 3 meses y necesito asesoría para..."
 
 const PublicarCaso = () => {
   const [step, setStep] = useState(1)
   const [caseText, setCaseText] = useState('')
+  
+  // Attachments
+  const [attachments, setAttachments] = useState([])
+  const fileInputRef = useRef(null)
+
+  // Guest flow
   const [guestEmail, setGuestEmail] = useState('')
   const [confirmedEmail, setConfirmedEmail] = useState('')
+
+  // Register flow
+  const [registerForm, setRegisterForm] = useState({ fullName: '', email: '', password: '' })
+
+  // Error/Loading states
+  const [submitLoading, setSubmitLoading] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
+
   const [typingText, setTypingText] = useState('')
   const [showPlaceholder, setShowPlaceholder] = useState(true)
 
@@ -69,14 +84,106 @@ const PublicarCaso = () => {
     setStep(2)
   }
   const goToStep1 = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); setStep(1) }
-  const goToStep3 = () => {
+  
+  // Funciones de subida
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setAttachments(Array.from(e.target.files))
+    }
+  }
+
+  const removeAttachment = (index) => {
+    setAttachments(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const uploadAndSaveCase = async (userId, userEmail) => {
+    try {
+      // 1. Insertar el caso
+      const { data: caseData, error: caseError } = await supabase
+        .from('cases')
+        .insert({
+          user_id: userId,
+          description: caseText,
+          client_email: userEmail
+        })
+        .select()
+        .single()
+
+      if (caseError) throw caseError
+
+      // 2. Subir adjuntos
+      if (attachments.length > 0) {
+        for (const file of attachments) {
+          const fileExt = file.name.split('.').pop()
+          const fileName = `${caseData.id}/${Math.random().toString(36).substring(2)}.${fileExt}`
+          const { error: uploadError } = await supabase.storage
+            .from('case-attachments')
+            .upload(fileName, file)
+            
+          if (uploadError) console.error('Error uploading file:', uploadError)
+        }
+      }
+
+      setConfirmedEmail(userEmail)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setStep(3)
+    } catch (err) {
+      throw err
+    }
+  }
+
+  const handleGuestSubmit = async () => {
     if (!guestEmail || !guestEmail.includes('@')) {
       document.getElementById('guest-email-input')?.focus()
       return
     }
-    setConfirmedEmail(guestEmail)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    setStep(3)
+    setSubmitLoading(true)
+    setSubmitError(null)
+
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signInAnonymously()
+      if (authError) throw authError
+
+      await uploadAndSaveCase(authData.user.id, guestEmail)
+    } catch (error) {
+      setSubmitError(error.message || 'Error al publicar como invitado')
+    } finally {
+      setSubmitLoading(false)
+    }
+  }
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault()
+    if (!registerForm.email || !registerForm.password || !registerForm.fullName) return
+
+    setSubmitLoading(true)
+    setSubmitError(null)
+
+    try {
+      const [firstName, ...lastNameParts] = registerForm.fullName.split(' ')
+      const lastName = lastNameParts.join(' ')
+
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: registerForm.email,
+        password: registerForm.password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName || '',
+            role: 'user'
+          }
+        }
+      })
+
+      if (authError) throw authError
+      if (!authData.user?.id) throw new Error("No se pudo obtener el ID del usuario")
+
+      await uploadAndSaveCase(authData.user.id, registerForm.email)
+    } catch (error) {
+       setSubmitError(error.message || 'Error al registrar y publicar caso')
+    } finally {
+      setSubmitLoading(false)
+    }
   }
 
   const progressWidth = step === 1 ? '25%' : step === 2 ? '50%' : '100%'
@@ -159,15 +266,40 @@ const PublicarCaso = () => {
                   />
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2">
-                  <button className="flex items-center gap-3 py-3 px-5 -ml-3 rounded-2xl border-2 border-transparent border-dashed hover:border-slate-200 hover:bg-slate-50 transition-all text-slate-500 hover:text-on-background group text-left">
-                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-200 transition-colors">
-                      <span className="material-symbols-outlined text-[20px]">attach_file</span>
-                    </div>
-                    <div className="flex flex-col leading-tight">
-                      <span className="text-[15px] font-bold">Adjuntar documentos</span>
-                      <span className="text-[13px] text-slate-400 font-medium">(imágenes, pantallazos, PDF)</span>
-                    </div>
-                  </button>
+                  <div className="flex-1">
+                    <input 
+                      type="file" 
+                      multiple 
+                      className="hidden" 
+                      ref={fileInputRef} 
+                      onChange={handleFileChange}
+                      accept="image/*,.pdf,.doc,.docx"
+                    />
+                    <button 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-3 py-3 px-5 -ml-3 rounded-2xl border-2 border-transparent border-dashed hover:border-slate-200 hover:bg-slate-50 transition-all text-slate-500 hover:text-on-background group text-left"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-200 transition-colors">
+                        <span className="material-symbols-outlined text-[20px]">attach_file</span>
+                      </div>
+                      <div className="flex flex-col leading-tight">
+                        <span className="text-[15px] font-bold">Adjuntar documentos</span>
+                        <span className="text-[13px] text-slate-400 font-medium">(imágenes, pantallazos, PDF)</span>
+                      </div>
+                    </button>
+                    {attachments.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {attachments.map((file, i) => (
+                          <div key={i} className="flex items-center gap-2 bg-slate-100 text-slate-600 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-slate-200">
+                            <span className="truncate max-w-[150px]">{file.name}</span>
+                            <button onClick={() => removeAttachment(i)} className="hover:text-red-500 transition-colors flex items-center">
+                              <span className="material-symbols-outlined text-[14px]">close</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <button onClick={goToStep2} className="mint-gradient text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all text-[16px] flex items-center justify-center gap-2">
                     Siguiente paso
                     <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
@@ -200,24 +332,57 @@ const PublicarCaso = () => {
                     <span className="text-[13px] text-slate-400 font-medium">o regístrate con tu correo</span>
                     <div className="flex-1 h-px bg-slate-200"></div>
                   </div>
-                  <div className="space-y-4">
+                  
+                  {submitError && (
+                    <div className="p-4 bg-red-50 border border-red-200 text-red-600 text-[13px] rounded-xl flex items-center gap-2 font-medium">
+                      <span className="material-symbols-outlined text-[18px]">error</span>
+                      {submitError}
+                    </div>
+                  )}
+
+                  <form onSubmit={handleRegisterSubmit} className="space-y-4">
                     <div>
                       <label className="block text-[13px] font-bold text-on-background mb-1.5">Nombre completo</label>
-                      <input type="text" placeholder="Ej: Juan Pérez" className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" />
+                      <input 
+                        type="text" 
+                        required
+                        value={registerForm.fullName}
+                        onChange={e => setRegisterForm({...registerForm, fullName: e.target.value})}
+                        placeholder="Ej: Juan Pérez" 
+                        className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
+                      />
                     </div>
                     <div>
                       <label className="block text-[13px] font-bold text-on-background mb-1.5">Correo electrónico</label>
-                      <input type="email" placeholder="tu@correo.com" className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" />
+                      <input 
+                        type="email" 
+                        required
+                        value={registerForm.email}
+                        onChange={e => setRegisterForm({...registerForm, email: e.target.value})}
+                        placeholder="tu@correo.com" 
+                        className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
+                      />
                     </div>
                     <div>
                       <label className="block text-[13px] font-bold text-on-background mb-1.5">Contraseña</label>
-                      <input type="password" placeholder="••••••••" className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" />
+                      <input 
+                        type="password" 
+                        required
+                        value={registerForm.password}
+                        onChange={e => setRegisterForm({...registerForm, password: e.target.value})}
+                        placeholder="••••••••" 
+                        className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
+                      />
                     </div>
-                    <button className="w-full mint-gradient text-white py-4 rounded-full font-bold text-[16px] shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
-                      Crear cuenta y publicar caso
-                      <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                    <button 
+                      type="submit"
+                      disabled={submitLoading}
+                      className={`w-full mint-gradient text-white py-4 rounded-full font-bold text-[16px] shadow-lg transition-all flex items-center justify-center gap-2 ${submitLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1'}`}
+                    >
+                      {submitLoading ? 'Procesando...' : 'Crear cuenta y publicar caso'}
+                      {!submitLoading && <span className="material-symbols-outlined text-[20px]">arrow_forward</span>}
                     </button>
-                  </div>
+                  </form>
                   <div className="bg-[#f0fdf9] border border-[#1ECCA7]/20 rounded-2xl p-5 space-y-3">
                     <p className="text-[13px] font-bold text-[#006b56] uppercase tracking-wider">Beneficios de crear tu cuenta</p>
                     <div className="space-y-2.5">
@@ -259,9 +424,13 @@ const PublicarCaso = () => {
                       <span className="material-symbols-outlined text-amber-500 text-[18px] mt-0.5">info</span>
                       <p className="text-[12px] text-amber-700 leading-relaxed font-medium">Tu correo será utilizado exclusivamente para enviarte notificaciones cuando un abogado responda a tu caso. No compartimos tu información.</p>
                     </div>
-                    <button onClick={goToStep3} className="w-full bg-white text-on-background border-[1.5px] border-slate-200 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
-                      Publicar como invitado
-                      <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    <button 
+                      onClick={handleGuestSubmit}
+                      disabled={submitLoading}
+                      className={`w-full bg-white text-on-background border-[1.5px] border-slate-200 py-3.5 rounded-full font-bold text-[15px] transition-all flex items-center justify-center gap-2 ${submitLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-slate-50 hover:border-slate-300'}`}
+                    >
+                      {submitLoading ? 'Publicando...' : 'Publicar como invitado'}
+                      {!submitLoading && <span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
                     </button>
                   </div>
                   <button onClick={goToStep1} className="flex items-center gap-2 text-[14px] text-slate-400 font-semibold hover:text-on-background transition-colors ml-1">
@@ -293,9 +462,9 @@ const PublicarCaso = () => {
                     Volver al inicio
                     <span className="material-symbols-outlined text-[20px]">home</span>
                   </Link>
-                  <button onClick={() => { setStep(1); setCaseText(''); setGuestEmail(''); setConfirmedEmail('') }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-8 py-4 rounded-full font-bold text-[16px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
-                    Publicar otro caso
-                    <span className="material-symbols-outlined text-[20px]">add</span>
+                  <button onClick={() => { setStep(1); setCaseText(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '' }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-8 py-4 rounded-full font-bold text-[16px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+                      Publicar otro caso
+                      <span className="material-symbols-outlined text-[20px]">add</span>
                   </button>
                 </div>
               </div>

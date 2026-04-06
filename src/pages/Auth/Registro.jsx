@@ -1,27 +1,60 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import { supabase } from '../../lib/supabaseClient'
 
 const Registro = () => {
   const navigate = useNavigate()
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', terms: false })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setError(null)
     const { firstName, lastName, email, password, terms } = form
+    
     if (!firstName || !lastName || !email || !password || !terms) return
     if (password.length < 8) {
-      alert('La contraseña debe tener al menos 8 caracteres.')
+      setError('La contraseña debe tener al menos 8 caracteres.')
       return
     }
-    sessionStorage.setItem('lp_firstName', firstName)
-    sessionStorage.setItem('lp_lastName', lastName)
-    sessionStorage.setItem('lp_email', email)
-    navigate('/auth/perfil')
+
+    setLoading(true)
+    try {
+      const { data, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            full_name: `${firstName} ${lastName}`,
+            role: 'abogado' // Asumimos que este registro es para abogados
+          }
+        }
+      })
+
+      if (authError) throw authError
+
+      if (data.user) {
+        // Guardamos temporalmente en sessionStorage para el siguiente paso del perfil si es necesario
+        // Aunque Supabase ya lo tiene en la sesión
+        sessionStorage.setItem('lp_firstName', firstName)
+        sessionStorage.setItem('lp_lastName', lastName)
+        sessionStorage.setItem('lp_email', email)
+        
+        navigate('/auth/perfil')
+      }
+    } catch (err) {
+      setError(err.message || 'Ocurrió un error durante el registro.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -92,6 +125,13 @@ const Registro = () => {
             <hr className="flex-1 border-t border-slate-200" />
           </div>
 
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl flex items-center gap-2">
+              <span className="material-symbols-outlined text-[18px]">error</span>
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -117,13 +157,23 @@ const Registro = () => {
                 Al registrarme, acepto los <a href="#" className="font-bold text-[#EE6C4D] hover:underline">Términos de Servicio</a> y la <a href="#" className="font-bold text-[#EE6C4D] hover:underline">Política de Privacidad</a> de LegalPath. Confirmo que soy un profesional legal debidamente habilitado.
               </label>
             </div>
-            <button type="submit" className="w-full mt-6 abogado-gradient text-white py-3.5 rounded-xl font-bold text-[15px] shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all flex justify-center items-center gap-2">
-              Completar primer paso <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+            <button 
+              type="submit" 
+              disabled={loading}
+              className={`w-full mt-6 abogado-gradient text-white py-3.5 rounded-xl font-bold text-[15px] shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all flex justify-center items-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            >
+              {loading ? (
+                <>Procesando...</>
+              ) : (
+                <>
+                  Completar primer paso <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </>
+              )}
             </button>
           </form>
 
           <div className="mt-8 text-center text-[13px] text-secondary">
-            ¿Ya tienes una cuenta? <a href="#" className="font-bold text-on-background hover:text-[#EE6C4D] underline decoration-2 underline-offset-2 transition-colors">Iniciar sesión aquí</a>.
+            ¿Ya tienes una cuenta? <Link to="/auth/login" className="font-bold text-on-background hover:text-[#EE6C4D] underline decoration-2 underline-offset-2 transition-colors">Iniciar sesión aquí</Link>.
           </div>
         </div>
       </div>

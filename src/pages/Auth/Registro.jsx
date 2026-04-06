@@ -27,49 +27,38 @@ const Registro = () => {
   return (
     <div className="antialiased min-h-screen flex bg-background">
       {/* Left Side: Branding */}
-      <div className="hidden lg:flex w-1/2 bg-surface text-on-background relative flex-col items-center pt-[15vh] p-12 overflow-hidden border-r border-slate-200/60">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#EE6C4D]/5 pointer-events-none"></div>
-        <div className="absolute top-[20%] -left-[10%] w-[500px] h-[500px] bg-[#EE6C4D] rounded-full blur-[100px] opacity-[0.05] pointer-events-none"></div>
-
-        <div className="relative z-10 w-full max-w-[480px] flex flex-col gap-10 xl:gap-12 py-10">
-          <div className="flex items-end gap-2">
-            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-9 w-auto" />
-            <span className="text-secondary font-medium text-[16px] mb-0.5 tracking-tight">Abogados</span>
+      <div className="hidden lg:flex w-1/2 bg-[#EE6C4D] text-white relative flex-col justify-between p-20 xl:p-28 overflow-hidden">
+        {/* Logo */}
+        <div className="relative z-10">
+          <div className="flex items-center gap-2">
+            <span className="text-4xl font-black tracking-tighter">LegalPath</span>
           </div>
+        </div>
 
-          <div>
-            <h1 className="text-4xl lg:text-[44px] font-extrabold tracking-tighter leading-[1.1] mb-6">
-              El ecosistema diseñado para hacer crecer <span className="text-[#EE6C4D]">tu práctica legal</span>.
-            </h1>
-            <p className="text-lg text-secondary leading-relaxed">
-              Únete a la red donde los clientes calificados vienen a ti. Olvídate del marketing y enfócate en lo que mejor haces: <b>resolver casos</b>.
-            </p>
-            <div className="space-y-4 mt-8">
-              {[
-                'Acceso a cientos de casos pre-filtrados al mes.',
-                'Sistema Just-in-Time: paga sólo por los prospectos que eliges.',
-                'Herramientas gratuitas para gestión y seguimiento de cartera.'
-              ].map((text, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#EE6C4D]/10 flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-[#EE6C4D] text-[12px]">check</span>
-                  </div>
-                  <span className="text-sm font-medium text-on-surface-variant">{text}</span>
-                </div>
-              ))}
+        {/* Content */}
+        <div className="relative z-10">
+          <h1 className="text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] mb-8 max-w-xl">
+            Únete a la red legal más grande de Chile.
+          </h1>
+          <p className="text-xl xl:text-2xl opacity-90 leading-relaxed font-medium max-w-md">
+            Digitaliza tu práctica jurídica, accede a cientos de clientes y gestiona tus casos en un solo lugar.
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="flex -space-x-3">
+            <div className="w-12 h-12 rounded-full border-4 border-[#EE6C4D] bg-slate-200 overflow-hidden">
+              <img src="https://ui-avatars.com/api/?name=A+B&background=cbd5e1&color=fff" alt="Avatar" className="w-full h-full object-cover" />
+            </div>
+            <div className="w-12 h-12 rounded-full border-4 border-[#EE6C4D] bg-slate-300 overflow-hidden">
+              <img src="https://ui-avatars.com/api/?name=C+D&background=94a3b8&color=fff" alt="Avatar" className="w-full h-full object-cover" />
+            </div>
+            <div className="w-12 h-12 rounded-full border-4 border-[#EE6C4D] bg-slate-400 overflow-hidden">
+              <img src="https://ui-avatars.com/api/?name=X+Y&background=64748b&color=fff" alt="Avatar" className="w-full h-full object-cover" />
             </div>
           </div>
-
-          <div className="flex items-center gap-3 bg-white/60 p-4 rounded-xl border border-slate-200/50 backdrop-blur-md w-fit shadow-sm">
-            <div className="flex -space-x-2">
-              <img src="https://ui-avatars.com/api/?name=Dr+C&background=1ecca7&color=fff&size=32" alt="Avatar" className="w-8 h-8 rounded-full border-2 border-white shadow-sm" />
-              <img src="https://ui-avatars.com/api/?name=Abog&background=EE6C4D&color=fff&size=32" alt="Avatar" className="w-8 h-8 rounded-full border-2 border-white shadow-sm" />
-              <div className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 shadow-sm">+2k</div>
-            </div>
-            <div className="text-[11px] text-secondary font-medium leading-tight">
-              Más de <span className="font-bold text-on-background">2,000 profesionales</span> ya confían en LegalPath.
-            </div>
-          </div>
+          <p className="text-sm font-bold opacity-90">+2000 abogados ya confían en nosotros</p>
         </div>
       </div>
 

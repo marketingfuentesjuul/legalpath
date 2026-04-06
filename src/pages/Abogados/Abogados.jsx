@@ -99,6 +99,52 @@ const Abogados = () => {
             <div className="w-16 h-1 bg-[#EE6C4D] mx-auto mt-4 rounded-full"></div>
           </div>
 
+          {/* Breve descripción del funcionamiento */}
+          <div className="max-w-4xl mx-auto -mt-16 mb-24 p-10 rounded-[40px] bg-white border border-slate-100 shadow-[0_30px_60px_-15px_rgba(238,108,77,0.08)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#EE6C4D]/5 blur-3xl rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-container/5 blur-3xl rounded-full"></div>
+            
+            <div className="relative z-10 space-y-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-2xl font-black text-on-background tracking-tight">LegalPath: Tu Mercado Legal Eficiente</h3>
+                  <p className="text-lg text-secondary leading-relaxed">
+                    LegalPath es la plataforma donde los ciudadanos publican sus casos legales. Nuestro software <b>califica cada solicitud</b> mediante un proceso inteligente de preguntas y respuestas, entregándote el caso estructurado con sus <b>elementos clave y montos estimados</b>.
+                  </p>
+                </div>
+                <div className="w-px h-16 bg-slate-100 hidden md:block"></div>
+                <div className="flex-1 space-y-4">
+                  <p className="text-lg text-secondary leading-relaxed">
+                    Como abogado, podrás revisar estas oportunidades y usar <b>tokens</b> para acceder a los datos de contacto. Cada cliente recibe hasta <b>cinco propuestas</b> simultáneas, garantizando una competencia justa donde tu propuesta y perfil son los que deciden.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">person_search</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Publicación</p>
+                  <p className="text-xs font-bold text-on-background">Casos reales</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">quiz</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Calificación</p>
+                  <p className="text-xs font-bold text-on-background">Pre-calificados</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">toll</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Acceso</p>
+                  <p className="text-xs font-bold text-on-background">Sistema Tokens</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">handshake</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Conexión</p>
+                  <p className="text-xs font-bold text-on-background">Elección libre</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Step 01 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">

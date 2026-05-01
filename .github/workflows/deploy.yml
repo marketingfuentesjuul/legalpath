@@ -24,6 +24,9 @@ jobs:
 
       - name: Build del proyecto
         run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://wheslluscfpfqyuzywgy.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZXNsbHVzY2ZwZnF5dXp5d2d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTg3ODUsImV4cCI6MjA5MDU3NDc4NX0.deKmhl63yTutClhOa8-PmyBOLEX6KWYxRZe26969y2I' }}
 
       - name: Configurar clave SSH
         run: |

@@ -100,13 +100,13 @@ const Perfil = () => {
       // 1. Subir Avatar si existe
       if (avatarFile) {
         const fileExt = avatarFile.name.split('.').pop()
-        const fileName = `${user.id}/${Math.random()}.${fileExt}`
+        const avatarPath = `${user.id}/avatar_${Date.now()}.${fileExt}`
         const { error: uploadError } = await supabase.storage
-          .from('certificates') // Usamos certificates o crear uno para avatares? Usaré certificates por ahora
-          .upload(`avatars/${fileName}`, avatarFile)
-        
+          .from('certificates')
+          .upload(avatarPath, avatarFile)
+
         if (uploadError) throw uploadError
-        const { data: { publicUrl } } = supabase.storage.from('certificates').getPublicUrl(`avatars/${fileName}`)
+        const { data: { publicUrl } } = supabase.storage.from('certificates').getPublicUrl(avatarPath)
         avatarUrl = publicUrl
       }
 
@@ -126,7 +126,7 @@ const Perfil = () => {
           specialties: specialties,
           avatar_url: avatarUrl,
           role: 'abogado',
-          verification_status: 'pending',
+          verification_status: 'pendiente',
           updated_at: new Date()
         })
 

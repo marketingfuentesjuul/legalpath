@@ -20,7 +20,8 @@ const PublicarCaso = () => {
   const [registerForm, setRegisterForm] = useState({ fullName: '', email: '', password: '' })
 
   // Error/Loading states
-  const [submitLoading, setSubmitLoading] = useState(false)
+  const [registerLoading, setRegisterLoading] = useState(false)
+  const [guestLoading, setGuestLoading] = useState(false)
   const [submitError, setSubmitError] = useState(null)
 
   const [typingText, setTypingText] = useState('')
@@ -137,7 +138,7 @@ const PublicarCaso = () => {
       document.getElementById('guest-email-input')?.focus()
       return
     }
-    setSubmitLoading(true)
+    setGuestLoading(true)
     setSubmitError(null)
 
     try {
@@ -148,7 +149,7 @@ const PublicarCaso = () => {
     } catch (error) {
       setSubmitError(error.message || 'Error al publicar como invitado')
     } finally {
-      setSubmitLoading(false)
+      setGuestLoading(false)
     }
   }
 
@@ -156,33 +157,36 @@ const PublicarCaso = () => {
     e.preventDefault()
     if (!registerForm.email || !registerForm.password || !registerForm.fullName) return
 
-    setSubmitLoading(true)
+    setRegisterLoading(true)
     setSubmitError(null)
 
     try {
       const [firstName, ...lastNameParts] = registerForm.fullName.split(' ')
       const lastName = lastNameParts.join(' ')
 
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      // 1. Crear sesión anónima para publicar el caso de inmediato
+      const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously()
+      if (anonError) throw anonError
+
+      // 2. Actualizar el perfil anónimo con el nombre real
+      await supabase.from('profiles').update({
+        first_name: firstName,
+        last_name: lastName || '',
+      }).eq('id', anonData.user.id)
+
+      // 3. Publicar el caso con el usuario anónimo (funciona inmediatamente)
+      await uploadAndSaveCase(anonData.user.id, registerForm.email)
+
+      // 4. Vincular la cuenta anónima con email/contraseña (envía correo de confirmación)
+      await supabase.auth.updateUser({
         email: registerForm.email,
         password: registerForm.password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName || '',
-            role: 'user'
-          }
-        }
+        data: { first_name: firstName, last_name: lastName || '', role: 'user' }
       })
-
-      if (authError) throw authError
-      if (!authData.user?.id) throw new Error("No se pudo obtener el ID del usuario")
-
-      await uploadAndSaveCase(authData.user.id, registerForm.email)
     } catch (error) {
-       setSubmitError(error.message || 'Error al registrar y publicar caso')
+      setSubmitError(error.message || 'Error al registrar y publicar caso')
     } finally {
-      setSubmitLoading(false)
+      setRegisterLoading(false)
     }
   }
 
@@ -310,7 +314,23 @@ const PublicarCaso = () => {
 
             {/* STEP 2 */}
             {step === 2 && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+              <div className="space-y-8">
+                {submitError && (
+                  <div className="p-4 bg-red-50 border border-red-200 text-red-600 text-[14px] rounded-2xl flex items-center gap-3 font-semibold shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+                    <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                      <span className="material-symbols-outlined text-[20px]">error</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold">Ha ocurrido un error</p>
+                      <p className="text-red-500/80 font-medium">{submitError}</p>
+                    </div>
+                    <button onClick={() => setSubmitError(null)} className="text-red-400 hover:text-red-600 transition-colors">
+                      <span className="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
                 {/* LEFT: Register */}
                 <div className="space-y-6">
                   <div>
@@ -333,12 +353,7 @@ const PublicarCaso = () => {
                     <div className="flex-1 h-px bg-slate-200"></div>
                   </div>
                   
-                  {submitError && (
-                    <div className="p-4 bg-red-50 border border-red-200 text-red-600 text-[13px] rounded-xl flex items-center gap-2 font-medium">
-                      <span className="material-symbols-outlined text-[18px]">error</span>
-                      {submitError}
-                    </div>
-                  )}
+                  <div className="flex-1 h-px bg-slate-200"></div>
 
                   <form onSubmit={handleRegisterSubmit} className="space-y-4">
                     <div>
@@ -376,11 +391,11 @@ const PublicarCaso = () => {
                     </div>
                     <button 
                       type="submit"
-                      disabled={submitLoading}
-                      className={`w-full mint-gradient text-white py-4 rounded-full font-bold text-[16px] shadow-lg transition-all flex items-center justify-center gap-2 ${submitLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1'}`}
+                      disabled={registerLoading || guestLoading}
+                      className={`w-full mint-gradient text-white py-4 rounded-full font-bold text-[16px] shadow-lg transition-all flex items-center justify-center gap-2 ${registerLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1'}`}
                     >
-                      {submitLoading ? 'Procesando...' : 'Crear cuenta y publicar caso'}
-                      {!submitLoading && <span className="material-symbols-outlined text-[20px]">arrow_forward</span>}
+                      {registerLoading ? 'Procesando...' : 'Crear cuenta y publicar caso'}
+                      {!registerLoading && <span className="material-symbols-outlined text-[20px]">arrow_forward</span>}
                     </button>
                   </form>
                   <div className="bg-[#f0fdf9] border border-[#1ECCA7]/20 rounded-2xl p-5 space-y-3">
@@ -426,11 +441,11 @@ const PublicarCaso = () => {
                     </div>
                     <button 
                       onClick={handleGuestSubmit}
-                      disabled={submitLoading}
-                      className={`w-full bg-white text-on-background border-[1.5px] border-slate-200 py-3.5 rounded-full font-bold text-[15px] transition-all flex items-center justify-center gap-2 ${submitLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-slate-50 hover:border-slate-300'}`}
+                      disabled={registerLoading || guestLoading}
+                      className={`w-full bg-white text-on-background border-[1.5px] border-slate-200 py-3.5 rounded-full font-bold text-[15px] transition-all flex items-center justify-center gap-2 ${guestLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-slate-50 hover:border-slate-300'}`}
                     >
-                      {submitLoading ? 'Publicando...' : 'Publicar como invitado'}
-                      {!submitLoading && <span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
+                      {guestLoading ? 'Publicando...' : 'Publicar como invitado'}
+                      {!guestLoading && <span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
                     </button>
                   </div>
                   <button onClick={goToStep1} className="flex items-center gap-2 text-[14px] text-slate-400 font-semibold hover:text-on-background transition-colors ml-1">

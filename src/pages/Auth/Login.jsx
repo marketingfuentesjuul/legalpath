@@ -1,12 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
+import { useAuth } from '../../context/AuthContext'
 
 const Login = () => {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (user && !user.is_anonymous) {
+      redirectByRole(user.id)
+    }
+  }, [user])
+
+  const redirectByRole = async (userId) => {
+    const { data } = await supabase.from('profiles').select('role').eq('id', userId).single()
+    navigate(data?.role === 'abogado' ? '/dashboard' : '/', { replace: true })
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -17,9 +30,7 @@ const Login = () => {
     setError(null)
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: {
-        redirectTo: window.location.origin
-      }
+      options: { redirectTo: window.location.origin }
     })
     if (error) setError(error.message)
   }
@@ -38,7 +49,7 @@ const Login = () => {
       if (authError) throw authError
 
       if (data.session) {
-        navigate('/')
+        await redirectByRole(data.user.id)
       }
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.')

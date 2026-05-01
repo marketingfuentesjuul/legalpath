@@ -454,7 +454,8 @@ const PublicarCaso = () => {
                   </button>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
             {/* STEP 3 */}
             {step === 3 && (

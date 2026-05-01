@@ -20,3 +20,8 @@ node_modules/
 *.ntvs*
 *.njsproj
 *.sln
+
+# Build output
+dist/
+legalpath_bueno.zip
+

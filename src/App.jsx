@@ -9,6 +9,7 @@ import Validacion from './pages/Auth/Validacion'
 import Login from './pages/Auth/Login'
 import Dashboard from './pages/Abogados/Dashboard'
 import { useAuth } from './context/AuthContext'
+import ScrollToTop from './components/layout/ScrollToTop'
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
@@ -19,7 +20,9 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/abogados" element={<Abogados />} />
@@ -30,7 +33,8 @@ function App() {
       <Route path="/auth/registro" element={<Registro />} />
       <Route path="/auth/validacion" element={<Validacion />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-    </Routes>
+      </Routes>
+    </>
   )
 }
 

@@ -142,12 +142,22 @@ const PublicarCaso = () => {
     setSubmitError(null)
 
     try {
+      // 1. Intentar iniciar sesión de forma anónima
       const { data: authData, error: authError } = await supabase.auth.signInAnonymously()
-      if (authError) throw authError
+      
+      if (authError) {
+        // Error específico cuando la autenticación anónima está desactivada en Supabase
+        if (authError.message.includes('disabled') || authError.status === 422) {
+          throw new Error('La autenticación de invitados (Anónima) está desactivada en el panel de Supabase. Por favor, actívala en Authentication > Providers > Anonymous para que esta función funcione.')
+        }
+        throw authError
+      }
 
+      // 2. Si tiene éxito, publicar el caso
       await uploadAndSaveCase(authData.user.id, guestEmail)
     } catch (error) {
-      setSubmitError(error.message || 'Error al publicar como invitado')
+      console.error('Error en el envío de invitado:', error)
+      setSubmitError(error.message || 'Error al publicar como invitado. Verifica tu conexión o intenta registrarte.')
     } finally {
       setGuestLoading(false)
     }

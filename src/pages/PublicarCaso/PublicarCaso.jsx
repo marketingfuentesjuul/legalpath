@@ -228,18 +228,18 @@ const PublicarCaso = () => {
       <div className="max-w-5xl mx-auto w-full px-4 sm:px-8 relative z-10 mt-16">
 
         {/* Title */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-[3.5rem] leading-tight font-extrabold tracking-tight text-[#141b2c] mb-4 font-headline">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl md:text-[2.8rem] leading-tight font-extrabold tracking-tight text-[#141b2c] mb-2 font-headline">
             {titles[step].main}
           </h1>
-          <p className="text-secondary text-lg max-w-2xl mx-auto font-medium">{titles[step].sub}</p>
+          <p className="text-secondary text-base max-w-2xl mx-auto font-medium">{titles[step].sub}</p>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-[2rem] p-8 md:p-14 shadow-[0_15px_50px_-10px_rgba(0,107,86,0.08)] border border-[#e0e8ff]/80">
+        <div className="bg-white rounded-[2rem] p-6 md:p-10 shadow-[0_15px_50px_-10px_rgba(0,107,86,0.08)] border border-[#e0e8ff]/80">
 
           {/* Steps Indicator */}
-          <div className="flex items-start justify-between relative mb-14 max-w-3xl mx-auto">
+          <div className="flex items-start justify-between relative mb-8 max-w-3xl mx-auto">
             <div className="absolute top-[20px] left-[5%] w-[90%] h-[3px] bg-slate-200 rounded-full overflow-hidden">
               <div id="progress-fill" className="h-full bg-[#1ECCA7]" style={{ width: progressWidth }}></div>
             </div>
@@ -258,7 +258,7 @@ const PublicarCaso = () => {
           </div>
 
           {/* Steps Content */}
-          <div className="relative max-w-4xl mx-auto" style={{ minHeight: '400px' }}>
+          <div className="relative max-w-4xl mx-auto" style={{ minHeight: 'auto' }}>
 
             {/* STEP 1 */}
             {step === 1 && (
@@ -469,28 +469,28 @@ const PublicarCaso = () => {
 
             {/* STEP 3 */}
             {step === 3 && (
-              <div className="flex flex-col items-center justify-center text-center py-10 space-y-8">
-                <div className="w-24 h-24 rounded-full bg-[#f0fdf9] border-2 border-[#1ECCA7]/30 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[#1ECCA7] text-[48px]" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
+              <div className="flex flex-col items-center justify-center text-center py-2 space-y-5">
+                <div className="w-16 h-16 rounded-full bg-[#f0fdf9] border-2 border-[#1ECCA7]/30 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[#1ECCA7] text-[32px]" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                 </div>
-                <div className="space-y-4 max-w-lg">
-                  <h2 className="text-2xl md:text-[32px] font-extrabold text-on-background tracking-tight font-headline leading-tight">¡Tu caso ha sido <span className="text-[#1ECCA7]">publicado</span>!</h2>
-                  <p className="text-[16px] text-slate-500 leading-relaxed font-medium">
+                <div className="space-y-3 max-w-lg">
+                  <h2 className="text-xl md:text-[28px] font-extrabold text-on-background tracking-tight font-headline leading-tight">¡Tu caso ha sido <span className="text-[#1ECCA7]">publicado</span>!</h2>
+                  <p className="text-[14px] text-slate-500 leading-relaxed font-medium">
                     Muchas gracias por haber publicado tu caso con nosotros. Te notificaremos vía correo electrónico cuando un abogado haya postulado para poder llevar tu caso.
                   </p>
                 </div>
-                <div className="bg-[#f0fdf9] border border-[#1ECCA7]/20 rounded-2xl px-8 py-5 inline-flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[#1ECCA7] text-[22px]" style={{ fontVariationSettings: '"FILL" 1' }}>mail</span>
-                  <p className="text-[14px] text-[#006b56] font-semibold">Las notificaciones llegarán a: <span className="text-[#141b2c]">{confirmedEmail}</span></p>
+                <div className="bg-[#f0fdf9] border border-[#1ECCA7]/20 rounded-2xl px-6 py-3 inline-flex items-center gap-3">
+                  <span className="material-symbols-outlined text-[#1ECCA7] text-[20px]" style={{ fontVariationSettings: '"FILL" 1' }}>mail</span>
+                  <p className="text-[13px] text-[#006b56] font-semibold">Las notificaciones llegarán a: <span className="text-[#141b2c]">{confirmedEmail}</span></p>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link to="/" className="mint-gradient text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all text-[16px] flex items-center justify-center gap-2">
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <Link to="/" className="mint-gradient text-white px-7 py-3.5 rounded-full font-bold shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all text-[15px] flex items-center justify-center gap-2">
                     Volver al inicio
-                    <span className="material-symbols-outlined text-[20px]">home</span>
+                    <span className="material-symbols-outlined text-[18px]">home</span>
                   </Link>
-                  <button onClick={() => { setStep(1); setCaseText(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '' }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-8 py-4 rounded-full font-bold text-[16px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+                  <button onClick={() => { setStep(1); setCaseText(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '' }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-7 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
                       Publicar otro caso
-                      <span className="material-symbols-outlined text-[20px]">add</span>
+                      <span className="material-symbols-outlined text-[18px]">add</span>
                   </button>
                 </div>
               </div>

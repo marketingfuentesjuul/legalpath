@@ -135,19 +135,27 @@ const PublicarCaso = () => {
           const fileExt = file.name.split('.').pop()
           const fileName = `${caseData.id}/${Math.random().toString(36).substring(2)}.${fileExt}`
           
-          console.log(`Subiendo archivo a storage: ${file.name} -> ${fileName}`)
+          console.log(`Intentando subir archivo: ${file.name} a bucket 'documentos-casos' con path: ${fileName}`)
           
-          const { error: uploadError } = await supabase.storage
-            .from('case-attachments')
-            .upload(fileName, file)
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('documentos-casos')
+            .upload(fileName, file, {
+              cacheControl: '3600',
+              upsert: false,
+              contentType: file.type
+            })
 
           if (uploadError) {
             console.error(`Error de STORAGE al subir ${file.name}:`, uploadError)
-            throw new Error(`No se pudo subir el archivo ${file.name} al servidor de almacenamiento: ${uploadError.message}`)
+            // Agregamos más info al error para el usuario
+            const detail = uploadError.message || JSON.stringify(uploadError)
+            throw new Error(`No se pudo subir el archivo ${file.name} al servidor: ${detail}`)
           }
 
+          console.log('Subida exitosa, obteniendo URL pública...', uploadData)
+
           const { data: publicUrlData } = supabase.storage
-            .from('case-attachments')
+            .from('documentos-casos')
             .getPublicUrl(fileName)
 
           // En v2 de supabase-js, getPublicUrl devuelve { data: { publicUrl: '...' } }

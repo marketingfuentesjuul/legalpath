@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext'
 
 const ALLOWED_SPECIALTIES = [
   'Derecho Civil', 'Derecho Penal', 'Derecho Laboral', 'Derecho de Familia',
+  'Fraude bancario', 'Choques',
   'Derecho Comercial / Mercantil', 'Derecho Tributario', 'Derecho Administrativo',
   'Derecho Ambiental', 'Derecho de Aguas', 'Derecho de Minería',
   'Derecho de Propiedad Intelectual', 'Derecho del Consumidor', 'Derecho Constitucional',

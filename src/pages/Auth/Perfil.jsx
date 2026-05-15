@@ -23,7 +23,6 @@ const Perfil = () => {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [rut, setRut] = useState('')
-  const [rutAsociado, setRutAsociado] = useState('')
   const [region, setRegion] = useState('')
   const [city, setCity] = useState('')
   const [colegioId, setColegioId] = useState('')
@@ -134,7 +133,6 @@ const Perfil = () => {
         .upsert({
           id: user.id,
           rut_personal: rut,
-          rut_pjud: rutAsociado,
           region: region,
           city: city,
           colegio_id: colegioId,
@@ -356,14 +354,10 @@ const Perfil = () => {
             </div>
 
             {/* RUT fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div className="grid grid-cols-1 gap-5 mb-5">
               <div className="space-y-1.5">
                 <label htmlFor="rut" className="block text-[13px] font-bold text-on-background">RUT (Personal) <span className="text-[#EE6C4D]">*</span></label>
                 <input type="text" id="rut" name="rut" required value={rut} onChange={e => setRut(e.target.value)} autoComplete="off" maxLength={12} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="12.345.678-9" />
-              </div>
-              <div className="space-y-1.5">
-                <label htmlFor="rutAsociado" className="block text-[13px] font-bold text-on-background">RUT (Asociado PJUD) <span className="text-[#EE6C4D]">*</span></label>
-                <input type="text" id="rutAsociado" name="rutAsociado" required value={rutAsociado} onChange={e => setRutAsociado(e.target.value)} autoComplete="off" maxLength={12} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="76.543.210-K" />
               </div>
             </div>
 

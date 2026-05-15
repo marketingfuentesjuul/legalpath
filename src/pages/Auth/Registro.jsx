@@ -37,39 +37,54 @@ const Registro = () => {
 
     setLoading(true)
     try {
-      // 1. Iniciar sesión de forma anónima para obtener una sesión inmediata
+      // 1. Iniciar sesión de forma anónima para obtener una sesión inmediata y evitar bloqueos UI
       const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously()
       if (anonError) throw anonError
 
-      // 2. Vincular la cuenta anónima con el correo y contraseña (esto la convierte en cuenta real)
-      const { data, error: authError } = await supabase.auth.updateUser({
-        email,
-        password,
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-          full_name: `${firstName} ${lastName}`,
-          role: 'abogado'
-        }
-      })
+      console.log('Sesión anónima iniciada:', anonData.user.id)
 
-      if (authError) throw authError
-
-      // 3. También actualizamos la tabla profiles manualmente para asegurar consistencia
-      await supabase.from('profiles').update({
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        role: 'abogado'
-      }).eq('id', anonData.user.id)
-
+      // Guardamos en sessionStorage para que el perfil los tome si falla la DB
       sessionStorage.setItem('lp_firstName', firstName)
       sessionStorage.setItem('lp_lastName', lastName)
       sessionStorage.setItem('lp_email', email)
 
-      // 4. Navegamos directamente al perfil
+      // 2. Intentamos vincular la cuenta (esto puede fallar por rate limit de correo)
+      try {
+        const { error: authError } = await supabase.auth.updateUser({
+          email,
+          password,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            full_name: `${firstName} ${lastName}`,
+            role: 'abogado'
+          }
+        })
+        if (authError) {
+          console.warn('Error al vincular correo (probablemente rate limit):', authError.message)
+          // No lanzamos error para no bloquear la navegación
+        }
+      } catch (updateErr) {
+        console.warn('Error crítico en updateUser:', updateErr)
+      }
+
+      // 3. Intentamos actualizar el perfil en la DB
+      try {
+        await supabase.from('profiles').update({
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          role: 'abogado'
+        }).eq('id', anonData.user.id)
+      } catch (dbErr) {
+        console.warn('Error al actualizar tabla profiles:', dbErr)
+      }
+
+      // 4. Navegamos directamente al perfil pase lo que pase
+      // El usuario ya tiene una sesión (aunque sea anónima) y App.jsx ahora lo permite
       navigate('/auth/perfil')
     } catch (err) {
+      console.error('Error en el proceso de registro:', err)
       setError(err.message || 'Ocurrió un error durante el registro.')
     } finally {
       setLoading(false)

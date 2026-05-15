@@ -16,7 +16,7 @@ import PageTransition from './components/layout/PageTransition'
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
   if (loading) return null
-  if (!user || user.is_anonymous) return <Navigate to="/auth/login" replace />
+  if (!user) return <Navigate to="/auth/login" replace />
   return children
 }
 

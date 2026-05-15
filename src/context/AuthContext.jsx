@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
 const AuthContext = createContext({});
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
       if (!user) return null;
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('*, lawyer_profiles(*)')
         .eq('id', user.id)
         .single();
       return { data, error };

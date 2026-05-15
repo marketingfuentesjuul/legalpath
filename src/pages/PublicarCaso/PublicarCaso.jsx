@@ -89,7 +89,15 @@ const PublicarCaso = () => {
   // Funciones de subida
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      setAttachments(Array.from(e.target.files))
+      const newFiles = Array.from(e.target.files)
+      setAttachments(prev => {
+        const combined = [...prev, ...newFiles]
+        if (combined.length > 5) {
+          alert('Solo puedes subir un máximo de 5 documentos.')
+          return combined.slice(0, 5)
+        }
+        return combined
+      })
     }
   }
 
@@ -110,18 +118,66 @@ const PublicarCaso = () => {
         .select()
         .single()
 
-      if (caseError) throw caseError
+      if (caseError) {
+        console.error('Error creating case:', caseError)
+        throw new Error('Error al crear el caso: ' + caseError.message)
+      }
 
-      // 2. Subir adjuntos
+      if (!caseData?.id) {
+        throw new Error('El caso fue creado pero no se recibió el ID de confirmación.')
+      }
+
+      // 2. Subir adjuntos y registrar en tabla documents
       if (attachments.length > 0) {
+        console.log(`Iniciando subida de ${attachments.length} archivos...`)
+        
         for (const file of attachments) {
           const fileExt = file.name.split('.').pop()
           const fileName = `${caseData.id}/${Math.random().toString(36).substring(2)}.${fileExt}`
+          
+          console.log(`Subiendo archivo a storage: ${file.name} -> ${fileName}`)
+          
           const { error: uploadError } = await supabase.storage
             .from('case-attachments')
             .upload(fileName, file)
-            
-          if (uploadError) console.error('Error uploading file:', uploadError)
+
+          if (uploadError) {
+            console.error(`Error de STORAGE al subir ${file.name}:`, uploadError)
+            throw new Error(`No se pudo subir el archivo ${file.name} al servidor de almacenamiento: ${uploadError.message}`)
+          }
+
+          const { data: publicUrlData } = supabase.storage
+            .from('case-attachments')
+            .getPublicUrl(fileName)
+
+          // En v2 de supabase-js, getPublicUrl devuelve { data: { publicUrl: '...' } }
+          // pero a veces se desestructura diferente según la versión instalada
+          const publicUrl = publicUrlData?.publicUrl || (publicUrlData?.data ? publicUrlData.data.publicUrl : null)
+
+          if (!publicUrl) {
+            console.error(`Error obteniendo URL pública para ${file.name}. Datos recibidos:`, publicUrlData)
+            throw new Error(`No se pudo obtener la URL del archivo subido: ${file.name}`)
+          }
+
+          console.log(`Registrando en base de datos: ${file.name} con URL: ${publicUrl}`)
+          
+          const { error: docError } = await supabase
+            .from('documents')
+            .insert({
+              case_id: caseData.id,
+              uploaded_by: userId,
+              storage_url: publicUrl,
+              file_name: file.name,
+              file_type: file.type || null,
+              file_size: file.size || null,
+            })
+
+          if (docError) {
+            console.error(`Error de BASE DE DATOS al registrar ${file.name}:`, docError)
+            throw new Error(`El archivo se subió pero no se pudo registrar en la base de datos: ${docError.message}`)
+          }
+          
+          console.log(`Documento ${file.name} guardado exitosamente.`)
         }
       }
 
@@ -129,6 +185,7 @@ const PublicarCaso = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       setStep(3)
     } catch (err) {
+      console.error('Error crítico en uploadAndSaveCase:', err)
       throw err
     }
   }
@@ -178,10 +235,11 @@ const PublicarCaso = () => {
       const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously()
       if (anonError) throw anonError
 
-      // 2. Actualizar el perfil anónimo con el nombre real
+      // 2. Actualizar el perfil anónimo con el nombre real y el email
       await supabase.from('profiles').update({
         first_name: firstName,
         last_name: lastName || '',
+        email: registerForm.email,
       }).eq('id', anonData.user.id)
 
       // 3. Publicar el caso con el usuario anónimo (funciona inmediatamente)
@@ -291,14 +349,17 @@ const PublicarCaso = () => {
                     />
                     <button 
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-3 py-3 px-5 -ml-3 rounded-2xl border-2 border-transparent border-dashed hover:border-slate-200 hover:bg-slate-50 transition-all text-slate-500 hover:text-on-background group text-left"
+                      disabled={attachments.length >= 5}
+                      className={`flex items-center gap-3 py-3 px-5 -ml-3 rounded-2xl border-2 border-transparent border-dashed transition-all text-slate-500 group text-left ${attachments.length >= 5 ? 'opacity-50 cursor-not-allowed' : 'hover:border-slate-200 hover:bg-slate-50 hover:text-on-background'}`}
                     >
-                      <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-200 transition-colors">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${attachments.length >= 5 ? 'bg-slate-100' : 'bg-slate-100 group-hover:bg-slate-200'}`}>
                         <span className="material-symbols-outlined text-[20px]">attach_file</span>
                       </div>
                       <div className="flex flex-col leading-tight">
                         <span className="text-[15px] font-bold">Adjuntar documentos</span>
-                        <span className="text-[13px] text-slate-400 font-medium">(imágenes, pantallazos, PDF)</span>
+                        <span className="text-[13px] text-slate-400 font-medium">
+                          {attachments.length >= 5 ? '(Máximo 5 documentos alcanzado)' : '(imágenes, PDF, máx. 5)'}
+                        </span>
                       </div>
                     </button>
                     {attachments.length > 0 && (

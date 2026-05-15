@@ -110,29 +110,41 @@ const Perfil = () => {
         avatarUrl = publicUrl
       }
 
-      // 2. Upsert Profile
+      // 2. Upsert shared profile data
+      const profileData = {
+        id: user.id,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        role: 'abogado',
+        updated_at: new Date()
+      }
+      if (avatarUrl) profileData.avatar_url = avatarUrl
+
       const { error: profileError } = await supabase
         .from('profiles')
+        .upsert(profileData)
+
+      if (profileError) throw profileError
+
+      // 3. Upsert lawyer-specific data
+      const { error: lawyerProfileError } = await supabase
+        .from('lawyer_profiles')
         .upsert({
           id: user.id,
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
           rut_personal: rut,
           rut_pjud: rutAsociado,
           region: region,
           city: city,
           colegio_id: colegioId,
           specialties: specialties,
-          avatar_url: avatarUrl,
-          role: 'abogado',
           verification_status: 'pendiente',
           updated_at: new Date()
         })
 
-      if (profileError) throw profileError
+      if (lawyerProfileError) throw lawyerProfileError
 
-      // 3. Subir certificados y guardar educación
+      // 4. Subir certificados y guardar educación
       for (const study of studies) {
         if (!study.studyLevel || !study.university) continue
 

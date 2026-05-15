@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 const FaqItem = ({ question, answer, isOpen, onClick }) => {
   const renderSafeHtml = (text) => {
@@ -91,7 +92,12 @@ const Home = () => {
 
       <main className="pt-14">
         {/* Hero Section */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 pt-10 pb-24">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 pt-10 pb-24"
+        >
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container/10 blur-[120px] rounded-full -z-10"></div>
           <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-secondary-container/20 blur-[120px] rounded-full -z-10"></div>
           <div className="max-w-4xl w-full text-center space-y-10 relative z-10">
@@ -148,7 +154,7 @@ const Home = () => {
               <button className="w-full py-2 bg-on-background text-white text-[10px] font-bold rounded-full">Ver Perfil</button>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Vertical Process Section */}
         <section id="como-funciona" className="max-w-7xl mx-auto px-8 py-20 space-y-32">
@@ -158,7 +164,13 @@ const Home = () => {
           </div>
 
           {/* Step 01 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
             <div className="space-y-8">
               <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>01</div>
               <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Publica tu caso</h3>
@@ -228,10 +240,16 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Step 02 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
             <div className="lg:order-2 space-y-8">
               <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>02</div>
               <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Recibe Propuestas</h3>
@@ -287,10 +305,16 @@ const Home = () => {
                 <span className="text-xs font-bold text-on-background whitespace-nowrap">Tienes tres propuestas nuevas...</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Step 03 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
             <div className="space-y-8">
               <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>03</div>
               <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Elige y Actúa</h3>
@@ -331,7 +355,7 @@ const Home = () => {
                 <button className="w-full py-4 bg-primary-container text-on-primary-container font-black rounded-full shadow-lg">Chat con mi Abogado</button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* Bento Value Propositions */}
@@ -340,7 +364,13 @@ const Home = () => {
             <h2 className="text-[41.4px] font-extrabold tracking-tight">¿Por qué elegir LegalPath?</h2>
             <p className="text-secondary max-w-2xl mx-auto">Diseñamos una experiencia que pone el poder de nuevo en tus manos, eliminando la incertidumbre y los costos ocultos.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]"
+          >
             <div className="md:col-span-2 bg-white rounded-xl p-10 flex flex-col justify-between shadow-sm border border-slate-50 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300">
               <div className="relative z-10 space-y-4">
                 <div className="w-14 h-14 bg-primary-container/10 rounded-2xl flex items-center justify-center text-primary-container">
@@ -383,7 +413,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* FAQ Section */}
@@ -392,7 +422,13 @@ const Home = () => {
             <span className="inline-block bg-primary-container/10 text-primary-container font-bold text-xs tracking-widest uppercase px-4 py-2 rounded-full mb-5">Preguntas Frecuentes</span>
             <h2 className="text-[41.4px] font-extrabold text-on-background tracking-tight">Todo lo que necesitas saber</h2>
           </div>
-          <div className="space-y-3">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="space-y-3"
+          >
             {faqs.map((faq, index) => (
               <FaqItem
                 key={index}
@@ -402,11 +438,17 @@ const Home = () => {
                 onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
               />
             ))}
-          </div>
+          </motion.div>
         </section>
 
         {/* Final CTA */}
-        <section className="max-w-7xl mx-auto px-8 py-20">
+        <motion.section 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="max-w-7xl mx-auto px-8 py-20"
+        >
           <div className="mint-gradient rounded-xl p-12 md:p-24 text-center text-white relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
             <div className="relative z-10 space-y-8">
@@ -417,7 +459,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
       </main>
 
     </>

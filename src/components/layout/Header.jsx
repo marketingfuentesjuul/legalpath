@@ -16,13 +16,14 @@ const Header = () => {
   }, [])
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      scrolled 
-        ? 'bg-white/80 backdrop-blur-lg shadow-[0_20px_40px_rgba(20,27,44,0.06)] py-2' 
-        : 'bg-white/0 py-4'
-    }`}>
-      <nav className="max-w-7xl mx-auto px-8 flex justify-between items-center font-['Plus_Jakarta_Sans'] text-sm font-medium tracking-tight">
-        <div className="flex items-center">
+    <header className={`fixed top-0 w-full z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-4' : 'pt-0'}`}>
+      <div className={`w-full transition-all duration-500 mx-4 ${
+        scrolled 
+          ? 'max-w-5xl bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/40 rounded-[2rem] py-2 px-6' 
+          : 'max-w-7xl bg-transparent py-4 px-2'
+      }`}>
+        <nav className="w-full flex justify-between items-center font-['Plus_Jakarta_Sans'] text-sm font-medium tracking-tight">
+          <div className="flex items-center">
           <Link to="/">
             <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-[40.8px] w-auto" />
           </Link>
@@ -70,8 +71,8 @@ const Header = () => {
             </>
           )}
         </div>
-      </nav>
-      <div className={`transition-opacity duration-300 ${scrolled ? 'opacity-100' : 'opacity-0'} bg-slate-100/50 h-px w-full absolute bottom-0`}></div>
+        </nav>
+      </div>
     </header>
   )
 }

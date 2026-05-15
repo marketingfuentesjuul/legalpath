@@ -7,8 +7,6 @@ const Registro = () => {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', terms: false })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [emailSent, setEmailSent] = useState(false)
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
@@ -39,56 +37,43 @@ const Registro = () => {
 
     setLoading(true)
     try {
-      const { data, error: authError } = await supabase.auth.signUp({
+      // 1. Iniciar sesión de forma anónima para obtener una sesión inmediata
+      const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously()
+      if (anonError) throw anonError
+
+      // 2. Vincular la cuenta anónima con el correo y contraseña (esto la convierte en cuenta real)
+      const { data, error: authError } = await supabase.auth.updateUser({
         email,
         password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            full_name: `${firstName} ${lastName}`,
-            role: 'abogado'
-          },
-          emailRedirectTo: `${window.location.origin}/auth/perfil`
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          full_name: `${firstName} ${lastName}`,
+          role: 'abogado'
         }
       })
 
       if (authError) throw authError
 
+      // 3. También actualizamos la tabla profiles manualmente para asegurar consistencia
+      await supabase.from('profiles').update({
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        role: 'abogado'
+      }).eq('id', anonData.user.id)
+
       sessionStorage.setItem('lp_firstName', firstName)
       sessionStorage.setItem('lp_lastName', lastName)
       sessionStorage.setItem('lp_email', email)
 
-      if (data.session) {
-        navigate('/auth/perfil')
-      } else {
-        setEmailSent(true)
-      }
+      // 4. Navegamos directamente al perfil
+      navigate('/auth/perfil')
     } catch (err) {
       setError(err.message || 'Ocurrió un error durante el registro.')
     } finally {
       setLoading(false)
     }
-  }
-
-  if (emailSent) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background px-4">
-        <div className="w-full max-w-md bg-white rounded-[2rem] p-10 shadow-[0_15px_50px_-10px_rgba(238,108,77,0.1)] border border-slate-100 text-center">
-          <div className="w-16 h-16 rounded-full bg-orange-50 border-2 border-[#EE6C4D]/30 flex items-center justify-center mx-auto mb-6">
-            <span className="material-symbols-outlined text-[#EE6C4D] text-[36px]" style={{ fontVariationSettings: '"FILL" 1' }}>mark_email_read</span>
-          </div>
-          <h2 className="text-2xl font-extrabold text-[#141b2c] mb-3 tracking-tight">Revisa tu correo</h2>
-          <p className="text-[14px] text-secondary font-medium leading-relaxed mb-6">
-            Te enviamos un enlace de confirmación a <strong className="text-on-background">{form.email}</strong>. Haz clic en él para activar tu cuenta y continuar con el registro.
-          </p>
-          <p className="text-[12px] text-slate-400">¿No llegó el correo? Revisa tu carpeta de spam.</p>
-          <Link to="/auth/login" className="mt-8 inline-block text-[13px] font-bold text-[#EE6C4D] hover:underline">
-            Volver al inicio de sesión
-          </Link>
-        </div>
-      </div>
-    )
   }
 
   return (

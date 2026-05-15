@@ -224,15 +224,28 @@
                         <div class="relative inline-block mt-1 sm:mt-0">
                             <select id="specialty-selector" class="appearance-none bg-white border border-slate-200 text-secondary text-[12px] font-medium rounded-full px-3 py-1.5 focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none cursor-pointer pr-8 shadow-sm">
                                 <option value="" disabled selected>+ Agregar Área</option>
-                                <option value="Derecho Penal">Derecho Penal</option>
                                 <option value="Derecho Civil">Derecho Civil</option>
+                                <option value="Derecho Penal">Derecho Penal</option>
                                 <option value="Derecho Laboral">Derecho Laboral</option>
                                 <option value="Derecho de Familia">Derecho de Familia</option>
-                                <option value="Derecho Corporativo">Derecho Corporativo</option>
+                                <option value="Fraude bancario">Fraude bancario</option>
+                                <option value="Choques">Choques</option>
+                                <option value="Derecho Comercial / Mercantil">Derecho Comercial / Mercantil</option>
                                 <option value="Derecho Tributario">Derecho Tributario</option>
-                                <option value="Derecho Inmobiliario">Derecho Inmobiliario</option>
                                 <option value="Derecho Administrativo">Derecho Administrativo</option>
-                                <option value="Ley de Migración">Ley de Migración</option>
+                                <option value="Derecho Ambiental">Derecho Ambiental</option>
+                                <option value="Derecho de Aguas">Derecho de Aguas</option>
+                                <option value="Derecho de Minería">Derecho de Minería</option>
+                                <option value="Derecho de Propiedad Intelectual">Derecho de Propiedad Intelectual</option>
+                                <option value="Derecho del Consumidor">Derecho del Consumidor</option>
+                                <option value="Derecho Constitucional">Derecho Constitucional</option>
+                                <option value="Derecho de Seguros">Derecho de Seguros</option>
+                                <option value="Derecho Marítimo">Derecho Marítimo</option>
+                                <option value="Derecho de Salud">Derecho de Salud</option>
+                                <option value="Derecho de Migración">Derecho de Migración</option>
+                                <option value="Libre Competencia">Libre Competencia</option>
+                                <option value="Arbitraje y Mediación">Arbitraje y Mediación</option>
+                                <option value="Derecho Inmobiliario">Derecho Inmobiliario</option>
                             </select>
                             <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[16px] select-none">expand_more</span>
                         </div>
@@ -350,9 +363,13 @@
             const addTag = (text) => {
                 // Sanitize: only allow values from the predefined dropdown list
                 const allowedValues = [
-                    'Derecho Penal', 'Derecho Civil', 'Derecho Laboral', 'Derecho de Familia',
-                    'Derecho Corporativo', 'Derecho Tributario', 'Derecho Inmobiliario',
-                    'Derecho Administrativo', 'Ley de Migración'
+                    'Derecho Civil', 'Derecho Penal', 'Derecho Laboral', 'Derecho de Familia',
+                    'Fraude bancario', 'Choques',
+                    'Derecho Comercial / Mercantil', 'Derecho Tributario', 'Derecho Administrativo',
+                    'Derecho Ambiental', 'Derecho de Aguas', 'Derecho de Minería',
+                    'Derecho de Propiedad Intelectual', 'Derecho del Consumidor', 'Derecho Constitucional',
+                    'Derecho de Seguros', 'Derecho Marítimo', 'Derecho de Salud', 'Derecho de Migración',
+                    'Libre Competencia', 'Arbitraje y Mediación', 'Derecho Inmobiliario'
                 ];
                 if (!allowedValues.includes(text)) return;
                 if (selectedSpecialties.has(text)) return;

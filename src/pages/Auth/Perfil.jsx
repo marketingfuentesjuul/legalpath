@@ -20,7 +20,9 @@ const Perfil = () => {
   const { user } = useAuth()
   
   const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [secondName, setSecondName] = useState('')
+  const [lastNamePaternal, setLastNamePaternal] = useState('')
+  const [lastNameMaternal, setLastNameMaternal] = useState('')
   const [email, setEmail] = useState('')
   const [rut, setRut] = useState('')
   const [region, setRegion] = useState('')
@@ -39,7 +41,8 @@ const Perfil = () => {
   useEffect(() => {
     // Intentar cargar desde sessionStorage (flujo inmediato tras registro)
     setFirstName(sessionStorage.getItem('lp_firstName') || '')
-    setLastName(sessionStorage.getItem('lp_lastName') || '')
+    // lastName from registration might be a single string, we'll put it in paternal for now
+    setLastNamePaternal(sessionStorage.getItem('lp_lastName') || '')
     setEmail(sessionStorage.getItem('lp_email') || '')
 
     // Si ya hay usuario autenticado, podríamos precargar datos de la DB
@@ -47,7 +50,7 @@ const Perfil = () => {
       setEmail(user.email || '')
       if (user.user_metadata) {
         setFirstName(user.user_metadata.first_name || '')
-        setLastName(user.user_metadata.last_name || '')
+        setLastNamePaternal(user.user_metadata.last_name || '')
       }
     }
   }, [user])
@@ -111,10 +114,12 @@ const Perfil = () => {
       }
 
       // 2. Upsert shared profile data
+      const fullName = [firstName, secondName, lastNamePaternal, lastNameMaternal].filter(Boolean).join(' ')
       const profileData = {
         id: user.id,
         first_name: firstName,
-        last_name: lastName,
+        last_name: `${lastNamePaternal} ${lastNameMaternal}`.trim(),
+        full_name: fullName,
         email: email,
         role: 'abogado',
         updated_at: new Date()
@@ -240,12 +245,22 @@ const Perfil = () => {
               <div className="flex-1 space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label htmlFor="firstName" className="block text-[13px] font-bold text-on-background">Nombres</label>
-                    <input type="text" id="firstName" name="firstName" required autoComplete="given-name" maxLength={80} value={firstName} onChange={e => setFirstName(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Elena" />
+                    <label htmlFor="firstName" className="block text-[13px] font-bold text-on-background">Primer Nombre <span className="text-[#EE6C4D]">*</span></label>
+                    <input type="text" id="firstName" name="firstName" required maxLength={80} value={firstName} onChange={e => setFirstName(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Elena" />
                   </div>
                   <div className="space-y-1.5">
-                    <label htmlFor="lastName" className="block text-[13px] font-bold text-on-background">Apellidos</label>
-                    <input type="text" id="lastName" name="lastName" required autoComplete="family-name" maxLength={80} value={lastName} onChange={e => setLastName(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Ramirez" />
+                    <label htmlFor="secondName" className="block text-[13px] font-bold text-on-background">Segundo Nombre</label>
+                    <input type="text" id="secondName" name="secondName" maxLength={80} value={secondName} onChange={e => setSecondName(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. María" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="space-y-1.5">
+                    <label htmlFor="lastNamePaternal" className="block text-[13px] font-bold text-on-background">Apellido Paterno <span className="text-[#EE6C4D]">*</span></label>
+                    <input type="text" id="lastNamePaternal" name="lastNamePaternal" required maxLength={80} value={lastNamePaternal} onChange={e => setLastNamePaternal(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Ramirez" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label htmlFor="lastNameMaternal" className="block text-[13px] font-bold text-on-background">Apellido Materno <span className="text-[#EE6C4D]">*</span></label>
+                    <input type="text" id="lastNameMaternal" name="lastNameMaternal" required maxLength={80} value={lastNameMaternal} onChange={e => setLastNameMaternal(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Soto" />
                   </div>
                 </div>
                 <div className="space-y-1.5">

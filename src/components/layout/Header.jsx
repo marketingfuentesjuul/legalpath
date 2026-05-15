@@ -20,12 +20,12 @@ const Header = () => {
       <div className={`w-full transition-all duration-500 mx-4 ${
         scrolled 
           ? 'max-w-5xl bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/40 rounded-[2rem] py-2 px-6' 
-          : 'max-w-7xl bg-transparent py-4 px-2'
+          : 'max-w-7xl bg-transparent border border-transparent py-4 px-2'
       }`}>
         <nav className="w-full flex justify-between items-center font-['Plus_Jakarta_Sans'] text-sm font-medium tracking-tight">
           <div className="flex items-center">
           <Link to="/">
-            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-[40.8px] w-auto" />
+            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className={`w-auto transition-all duration-500 ${scrolled ? 'h-[34px]' : 'h-[40.8px]'}`} />
           </Link>
         </div>
 

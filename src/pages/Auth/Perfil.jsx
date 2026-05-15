@@ -119,7 +119,6 @@ const Perfil = () => {
         id: user.id,
         first_name: firstName,
         last_name: `${lastNamePaternal} ${lastNameMaternal}`.trim(),
-        full_name: fullName,
         email: email,
         role: 'abogado',
         updated_at: new Date()

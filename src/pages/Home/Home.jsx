@@ -154,7 +154,7 @@ const Home = () => {
               </div>
 
               {/* Chat Popups Stacked below the image with negative margin to overlap */}
-              <div className="w-full max-w-[440px] flex flex-col gap-4 -mt-10 z-20 relative px-4">
+              <div className="w-full max-w-[440px] flex flex-col gap-4 -mt-20 z-20 relative px-4">
                 {/* Left Popup: Lawyer (Maximiliano) */}
                 <div className="w-72 floating flex items-start gap-3 bg-white p-3.5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-slate-100 self-start">
                   <img 

@@ -162,7 +162,7 @@ const Home = () => {
             <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
             <div className="w-16 h-1 bg-primary-container mx-auto mt-4 rounded-full"></div>
             <p className="text-secondary text-lg max-w-3xl mx-auto mt-6 leading-relaxed">
-              En <b>LegalPath</b> puedes publicar tu consulta legal gratis y sin riesgos. En lugar de buscar abogados a ciegas en internet, aquí recibes sus propuestas sin que vean tus datos. <b>Tú tienes el control</b>: solo cuando elijas la propuesta que más te convenza, le compartiremos tu contacto al abogado.
+              En <b>LegalPath</b> puedes publicar tu consulta legal gratis y sin riesgos. En lugar de buscar abogados a ciegas en internet, aquí recibes sus propuestas sin que vean tus datos. <b>Tú tienes el control</b>: solo cuando elijas la propuesta que más te convenza, el abogado podrá acceder a tus datos de contacto.
             </p>
           </div>
 

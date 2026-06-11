@@ -96,62 +96,62 @@ const Home = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-8 pt-10 pb-24"
+          className="relative min-h-[85vh] flex items-center justify-center overflow-hidden px-6 md:px-12 pt-16 pb-20 md:pb-28"
         >
+          {/* Background Gradient Glowing Orbs */}
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container/10 blur-[120px] rounded-full -z-10"></div>
           <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-secondary-container/20 blur-[120px] rounded-full -z-10"></div>
-          <div className="max-w-4xl w-full text-center space-y-10 relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/10 text-primary-container rounded-full text-xs font-bold tracking-widest uppercase mx-auto">
-              <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
-              Justicia accesible para todos
-            </div>
-            <h1 className="text-[51px] md:text-[81.6px] font-extrabold tracking-tighter leading-[1] text-on-background">
-              Publica tu caso y que los abogados te <span className="text-[#1ECCA7]">encuentren</span>.
-            </h1>
-            <p className="text-xl text-secondary leading-relaxed max-w-2xl mx-auto">
-              Publica tu caso de <b>forma anónima y gratuita, </b>espera a que los abogados te contacten y tú eres el que <b>elige</b> a cuál de los especialistas tomar<b>.</b>
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link to="/publicar-caso" className="mint-gradient text-on-primary px-10 py-5 rounded-full text-xl font-bold shadow-2xl hover:scale-105 transition-transform text-center inline-block">
-                Publicar mi caso
-              </Link>
-              <a href="#como-funciona" className="bg-white text-on-secondary-container border border-slate-200 px-10 py-5 rounded-full text-xl font-bold hover:bg-slate-50 transition-colors shadow-sm text-center inline-block">
-                ¿Cómo funciona?
-              </a>
-            </div>
-            <div className="flex items-center justify-center gap-4 pt-6">
-              <div className="flex -space-x-3">
-                <img className="w-10 h-10 rounded-full border-2 border-white" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI" alt="Avatar" />
-                <img className="w-10 h-10 rounded-full border-2 border-white" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvREyG3tmjBSqXfmUxfvfT905OfRk5znbhwRt9xTq3jP7JWvpwQIgCPgZbxaKnUix6eL5tcpso8KdM-aMYgjRf8PQ0xhyyQOqb1FbEYTRKBQhNauh_0BGz9xmPNgE_QgHSbIJ2d0X60oarFQ02AZ-LlTtZVp9iCF8QU6MN98xlshkH_zO3il8blRajGQ00SOAPXNMVYfRGuFBmclkE320JLQBgLVIJ8fSBtwoGzF_jYblOOGWUF6qdCD73OZxyj7GVijILaeUdKUk" alt="Avatar" />
-                <img className="w-10 h-10 rounded-full border-2 border-white" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmUTLayHNnlAwhhAnw3VZJVeJkggFeIbhVB5NpJ_bS8mZE9kgRyI46kBR3fk14LBh9gWUgWDU5kbLg9Qc_S8TDU5iFjC0fFdxY_W7iWH0mb5ypLzmVn_LERXosIWrFMxb28Jr8EWWiuabmQgqaYJfoCdpEtK4tTXX5_HSLpefXq1Ou8thbKXBC3ckFWO69iqMHOUzNFndigIa8JFqets3S7idfKFdrThXVSDuuIIlP0bVOa4Grd-MGdT5-RqFeYVaQid2vccPHpxY" alt="Avatar" />
+          
+          <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+            {/* Left Column: Text & Actions */}
+            <div className="lg:col-span-7 space-y-8 text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/10 text-primary-container rounded-full text-xs font-bold tracking-widest uppercase">
+                <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
+                Justicia accesible para todos
               </div>
-              <p className="text-sm font-medium text-secondary">
-                <font color="#141b2c"><b>+2000 abogados registrados</b></font> listos para ayudarte.
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-on-background">
+                Publica tu caso y que los abogados te <span className="text-[#1ECCA7]">encuentren</span>.
+              </h1>
+              
+              <p className="text-lg md:text-xl text-secondary leading-relaxed max-w-xl">
+                Publica tu caso de <b>forma anónima y gratuita, </b>espera a que los abogados te contacten y tú eres el que <b>elige</b> a cuál de los especialistas tomar<b>.</b>
               </p>
-            </div>
-          </div>
-
-          {/* Floating UI Elements */}
-          <div className="absolute left-10 md:left-[10%] top-[45%] floating hidden lg:block">
-            <div className="glass-card p-3 rounded-full border border-white/50 shadow-xl flex items-center gap-3 pr-6">
-              <img alt="Lawyer" className="w-14 h-14 rounded-full object-cover border-2 border-primary-container" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0" />
-              <div>
-                <p className="text-xs font-bold text-on-background leading-none">Ricardo M.</p>
-                <p className="text-[10px] text-primary-container font-medium">Experto Civil</p>
+              
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Link to="/publicar-caso" className="mint-gradient text-on-primary px-8 py-4 rounded-full text-lg font-bold shadow-2xl hover:scale-105 transition-transform text-center inline-block">
+                  Publicar mi caso
+                </Link>
+                <a href="#como-funciona" className="bg-white text-on-secondary-container border border-slate-200 px-8 py-4 rounded-full text-lg font-bold hover:bg-slate-50 transition-colors shadow-sm text-center inline-block">
+                  ¿Cómo funciona?
+                </a>
               </div>
-            </div>
-          </div>
-          <div className="absolute right-10 md:right-[8%] top-[35%] floating-delayed hidden lg:block">
-            <div className="glass-card p-5 rounded-3xl border border-white/80 shadow-2xl space-y-3 w-56 text-center">
-              <img alt="Lawyer" className="w-20 h-20 rounded-full mx-auto object-cover border-4 border-white shadow-md" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI" />
-              <div>
-                <div className="flex items-center justify-center gap-1">
-                  <p className="text-sm font-bold">Elena R.</p>
-                  <span className="material-symbols-outlined text-[14px] text-blue-500" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
+              
+              <div className="flex items-center gap-4 pt-6 border-t border-slate-100 max-w-md">
+                <div className="flex -space-x-3">
+                  <img className="w-10 h-10 rounded-full border-2 border-white object-cover" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI" alt="Avatar" />
+                  <img className="w-10 h-10 rounded-full border-2 border-white object-cover" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvREyG3tmjBSqXfmUxfvfT905OfRk5znbhwRt9xTq3jP7JWvpwQIgCPgZbxaKnUix6eL5tcpso8KdM-aMYgjRf8PQ0xhyyQOqb1FbEYTRKBQhNauh_0BGz9xmPNgE_QgHSbIJ2d0X60oarFQ02AZ-LlTtZVp9iCF8QU6MN98xlshkH_zO3il8blRajGQ00SOAPXNMVYfRGuFBmclkE320JLQBgLVIJ8fSBtwoGzF_jYblOOGWUF6qdCD73OZxyj7GVijILaeUdKUk" alt="Avatar" />
+                  <img className="w-10 h-10 rounded-full border-2 border-white object-cover" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmUTLayHNnlAwhhAnw3VZJVeJkggFeIbhVB5NpJ_bS8mZE9kgRyI46kBR3fk14LBh9gWUgWDU5kbLg9Qc_S8TDU5iFjC0fFdxY_W7iWH0mb5ypLzmVn_LERXosIWrFMxb28Jr8EWWiuabmQgqaYJfoCdpEtK4tTXX5_HSLpefXq1Ou8thbKXBC3ckFWO69iqMHOUzNFndigIa8JFqets3S7idfKFdrThXVSDuuIIlP0bVOa4Grd-MGdT5-RqFeYVaQid2vccPHpxY" alt="Avatar" />
                 </div>
-                <p className="text-[10px] text-secondary font-medium mt-1">✨ Especialista en Familia</p>
+                <p className="text-sm font-medium text-secondary">
+                  <span className="text-on-background font-bold">+2000 abogados registrados</span> listos para ayudarte.
+                </p>
               </div>
-              <button className="w-full py-2 bg-on-background text-white text-[10px] font-bold rounded-full">Ver Perfil</button>
+            </div>
+
+            {/* Right Column: Hero Image with Gradient Backdrop */}
+            <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
+              {/* Outer decorative gradient glow */}
+              <div className="absolute inset-0 -m-4 bg-gradient-to-tr from-[#1ECCA7]/20 to-[#006b56]/10 blur-2xl rounded-[2.5rem] -z-10"></div>
+              
+              {/* Image Frame matching the Rankmi mockup style */}
+              <div className="relative w-full max-w-[440px] aspect-square rounded-[2.2rem] overflow-hidden shadow-2xl border border-white/60 bg-white/50 backdrop-blur-sm p-3">
+                <img 
+                  src="/assets/images/hero-user.jpg" 
+                  alt="Usuario describiendo su caso en LegalPath" 
+                  className="w-full h-full object-cover rounded-[1.8rem] shadow-inner"
+                />
+              </div>
             </div>
           </div>
         </motion.section>

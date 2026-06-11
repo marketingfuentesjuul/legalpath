@@ -140,7 +140,7 @@ const Home = () => {
             </div>
 
             {/* Right Column: Hero Image with Gradient Backdrop */}
-            <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
+            <div className="lg:col-span-5 flex flex-col items-center lg:items-end gap-6 relative">
               {/* Outer decorative gradient glow */}
               <div className="absolute inset-0 -m-4 bg-gradient-to-tr from-[#1ECCA7]/20 to-[#006b56]/10 blur-2xl rounded-[2.5rem] -z-10"></div>
               
@@ -153,41 +153,44 @@ const Home = () => {
                 />
               </div>
 
-              {/* Left Popup: Lawyer (Maximiliano) */}
-              <div className="absolute -left-10 lg:-left-16 top-[15%] z-20 w-72 floating hidden md:flex items-start gap-3 bg-white p-3.5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-slate-100">
-                <img 
-                  className="w-10 h-10 rounded-full object-cover border-2 border-primary-container"
-                  referrerPolicy="no-referrer"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0"
-                  alt="Maximiliano"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-[#006b56]">Maximiliano</p>
-                    <span className="text-[10px] text-slate-400 font-medium">Ahora</span>
+              {/* Chat Popups Stacked below the image */}
+              <div className="w-full max-w-[440px] flex flex-col gap-4 pt-2">
+                {/* Left Popup: Lawyer (Maximiliano) */}
+                <div className="w-72 floating flex items-start gap-3 bg-white p-3.5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-slate-100 self-start">
+                  <img 
+                    className="w-10 h-10 rounded-full object-cover border-2 border-primary-container"
+                    referrerPolicy="no-referrer"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0"
+                    alt="Maximiliano"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-bold text-[#006b56]">Maximiliano</p>
+                      <span className="text-[10px] text-slate-400 font-medium">Ahora</span>
+                    </div>
+                    <p className="text-xs text-slate-600 mt-1 leading-normal">
+                      Francisco, te escribo para comentarte que hoy presentamos el escrito.
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-600 mt-1 leading-normal">
-                    Francisco, te escribo para comentarte que hoy presentamos el escrito.
-                  </p>
                 </div>
-              </div>
 
-              {/* Right Popup: Client (Francisco) */}
-              <div className="absolute -right-6 lg:-right-10 bottom-[12%] z-20 w-72 floating-delayed hidden md:flex items-start gap-3 bg-[#e6fcf7] p-3.5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-[#1ecca7]/10">
-                <img 
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
-                  referrerPolicy="no-referrer"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI"
-                  alt="Francisco"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-slate-800">Francisco</p>
-                    <span className="text-[10px] text-slate-400 font-medium">Ahora</span>
+                {/* Right Popup: Client (Francisco) */}
+                <div className="w-72 floating-delayed flex items-start gap-3 bg-[#e6fcf7] p-3.5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-[#1ecca7]/10 self-end">
+                  <img 
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
+                    referrerPolicy="no-referrer"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMUTLayHNnlAwhhAnw3VZJVeJkggFeIbhVB5NpJ_bS8mZE9kgRyI46kBR3fk14LBh9gWUgWDU5kbLg9Qc_S8TDU5iFjC0fFdxY_W7iWH0mb5ypLzmVn_LERXosIWrFMxb28Jr8EWWiuabmQgqaYJfoCdpEtK4tTXX5_HSLpefXq1Ou8thbKXBC3ckFWO69iqMHOUzNFndigIa8JFqets3S7idfKFdrThXVSDuuIIlP0bVOa4Grd-MGdT-MGdT5-RqFeYVaQid2vccPHpxY"
+                    alt="Francisco"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-bold text-slate-800">Francisco</p>
+                      <span className="text-[10px] text-slate-400 font-medium">Ahora</span>
+                    </div>
+                    <p className="text-xs text-slate-600 mt-1 leading-normal">
+                      Perfecto Maximiliano. Quedo atento a mayor información 😊
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-600 mt-1 leading-normal">
-                    Perfecto Maximiliano. Quedo atento a mayor información 😊
-                  </p>
                 </div>
               </div>
             </div>

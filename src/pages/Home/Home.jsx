@@ -159,8 +159,7 @@ const Home = () => {
                 <div className="w-72 floating flex items-start gap-3 bg-white p-3.5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-slate-100 self-start">
                   <img 
                     className="w-10 h-10 rounded-full object-cover border-2 border-primary-container"
-                    referrerPolicy="no-referrer"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0"
+                    src="/assets/images/maximiliano-abogado.jpg"
                     alt="Maximiliano"
                   />
                   <div className="flex-1 min-w-0">

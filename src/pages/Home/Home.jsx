@@ -177,8 +177,7 @@ const Home = () => {
                 <div className="w-72 floating-delayed flex items-start gap-3 bg-[#e6fcf7] p-3.5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-[#1ecca7]/10 self-end">
                   <img 
                     className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
-                    referrerPolicy="no-referrer"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMUTLayHNnlAwhhAnw3VZJVeJkggFeIbhVB5NpJ_bS8mZE9kgRyI46kBR3fk14LBh9gWUgWDU5kbLg9Qc_S8TDU5iFjC0fFdxY_W7iWH0mb5ypLzmVn_LERXosIWrFMxb28Jr8EWWiuabmQgqaYJfoCdpEtK4tTXX5_HSLpefXq1Ou8thbKXBC3ckFWO69iqMHOUzNFndigIa8JFqets3S7idfKFdrThXVSDuuIIlP0bVOa4Grd-MGdT-MGdT5-RqFeYVaQid2vccPHpxY"
+                    src="/assets/images/francisco-cliente.jpg"
                     alt="Francisco"
                   />
                   <div className="flex-1 min-w-0">

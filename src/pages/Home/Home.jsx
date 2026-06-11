@@ -161,6 +161,9 @@ const Home = () => {
           <div className="text-center mb-16">
             <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
             <div className="w-16 h-1 bg-primary-container mx-auto mt-4 rounded-full"></div>
+            <p className="text-secondary text-lg max-w-3xl mx-auto mt-6 leading-relaxed">
+              LegalPath es una plataforma que permite a personas comunes que enfrentan problemas legales presentar sus consultas de forma gratuita. En lugar de buscar abogados en internet, a menudo sin confianza en su legitimidad, aquí los abogados no tienen sus datos de contacto directamente y antes de poder solicitar tus datos de contacto a través de la plataforma, tú deberás elegir cuál de las propuestas y los abogados te convence más.
+            </p>
           </div>
 
           {/* Step 01 */}

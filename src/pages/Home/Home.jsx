@@ -159,15 +159,15 @@ const Home = () => {
                   className="w-10 h-10 rounded-full object-cover border-2 border-primary-container"
                   referrerPolicy="no-referrer"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0"
-                  alt="Maximiliano Abogado"
+                  alt="Maximiliano"
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-[#006b56]">Maximiliano (Abogado)</p>
+                    <p className="text-xs font-bold text-[#006b56]">Maximiliano</p>
                     <span className="text-[10px] text-slate-400 font-medium">Ahora</span>
                   </div>
                   <p className="text-xs text-slate-600 mt-1 leading-normal">
-                    Hola Francisco, Te escribo para comentarte que el caso va muy bien y hoy presentamos el escrito.
+                    Francisco, te escribo para comentarte que hoy presentamos el escrito.
                   </p>
                 </div>
               </div>
@@ -178,15 +178,15 @@ const Home = () => {
                   className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
                   referrerPolicy="no-referrer"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI"
-                  alt="Francisco Cliente"
+                  alt="Francisco"
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-slate-800">Francisco (Cliente)</p>
+                    <p className="text-xs font-bold text-slate-800">Francisco</p>
                     <span className="text-[10px] text-slate-400 font-medium">Ahora</span>
                   </div>
                   <p className="text-xs text-slate-600 mt-1 leading-normal">
-                    Perfecto Maximiliano. Quedo atento a mayor información sobre el caso.
+                    Perfecto Maximiliano. Quedo atento a mayor información 😊
                   </p>
                 </div>
               </div>

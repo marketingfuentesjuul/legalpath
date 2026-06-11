@@ -113,37 +113,29 @@ const Perfil = () => {
         avatarUrl = publicUrl
       }
 
-      // 2. Upsert shared profile data
-      const fullName = [firstName, secondName, lastNamePaternal, lastNameMaternal].filter(Boolean).join(' ')
-      const profileData = {
+      // 2. Upsert lawyer data
+      const lawyerProfileData = {
         id: user.id,
         first_name: firstName,
         last_name: `${lastNamePaternal} ${lastNameMaternal}`.trim(),
+        second_name: secondName,
+        last_name_paternal: lastNamePaternal,
+        last_name_maternal: lastNameMaternal,
         email: email,
         role: 'abogado',
+        rut_personal: rut,
+        region: region,
+        city: city,
+        colegio_id: colegioId,
+        specialties: specialties,
+        verification_status: 'pendiente',
         updated_at: new Date()
       }
-      if (avatarUrl) profileData.avatar_url = avatarUrl
+      if (avatarUrl) lawyerProfileData.avatar_url = avatarUrl
 
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .upsert(profileData)
-
-      if (profileError) throw profileError
-
-      // 3. Upsert lawyer-specific data
       const { error: lawyerProfileError } = await supabase
         .from('lawyer_profiles')
-        .upsert({
-          id: user.id,
-          rut_personal: rut,
-          region: region,
-          city: city,
-          colegio_id: colegioId,
-          specialties: specialties,
-          verification_status: 'pendiente',
-          updated_at: new Date()
-        })
+        .upsert(lawyerProfileData)
 
       if (lawyerProfileError) throw lawyerProfileError
 

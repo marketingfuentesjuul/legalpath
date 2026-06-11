@@ -244,7 +244,7 @@ const PublicarCaso = () => {
       if (anonError) throw anonError
 
       // 2. Actualizar el perfil anónimo con el nombre real y el email
-      await supabase.from('profiles').update({
+      await supabase.from('client_profiles').update({
         first_name: firstName,
         last_name: lastName || '',
         email: registerForm.email,

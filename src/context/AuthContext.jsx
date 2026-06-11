@@ -40,12 +40,26 @@ export const AuthProvider = ({ children }) => {
     // Función para obtener el perfil completo si es necesario
     getProfile: async () => {
       if (!user) return null;
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*, lawyer_profiles(*)')
+      
+      // Primero intentamos buscar en lawyer_profiles
+      let { data: lawyerData, error: lawyerError } = await supabase
+        .from('lawyer_profiles')
+        .select('*')
         .eq('id', user.id)
-        .single();
-      return { data, error };
+        .maybeSingle();
+        
+      if (lawyerData) {
+        return { data: { ...lawyerData, isLawyer: true }, error: null };
+      }
+      
+      // Si no existe, buscamos en client_profiles
+      let { data: clientData, error: clientError } = await supabase
+        .from('client_profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+        
+      return { data: clientData ? { ...clientData, isLawyer: false } : null, error: clientError };
     }
   };
 

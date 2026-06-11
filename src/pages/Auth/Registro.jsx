@@ -70,14 +70,23 @@ const Registro = () => {
 
       // 3. Intentamos actualizar el perfil en la DB
       try {
-        await supabase.from('profiles').update({
+        const { error: lpError } = await supabase.from('lawyer_profiles').insert({
+          id: anonData.user.id,
           first_name: firstName,
           last_name: lastName,
           email: email,
-          role: 'abogado'
-        }).eq('id', anonData.user.id)
+          role: 'abogado',
+          verification_status: 'pendiente'
+        })
+        
+        if (lpError) {
+          console.warn('Error al insertar en lawyer_profiles:', lpError)
+        }
+
+        // Eliminar el perfil de cliente creado temporalmente por el inicio de sesión anónimo
+        await supabase.from('client_profiles').delete().eq('id', anonData.user.id)
       } catch (dbErr) {
-        console.warn('Error al actualizar tabla profiles:', dbErr)
+        console.warn('Error al actualizar tablas de perfiles:', dbErr)
       }
 
       // 4. Navegamos directamente al perfil pase lo que pase

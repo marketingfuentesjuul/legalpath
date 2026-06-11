@@ -17,7 +17,7 @@ const Login = () => {
   }, [user])
 
   const redirectByRole = async (userId) => {
-    const { data } = await supabase.from('profiles').select('role').eq('id', userId).single()
+    const { data } = await supabase.from('lawyer_profiles').select('role').eq('id', userId).maybeSingle()
     navigate(data?.role === 'abogado' ? '/dashboard' : '/', { replace: true })
   }
 

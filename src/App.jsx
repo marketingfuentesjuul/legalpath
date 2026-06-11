@@ -37,7 +37,7 @@ function App() {
           <Route path="/auth/perfil" element={<PageTransition><ProtectedRoute><Perfil /></ProtectedRoute></PageTransition>} />
           <Route path="/auth/registro" element={<PageTransition><Registro /></PageTransition>} />
           <Route path="/auth/validacion" element={<PageTransition><Validacion /></PageTransition>} />
-          <Route path="/dashboard" element={<PageTransition><ProtectedRoute><Dashboard /></ProtectedRoute></PageTransition>} />
+          <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
         </Routes>
       </AnimatePresence>
     </>

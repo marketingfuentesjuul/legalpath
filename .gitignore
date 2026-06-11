@@ -6,6 +6,7 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+.mcp.json
 
 # Dependencias (para cuando se agregue npm/node)
 node_modules/

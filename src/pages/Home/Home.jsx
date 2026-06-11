@@ -219,20 +219,7 @@ const Home = () => {
               <p className="text-xl text-secondary leading-relaxed max-w-lg">
                 Describe tu situación legal de<b> forma anónima</b>. No necesitas ser un experto, solo cuéntanos qué pasó y nosotros te ayudaremos a definir cuál es el área de legal del experto que necesitas.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary-container mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">100% Anónimo:</span> Tus datos están protegidos en todo momento.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary-container mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Sin Compromiso:</span> Publicar es gratis y no te obliga a contratar.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary-container mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Tú Eliges:</span> Tú eliges al profesional que quieras.</p>
-                </li>
-              </ul>
+
             </div>
             {/* Software Mockup: Case Submission UI */}
             <div className="relative rounded-2xl overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,107,86,0.18)] border border-slate-200/60 bg-[#f8fafc] min-h-[440px]">
@@ -298,16 +285,7 @@ const Home = () => {
               <p className="text-xl text-secondary leading-relaxed max-w-lg">
                 Una vez que envías tu caso, se publica. Los abogados que estén registrados en la página, especialistas en el área específica de tu caso, podrán postularse para que tú elijas con cuál de ellos trabajar.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary-container mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Match Inteligente:</span> Solo expertos validados en tu área específica.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary-container mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Ahorro de Tiempo:</span> Recibe hasta 5 propuestas en menos de 24 horas.</p>
-                </li>
-              </ul>
+
             </div>
             <div className="lg:order-1 relative bg-surface-container-low rounded-3xl p-8 shadow-inner overflow-hidden min-h-[450px]">
               <div className="space-y-3">
@@ -363,16 +341,7 @@ const Home = () => {
               <p className="text-xl text-secondary leading-relaxed max-w-lg">
                 Compara perfiles, lee opiniones verificadas de otros usuarios y contrata al profesional que te dé más confianza para llevar tu caso.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary-container mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Mayor Seguridad:</span> Los abogados que se publican están certificados y verificados.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary-container mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Acompañamiento:</span> Soporte en cada etapa de tu proceso legal.</p>
-                </li>
-              </ul>
+
             </div>
             <div className="relative bg-on-background rounded-3xl p-12 text-white overflow-hidden min-h-[400px] flex items-center justify-center">
               <div className="space-y-6 w-full max-w-sm">

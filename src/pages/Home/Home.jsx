@@ -520,22 +520,30 @@ const Home = () => {
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#4A2015] leading-snug">Anonimato 100% hasta que decidas aceptar una propuesta.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#4A2015] leading-snug">Poder adjuntar imágenes y documentos.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#4A2015] leading-snug">Orientación de la plataforma sobre qué tipo de abogado necesitas.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#4A2015] leading-snug">Publicación de caso gratuita.</span>
                   </div>
                 </div>
@@ -554,22 +562,30 @@ const Home = () => {
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#1E293B] leading-snug">Filtros de selección rigurosos.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#1E293B] leading-snug">Verificación de títulos profesionales.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#1E293B] leading-snug">Validación de RUT ante el Colegio de Abogados.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#1E293B] leading-snug">Revisión de antecedentes de los profesionales.</span>
                   </div>
                 </div>
@@ -588,17 +604,23 @@ const Home = () => {
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#E8FFF8]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#064E3B] leading-snug">Recibe hasta cinco propuestas de abogados.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#E8FFF8]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#064E3B] leading-snug">En caso de que no te convenza ninguna oferta, puedes descartarlas y recibir otras cinco nuevas.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#E8FFF8]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#064E3B] leading-snug">Vas a poder comparar precios y hacer todas las consultas necesarias antes de decidir uno por uno de los abogados.</span>
                   </div>
                 </div>
@@ -617,22 +639,30 @@ const Home = () => {
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#78350F] leading-snug">A través de la plataforma podrás comunicarte y tener el historial de mensajes con el abogado.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#78350F] leading-snug">Podrás compartir archivos y documentos de manera segura.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#78350F] leading-snug">Podrás seguir los hitos de tu causa en una línea temporal.</span>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
                     <span className="text-sm font-bold text-[#78350F] leading-snug">Estarás protegido bajo el respaldo y seguridad de LegalPath.</span>
                   </div>
                 </div>

@@ -735,11 +735,11 @@ const Home = () => {
                 <stop offset="100%" stopColor="#1ecca7" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="ctaPathGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#006b56" stopOpacity="0" />
-                <stop offset="20%" stopColor="#006b56" stopOpacity="0.14" />
-                <stop offset="50%" stopColor="#1ecca7" stopOpacity="0.08" />
-                <stop offset="80%" stopColor="#006b56" stopOpacity="0.14" />
-                <stop offset="100%" stopColor="#006b56" stopOpacity="0" />
+                <stop offset="0%" stopColor="#EE6C4D" stopOpacity="0" />
+                <stop offset="20%" stopColor="#EE6C4D" stopOpacity="0.14" />
+                <stop offset="50%" stopColor="#EE6C4D" stopOpacity="0.08" />
+                <stop offset="80%" stopColor="#EE6C4D" stopOpacity="0.14" />
+                <stop offset="100%" stopColor="#EE6C4D" stopOpacity="0" />
               </linearGradient>
             </defs>
             

@@ -290,7 +290,7 @@ const Home = () => {
             <div className="lg:order-1 relative bg-surface-container-low rounded-3xl p-6 md:p-8 shadow-inner overflow-hidden min-h-[480px] flex flex-col justify-between">
               <div className="space-y-2.5">
                 {/* Proposal 1: Lucas Salas */}
-                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-3 transition-transform hover:translate-x-0">
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transition-all hover:shadow-md">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#006b56]/20 to-[#1ecca7]/30 flex items-center justify-center text-[#006b56] font-bold text-xs shrink-0">
                       LS
@@ -306,7 +306,7 @@ const Home = () => {
                 </div>
 
                 {/* Proposal 2: Jeanne Bollut */}
-                <div className="bg-white p-3.5 rounded-xl shadow-md border border-primary-container/30 flex items-center justify-between scale-102 z-10 relative transform translate-x-1 transition-transform hover:translate-x-0">
+                <div className="bg-white p-3.5 rounded-xl shadow-md border border-primary-container/30 flex items-center justify-between scale-102 z-10 relative transition-all hover:shadow-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-100 to-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs shrink-0">
                       JB
@@ -322,7 +322,7 @@ const Home = () => {
                 </div>
 
                 {/* Proposal 3: Matias Deischler */}
-                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-1 transition-transform hover:translate-x-0">
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transition-all hover:shadow-md">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-100 to-amber-200 flex items-center justify-center text-amber-700 font-bold text-xs shrink-0">
                       MD
@@ -338,7 +338,7 @@ const Home = () => {
                 </div>
 
                 {/* Proposal 4: Magdalena Romero */}
-                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform translate-x-3 transition-transform hover:translate-x-0">
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transition-all hover:shadow-md">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-pink-100 to-pink-200 flex items-center justify-center text-pink-700 font-bold text-xs shrink-0">
                       MR
@@ -354,7 +354,7 @@ const Home = () => {
                 </div>
 
                 {/* Proposal 5: Daniel Camargo */}
-                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-2 transition-transform hover:translate-x-0">
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transition-all hover:shadow-md">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-sky-100 to-sky-200 flex items-center justify-center text-sky-700 font-bold text-xs shrink-0">
                       DC

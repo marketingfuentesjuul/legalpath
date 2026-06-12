@@ -391,20 +391,7 @@ const Abogados = () => {
               <p className="text-xl text-secondary leading-relaxed max-w-lg">
                 Crea tu cuenta profesional y adjunta tus documentos para validar tu calidad de abogado. Verificamos tu <b>título profesional</b> y antecedentes ante la Corte Suprema.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Perfil Verificado:</span> Sello de confianza visible para los clientes.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Proceso Simple:</span> Solo necesitas tu título y cédula profesional.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Áreas de Especialidad:</span> Define tus áreas para recibir casos relevantes.</p>
-                </li>
-              </ul>
+
             </div>
             {/* Mockup: Registration Form */}
             <div className="relative rounded-2xl overflow-hidden shadow-[0_40px_80px_-20px_rgba(238,108,77,0.18)] border border-slate-200/60 bg-[#f8fafc]">
@@ -508,20 +495,7 @@ const Abogados = () => {
               <p className="text-xl text-secondary leading-relaxed max-w-lg">
                 Con nuestro <b>sistema de tokens</b>, cada token te permite contactar a un cliente pre-calificado en nuestro marketplace. Verás la información relevante del caso para decidir si vale la pena antes de usar tu token.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Casos Filtrados:</span> Solo ves casos de tu área de especialidad.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Información Clara:</span> Resumen del caso, categoría y urgencia antes de decidir.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Sin Sorpresas:</span> Tú decides en qué casos invertir tus tokens.</p>
-                </li>
-              </ul>
+
             </div>
             {/* Mockup: Token Dashboard */}
             <div className="lg:order-1 relative bg-surface-container-low rounded-3xl p-8 shadow-inner overflow-hidden min-h-[450px]">
@@ -575,20 +549,7 @@ const Abogados = () => {
               <p className="text-xl text-secondary leading-relaxed max-w-lg">
                 Según tu área de especialidad, <b>usa un token</b> para iniciar una conversación directa con el cliente. Preséntale tu propuesta y demuestra por qué eres la mejor opción para su caso.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Conversación Directa:</span> Chat seguro dentro de la plataforma.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Tú Propones:</span> Presenta tus servicios, experiencia y honorarios.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mt-1">check_circle</span>
-                  <p className="text-secondary"><span className="font-bold text-on-background">Cliente Decide:</span> Tu reputación y propuesta son tu mejor carta.</p>
-                </li>
-              </ul>
+
             </div>
             {/* Mockup: Chat / Connection */}
             <div className="relative bg-on-background rounded-3xl p-12 text-white overflow-hidden min-h-[400px] flex items-center justify-center">

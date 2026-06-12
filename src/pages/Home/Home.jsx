@@ -287,42 +287,91 @@ const Home = () => {
               </p>
 
             </div>
-            <div className="lg:order-1 relative bg-surface-container-low rounded-3xl p-8 shadow-inner overflow-hidden min-h-[450px]">
-              <div className="space-y-3">
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-4">
+            <div className="lg:order-1 relative bg-surface-container-low rounded-3xl p-6 md:p-8 shadow-inner overflow-hidden min-h-[480px] flex flex-col justify-between">
+              <div className="space-y-2.5">
+                {/* Proposal 1: Lucas Salas */}
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-3 transition-transform hover:translate-x-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-200"></div>
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#006b56]/20 to-[#1ecca7]/30 flex items-center justify-center text-[#006b56] font-bold text-xs">
+                      LS
+                    </div>
                     <div>
-                      <div className="text-sm font-bold">Carlos P.</div>
-                      <div className="text-[10px] text-slate-400">Propuesta enviada</div>
+                      <div className="text-xs font-bold text-on-background">Lucas Salas</div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">Solicitud de contacto</span>
+                        <span className="text-[9px] text-slate-400 font-semibold">20 min.</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-primary-container font-bold"><br /></div>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-md border border-primary-container/30 flex items-center justify-between scale-105 z-10 relative">
+
+                {/* Proposal 2: Jeanne Bollut */}
+                <div className="bg-white p-3.5 rounded-xl shadow-md border border-primary-container/30 flex items-center justify-between scale-102 z-10 relative transform translate-x-1 transition-transform hover:translate-x-0">
                   <div className="flex items-center gap-3">
-                    <img className="w-10 h-10 rounded-full" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxDobgTeGdYta_YlWydNirrHVpQxYOGjQif6GO_tRCuJaZu1SlXD45o4ytntn86L19nvRe_tfaEwqMjLxbh9H4S2UzKxwbXY2SmMr2ppXaKb5YLET4pGP95LeHZb_GNIUW5bTFWa82WPbmjdAzAK7lMB_XnLK_-JfBikKzSXU-JdwhE9Gxghpa7wZ4QlQ6e3VoSCRp8O76xzQWjQXK-mXJlD2jSMrUrq7hX0aYSCnrUMknNG6AWtQDNkv3720r_TNx8uojwLY8y0" alt="Elena R." />
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-100 to-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs">
+                      JB
+                    </div>
                     <div>
-                      <div className="text-sm font-bold">Elena R.</div>
-                      <div className="text-[10px] text-primary-container font-bold">Recomendada ✨</div>
+                      <div className="text-xs font-bold text-on-background">Jeanne Bollut</div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[9px] bg-primary-container/10 text-primary-container px-1.5 py-0.5 rounded font-bold">Solicitud de contacto</span>
+                        <span className="text-[9px] text-slate-400 font-semibold">2 horas</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-primary-container font-bold"><br /></div>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform translate-x-4">
+
+                {/* Proposal 3: Matias Deischler */}
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-1 transition-transform hover:translate-x-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-200"></div>
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-100 to-amber-200 flex items-center justify-center text-amber-700 font-bold text-xs">
+                      MD
+                    </div>
                     <div>
-                      <div className="text-sm font-bold">Sonia M.</div>
-                      <div className="text-[10px] text-slate-400">Propuesta enviada</div>
+                      <div className="text-xs font-bold text-on-background">Matias Deischler</div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">Solicitud de contacto</span>
+                        <span className="text-[9px] text-slate-400 font-semibold">8 horas</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-primary-container font-bold"><br /></div>
+                </div>
+
+                {/* Proposal 4: Magdalena Romero */}
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform translate-x-3 transition-transform hover:translate-x-0">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-pink-100 to-pink-200 flex items-center justify-center text-pink-700 font-bold text-xs">
+                      MR
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-on-background">Magdalena Romero</div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">Solicitud de contacto</span>
+                        <span className="text-[9px] text-slate-400 font-semibold">1 día</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Proposal 5: Daniel Camargo */}
+                <div className="bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between transform -translate-x-2 transition-transform hover:translate-x-0">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-sky-100 to-sky-200 flex items-center justify-center text-sky-700 font-bold text-xs">
+                      DC
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-on-background">Daniel Camargo</div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">Solicitud de contacto</span>
+                        <span className="text-[9px] text-slate-400 font-semibold">3 días</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-6 py-3 rounded-full border border-primary-container/20 shadow-xl flex items-center gap-2">
+              <div className="relative mt-6 mb-2 mx-auto bg-white/90 backdrop-blur px-6 py-3 rounded-full border border-primary-container/20 shadow-xl flex items-center gap-2 w-max">
                 <div className="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
-                <span className="text-xs font-bold text-on-background whitespace-nowrap">Tienes tres propuestas nuevas...</span>
+                <span className="text-xs font-bold text-on-background whitespace-nowrap">Tienes cinco propuestas nuevas...</span>
               </div>
             </div>
           </motion.div>

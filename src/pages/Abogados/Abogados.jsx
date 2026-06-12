@@ -19,6 +19,33 @@ const Abogados = () => {
         html { scroll-behavior: smooth; }
         @keyframes count-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .token-badge { animation: count-pulse 3s ease-in-out infinite; }
+        
+        @keyframes flowPath {
+          from { stroke-dashoffset: 240; }
+          to { stroke-dashoffset: 0; }
+        }
+        @keyframes flowPathReverse {
+          from { stroke-dashoffset: -240; }
+          to { stroke-dashoffset: 0; }
+        }
+        .flowing-path {
+          stroke-dasharray: 40 80;
+          animation: flowPath 15s linear infinite;
+        }
+        .flowing-path-reverse {
+          stroke-dasharray: 30 70;
+          animation: flowPathReverse 12s linear infinite;
+        }
+        @keyframes ctaSway {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+        .cta-sway-1 {
+          animation: ctaSway 14s ease-in-out infinite;
+        }
+        .cta-sway-2 {
+          animation: ctaSway 18s ease-in-out infinite alternate;
+        }
       `}</style>
 
       <main className="pt-14">
@@ -721,22 +748,118 @@ const Abogados = () => {
         </section>
 
         {/* ======================== FINAL CTA ======================== */}
-        <section className="max-w-7xl mx-auto px-8 py-20">
-          <div className="abogado-gradient rounded-xl p-12 md:p-24 text-center text-white relative overflow-hidden shadow-2xl">
-            <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
-            <div className="relative z-10 space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 rounded-full text-xs font-bold tracking-widest uppercase">
-                <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: '"FILL" 1' }}>rocket_launch</span>
-                Empieza hoy
-              </div>
-              <h2 className="text-[41.4px] font-extrabold tracking-tight max-w-3xl mx-auto">¿Listo para encontrar nuevos clientes?</h2>
-              <p className="text-xl opacity-90 max-w-xl mx-auto">Únete a cientos de abogados que ya captaron clientes calificados sin perder tiempo en prospección.</p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-                <Link to="/auth/registro" className="bg-white text-[#EE6C4D] px-10 py-5 rounded-full text-xl font-black shadow-xl hover:scale-105 transition-transform text-center inline-block">Comenzar ahora</Link>
-              </div>
+        <motion.section 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="relative overflow-hidden w-full bg-white border-t border-b border-slate-100 py-24 md:py-32"
+        >
+          {/* Decorative Background Glowing Pathway */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none select-none z-0 opacity-50" viewBox="0 0 1440 400" fill="none" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="ctaPathGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#1ecca7" stopOpacity="0" />
+                <stop offset="15%" stopColor="#1ecca7" stopOpacity="0.14" />
+                <stop offset="50%" stopColor="#006b56" stopOpacity="0.08" />
+                <stop offset="85%" stopColor="#1ecca7" stopOpacity="0.14" />
+                <stop offset="100%" stopColor="#1ecca7" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="ctaPathGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#EE6C4D" stopOpacity="0" />
+                <stop offset="20%" stopColor="#EE6C4D" stopOpacity="0.14" />
+                <stop offset="50%" stopColor="#EE6C4D" stopOpacity="0.08" />
+                <stop offset="80%" stopColor="#EE6C4D" stopOpacity="0.14" />
+                <stop offset="100%" stopColor="#EE6C4D" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            
+            {/* Glowing base curves (thick & blurred) */}
+            <g className="cta-sway-1">
+              <motion.path 
+                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
+                stroke="url(#ctaPathGradient1)"
+                strokeWidth="48"
+                strokeLinecap="round"
+                fill="none"
+                className="blur-[8px]"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.2, ease: "easeOut" }}
+              />
+            </g>
+            <g className="cta-sway-2">
+              <motion.path 
+                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
+                stroke="url(#ctaPathGradient2)"
+                strokeWidth="48"
+                strokeLinecap="round"
+                fill="none"
+                className="blur-[8px]"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
+              />
+            </g>
+            {/* Inner paths (the lines that generate themselves when in view) */}
+            <g className="cta-sway-1">
+              <motion.path 
+                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
+                stroke="url(#ctaPathGradient1)"
+                strokeWidth="10"
+                strokeLinecap="round"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.2, ease: "easeOut" }}
+              />
+            </g>
+            <g className="cta-sway-2">
+              <motion.path 
+                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
+                stroke="url(#ctaPathGradient2)"
+                strokeWidth="10"
+                strokeLinecap="round"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
+              />
+            </g>
+          </svg>
+
+          <div className="max-w-7xl mx-auto px-8 relative z-10 flex flex-col items-center text-center space-y-6 md:space-y-8">
+            {/* Top Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#EE6C4D]/10 border border-[#EE6C4D]/20 text-[#EE6C4D] font-bold text-xs rounded-full shadow-sm">
+              <span className="material-symbols-outlined text-sm font-bold" style={{ fontVariationSettings: '"FILL" 1' }}>rocket_launch</span>
+              Empieza hoy mismo
+            </div>
+
+            {/* Title */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-background max-w-3xl mx-auto leading-tight">
+              ¿Listo para encontrar nuevos clientes?
+            </h2>
+
+            {/* Subheading */}
+            <p className="text-lg md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
+              Únete a cientos de abogados que ya captaron clientes calificados sin perder tiempo en prospección.
+            </p>
+
+            {/* CTA Button */}
+            <div className="pt-4 w-full sm:w-auto">
+              <Link 
+                to="/auth/registro" 
+                className="abogado-gradient text-white px-10 py-5 rounded-2xl text-lg md:text-xl font-extrabold shadow-xl hover:scale-105 transition-all duration-300 inline-block text-center w-full sm:w-auto hover:shadow-[#EE6C4D]/20"
+              >
+                Comenzar ahora
+              </Link>
             </div>
           </div>
-        </section>
+        </motion.section>
 
       </main>
 

@@ -482,29 +482,24 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#4A2015]">Anonimato 100%</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Anonimato 100% hasta que decidas aceptar una propuesta.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#4A2015]">Documentos Adjuntos</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Poder adjuntar imágenes y documentos.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#4A2015]">Categorías Inteligentes</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Orientación de la plataforma sobre qué tipo de abogado necesitas.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#4A2015]">Sin Compromiso</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#4A2015]">Filtros por Comunas</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Publicación de caso gratuita.</span>
                   </div>
                 </div>
               </div>

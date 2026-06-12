@@ -472,7 +472,7 @@ const Home = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
           >
             {/* Card 1: Peach */}
-            <div className="bg-[#FFEFEB] text-[#4A2015] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,239,235,0.8)] border border-[#FFD3C4]/40 hover:scale-[1.03] transition-all duration-300 min-h-[520px]">
+            <div className="bg-[#FFEFEB] text-[#4A2015] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,239,235,0.8)] border border-[#FFD3C4]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
                   <h3 className="text-2xl font-black tracking-tight leading-tight">Publicación y Privacidad</h3>
@@ -511,7 +511,7 @@ const Home = () => {
             </div>
 
             {/* Card 2: Blue */}
-            <div className="bg-[#EEF4FF] text-[#1E293B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(238,244,255,0.8)] border border-[#CFDDFB]/40 hover:scale-[1.03] transition-all duration-300 min-h-[520px]">
+            <div className="bg-[#EEF4FF] text-[#1E293B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(238,244,255,0.8)] border border-[#CFDDFB]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
                   <h3 className="text-2xl font-black tracking-tight leading-tight">Abogados Certificados</h3>
@@ -550,7 +550,7 @@ const Home = () => {
             </div>
 
             {/* Card 3: Green */}
-            <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[520px] relative">
+            <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[380px] relative">
               <div className="space-y-6">
                 <div className="space-y-3">
                   <h3 className="text-2xl font-black tracking-tight leading-tight">Propuestas a Medida</h3>
@@ -589,7 +589,7 @@ const Home = () => {
             </div>
 
             {/* Card 4: Yellow */}
-            <div className="bg-[#FFFBE5] text-[#78350F] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,251,229,0.8)] border border-[#FDE047]/40 hover:scale-[1.03] transition-all duration-300 min-h-[520px]">
+            <div className="bg-[#FFFBE5] text-[#78350F] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,251,229,0.8)] border border-[#FDE047]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
                   <h3 className="text-2xl font-black tracking-tight leading-tight">Seguridad y Soporte</h3>

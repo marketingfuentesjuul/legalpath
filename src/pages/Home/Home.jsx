@@ -307,7 +307,7 @@ const Home = () => {
                       Aceptar propuesta
                     </button>
                   </div>
-                  <div className="col-span-2 flex justify-end">
+                  <div className="col-span-2 flex justify-start">
                     <span className="text-[10px] text-slate-400 font-bold whitespace-nowrap">20 min.</span>
                   </div>
                 </div>
@@ -330,7 +330,7 @@ const Home = () => {
                       Aceptar propuesta
                     </button>
                   </div>
-                  <div className="col-span-2 flex justify-end">
+                  <div className="col-span-2 flex justify-start">
                     <span className="text-[10px] text-slate-400 font-bold whitespace-nowrap">2 horas</span>
                   </div>
                 </div>
@@ -353,7 +353,7 @@ const Home = () => {
                       Aceptar propuesta
                     </button>
                   </div>
-                  <div className="col-span-2 flex justify-end">
+                  <div className="col-span-2 flex justify-start">
                     <span className="text-[10px] text-slate-400 font-bold whitespace-nowrap">8 horas</span>
                   </div>
                 </div>
@@ -376,7 +376,7 @@ const Home = () => {
                       Aceptar propuesta
                     </button>
                   </div>
-                  <div className="col-span-2 flex justify-end">
+                  <div className="col-span-2 flex justify-start">
                     <span className="text-[10px] text-slate-400 font-bold whitespace-nowrap">1 día</span>
                   </div>
                 </div>
@@ -399,7 +399,7 @@ const Home = () => {
                       Aceptar propuesta
                     </button>
                   </div>
-                  <div className="col-span-2 flex justify-end">
+                  <div className="col-span-2 flex justify-start">
                     <span className="text-[10px] text-slate-400 font-bold whitespace-nowrap">3 días</span>
                   </div>
                 </div>

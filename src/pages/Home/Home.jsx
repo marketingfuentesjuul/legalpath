@@ -302,7 +302,12 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '7px' }}>20 min.</span>
+                  <div className="flex items-center gap-3 shrink-0 self-start" style={{ marginTop: '7px' }}>
+                    <button className="text-[9px] bg-[#006b56] text-white px-2.5 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer">
+                      Aceptar propuesta
+                    </button>
+                    <span className="text-[10px] text-slate-400 font-bold">20 min.</span>
+                  </div>
                 </div>
 
                 {/* Proposal 2: Jeanne Bollut */}
@@ -318,7 +323,12 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '7px' }}>2 horas</span>
+                  <div className="flex items-center gap-3 shrink-0 self-start" style={{ marginTop: '7px' }}>
+                    <button className="text-[9px] bg-[#006b56] text-white px-2.5 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer">
+                      Aceptar propuesta
+                    </button>
+                    <span className="text-[10px] text-slate-400 font-bold">2 horas</span>
+                  </div>
                 </div>
 
                 {/* Proposal 3: Matias Deischler */}
@@ -334,7 +344,12 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '7px' }}>8 horas</span>
+                  <div className="flex items-center gap-3 shrink-0 self-start" style={{ marginTop: '7px' }}>
+                    <button className="text-[9px] bg-[#006b56] text-white px-2.5 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer">
+                      Aceptar propuesta
+                    </button>
+                    <span className="text-[10px] text-slate-400 font-bold">8 horas</span>
+                  </div>
                 </div>
 
                 {/* Proposal 4: Magdalena Romero */}
@@ -350,7 +365,12 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '7px' }}>1 día</span>
+                  <div className="flex items-center gap-3 shrink-0 self-start" style={{ marginTop: '7px' }}>
+                    <button className="text-[9px] bg-[#006b56] text-white px-2.5 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer">
+                      Aceptar propuesta
+                    </button>
+                    <span className="text-[10px] text-slate-400 font-bold">1 día</span>
+                  </div>
                 </div>
 
                 {/* Proposal 5: Daniel Camargo */}
@@ -366,7 +386,12 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '7px' }}>3 días</span>
+                  <div className="flex items-center gap-3 shrink-0 self-start" style={{ marginTop: '7px' }}>
+                    <button className="text-[9px] bg-[#006b56] text-white px-2.5 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer">
+                      Aceptar propuesta
+                    </button>
+                    <span className="text-[10px] text-slate-400 font-bold">3 días</span>
+                  </div>
                 </div>
               </div>
               <div className="relative mt-6 mb-2 mx-auto bg-white/90 backdrop-blur px-6 py-3 rounded-full border border-primary-container/20 shadow-xl flex items-center gap-2 w-max">

@@ -124,7 +124,23 @@ const Abogados = () => {
         <section id="como-funciona" className="max-w-7xl mx-auto px-8 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
-            {/* Left Column: Image with Blobs and Floating Badges */}
+            {/* Left Column: Title and Paragraph */}
+            <div className="lg:col-span-6 space-y-6">
+              <h2 className="text-[36px] md:text-[46px] font-extrabold tracking-tight text-on-background leading-tight">
+                ¿Cómo funciona LegalPath?
+              </h2>
+              <p className="text-lg text-secondary leading-relaxed text-justify">
+                <b>LegalPath</b> surge como una plataforma diseñada tanto para que las personas puedan <b>publicar sus casos de manera gratuita</b> como para <b>democratizar el derecho</b> para los abogados independientes y aquellos que acaban de comenzar en el mundo laboral.
+              </p>
+              <p className="text-lg text-secondary leading-relaxed text-justify">
+                Concretamente, los ciudadanos pueden publicar su caso de forma 100% gratuita y los abogados, a través de nuestro <b>sistema de tokens</b>, pueden utilizar uno de ellos para obtener la información de contacto de los casos que ya están <b>precalificados</b>.
+              </p>
+              <p className="text-lg text-secondary leading-relaxed text-justify">
+                De esta manera, te aseguras de acceder a <b>leads de calidad</b> y evitas tener que pasar por miles de reuniones sin sentido.
+              </p>
+            </div>
+
+            {/* Right Column: Image with Blobs and Floating Badges */}
             <div className="lg:col-span-6 relative flex justify-center items-center py-6">
               {/* Back Blobs */}
               <div className="absolute -top-10 -left-10 w-[110%] h-[110%] -z-10 opacity-80 pointer-events-none">
@@ -165,51 +181,6 @@ const Abogados = () => {
                   <span className="text-[10px] font-black uppercase tracking-wider leading-none">Casos</span>
                   <span className="text-[9px] font-medium opacity-90 leading-tight">Pre-calificados</span>
                   <span className="text-[8px] font-bold bg-white/25 px-1.5 py-0.5 rounded mt-1.5 leading-none">100% Reales</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Text and Icon List */}
-            <div className="lg:col-span-6 space-y-10 lg:pl-6">
-              <h2 className="text-[36px] md:text-[46px] font-extrabold tracking-tight text-on-background leading-tight">
-                Crece con nuestra tecnología, confía en nuestro proceso
-              </h2>
-
-              <div className="space-y-8">
-                {/* Item 1 */}
-                <div className="flex gap-5 items-start">
-                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#EE6C4D] flex items-center justify-center text-white shadow-lg shadow-[#EE6C4D]/25">
-                    <span className="material-symbols-outlined text-xl">fact_check</span>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[15px] text-secondary leading-relaxed">
-                      <b className="text-on-background">Casos calificados automáticamente.</b> Nuestro software estructurado filtra y califica cada solicitud de los ciudadanos, entregándote un resumen completo con elementos clave y montos estimados.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Item 2 */}
-                <div className="flex gap-5 items-start">
-                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#EE6C4D] flex items-center justify-center text-white shadow-lg shadow-[#EE6C4D]/25">
-                    <span className="material-symbols-outlined text-xl">toll</span>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[15px] text-secondary leading-relaxed">
-                      <b className="text-on-background">Sistema flexible de tokens.</b> Revisa libremente todas las oportunidades disponibles en el marketplace y utiliza tus tokens solo cuando decidas acceder a los datos de contacto.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Item 3 */}
-                <div className="flex gap-5 items-start">
-                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#EE6C4D] flex items-center justify-center text-white shadow-lg shadow-[#EE6C4D]/25">
-                    <span className="material-symbols-outlined text-xl">handshake</span>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[15px] text-secondary leading-relaxed">
-                      <b className="text-on-background">Competencia justa y directa.</b> Conéctate mediante nuestro chat integrado. Limitamos el acceso a un máximo de 5 propuestas por caso, asegurando una competencia justa para tu perfil.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>

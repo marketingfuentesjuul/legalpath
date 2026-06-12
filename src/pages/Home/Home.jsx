@@ -302,7 +302,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start mt-0.5">20 min.</span>
+                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '5px' }}>20 min.</span>
                 </div>
 
                 {/* Proposal 2: Jeanne Bollut */}
@@ -318,7 +318,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start mt-0.5">2 horas</span>
+                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '5px' }}>2 horas</span>
                 </div>
 
                 {/* Proposal 3: Matias Deischler */}
@@ -334,7 +334,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start mt-0.5">8 horas</span>
+                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '5px' }}>8 horas</span>
                 </div>
 
                 {/* Proposal 4: Magdalena Romero */}
@@ -350,7 +350,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start mt-0.5">1 día</span>
+                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '5px' }}>1 día</span>
                 </div>
 
                 {/* Proposal 5: Daniel Camargo */}
@@ -366,7 +366,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start mt-0.5">3 días</span>
+                  <span className="text-[10px] text-slate-400 font-bold shrink-0 self-start" style={{ marginTop: '5px' }}>3 días</span>
                 </div>
               </div>
               <div className="relative mt-6 mb-2 mx-auto bg-white/90 backdrop-blur px-6 py-3 rounded-full border border-primary-container/20 shadow-xl flex items-center gap-2 w-max">

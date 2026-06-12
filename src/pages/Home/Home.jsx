@@ -695,27 +695,27 @@ const Home = () => {
           className="relative overflow-hidden w-full bg-white border-t border-b border-slate-100 py-24 md:py-32"
         >
           {/* Decorative Background Glowing Pathway */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none select-none -z-10" viewBox="0 0 1440 400" fill="none" preserveAspectRatio="none">
+          <svg className="absolute inset-0 w-full h-full pointer-events-none select-none z-0" viewBox="0 0 1440 400" fill="none" preserveAspectRatio="none">
             <defs>
               <linearGradient id="ctaPathGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#1ecca7" stopOpacity="0" />
-                <stop offset="15%" stopColor="#1ecca7" stopOpacity="0.22" />
-                <stop offset="50%" stopColor="#006b56" stopOpacity="0.18" />
-                <stop offset="85%" stopColor="#1ecca7" stopOpacity="0.22" />
+                <stop offset="15%" stopColor="#1ecca7" stopOpacity="0.35" />
+                <stop offset="50%" stopColor="#006b56" stopOpacity="0.25" />
+                <stop offset="85%" stopColor="#1ecca7" stopOpacity="0.35" />
                 <stop offset="100%" stopColor="#1ecca7" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="ctaPathGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#006b56" stopOpacity="0" />
-                <stop offset="20%" stopColor="#006b56" stopOpacity="0.22" />
-                <stop offset="50%" stopColor="#1ecca7" stopOpacity="0.18" />
-                <stop offset="80%" stopColor="#006b56" stopOpacity="0.22" />
+                <stop offset="20%" stopColor="#006b56" stopOpacity="0.35" />
+                <stop offset="50%" stopColor="#1ecca7" stopOpacity="0.25" />
+                <stop offset="80%" stopColor="#006b56" stopOpacity="0.35" />
                 <stop offset="100%" stopColor="#006b56" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="ctaDashGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#1ecca7" stopOpacity="0" />
-                <stop offset="25%" stopColor="#1ecca7" stopOpacity="0.4" />
-                <stop offset="50%" stopColor="#006b56" stopOpacity="0.3" />
-                <stop offset="75%" stopColor="#1ecca7" stopOpacity="0.4" />
+                <stop offset="25%" stopColor="#1ecca7" stopOpacity="0.75" />
+                <stop offset="50%" stopColor="#006b56" stopOpacity="0.65" />
+                <stop offset="75%" stopColor="#1ecca7" stopOpacity="0.75" />
                 <stop offset="100%" stopColor="#1ecca7" stopOpacity="0" />
               </linearGradient>
             </defs>

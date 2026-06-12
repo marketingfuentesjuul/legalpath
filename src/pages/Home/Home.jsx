@@ -98,6 +98,33 @@ const Home = () => {
         .floating { animation: floating 6s ease-in-out infinite; }
         .floating-delayed { animation: floating 7s ease-in-out 1s infinite; }
         @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        
+        @keyframes flowPath {
+          from { stroke-dashoffset: 240; }
+          to { stroke-dashoffset: 0; }
+        }
+        @keyframes flowPathReverse {
+          from { stroke-dashoffset: -240; }
+          to { stroke-dashoffset: 0; }
+        }
+        .flowing-path {
+          stroke-dasharray: 40 80;
+          animation: flowPath 15s linear infinite;
+        }
+        .flowing-path-reverse {
+          stroke-dasharray: 30 70;
+          animation: flowPathReverse 12s linear infinite;
+        }
+        @keyframes ctaSway {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+        .cta-sway-1 {
+          animation: ctaSway 14s ease-in-out infinite;
+        }
+        .cta-sway-2 {
+          animation: ctaSway 18s ease-in-out infinite alternate;
+        }
       `}</style>
 
       <main className="pt-14">
@@ -667,19 +694,120 @@ const Home = () => {
           transition={{ duration: 0.7 }}
           className="relative overflow-hidden w-full bg-white border-t border-b border-slate-100 py-24 md:py-32"
         >
-          {/* Decorative Left Glow & Ring */}
-          <div className="absolute -left-36 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-tr from-primary-container/30 to-transparent p-10 opacity-70 blur-[2px] pointer-events-none select-none">
-            <div className="w-full h-full bg-white rounded-full"></div>
-          </div>
-          {/* Glowing background behind left ring */}
-          <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary-container/10 blur-[80px] pointer-events-none select-none"></div>
+          {/* Decorative Background Glowing Pathway */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none select-none -z-10" viewBox="0 0 1440 400" fill="none" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="ctaPathGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#1ecca7" stopOpacity="0" />
+                <stop offset="15%" stopColor="#1ecca7" stopOpacity="0.22" />
+                <stop offset="50%" stopColor="#006b56" stopOpacity="0.18" />
+                <stop offset="85%" stopColor="#1ecca7" stopOpacity="0.22" />
+                <stop offset="100%" stopColor="#1ecca7" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="ctaPathGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#006b56" stopOpacity="0" />
+                <stop offset="20%" stopColor="#006b56" stopOpacity="0.22" />
+                <stop offset="50%" stopColor="#1ecca7" stopOpacity="0.18" />
+                <stop offset="80%" stopColor="#006b56" stopOpacity="0.22" />
+                <stop offset="100%" stopColor="#006b56" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="ctaDashGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#1ecca7" stopOpacity="0" />
+                <stop offset="25%" stopColor="#1ecca7" stopOpacity="0.4" />
+                <stop offset="50%" stopColor="#006b56" stopOpacity="0.3" />
+                <stop offset="75%" stopColor="#1ecca7" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#1ecca7" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            
+            {/* Glowing base curves (thick & blurred) */}
+            <g className="cta-sway-1">
+              <motion.path 
+                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
+                stroke="url(#ctaPathGradient1)"
+                strokeWidth="48"
+                strokeLinecap="round"
+                fill="none"
+                className="blur-[8px]"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.2, ease: "easeOut" }}
+              />
+            </g>
+            <g className="cta-sway-2">
+              <motion.path 
+                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
+                stroke="url(#ctaPathGradient2)"
+                strokeWidth="48"
+                strokeLinecap="round"
+                fill="none"
+                className="blur-[8px]"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
+              />
+            </g>
 
-          {/* Decorative Right Glow & Ring */}
-          <div className="absolute -right-36 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-tl from-primary-container/30 to-transparent p-10 opacity-70 blur-[2px] pointer-events-none select-none">
-            <div className="w-full h-full bg-white rounded-full"></div>
-          </div>
-          {/* Glowing background behind right ring */}
-          <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary-container/10 blur-[80px] pointer-events-none select-none"></div>
+            {/* Inner detailed paths (medium thick, solid) */}
+            <g className="cta-sway-1">
+              <motion.path 
+                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
+                stroke="url(#ctaPathGradient1)"
+                strokeWidth="12"
+                strokeLinecap="round"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.2, ease: "easeOut" }}
+              />
+            </g>
+            <g className="cta-sway-2">
+              <motion.path 
+                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
+                stroke="url(#ctaPathGradient2)"
+                strokeWidth="12"
+                strokeLinecap="round"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
+              />
+            </g>
+
+            {/* Animated flowing dashed lines */}
+            <g className="cta-sway-1">
+              <motion.path 
+                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
+                stroke="url(#ctaDashGradient)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                fill="none"
+                className="flowing-path"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.2, ease: "easeOut" }}
+              />
+            </g>
+            <g className="cta-sway-2">
+              <motion.path 
+                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
+                stroke="url(#ctaDashGradient)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                fill="none"
+                className="flowing-path-reverse"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
+              />
+            </g>
+          </svg>
 
           <div className="max-w-7xl mx-auto px-8 relative z-10 flex flex-col items-center text-center space-y-6 md:space-y-8">
             {/* Top Badge */}

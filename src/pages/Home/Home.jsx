@@ -516,29 +516,24 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#1E293B]">Filtro de Especialidad</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Filtros de selección rigurosos.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#1E293B]">Reseñas de Usuarios</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Verificación de títulos profesionales.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#1E293B]">Perfiles Completos</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Validación de RUT ante el Colegio de Abogados.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#1E293B]">Colegiaturas Activas</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#1E293B]">Soporte y Monitoreo</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Revisión de antecedentes de los profesionales.</span>
                   </div>
                 </div>
               </div>

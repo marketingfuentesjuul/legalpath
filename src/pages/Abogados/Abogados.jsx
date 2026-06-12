@@ -93,6 +93,59 @@ const Abogados = () => {
           </div>
         </section>
 
+        {/* ======================== ¿CÓMO FUNCIONA? ======================== */}
+        <section id="como-funciona" className="max-w-7xl mx-auto px-8 pt-20 pb-10">
+          <div className="text-center mb-16">
+            <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
+            <div className="w-16 h-1 bg-[#EE6C4D] mx-auto mt-4 rounded-full"></div>
+          </div>
+
+          {/* Breve descripción del funcionamiento */}
+          <div className="max-w-4xl mx-auto mt-4 mb-24 p-10 rounded-[40px] bg-white border border-slate-100 shadow-[0_30px_60px_-15px_rgba(238,108,77,0.08)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#EE6C4D]/5 blur-3xl rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-container/5 blur-3xl rounded-full"></div>
+            
+            <div className="relative z-10 space-y-8">
+              <div className="flex flex-col md:flex-row items-center gap-10">
+                <div className="flex-1">
+                  <p className="text-lg text-secondary leading-relaxed text-justify">
+                    LegalPath es la plataforma donde los ciudadanos publican sus casos legales. Nuestro software <b>califica cada solicitud</b> mediante un proceso inteligente de preguntas y respuestas, entregándote el caso estructurado con sus <b>elementos clave y montos estimados</b>.
+                  </p>
+                </div>
+                <div className="w-px h-24 bg-slate-100 hidden md:block"></div>
+                <div className="flex-1">
+                  <p className="text-lg text-secondary leading-relaxed text-justify">
+                    Como abogado, podrás revisar estas oportunidades y usar <b>tokens</b> para acceder a los datos de contacto. Cada cliente recibe hasta <b>cinco propuestas</b> simultáneas, garantizando una competencia justa donde tu propuesta y perfil son los que deciden.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">person_search</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Publicación</p>
+                  <p className="text-xs font-bold text-on-background">Casos reales</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">quiz</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Calificación</p>
+                  <p className="text-xs font-bold text-on-background">Pre-calificados</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">toll</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Acceso</p>
+                  <p className="text-xs font-bold text-on-background">Sistema Tokens</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">handshake</span>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Conexión</p>
+                  <p className="text-xs font-bold text-on-background">Elección libre</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ======================== POR QUÉ LEGALPATH ======================== */}
         <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20 space-y-12">
           <div className="text-center max-w-4xl mx-auto space-y-5 mb-12">
@@ -281,56 +334,11 @@ const Abogados = () => {
           </motion.div>
         </section>
 
-        {/* ======================== ¿CÓMO FUNCIONA? ======================== */}
-        <section id="como-funciona" className="max-w-7xl mx-auto px-8 py-20 space-y-32">
+        {/* ======================== ¿CÓMO EMPEZAR? ======================== */}
+        <section id="como-empezar" className="max-w-7xl mx-auto px-8 py-20 space-y-32">
           <div className="text-center mb-16">
-            <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
+            <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo empezar?</h2>
             <div className="w-16 h-1 bg-[#EE6C4D] mx-auto mt-4 rounded-full"></div>
-          </div>
-
-          {/* Breve descripción del funcionamiento */}
-          <div className="max-w-4xl mx-auto mt-4 mb-24 p-10 rounded-[40px] bg-white border border-slate-100 shadow-[0_30px_60px_-15px_rgba(238,108,77,0.08)] relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#EE6C4D]/5 blur-3xl rounded-full"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-container/5 blur-3xl rounded-full"></div>
-            
-            <div className="relative z-10 space-y-8">
-              <div className="flex flex-col md:flex-row items-center gap-10">
-                <div className="flex-1">
-                  <p className="text-lg text-secondary leading-relaxed text-justify">
-                    LegalPath es la plataforma donde los ciudadanos publican sus casos legales. Nuestro software <b>califica cada solicitud</b> mediante un proceso inteligente de preguntas y respuestas, entregándote el caso estructurado con sus <b>elementos clave y montos estimados</b>.
-                  </p>
-                </div>
-                <div className="w-px h-24 bg-slate-100 hidden md:block"></div>
-                <div className="flex-1">
-                  <p className="text-lg text-secondary leading-relaxed text-justify">
-                    Como abogado, podrás revisar estas oportunidades y usar <b>tokens</b> para acceder a los datos de contacto. Cada cliente recibe hasta <b>cinco propuestas</b> simultáneas, garantizando una competencia justa donde tu propuesta y perfil son los que deciden.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">person_search</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Publicación</p>
-                  <p className="text-xs font-bold text-on-background">Casos reales</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">quiz</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Calificación</p>
-                  <p className="text-xs font-bold text-on-background">Pre-calificados</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">toll</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Acceso</p>
-                  <p className="text-xs font-bold text-on-background">Sistema Tokens</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">handshake</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Conexión</p>
-                  <p className="text-xs font-bold text-on-background">Elección libre</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Step 01 */}

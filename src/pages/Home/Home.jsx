@@ -665,49 +665,47 @@ const Home = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="max-w-7xl mx-auto px-8 py-20"
+          className="relative overflow-hidden w-full bg-white border-t border-b border-slate-100 py-24 md:py-32"
         >
-          <div className="bg-white rounded-[2.5rem] p-12 md:p-24 text-center border border-slate-100 shadow-[0_20px_50px_rgba(0,107,86,0.03)] relative overflow-hidden">
-            {/* Decorative Left Glow & Ring */}
-            <div className="absolute -left-32 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-tr from-primary-container/30 to-transparent p-10 opacity-70 blur-[2px] pointer-events-none select-none">
-              <div className="w-full h-full bg-white rounded-full"></div>
+          {/* Decorative Left Glow & Ring */}
+          <div className="absolute -left-36 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-tr from-primary-container/30 to-transparent p-10 opacity-70 blur-[2px] pointer-events-none select-none">
+            <div className="w-full h-full bg-white rounded-full"></div>
+          </div>
+          {/* Glowing background behind left ring */}
+          <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary-container/10 blur-[80px] pointer-events-none select-none"></div>
+
+          {/* Decorative Right Glow & Ring */}
+          <div className="absolute -right-36 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-tl from-primary-container/30 to-transparent p-10 opacity-70 blur-[2px] pointer-events-none select-none">
+            <div className="w-full h-full bg-white rounded-full"></div>
+          </div>
+          {/* Glowing background behind right ring */}
+          <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary-container/10 blur-[80px] pointer-events-none select-none"></div>
+
+          <div className="max-w-7xl mx-auto px-8 relative z-10 flex flex-col items-center text-center space-y-6 md:space-y-8">
+            {/* Top Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/10 border border-primary-container/20 text-primary font-bold text-xs rounded-full shadow-sm">
+              <span className="material-symbols-outlined text-sm font-bold" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
+              100% gratuito y sin compromisos
             </div>
-            {/* Glowing background behind left ring */}
-            <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary-container/10 blur-[80px] pointer-events-none select-none"></div>
 
-            {/* Decorative Right Glow & Ring */}
-            <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-tl from-primary-container/30 to-transparent p-10 opacity-70 blur-[2px] pointer-events-none select-none">
-              <div className="w-full h-full bg-white rounded-full"></div>
-            </div>
-            {/* Glowing background behind right ring */}
-            <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary-container/10 blur-[80px] pointer-events-none select-none"></div>
+            {/* Title */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-background max-w-3xl mx-auto leading-tight">
+              ¿Listo para resolver tu situación legal?
+            </h2>
 
-            <div className="relative z-10 flex flex-col items-center space-y-6 md:space-y-8">
-              {/* Top Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/10 border border-primary-container/20 text-primary font-bold text-xs rounded-full shadow-sm">
-                <span className="material-symbols-outlined text-sm font-bold" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
-                100% gratuito y sin compromisos
-              </div>
+            {/* Subheading */}
+            <p className="text-lg md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
+              Únete a miles de personas que ya encontraron la tranquilidad legal que necesitaban.
+            </p>
 
-              {/* Title */}
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-background max-w-3xl mx-auto leading-tight">
-                ¿Listo para resolver tu situación legal?
-              </h2>
-
-              {/* Subheading */}
-              <p className="text-lg md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
-                Únete a miles de personas que ya encontraron la tranquilidad legal que necesitaban.
-              </p>
-
-              {/* CTA Button */}
-              <div className="pt-4 w-full sm:w-auto">
-                <Link 
-                  to="/publicar-caso" 
-                  className="mint-gradient text-white px-10 py-5 rounded-2xl text-lg md:text-xl font-extrabold shadow-xl hover:scale-105 transition-all duration-300 inline-block text-center w-full sm:w-auto hover:shadow-primary-container/20"
-                >
-                  Publicar mi caso gratis
-                </Link>
-              </div>
+            {/* CTA Button */}
+            <div className="pt-4 w-full sm:w-auto">
+              <Link 
+                to="/publicar-caso" 
+                className="mint-gradient text-white px-10 py-5 rounded-2xl text-lg md:text-xl font-extrabold shadow-xl hover:scale-105 transition-all duration-300 inline-block text-center w-full sm:w-auto hover:shadow-primary-container/20"
+              >
+                Publicar mi caso gratis
+              </Link>
             </div>
           </div>
         </motion.section>

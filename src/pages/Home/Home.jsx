@@ -453,58 +453,198 @@ const Home = () => {
           </motion.div>
         </section>
 
-        {/* Bento Value Propositions */}
-        <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-[41.4px] font-extrabold tracking-tight">¿Por qué elegir LegalPath?</h2>
-            <p className="text-secondary max-w-2xl mx-auto">Diseñamos una experiencia que pone el poder de nuevo en tus manos, eliminando la incertidumbre y los costos ocultos.</p>
+        {/* Value Propositions - 4 Columns ref: Rankmi style */}
+        <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20 space-y-12">
+          <div className="text-center max-w-4xl mx-auto space-y-5 mb-12">
+            <h2 className="text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
+              Una única <span className="text-[#FF7F50] font-black">plataforma</span> para gestionar, comparar y contratar abogados con total seguridad.
+            </h2>
+            <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto font-medium leading-relaxed">
+              LegalPath es una plataforma moderna que unifica la búsqueda de asesoría jurídica. Conectamos tus necesidades con abogados verificados a través de tecnología transparente y segura.
+            </p>
           </div>
+
           <motion.div 
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 45 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]"
+            transition={{ duration: 0.7 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
           >
-            <div className="md:col-span-2 bg-white rounded-xl p-10 flex flex-col justify-between shadow-sm border border-slate-50 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300">
-              <div className="relative z-10 space-y-4">
-                <div className="w-14 h-14 bg-primary-container/10 rounded-2xl flex items-center justify-center text-primary-container">
-                  <span className="material-symbols-outlined text-3xl">security</span>
+            {/* Card 1: Peach */}
+            <div className="bg-[#FFEFEB] text-[#4A2015] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,239,235,0.8)] border border-[#FFD3C4]/40 hover:scale-[1.03] transition-all duration-300 min-h-[520px]">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Publicación y Privacidad</h3>
+                  <p className="text-sm text-[#7D493B] font-medium leading-relaxed">
+                    Publica tu consulta de forma anónima y obtén orientación sin revelar tus datos.
+                  </p>
                 </div>
-                <h3 className="text-3xl font-bold">Privacidad Absoluta</h3>
-                <p className="text-secondary max-w-sm text-lg">Tu identidad permanece oculta hasta que tú decidas contactar a un abogado. Sin llamadas molestas, sin spam.</p>
-              </div>
-              <div className="absolute right-0 bottom-0 translate-y-12 translate-x-12 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                <span className="material-symbols-outlined text-[20rem]" style={{ fontVariationSettings: '"FILL" 1' }}>shield</span>
-              </div>
-            </div>
-            <div className="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center justify-center shadow-sm border border-slate-100 space-y-6 hover:scale-[1.02] transition-all duration-300">
-              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-primary-container shadow-inner">
-                <span className="material-symbols-outlined text-4xl">verified_user</span>
-              </div>
-              <h3 className="text-2xl font-bold">Abogados Certificados</h3>
-              <p className="text-secondary">Validamos cada título y antecedente profesional ante la Corte Suprema antes de permitirles el ingreso.</p>
-              <button className="text-primary-container font-bold flex items-center gap-1 hover:gap-2 transition-all">Saber más <span className="material-symbols-outlined">chevron_right</span></button>
-            </div>
-            <div className="bg-primary-container text-on-primary-container rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden hover:scale-[1.02] transition-all duration-300">
-              <div className="absolute top-4 right-4 opacity-20">
-                <span className="material-symbols-outlined text-6xl">how_to_reg</span>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Elección Libre</h3>
-              <p className="text-sm opacity-90">Tú puedes elegir al abogado con el que te sientas más cómodo para llevar tu proceso legal.</p>
-            </div>
-            <div className="bg-on-background text-white rounded-xl p-8 flex flex-col justify-end shadow-lg relative overflow-hidden md:col-span-2 hover:scale-[1.02] transition-all duration-300">
-              <div className="flex items-center gap-8">
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold">Gestión de Propuestas</h3>
-                  <p className="text-sm text-slate-400">Recibe hasta 5 propuestas simultáneas; si no te gusta ninguna, descártala y nuevas opciones se añadirán automáticamente. Nuestro sistema garantiza que tu caso siempre tenga atención activa.</p>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <span className="text-xs text-[#7D493B] opacity-25 font-semibold text-center">Formulario Guiado</span>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015]">Anonimato 100%</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015]">Documentos Adjuntos</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015]">Categorías Inteligentes</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015]">Sin Compromiso</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#4A2015]">Filtros por Comunas</span>
+                  </div>
+
+                  <span className="text-xs text-[#7D493B] opacity-25 font-semibold text-center mt-1">Formulario Guiado</span>
                 </div>
-                <div className="hidden lg:flex gap-2">
-                  <div className="h-16 w-1 bg-primary-container rounded-full opacity-20"></div>
-                  <div className="h-20 w-1 bg-primary-container rounded-full opacity-40"></div>
-                  <div className="h-24 w-1 bg-primary-container rounded-full"></div>
-                  <div className="h-20 w-1 bg-primary-container rounded-full opacity-40"></div>
-                  <div className="h-16 w-1 bg-primary-container rounded-full opacity-20"></div>
+              </div>
+            </div>
+
+            {/* Card 2: Blue */}
+            <div className="bg-[#EEF4FF] text-[#1E293B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(238,244,255,0.8)] border border-[#CFDDFB]/40 hover:scale-[1.03] transition-all duration-300 min-h-[520px]">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Abogados Certificados</h3>
+                  <p className="text-sm text-[#475569] font-medium leading-relaxed">
+                    Conéctate con profesionales con títulos verificados y reputación intachable.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <span className="text-xs text-[#475569] opacity-25 font-semibold text-center">Títulos Validados</span>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B]">Filtro de Especialidad</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B]">Reseñas de Usuarios</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B]">Perfiles Completos</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B]">Colegiaturas Activas</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#1E293B]">Soporte y Monitoreo</span>
+                  </div>
+
+                  <span className="text-xs text-[#475569] opacity-25 font-semibold text-center mt-1">Títulos Validados</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Green (Highlighted/Taller with "Publicar Caso" button) */}
+            <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[540px] relative">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Propuestas a Medida</h3>
+                  <p className="text-sm text-[#0F766E] font-medium leading-relaxed">
+                    Compara hasta 5 propuestas personalizadas y elige la opción que prefieras.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <span className="text-xs text-[#0F766E] opacity-25 font-semibold text-center">Ofertas a Medida</span>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B]">Hasta 5 Cotizaciones</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B]">Comparación Directa</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B]">Chat Previo al Cierre</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B]">Tiempos de Respuesta</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B]">Transparencia Total</span>
+                  </div>
+
+                  <span className="text-xs text-[#0F766E] opacity-25 font-semibold text-center mt-1">Ofertas a Medida</span>
+                </div>
+              </div>
+
+              <div className="pt-6 border-t border-[#A6E8D5]/30 mt-6 flex justify-center">
+                <Link to="/publicar-caso" className="w-full text-center py-3.5 bg-[#10B981] text-white rounded-full font-black text-sm shadow-md hover:scale-[1.03] active:scale-[0.98] transition-transform">
+                  Publicar Caso
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 4: Yellow */}
+            <div className="bg-[#FFFBE5] text-[#78350F] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,251,229,0.8)] border border-[#FDE047]/40 hover:scale-[1.03] transition-all duration-300 min-h-[520px]">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Seguridad y Soporte</h3>
+                  <p className="text-sm text-[#A16207] font-medium leading-relaxed">
+                    Monitorea el avance de tu caso y comunícate con total respaldo.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <span className="text-xs text-[#A16207] opacity-25 font-semibold text-center">Chat Encriptado</span>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#78350F]">Historial de Mensajes</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#78350F]">Compartir Archivos</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#78350F]">Seguimiento de Hitos</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#78350F]">Protección LegalPath</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
+                    <span className="text-sm font-bold text-[#78350F]">Garantía de Servicio</span>
+                  </div>
+
+                  <span className="text-xs text-[#A16207] opacity-25 font-semibold text-center mt-1">Chat Encriptado</span>
                 </div>
               </div>
             </div>

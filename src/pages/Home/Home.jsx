@@ -550,29 +550,19 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#064E3B]">Hasta 5 Cotizaciones</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B] leading-snug">Recibe hasta cinco propuestas de abogados.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#064E3B]">Comparación Directa</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B] leading-snug">En caso de que no te convenza ninguna oferta, puedes descartarlas y recibir otras cinco nuevas.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#064E3B]">Chat Previo al Cierre</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#064E3B]">Tiempos de Respuesta</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#064E3B]">Transparencia Total</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#064E3B] leading-snug">Vas a poder comparar precios y hacer todas las consultas necesarias antes de decidir uno por uno de los abogados.</span>
                   </div>
                 </div>
               </div>

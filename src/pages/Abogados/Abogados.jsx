@@ -157,7 +157,7 @@ const Abogados = () => {
               {/* Photo Frame (Organic fluid shapes and smooth curves) */}
               <div className="relative w-full max-w-[420px] aspect-[4/5] overflow-hidden rounded-[3rem] shadow-2xl border-4 border-white">
                 <img 
-                  src="/assets/images/tablet-abogado.jpg" 
+                  src="/assets/images/tablet-abogado-v2.jpg" 
                   alt="Tablet con plataforma de abogado"
                   className="w-full h-full object-cover" 
                 />

@@ -34,14 +34,14 @@ const Header = () => {
             {isAbogado ? (
               <>
                 <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors">¿Cómo funciona?</a>
-                <a href="#por-que-legalpath" className="text-secondary hover:text-on-background transition-colors">¿Por qué LegalPath?</a>
+                <a href="#por-que-legalpath" className="text-secondary hover:text-on-background transition-colors">Beneficios</a>
                 <a href="#como-empezar" className="text-secondary hover:text-on-background transition-colors">¿Cómo empezar?</a>
                 <a href="#pricing" className="text-secondary hover:text-on-background transition-colors">Planes</a>
               </>
             ) : (
               <>
                 <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors">¿Cómo Funciona?</a>
-                <a href="#por-que-legalpath" className="text-secondary hover:text-on-background transition-colors">¿Por qué LegalPath?</a>
+                <a href="#por-que-legalpath" className="text-secondary hover:text-on-background transition-colors">Beneficios</a>
                 <a href="#faq" className="text-secondary hover:text-on-background transition-colors">Preguntas frecuentes</a>
               </>
             )}

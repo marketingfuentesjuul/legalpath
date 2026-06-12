@@ -742,6 +742,33 @@ const Home = () => {
                 transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
               />
             </g>
+            {/* Inner paths (the lines that generate themselves when in view) */}
+            <g className="cta-sway-1">
+              <motion.path 
+                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
+                stroke="url(#ctaPathGradient1)"
+                strokeWidth="10"
+                strokeLinecap="round"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.2, ease: "easeOut" }}
+              />
+            </g>
+            <g className="cta-sway-2">
+              <motion.path 
+                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
+                stroke="url(#ctaPathGradient2)"
+                strokeWidth="10"
+                strokeLinecap="round"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
+              />
+            </g>
           </svg>
 
           <div className="max-w-7xl mx-auto px-8 relative z-10 flex flex-col items-center text-center space-y-6 md:space-y-8">

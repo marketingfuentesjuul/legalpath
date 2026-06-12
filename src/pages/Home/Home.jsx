@@ -579,29 +579,24 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#78350F]">Historial de Mensajes</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">A través de la plataforma podrás comunicarte y tener el historial de mensajes con el abogado.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#78350F]">Compartir Archivos</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">Podrás compartir archivos y documentos de manera segura.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#78350F]">Seguimiento de Hitos</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">Podrás seguir los hitos de tu causa en una línea temporal.</span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#78350F]">Protección LegalPath</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
-                    <span className="text-sm font-bold text-[#78350F]">Garantía de Servicio</span>
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">✓</span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">Estarás protegido bajo el respaldo y seguridad de LegalPath.</span>
                   </div>
                 </div>
               </div>

@@ -482,8 +482,6 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <span className="text-xs text-[#7D493B] opacity-25 font-semibold text-center">Formulario Guiado</span>
-                  
                   <div className="flex items-center gap-3">
                     <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#4A2015]">Anonimato 100%</span>
@@ -508,8 +506,6 @@ const Home = () => {
                     <span className="w-5 h-5 rounded-full bg-[#FF7F50] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#4A2015]">Filtros por Comunas</span>
                   </div>
-
-                  <span className="text-xs text-[#7D493B] opacity-25 font-semibold text-center mt-1">Formulario Guiado</span>
                 </div>
               </div>
             </div>
@@ -525,8 +521,6 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <span className="text-xs text-[#475569] opacity-25 font-semibold text-center">Títulos Validados</span>
-                  
                   <div className="flex items-center gap-3">
                     <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#1E293B]">Filtro de Especialidad</span>
@@ -551,14 +545,12 @@ const Home = () => {
                     <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#1E293B]">Soporte y Monitoreo</span>
                   </div>
-
-                  <span className="text-xs text-[#475569] opacity-25 font-semibold text-center mt-1">Títulos Validados</span>
                 </div>
               </div>
             </div>
 
-            {/* Card 3: Green (Highlighted/Taller with "Publicar Caso" button) */}
-            <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[540px] relative">
+            {/* Card 3: Green */}
+            <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[520px] relative">
               <div className="space-y-6">
                 <div className="space-y-3">
                   <h3 className="text-2xl font-black tracking-tight leading-tight">Propuestas a Medida</h3>
@@ -568,8 +560,6 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <span className="text-xs text-[#0F766E] opacity-25 font-semibold text-center">Ofertas a Medida</span>
-                  
                   <div className="flex items-center gap-3">
                     <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#064E3B]">Hasta 5 Cotizaciones</span>
@@ -594,15 +584,7 @@ const Home = () => {
                     <span className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#064E3B]">Transparencia Total</span>
                   </div>
-
-                  <span className="text-xs text-[#0F766E] opacity-25 font-semibold text-center mt-1">Ofertas a Medida</span>
                 </div>
-              </div>
-
-              <div className="pt-6 border-t border-[#A6E8D5]/30 mt-6 flex justify-center">
-                <Link to="/publicar-caso" className="w-full text-center py-3.5 bg-[#10B981] text-white rounded-full font-black text-sm shadow-md hover:scale-[1.03] active:scale-[0.98] transition-transform">
-                  Publicar Caso
-                </Link>
               </div>
             </div>
 
@@ -617,8 +599,6 @@ const Home = () => {
                 </div>
 
                 <div className="flex flex-col gap-3.5 pt-2 select-none">
-                  <span className="text-xs text-[#A16207] opacity-25 font-semibold text-center">Chat Encriptado</span>
-                  
                   <div className="flex items-center gap-3">
                     <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#78350F]">Historial de Mensajes</span>
@@ -643,8 +623,6 @@ const Home = () => {
                     <span className="w-5 h-5 rounded-full bg-[#EAB308] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">✓</span>
                     <span className="text-sm font-bold text-[#78350F]">Garantía de Servicio</span>
                   </div>
-
-                  <span className="text-xs text-[#A16207] opacity-25 font-semibold text-center mt-1">Chat Encriptado</span>
                 </div>
               </div>
             </div>

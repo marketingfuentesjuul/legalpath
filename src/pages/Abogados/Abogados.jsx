@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 const Abogados = () => {
   return (
@@ -381,6 +382,194 @@ const Abogados = () => {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* ======================== POR QUÉ LEGALPATH ======================== */}
+        <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20 space-y-12">
+          <div className="text-center max-w-4xl mx-auto space-y-5 mb-12">
+            <h2 className="text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
+              Una única <span className="text-[#EE6C4D] font-black">plataforma</span> para gestionar, cotizar y captar clientes con total seguridad.
+            </h2>
+            <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto font-medium leading-relaxed">
+              LegalPath es una plataforma moderna que unifica la búsqueda de asesoría jurídica. Conectamos tus especialidades con clientes pre-calificados a través de tecnología transparente y segura.
+            </p>
+          </div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 45 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
+          >
+            {/* Card 1: Peach */}
+            <div className="bg-[#FFEFEB] text-[#4A2015] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,239,235,0.8)] border border-[#FFD3C4]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Casos Pre-calificados</h3>
+                  <p className="text-sm text-[#7D493B] font-medium leading-relaxed">
+                    Nuestro software califica cada caso antes de ser publicado, entregándote un resumen estructurado.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Preguntas y respuestas clave estructuradas.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Urgencia y área de especialidad identificadas.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Estimación de montos o pretensiones del cliente.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#FF7F50] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFEFEB]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#4A2015] leading-snug">Sin perder tiempo en llamadas de descarte.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Blue */}
+            <div className="bg-[#EEF4FF] text-[#1E293B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(238,244,255,0.8)] border border-[#CFDDFB]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Costo Controlado</h3>
+                  <p className="text-sm text-[#475569] font-medium leading-relaxed">
+                    Olvídate de pagar agencias de publicidad o costosas campañas que no aseguran resultados.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Sistema basado en tokens transparente.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Pagas solo cuando decides contactar a un cliente.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Retorno de inversión (ROI) altamente medible.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Planes flexibles adaptados a tu ritmo de trabajo.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Green */}
+            <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[380px] relative">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Gestión Todo en Uno</h3>
+                  <p className="text-sm text-[#0F766E] font-medium leading-relaxed">
+                    Todo lo que necesitas para interactuar con tus clientes y hacer seguimiento de tus causas.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#E8FFF8]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#064E3B] leading-snug">Chat seguro integrado en la plataforma.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#E8FFF8]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#064E3B] leading-snug">Compartición y almacenamiento seguro de archivos.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#E8FFF8]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#064E3B] leading-snug">Línea de tiempo interactiva con hitos del caso.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#10B981] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#E8FFF8]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#064E3B] leading-snug">Historial centralizado de tus conversaciones.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4: Yellow */}
+            <div className="bg-[#FFFBE5] text-[#78350F] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,251,229,0.8)] border border-[#FDE047]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black tracking-tight leading-tight">Competencia Justa</h3>
+                  <p className="text-sm text-[#A16207] font-medium leading-relaxed">
+                    Limitamos el número de postulaciones por caso para evitar la saturación.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3.5 pt-2 select-none">
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">Máximo 5 abogados por cada caso publicado.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">Los clientes eligen basándose en propuesta y perfil.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">Sin guerras de precios destructivas en el marketplace.</span>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#EAB308] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFFBE5]"></span>
+                    </span>
+                    <span className="text-sm font-bold text-[#78350F] leading-snug">Visibilidad e igualdad de condiciones garantizada.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </section>
 
         {/* ======================== PRICING SECTION ======================== */}

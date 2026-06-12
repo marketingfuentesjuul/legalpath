@@ -711,13 +711,6 @@ const Home = () => {
                 <stop offset="80%" stopColor="#006b56" stopOpacity="0.14" />
                 <stop offset="100%" stopColor="#006b56" stopOpacity="0" />
               </linearGradient>
-              <linearGradient id="ctaDashGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#1ecca7" stopOpacity="0" />
-                <stop offset="25%" stopColor="#1ecca7" stopOpacity="0.25" />
-                <stop offset="50%" stopColor="#006b56" stopOpacity="0.18" />
-                <stop offset="75%" stopColor="#1ecca7" stopOpacity="0.25" />
-                <stop offset="100%" stopColor="#1ecca7" stopOpacity="0" />
-              </linearGradient>
             </defs>
             
             {/* Glowing base curves (thick & blurred) */}
@@ -743,64 +736,6 @@ const Home = () => {
                 strokeLinecap="round"
                 fill="none"
                 className="blur-[8px]"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
-              />
-            </g>
-
-            {/* Inner detailed paths (medium thick, solid) */}
-            <g className="cta-sway-1">
-              <motion.path 
-                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
-                stroke="url(#ctaPathGradient1)"
-                strokeWidth="12"
-                strokeLinecap="round"
-                fill="none"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 2.2, ease: "easeOut" }}
-              />
-            </g>
-            <g className="cta-sway-2">
-              <motion.path 
-                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
-                stroke="url(#ctaPathGradient2)"
-                strokeWidth="12"
-                strokeLinecap="round"
-                fill="none"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 2.6, ease: "easeOut", delay: 0.2 }}
-              />
-            </g>
-
-            {/* Animated flowing dashed lines */}
-            <g className="cta-sway-1">
-              <motion.path 
-                d="M -50,280 C 300,100 600,340 900,120 C 1100,-20 1300,120 1500,220"
-                stroke="url(#ctaDashGradient)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                fill="none"
-                className="flowing-path"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 2.2, ease: "easeOut" }}
-              />
-            </g>
-            <g className="cta-sway-2">
-              <motion.path 
-                d="M -50,120 C 300,320 600,80 900,280 C 1100,380 1300,180 1500,120"
-                stroke="url(#ctaDashGradient)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                fill="none"
-                className="flowing-path-reverse"
                 initial={{ pathLength: 0 }}
                 whileInView={{ pathLength: 1 }}
                 viewport={{ once: true }}

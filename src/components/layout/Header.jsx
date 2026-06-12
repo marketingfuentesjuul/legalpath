@@ -16,7 +16,7 @@ const Header = () => {
   }, [])
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-2' : 'pt-[10px]'}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-2' : 'pt-[15px]'}`}>
       <div className={`w-full transition-all duration-500 mx-4 ${
         scrolled 
           ? 'max-w-5xl bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/40 rounded-[2rem] py-2 px-6' 

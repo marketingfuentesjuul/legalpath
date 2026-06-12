@@ -489,7 +489,7 @@ const Abogados = () => {
 
           {/* Step 02 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="lg:order-2 space-y-8">
+            <div className="lg:order-2 space-y-8 lg:pl-16">
               <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>02</div>
               <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Contrata un plan con tokens</h3>
               <p className="text-xl text-secondary leading-relaxed max-w-lg">

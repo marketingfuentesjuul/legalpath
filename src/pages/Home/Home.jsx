@@ -6,30 +6,40 @@ const FaqItem = ({ question, answer, isOpen, onClick }) => {
   const renderSafeHtml = (text) => {
     return text.split(/(<strong>.*?<\/strong>)/g).map((part, i) => {
       if (part.startsWith('<strong>') && part.endsWith('</strong>')) {
-        return <strong key={i}>{part.substring(8, part.length - 9)}</strong>
+        return <strong key={i} className="font-extrabold text-on-background">{part.substring(8, part.length - 9)}</strong>
       }
       return part
     })
   }
 
   return (
-    <div className="faq-item bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+    <div className={`faq-item border transition-all duration-300 rounded-[1.5rem] overflow-hidden ${
+      isOpen 
+        ? 'bg-white border-primary-container/30 shadow-[0_12px_25px_rgba(0,107,86,0.04)]' 
+        : 'bg-[#f8fafc]/70 hover:bg-[#f8fafc] border-slate-100/80'
+    }`}>
       <button
-        className={`w-full flex items-center justify-between px-7 py-5 text-left gap-4 ${isOpen ? 'text-primary' : ''}`}
+        className="w-full flex items-center justify-between p-6 md:p-7 text-left gap-4 cursor-pointer"
         onClick={onClick}
       >
-        <span className="font-semibold text-on-background text-base">{question}</span>
-        <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-200 ${isOpen ? 'bg-primary-container text-white' : 'bg-slate-100 text-slate-500'}`}>
-          {isOpen ? '×' : '+'}
+        <span className="font-bold text-on-background text-base md:text-lg tracking-tight leading-snug">{question}</span>
+        <span className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 ${
+          isOpen 
+            ? 'bg-primary-container text-white shadow-md shadow-primary-container/20 rotate-180' 
+            : 'bg-slate-200/60 text-slate-500'
+        }`}>
+          <span className="material-symbols-outlined text-lg font-bold">keyboard_arrow_down</span>
         </span>
       </button>
-      {isOpen && (
-        <div className="px-7 pb-6">
-          <p className="text-secondary text-sm leading-relaxed">
-            {renderSafeHtml(answer)}
-          </p>
-        </div>
-      )}
+      <div 
+        className={`transition-all duration-300 ease-in-out ${
+          isOpen ? 'max-h-[500px] opacity-100 pb-6 px-6 md:pb-7 md:px-7' : 'max-h-0 opacity-0 overflow-hidden'
+        }`}
+      >
+        <p className="text-secondary text-sm md:text-base leading-relaxed">
+          {renderSafeHtml(answer)}
+        </p>
+      </div>
     </div>
   )
 }
@@ -605,28 +615,48 @@ const Home = () => {
         </section>
 
         {/* FAQ Section */}
-        <section id="faq" className="max-w-4xl mx-auto px-8 py-20">
-          <div className="text-center mb-12">
-            <span className="inline-block bg-primary-container/10 text-primary-container font-bold text-xs tracking-widest uppercase px-4 py-2 rounded-full mb-5">Preguntas Frecuentes</span>
-            <h2 className="text-[41.4px] font-extrabold text-on-background tracking-tight">Todo lo que necesitas saber</h2>
+        <section id="faq" className="max-w-7xl mx-auto px-6 md:px-8 py-24 border-t border-slate-100/60">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            
+            {/* Left Column: Title & Description */}
+            <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28 text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#e6fcf7] text-primary font-bold text-xs rounded-full w-max border border-[#1ecca7]/20">
+                <span className="material-symbols-outlined text-sm font-bold" style={{ fontVariationSettings: '"FILL" 1' }}>quiz</span>
+                Preguntas frecuentes
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] text-on-background">
+                Preguntas <br />
+                <span className="text-[#1ECCA7]">frecuentes</span>
+              </h2>
+              
+              <p className="text-base md:text-lg text-secondary leading-relaxed max-w-sm">
+                Aquí vas a poder encontrar todas las dudas que tengas respecto a cómo funciona LegalPath
+              </p>
+            </div>
+
+            {/* Right Column: FAQ List */}
+            <div className="lg:col-span-7">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="space-y-4"
+              >
+                {faqs.map((faq, index) => (
+                  <FaqItem
+                    key={index}
+                    question={faq.q}
+                    answer={faq.a}
+                    isOpen={openFaqIndex === index}
+                    onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                  />
+                ))}
+              </motion.div>
+            </div>
+            
           </div>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="space-y-3"
-          >
-            {faqs.map((faq, index) => (
-              <FaqItem
-                key={index}
-                question={faq.q}
-                answer={faq.a}
-                isOpen={openFaqIndex === index}
-                onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
-              />
-            ))}
-          </motion.div>
         </section>
 
         {/* Final CTA */}

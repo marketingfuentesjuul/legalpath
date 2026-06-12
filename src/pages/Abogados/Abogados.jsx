@@ -121,55 +121,99 @@ const Abogados = () => {
         </section>
 
         {/* ======================== ¿CÓMO FUNCIONA? ======================== */}
-        <section id="como-funciona" className="max-w-7xl mx-auto px-8 pt-20 pb-10">
-          <div className="text-center mb-16">
-            <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
-            <div className="w-16 h-1 bg-[#EE6C4D] mx-auto mt-4 rounded-full"></div>
-          </div>
-
-          {/* Breve descripción del funcionamiento */}
-          <div className="max-w-4xl mx-auto mt-4 mb-24 p-10 rounded-[40px] bg-white border border-slate-100 shadow-[0_30px_60px_-15px_rgba(238,108,77,0.08)] relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#EE6C4D]/5 blur-3xl rounded-full"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-container/5 blur-3xl rounded-full"></div>
+        <section id="como-funciona" className="max-w-7xl mx-auto px-8 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
-            <div className="relative z-10 space-y-8">
-              <div className="flex flex-col md:flex-row items-center gap-10">
-                <div className="flex-1">
-                  <p className="text-lg text-secondary leading-relaxed text-justify">
-                    LegalPath es la plataforma donde los ciudadanos publican sus casos legales. Nuestro software <b>califica cada solicitud</b> mediante un proceso inteligente de preguntas y respuestas, entregándote el caso estructurado con sus <b>elementos clave y montos estimados</b>.
-                  </p>
-                </div>
-                <div className="w-px h-24 bg-slate-100 hidden md:block"></div>
-                <div className="flex-1">
-                  <p className="text-lg text-secondary leading-relaxed text-justify">
-                    Como abogado, podrás revisar estas oportunidades y usar <b>tokens</b> para acceder a los datos de contacto. Cada cliente recibe hasta <b>cinco propuestas</b> simultáneas, garantizando una competencia justa donde tu propuesta y perfil son los que deciden.
-                  </p>
+            {/* Left Column: Image with Blobs and Floating Badges */}
+            <div className="lg:col-span-6 relative flex justify-center items-center py-6">
+              {/* Back Blobs */}
+              <div className="absolute -top-10 -left-10 w-[110%] h-[110%] -z-10 opacity-80 pointer-events-none">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <path fill="#EE6C4D" fillOpacity="0.12" d="M44.7,-76.4C57.4,-69.5,67.1,-56.9,74.5,-42.8C81.8,-28.7,86.8,-13.1,86.4,2.3C86,17.7,80.1,32.8,71.9,46.1C63.7,59.3,53.2,70.6,40.1,76.6C27,82.6,13.5,83.3,-0.6,84.3C-14.7,85.3,-29.4,86.7,-43.3,81.4C-57.2,76.1,-70.3,64.2,-78.3,49.8C-86.3,35.4,-89.2,18.5,-88.7,2.1C-88.2,-14.3,-84.3,-30.2,-75.7,-43.5C-67.1,-56.9,-53.8,-67.7,-39.6,-73.8C-25.5,-79.8,-10.5,-81.1,3.4,-86.3C17.3,-91.5,32,-90.6,44.7,-76.4Z" transform="translate(100 100)" />
+                </svg>
+              </div>
+              <div className="absolute -bottom-10 -right-10 w-[80%] h-[80%] -z-10 opacity-70 pointer-events-none">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <path fill="#1ecca7" fillOpacity="0.1" d="M38.1,-63.5C49.9,-57.2,60.5,-47.5,68.9,-35.4C77.3,-23.3,83.5,-8.8,83,-5.3C82.5,1.9,75.4,14.6,68.2,27.3C61,40.1,53.6,52.9,42.8,61.9C32,70.9,16,76,0.3,75.5C-15.4,75,-30.8,69,-43.3,59.5C-55.8,50,-65.4,37,-71,22.2C-76.6,7.5,-78.2,-9.1,-74,-24.1C-69.8,-39.1,-59.8,-52.5,-46.8,-58.3C-33.8,-64.1,-16.9,-62.3,-1.2,-60.3C14.5,-58.3,26.3,-69.8,38.1,-63.5Z" transform="translate(100 100)" />
+                </svg>
+              </div>
+
+              {/* Photo Frame (Organic fluid shapes and smooth curves) */}
+              <div className="relative w-full max-w-[420px] aspect-[4/5] overflow-hidden rounded-[3rem] shadow-2xl border-4 border-white">
+                <img 
+                  src="/assets/images/tablet-abogado.jpg" 
+                  alt="Tablet con plataforma de abogado"
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+
+              {/* Floating Award-style Badges */}
+              {/* Bottom Left Badge (Orange/Gold theme) */}
+              <div className="absolute -bottom-6 -left-4 w-32 h-32 md:w-36 md:h-36 bg-[#EE6C4D] rounded-full p-1 flex items-center justify-center shadow-lg border-4 border-white floating hover:scale-105 transition-transform duration-300 select-none">
+                <div className="w-full h-full rounded-full border border-white/20 flex flex-col items-center justify-center text-center p-2 text-white">
+                  <span className="material-symbols-outlined text-2xl mb-1 text-white">verified</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider leading-none">Abogado</span>
+                  <span className="text-[9px] font-medium opacity-90 leading-tight">Verificado</span>
+                  <span className="text-[8px] font-bold bg-white/25 px-1.5 py-0.5 rounded mt-1.5 leading-none">Corte Suprema</span>
                 </div>
               </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">person_search</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Publicación</p>
-                  <p className="text-xs font-bold text-on-background">Casos reales</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">quiz</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Calificación</p>
-                  <p className="text-xs font-bold text-on-background">Pre-calificados</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">toll</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Acceso</p>
-                  <p className="text-xs font-bold text-on-background">Sistema Tokens</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
-                  <span className="material-symbols-outlined text-[#EE6C4D] mb-2">handshake</span>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Conexión</p>
-                  <p className="text-xs font-bold text-on-background">Elección libre</p>
+
+              {/* Bottom Right Badge (Mint/Teal theme) */}
+              <div className="absolute bottom-8 -right-6 w-32 h-32 md:w-36 md:h-36 bg-[#1ecca7] rounded-full p-1 flex items-center justify-center shadow-lg border-4 border-white floating-delayed hover:scale-105 transition-transform duration-300 select-none">
+                <div className="w-full h-full rounded-full border border-white/20 flex flex-col items-center justify-center text-center p-2 text-white">
+                  <span className="material-symbols-outlined text-2xl mb-1 text-white">assignment_turned_in</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider leading-none">Casos</span>
+                  <span className="text-[9px] font-medium opacity-90 leading-tight">Pre-calificados</span>
+                  <span className="text-[8px] font-bold bg-white/25 px-1.5 py-0.5 rounded mt-1.5 leading-none">100% Reales</span>
                 </div>
               </div>
             </div>
+
+            {/* Right Column: Text and Icon List */}
+            <div className="lg:col-span-6 space-y-10 lg:pl-6">
+              <h2 className="text-[36px] md:text-[46px] font-extrabold tracking-tight text-on-background leading-tight">
+                Crece con nuestra tecnología, confía en nuestro proceso
+              </h2>
+
+              <div className="space-y-8">
+                {/* Item 1 */}
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#EE6C4D] flex items-center justify-center text-white shadow-lg shadow-[#EE6C4D]/25">
+                    <span className="material-symbols-outlined text-xl">fact_check</span>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[15px] text-secondary leading-relaxed">
+                      <b className="text-on-background">Casos calificados automáticamente.</b> Nuestro software estructurado filtra y califica cada solicitud de los ciudadanos, entregándote un resumen completo con elementos clave y montos estimados.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Item 2 */}
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#EE6C4D] flex items-center justify-center text-white shadow-lg shadow-[#EE6C4D]/25">
+                    <span className="material-symbols-outlined text-xl">toll</span>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[15px] text-secondary leading-relaxed">
+                      <b className="text-on-background">Sistema flexible de tokens.</b> Revisa libremente todas las oportunidades disponibles en el marketplace y utiliza tus tokens solo cuando decidas acceder a los datos de contacto.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Item 3 */}
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#EE6C4D] flex items-center justify-center text-white shadow-lg shadow-[#EE6C4D]/25">
+                    <span className="material-symbols-outlined text-xl">handshake</span>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[15px] text-secondary leading-relaxed">
+                      <b className="text-on-background">Competencia justa y directa.</b> Conéctate mediante nuestro chat integrado. Limitamos el acceso a un máximo de 5 propuestas por caso, asegurando una competencia justa para tu perfil.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </section>
 

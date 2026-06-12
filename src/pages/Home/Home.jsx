@@ -494,7 +494,7 @@ const Home = () => {
         <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20 space-y-12">
           <div className="text-center max-w-4xl mx-auto space-y-5 mb-12">
             <h2 className="text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
-              Una única <span className="text-[#FF7F50] font-black">plataforma</span> para gestionar, comparar y contratar abogados con total seguridad.
+              Una única <span className="text-[#1ECCA7] font-black">plataforma</span> para gestionar, comparar y contratar abogados con total seguridad.
             </h2>
             <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto font-medium leading-relaxed">
               LegalPath es una plataforma moderna que unifica la búsqueda de asesoría jurídica. Conectamos tus necesidades con abogados verificados a través de tecnología transparente y segura.

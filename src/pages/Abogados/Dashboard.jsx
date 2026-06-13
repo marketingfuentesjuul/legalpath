@@ -1,10 +1,56 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { supabase } from '../../lib/supabaseClient'
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [expandedCaseId, setExpandedCaseId] = useState(null)
   const [expandedSearchCaseId, setExpandedSearchCaseId] = useState(null)
+
+  // Estados para casos de la base de datos
+  const [searchCasesList, setSearchCasesList] = useState([])
+  const [loadingCases, setLoadingCases] = useState(true)
+
+  // Función para obtener casos publicados desde Supabase
+  const fetchPublishedCases = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('cases')
+        .select('*')
+        .eq('admin_status', 'aprobado')
+        .eq('status', 'activo')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setSearchCasesList(data || [])
+    } catch (err) {
+      console.error('Error al obtener los casos publicados:', err)
+    } finally {
+      setLoadingCases(false)
+    }
+  }
+
+  // Cargar casos inicialmente y suscribirse a cambios en tiempo real
+  useEffect(() => {
+    fetchPublishedCases()
+
+    // Suscripción al segundo (Realtime) para la tabla 'cases'
+    const channel = supabase
+      .channel('realtime:cases')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'cases' },
+        (payload) => {
+          console.log('Cambio en tiempo real detectado:', payload)
+          fetchPublishedCases()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
 
   // Datos provisorios recientes (Dashboard widget)
   const recentCases = [
@@ -41,60 +87,6 @@ const Dashboard = () => {
       date: '12 Oct 2026', 
       status: 'Auditoría',
       details: 'La clienta fue víctima de estafa telefónica donde se le sustrajeron $4.500.000 CLP. El banco niega restitución de fondos alegando negligencia. Se preparará reclamo ante la CMF y demanda por ley de fraudes (Ley 21.234).'
-    }
-  ]
-
-  // Buscar Casos (Marketplace provisorio) - SIN nombres de personas
-  const searchCasesList = [
-    { 
-      id: 's1', 
-      type: 'Migratorio', 
-      title: 'Tramitación de Visa Sujeta a Contrato Definitiva',
-      region: 'Región Metropolitana', 
-      amount: '$500.000',
-      urgency: 'Media',
-      date: '10 Oct 2026', 
-      details: 'El usuario requiere tramitación completa de visa sujeta a contrato para su grupo familiar. El empleador cuenta con toda la documentación. Hay urgencia moderada por inminente vencimiento de plazo en extranjería para su cónyuge.'
-    },
-    { 
-      id: 's2', 
-      type: 'Inmobiliario', 
-      title: 'Demanda por incumplimiento de promesa de compraventa',
-      region: 'Región de Valparaíso', 
-      amount: '$1.500.000',
-      urgency: 'Alta',
-      date: '08 Oct 2026', 
-      details: 'Inmobiliaria incumplió plazos de entrega pactados hace más de 14 meses. Se requiere que el abogado ingrese demanda por incumplimiento contractual e indemnización de perjuicios, solicitando medidas precautorias inmediatas sobre el patrimonio de la constructora.'
-    },
-    { 
-      id: 's3', 
-      type: 'Fraude Bancario', 
-      title: 'Representación en estafa telefónica bancaria',
-      region: 'Región de Antofagasta', 
-      amount: '$2.000.000',
-      urgency: 'Alta',
-      date: '11 Oct 2026', 
-      details: 'Usuario busca representación contra institución bancaria tras estafa por vishing. Los fondos fueron extraídos a pesar del bloqueo rápido. El banco niega restitución de fondos alegando negligencia del cliente. El abogado deberá interponer reclamo en la CMF y demanda por ley de fraudes.'
-    },
-    { 
-      id: 's4', 
-      type: 'Herencia', 
-      title: 'Posesión Efectiva testada y Partición paralizada',
-      region: 'Región del Maule', 
-      amount: '$800.000',
-      urgency: 'Baja',
-      date: '12 Oct 2026', 
-      details: 'El procedimiento requiere completar la inscripción de la posesión efectiva testada. No hay un acuerdo armónico entre los 4 herederos respecto a la división de terrenos agrícolas. Se requiere iniciar la gestión y evaluar factibilidad de juicio de partición.'
-    },
-    { 
-      id: 's5', 
-      type: 'Minería', 
-      title: 'Constitución de Concesión de Exploración (Pedimento)',
-      region: 'Región de Atacama', 
-      amount: '$3.500.000',
-      urgency: 'Media',
-      date: '09 Oct 2026', 
-      details: 'Empresa corporativa requiere asesor experto para iniciar y llevar a cabo el procedimiento judicial no contencioso para constituir una concesión de exploración minera. El área de hectáreas ya está definida satelitalmente.'
     }
   ]
 
@@ -354,95 +346,124 @@ const Dashboard = () => {
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-slate-800 mb-4 ml-2">Casos Disponibles ({searchCasesList.length})</h3>
         
-        {searchCasesList.map(caseItem => (
-          <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-             
-             {/* Acordion Header */}
-             <button 
-               onClick={() => setExpandedSearchCaseId(expandedSearchCaseId === caseItem.id ? null : caseItem.id)}
-               className="w-full flex md:items-center flex-col md:flex-row justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none gap-4 md:gap-0"
-             >
-               <div className="flex items-start md:items-center gap-5 w-full md:w-auto">
-                 <div className="w-14 h-14 shrink-0 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-500">
-                   <span className="material-symbols-outlined text-[24px]">
-                     {caseItem.type === 'Migratorio' ? 'public' : caseItem.type === 'Inmobiliario' ? 'real_estate_agent' : caseItem.type === 'Herencia' ? 'home_work' : caseItem.type === 'Minería' ? 'landscape' : 'account_balance'}
-                   </span>
-                 </div>
-                 <div>
-                   <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                     <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{caseItem.type}</span>
-                     <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[12px]">location_on</span> {caseItem.region}
-                     </span>
-                     <span className="text-sm font-bold text-slate-400 hidden sm:inline">•</span>
-                     <span className="text-sm font-bold text-slate-500">{caseItem.date}</span>
-                   </div>
-                   <h3 className="text-[17px] font-bold text-slate-800 leading-snug pr-4">{caseItem.title}</h3>
-                   <p className="text-sm text-slate-500 font-medium mt-1">Usuario Anónimo</p>
-                 </div>
-               </div>
-               
-               <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
-                 <div className="flex gap-4 text-right">
-                    <div className="hidden sm:block">
-                      <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
-                      <p className={`text-sm font-bold mt-0.5 ${caseItem.urgency === 'Alta' ? 'text-red-500' : caseItem.urgency === 'Media' ? 'text-amber-500' : 'text-emerald-500'}`}>{caseItem.urgency}</p>
-                    </div>
-                    <div>
-                      <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
-                      <p className="text-sm font-bold text-slate-800 mt-0.5">{caseItem.amount}</p>
-                    </div>
-                 </div>
-                 <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedSearchCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
-                   <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedSearchCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
-                 </div>
-               </div>
-             </button>
-             
-             {/* Acordion Content */}
-             <div 
-               className="transition-all duration-300 ease-in-out overflow-hidden" 
-               style={{ maxHeight: expandedSearchCaseId === caseItem.id ? '600px' : '0px', opacity: expandedSearchCaseId === caseItem.id ? 1 : 0 }}
-             >
-               <div className="p-6 border-t border-slate-100 bg-slate-50/70">
-                 <div className="flex flex-col md:flex-row gap-6 justify-between">
-                   <div className="flex-1 max-w-3xl">
-                     <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                       <span className="material-symbols-outlined text-[20px] text-slate-400">description</span> Descripción del expediente
-                     </h4>
-                     <p className="text-slate-600 text-[15px] leading-relaxed">
-                       {caseItem.details}
-                     </p>
-                     
-                     <div className="mt-6 flex flex-wrap gap-2">
-                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
-                         <span className="material-symbols-outlined text-[14px]">lock</span> Confidencial
+        {loadingCases ? (
+          <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+            <span className="material-symbols-outlined text-[32px] animate-spin mb-2 text-[#EE6C4D]">sync</span>
+            <p className="font-semibold text-sm">Cargando casos en tiempo real...</p>
+          </div>
+        ) : searchCasesList.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+            <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">gavel</span>
+            <p className="font-bold">No hay casos publicados disponibles.</p>
+            <p className="text-xs text-slate-400 mt-1">Cuando los administradores revisen y publiquen casos, aparecerán aquí.</p>
+          </div>
+        ) : (
+          searchCasesList.map(caseItem => {
+            const displayType = caseItem.category || 'General';
+            const displayRegion = caseItem.region || caseItem.city || 'No especificada';
+            const displayDate = caseItem.created_at
+              ? new Date(caseItem.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })
+              : 'Reciente';
+            const displayTitle = caseItem.title || 'Caso sin título';
+            const displayUrgency = caseItem.urgency
+              ? caseItem.urgency.charAt(0).toUpperCase() + caseItem.urgency.slice(1)
+              : 'Baja';
+            const displayAmount = caseItem.estimated_amount
+              ? new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(caseItem.estimated_amount)
+              : 'Por definir';
+            const displayDetails = caseItem.polished_description || caseItem.description || 'Sin descripción';
+
+            return (
+              <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                 
+                 {/* Accordion Header */}
+                 <button 
+                   onClick={() => setExpandedSearchCaseId(expandedSearchCaseId === caseItem.id ? null : caseItem.id)}
+                   className="w-full flex md:items-center flex-col md:flex-row justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none gap-4 md:gap-0"
+                 >
+                   <div className="flex items-start md:items-center gap-5 w-full md:w-auto">
+                     <div className="w-14 h-14 shrink-0 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-500">
+                       <span className="material-symbols-outlined text-[24px]">
+                         {displayType === 'Migratorio' ? 'public' : displayType === 'Inmobiliario' ? 'real_estate_agent' : displayType === 'Herencia' ? 'home_work' : displayType === 'Minería' ? 'landscape' : 'account_balance'}
                        </span>
-                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
-                         <span className="material-symbols-outlined text-[14px]">history</span> Expira en 7 días
-                       </span>
+                     </div>
+                     <div>
+                       <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                         <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{displayType}</span>
+                         <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[12px]">location_on</span> {displayRegion}
+                         </span>
+                         <span className="text-sm font-bold text-slate-400 hidden sm:inline">•</span>
+                         <span className="text-sm font-bold text-slate-500">{displayDate}</span>
+                       </div>
+                       <h3 className="text-[17px] font-bold text-slate-800 leading-snug pr-4">{displayTitle}</h3>
+                       <p className="text-sm text-slate-500 font-medium mt-1">Usuario Anónimo</p>
                      </div>
                    </div>
                    
-                   <div className="w-full md:w-64 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6">
-                     <p className="text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-3 text-center">Inversión requerida</p>
-                     <div className="flex items-center justify-center gap-2 mb-4 bg-orange-50 text-orange-600 rounded-xl py-3 border border-orange-100">
-                       <span className="material-symbols-outlined">toll</span>
-                       <span className="font-black text-xl">15 Tokens</span>
+                   <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
+                     <div className="flex gap-4 text-right">
+                        <div className="hidden sm:block">
+                          <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
+                          <p className={`text-sm font-bold mt-0.5 ${displayUrgency === 'Alta' ? 'text-red-500' : displayUrgency === 'Media' ? 'text-amber-500' : 'text-emerald-500'}`}>{displayUrgency}</p>
+                        </div>
+                        <div>
+                          <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
+                          <p className="text-sm font-bold text-slate-800 mt-0.5">{displayAmount}</p>
+                        </div>
                      </div>
-                     <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg focus:outline-none">
-                       <span className="material-symbols-outlined text-[20px]">chat</span> Usar Token y Contactar
-                     </button>
-                     <p className="text-[11px] text-center text-slate-400 mt-3 font-medium leading-tight">
-                       Se restarán 15 tokens de tu saldo actual si el usuario acepta tu contacto.
-                     </p>
+                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedSearchCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                       <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedSearchCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+                     </div>
+                   </div>
+                 </button>
+                 
+                 {/* Accordion Content */}
+                 <div 
+                   className="transition-all duration-300 ease-in-out overflow-hidden" 
+                   style={{ maxHeight: expandedSearchCaseId === caseItem.id ? '600px' : '0px', opacity: expandedSearchCaseId === caseItem.id ? 1 : 0 }}
+                 >
+                   <div className="p-6 border-t border-slate-100 bg-slate-50/70">
+                     <div className="flex flex-col md:flex-row gap-6 justify-between">
+                       <div className="flex-1 max-w-3xl">
+                         <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                           <span className="material-symbols-outlined text-[20px] text-slate-400">description</span> Descripción del expediente
+                         </h4>
+                         <p className="text-slate-600 text-[15px] leading-relaxed">
+                           {displayDetails}
+                         </p>
+                         
+                         <div className="mt-6 flex flex-wrap gap-2">
+                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
+                             <span className="material-symbols-outlined text-[14px]">lock</span> Confidencial
+                           </span>
+                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
+                             <span className="material-symbols-outlined text-[14px]">history</span> Expira en 7 días
+                           </span>
+                         </div>
+                       </div>
+                       
+                       <div className="w-full md:w-64 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6">
+                         <p className="text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-3 text-center">Inversión requerida</p>
+                         <div className="flex items-center justify-center gap-2 mb-4 bg-orange-50 text-orange-600 rounded-xl py-3 border border-orange-100">
+                           <span className="material-symbols-outlined">toll</span>
+                           <span className="font-black text-xl">15 Tokens</span>
+                         </div>
+                         <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg focus:outline-none">
+                           <span className="material-symbols-outlined text-[20px]">chat</span> Usar Token y Contactar
+                         </button>
+                         <p className="text-[11px] text-center text-slate-400 mt-3 font-medium leading-tight">
+                           Se restarán 15 tokens de tu saldo actual si el usuario acepta tu contacto.
+                         </p>
+                       </div>
+                     </div>
                    </div>
                  </div>
-               </div>
-             </div>
-             
-          </div>
-        ))}
+                 
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   )

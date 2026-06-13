@@ -6,6 +6,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [expandedCaseId, setExpandedCaseId] = useState(null)
   const [expandedSearchCaseId, setExpandedSearchCaseId] = useState(null)
+  const [individualTokens, setIndividualTokens] = useState(10)
 
   // Estados para casos de la base de datos
   const [searchCasesList, setSearchCasesList] = useState([])
@@ -468,6 +469,296 @@ const Dashboard = () => {
     </div>
   )
 
+  const renderTokensView = () => {
+    const getUnitPrice = (count) => {
+      if (count >= 25) return 1100
+      if (count >= 10) return 1300
+      return 1500
+    }
+    const unitPrice = getUnitPrice(individualTokens)
+    const totalCost = individualTokens * unitPrice
+
+    const usedTokens = 18
+    const limitTokens = 40
+    const progressPercent = Math.min((usedTokens / limitTokens) * 100, 100)
+
+    return (
+      <div className="w-full">
+        <header className="flex justify-between items-center mb-10 w-full">
+          <div>
+            <h1 className="text-3xl font-black text-slate-800 tracking-tight">Mis Tokens.</h1>
+            <p className="text-slate-500 mt-1 font-medium text-sm">Administra tu saldo de tokens, revisa el consumo mensual y adquiere más créditos.</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <button className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#EE6C4D] shadow-sm transition-all relative">
+              <span className="material-symbols-outlined text-[20px]">notifications</span>
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#EE6C4D] rounded-full border-2 border-white"></span>
+            </button>
+            <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm cursor-pointer">
+              <img src="https://ui-avatars.com/api/?name=A+B&background=EE6C4D&color=fff" alt="Perfil" />
+            </div>
+          </div>
+        </header>
+
+        {/* Resumen & Consumo Mensual */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+          {/* Tarjeta de Balance */}
+          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/10 group flex flex-col justify-between">
+            <div className="relative z-10">
+              <span className="bg-white/10 text-white text-[11px] uppercase tracking-wider font-bold px-4 py-1.5 rounded-full backdrop-blur-md mb-6 inline-block border border-white/5 shadow-sm">
+                Saldo Actual
+              </span>
+              <div className="flex items-center gap-3 mt-4">
+                <span className="material-symbols-outlined text-[#EE6C4D] text-5xl" style={{ fontVariationSettings: '"FILL" 1' }}>toll</span>
+                <div>
+                  <h3 className="text-5xl font-black tracking-tight">450</h3>
+                  <p className="text-slate-400 font-semibold text-xs mt-1">Tokens Disponibles</p>
+                </div>
+              </div>
+            </div>
+            <div className="absolute -right-10 -top-10 w-32 h-32 bg-[#EE6C4D]/20 rounded-full blur-2xl pointer-events-none"></div>
+          </div>
+
+          {/* Tarjeta de Consumo Mensual (Contador solicitado por el usuario) */}
+          <div className="lg:col-span-2 bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <span className="bg-[#EE6C4D]/10 text-[#EE6C4D] text-[11px] uppercase tracking-wider font-bold px-4 py-1.5 rounded-full inline-block">
+                    Consumo Mensual
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="text-2xl font-black text-slate-800">{usedTokens}</span>
+                  <span className="text-slate-400 font-bold text-sm"> / {limitTokens} tokens</span>
+                </div>
+              </div>
+              
+              {/* Línea de contador/progreso */}
+              <div className="w-full bg-slate-100 rounded-full h-3.5 mb-3 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-[#EE6C4D] to-orange-400 h-full rounded-full transition-all duration-500" 
+                  style={{ width: `${progressPercent}%` }}
+                ></div>
+              </div>
+              
+              <div className="flex justify-between items-center text-xs font-semibold text-slate-400">
+                <span>0% usado</span>
+                <span>{progressPercent}% del límite de tu plan actual</span>
+                <span>100% ({limitTokens} tokens)</span>
+              </div>
+            </div>
+            
+            <p className="text-xs text-slate-400 font-medium mt-4 border-t border-slate-100 pt-3 flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-slate-400">info</span>
+              Tu plan (Plan Plus) se renueva automáticamente cada mes. Los tokens adicionales comprados de manera individual no expiran.
+            </p>
+          </div>
+        </div>
+
+        {/* Sección de Compra de Tokens */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          {/* Calculador de Tokens Individuales */}
+          <div className="lg:col-span-1 bg-white rounded-[32px] border border-slate-100 shadow-sm p-8 flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 mb-2">Comprar de a uno</h3>
+              <p className="text-sm font-medium text-slate-500 mb-6 leading-relaxed">¿Necesitas pocos tokens? Adquiere la cantidad exacta que necesites al instante.</p>
+              
+              {/* Selector de cantidad */}
+              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex items-center justify-between mb-6">
+                <button 
+                  onClick={() => setIndividualTokens(Math.max(1, individualTokens - 1))}
+                  className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#EE6C4D] hover:border-[#EE6C4D]/30 transition-all font-black text-lg shadow-sm"
+                >
+                  -
+                </button>
+                <div className="text-center">
+                  <input 
+                    type="number" 
+                    value={individualTokens}
+                    onChange={(e) => setIndividualTokens(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="w-16 text-2xl font-black text-slate-800 text-center bg-transparent border-none outline-none focus:ring-0"
+                  />
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Tokens</p>
+                </div>
+                <button 
+                  onClick={() => setIndividualTokens(individualTokens + 1)}
+                  className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#EE6C4D] hover:border-[#EE6C4D]/30 transition-all font-black text-lg shadow-sm"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* Tiers de precios individuales */}
+              <div className="space-y-2.5 mb-6">
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Tabla de Precios por Unidad:</p>
+                <div className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs font-semibold ${unitPrice === 1500 ? 'bg-orange-50 text-[#EE6C4D] border border-orange-100' : 'text-slate-500'}`}>
+                  <span>1 - 9 tokens</span>
+                  <span className="font-bold">$1.500 CLP / u</span>
+                </div>
+                <div className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs font-semibold ${unitPrice === 1300 ? 'bg-orange-50 text-[#EE6C4D] border border-orange-100' : 'text-slate-500'}`}>
+                  <span>10 - 24 tokens</span>
+                  <span className="font-bold">$1.300 CLP / u</span>
+                </div>
+                <div className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs font-semibold ${unitPrice === 1100 ? 'bg-orange-50 text-[#EE6C4D] border border-orange-100' : 'text-slate-500'}`}>
+                  <span>25 o más tokens</span>
+                  <span className="font-bold">$1.100 CLP / u</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Total y comprar */}
+            <div className="border-t border-slate-100 pt-6 mt-6">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-sm font-bold text-slate-500">Precio unitario:</span>
+                <span className="text-sm font-bold text-slate-700">${unitPrice.toLocaleString('es-CL')} CLP</span>
+              </div>
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-base font-extrabold text-slate-800">Total a pagar:</span>
+                <span className="text-2xl font-black text-[#EE6C4D]">${totalCost.toLocaleString('es-CL')} CLP</span>
+              </div>
+              <button className="w-full bg-[#EE6C4D] hover:bg-[#d65f42] text-white py-4 rounded-2xl font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-[20px]">shopping_cart</span> Comprar ahora
+              </button>
+            </div>
+          </div>
+
+          {/* Planes en Conjunto */}
+          <div className="lg:col-span-2 bg-slate-50 border border-slate-200/50 rounded-[32px] p-8">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-slate-800">Comprar en conjunto</h3>
+                <p className="text-sm font-medium text-slate-500 mt-1">Mejora tu suscripción mensual para obtener más tokens al mejor precio por unidad.</p>
+              </div>
+            </div>
+
+            {/* Lista de planes */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Plan Base */}
+              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div>
+                  <h4 className="font-bold text-slate-800 text-base">Plan Base</h4>
+                  <div className="flex items-baseline gap-1 mt-2 mb-4">
+                    <span className="text-xs text-slate-400 font-medium">$</span>
+                    <span className="text-2xl font-black text-slate-800">12.990</span>
+                    <span className="text-xs text-slate-400 font-medium">/mes</span>
+                  </div>
+                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>12 tokens incluidos</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Token extra a $1.500</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Dashboard básico</span>
+                    </li>
+                  </ul>
+                </div>
+                <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
+                  Contratar
+                </button>
+              </div>
+
+              {/* Plan Core */}
+              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div>
+                  <h4 className="font-bold text-slate-800 text-base">Plan Core</h4>
+                  <div className="flex items-baseline gap-1 mt-2 mb-4">
+                    <span className="text-xs text-slate-400 font-medium">$</span>
+                    <span className="text-2xl font-black text-slate-800">23.990</span>
+                    <span className="text-xs text-slate-400 font-medium">/mes</span>
+                  </div>
+                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>25 tokens incluidos</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Token extra a $1.300</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Documentos legales simples</span>
+                    </li>
+                  </ul>
+                </div>
+                <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
+                  Contratar
+                </button>
+              </div>
+
+              {/* Plan Plus */}
+              <div className="bg-white rounded-2xl p-5 border-2 border-[#EE6C4D] shadow-md flex flex-col justify-between relative">
+                <span className="absolute -top-3 right-4 bg-[#EE6C4D] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                  Tu Plan
+                </span>
+                <div>
+                  <h4 className="font-bold text-slate-800 text-base">Plan Plus</h4>
+                  <div className="flex items-baseline gap-1 mt-2 mb-4">
+                    <span className="text-xs text-slate-400 font-medium">$</span>
+                    <span className="text-2xl font-black text-slate-800">34.990</span>
+                    <span className="text-xs text-slate-400 font-medium">/mes</span>
+                  </div>
+                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>40 tokens incluidos</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Token extra a $1.100</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Jurisprudencia avanzada</span>
+                    </li>
+                  </ul>
+                </div>
+                <button className="w-full py-2.5 bg-[#EE6C4D] text-white font-bold rounded-xl text-xs transition-colors border border-transparent shadow-sm cursor-default" disabled>
+                  Plan Activo
+                </button>
+              </div>
+
+              {/* Plan Apex */}
+              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div>
+                  <h4 className="font-bold text-slate-800 text-base">Plan Apex</h4>
+                  <div className="flex items-baseline gap-1 mt-2 mb-4">
+                    <span className="text-xs text-slate-400 font-medium">$</span>
+                    <span className="text-2xl font-black text-slate-800">79.990</span>
+                    <span className="text-xs text-slate-400 font-medium">/mes</span>
+                  </div>
+                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>60 tokens incluidos</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Token extra a $990</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                      <span>Coaching & Soporte 24/7</span>
+                    </li>
+                  </ul>
+                </div>
+                <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
+                  Mejorar Plan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans">
       {/* Sidebar */}
@@ -498,12 +789,7 @@ const Dashboard = () => {
           {activeTab === 'dashboard' && renderDashboardView()}
           {activeTab === 'casos' && renderCasosActivosView()}
           {activeTab === 'buscar' && renderBuscarCasosView()}
-          {activeTab === 'tokens' && (
-            <div className="flex flex-col items-center justify-center h-64 text-slate-400">
-              <span className="material-symbols-outlined text-[48px] mb-4">toll</span>
-              <p className="font-medium">Gestión de tokens en construcción...</p>
-            </div>
-          )}
+          {activeTab === 'tokens' && renderTokensView()}
         </div>
       </main>
     </div>

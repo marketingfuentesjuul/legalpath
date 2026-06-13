@@ -122,13 +122,13 @@ const Perfil = () => {
         last_name_paternal: lastNamePaternal,
         last_name_maternal: lastNameMaternal,
         email: email,
-        role: 'abogado',
+        role: 'lawyer',
         rut_personal: rut,
         region: region,
         city: city,
         colegio_id: colegioId,
         specialties: specialties,
-        verification_status: 'pendiente',
+        verification_status: 'pending',
         updated_at: new Date()
       }
       if (avatarUrl) lawyerProfileData.avatar_url = avatarUrl
@@ -277,7 +277,7 @@ const Perfil = () => {
                       <div className="relative">
                         <select value={study.studyLevel} onChange={e => updateStudy(idx, 'studyLevel', e.target.value)} required className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow appearance-none text-on-background">
                           <option value="" disabled>Seleccionar nivel...</option>
-                          <option value="grado">Licenciatura / Grado</option>
+                          <option value="pregrado">Licenciatura / Grado</option>
                           <option value="diplomado">Diplomado</option>
                           <option value="postgrado">Magíster / Postgrado</option>
                           <option value="doctorado">Doctorado</option>

@@ -18,7 +18,7 @@ const Registro = () => {
       provider,
       options: {
         redirectTo: `${window.location.origin}/auth/perfil`,
-        data: { role: 'abogado' }
+        data: { role: 'lawyer' }
       }
     })
     if (error) setError(error.message)
@@ -57,7 +57,7 @@ const Registro = () => {
             first_name: firstName,
             last_name: lastName,
             full_name: `${firstName} ${lastName}`,
-            role: 'abogado'
+            role: 'lawyer'
           }
         })
         if (authError) {
@@ -75,8 +75,8 @@ const Registro = () => {
           first_name: firstName,
           last_name: lastName,
           email: email,
-          role: 'abogado',
-          verification_status: 'pendiente'
+          role: 'lawyer',
+          verification_status: 'pending'
         })
         
         if (lpError) {

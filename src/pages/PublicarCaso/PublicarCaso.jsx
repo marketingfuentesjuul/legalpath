@@ -257,7 +257,7 @@ const PublicarCaso = () => {
       await supabase.auth.updateUser({
         email: registerForm.email,
         password: registerForm.password,
-        data: { first_name: firstName, last_name: lastName || '', role: 'user' }
+        data: { first_name: firstName, last_name: lastName || '', role: 'client' }
       })
     } catch (error) {
       setSubmitError(error.message || 'Error al registrar y publicar caso')

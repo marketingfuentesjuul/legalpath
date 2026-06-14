@@ -13,6 +13,14 @@ import { useAuth } from './context/AuthContext'
 import ScrollToTop from './components/layout/ScrollToTop'
 import PageTransition from './components/layout/PageTransition'
 
+import AdminGuard from './components/AdminGuard'
+import AdminLayout from './components/layout/AdminLayout'
+import AdminDashboard from './pages/admin/Dashboard'
+import LawyerQueue from './pages/admin/LawyerQueue'
+import LawyerReview from './pages/admin/LawyerReview'
+import CaseQueue from './pages/admin/CaseQueue'
+import CaseEditor from './pages/admin/CaseEditor'
+
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
   if (loading) return null
@@ -38,6 +46,22 @@ function App() {
           <Route path="/auth/registro" element={<PageTransition><Registro /></PageTransition>} />
           <Route path="/auth/validacion" element={<PageTransition><Validacion /></PageTransition>} />
           <Route path="/dashboard" element={<PageTransition><ProtectedRoute><Dashboard /></ProtectedRoute></PageTransition>} />
+
+          {/* Admin panel routes */}
+          <Route
+            path="/admin"
+            element={
+              <AdminGuard>
+                <AdminLayout />
+              </AdminGuard>
+            }
+          >
+            <Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
+            <Route path="abogados" element={<PageTransition><LawyerQueue /></PageTransition>} />
+            <Route path="abogados/:id" element={<PageTransition><LawyerReview /></PageTransition>} />
+            <Route path="casos" element={<PageTransition><CaseQueue /></PageTransition>} />
+            <Route path="casos/:id" element={<PageTransition><CaseEditor /></PageTransition>} />
+          </Route>
         </Routes>
       </AnimatePresence>
     </>
@@ -45,3 +69,4 @@ function App() {
 }
 
 export default App
+

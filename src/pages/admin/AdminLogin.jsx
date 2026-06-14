@@ -66,7 +66,7 @@ export default function AdminLogin() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 -mt-10">
 
           <h1 className="text-xl font-semibold text-gray-800 mb-6">
             Iniciar sesión

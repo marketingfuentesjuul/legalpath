@@ -52,7 +52,11 @@ const Login = () => {
         await redirectByRole(data.user.id)
       }
     } catch (err) {
-      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.')
+      if (err.message === 'Invalid login credentials' || err.status === 400) {
+        setError('Clave inválida')
+      } else {
+        setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.')
+      }
     } finally {
       setLoading(false)
     }

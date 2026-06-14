@@ -55,10 +55,11 @@ export default function AdminLogin() {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <span className="material-symbols-outlined text-white text-3xl">gavel</span>
-            <span className="text-2xl font-bold text-white tracking-wider">LegalPath</span>
-          </div>
+          <img
+            src="/assets/images/logo-light.png"
+            alt="LegalPath Logo"
+            className="h-12 w-auto mx-auto mb-4"
+          />
           <p className="text-gray-400 text-sm tracking-widest uppercase">
             Panel de Administración
           </p>

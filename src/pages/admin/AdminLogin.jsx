@@ -58,7 +58,7 @@ export default function AdminLogin() {
           <img
             src="/assets/images/logo-admin.png"
             alt="LegalPath Logo"
-            className="h-56 w-auto mx-auto mb-2"
+            className="h-56 w-auto mx-auto -mb-8"
           />
           <p className="text-gray-400 text-sm tracking-widest uppercase">
             Panel de Administración
@@ -66,7 +66,7 @@ export default function AdminLogin() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8 -mt-10">
+        <div className="bg-white rounded-2xl shadow-2xl p-8">
 
           <h1 className="text-xl font-semibold text-gray-800 mb-6">
             Iniciar sesión

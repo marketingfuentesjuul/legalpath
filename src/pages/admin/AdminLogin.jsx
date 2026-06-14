@@ -58,7 +58,7 @@ export default function AdminLogin() {
           <img
             src="/assets/images/logo-admin.png"
             alt="LegalPath Logo"
-            className="h-14 w-auto mx-auto mb-4"
+            className="h-40 w-auto mx-auto mb-4"
           />
           <p className="text-gray-400 text-sm tracking-widest uppercase">
             Panel de Administración

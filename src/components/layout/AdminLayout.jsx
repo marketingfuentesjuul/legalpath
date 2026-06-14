@@ -79,13 +79,13 @@ export default function AdminLayout() {
             <img
               src="/assets/images/logo-admin.png"
               alt="LegalPath Logo"
-              className="h-32 w-auto object-contain"
+              className="h-40 w-auto object-contain"
             />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-2">
+        <nav className="flex-1 px-4 pt-3 pb-6 space-y-2">
           <NavLink
             to="/admin"
             end

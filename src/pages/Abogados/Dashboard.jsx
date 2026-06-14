@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
+import { useAuth } from '../../context/AuthContext'
 
 const Dashboard = () => {
+  const { user } = useAuth()
   const [activeTab, setActiveTab] = useState('dashboard')
   const [expandedCaseId, setExpandedCaseId] = useState(null)
   const [expandedSearchCaseId, setExpandedSearchCaseId] = useState(null)
   const [individualTokens, setIndividualTokens] = useState(10)
+
+  // Estados para tokens dinámicos
+  const [tokenBalance, setTokenBalance] = useState(0)
+  const [activePlan, setActivePlan] = useState({ name: 'Ninguno', tokens_amount: 0 })
+  const [usedTokensThisMonth, setUsedTokensThisMonth] = useState(0)
+  const [loadingTokens, setLoadingTokens] = useState(true)
 
   // Estados para casos de la base de datos
   const [searchCasesList, setSearchCasesList] = useState([])
@@ -30,6 +38,78 @@ const Dashboard = () => {
       setLoadingCases(false)
     }
   }
+
+  const fetchTokenData = async () => {
+    if (!user) return
+    try {
+      setLoadingTokens(true)
+
+      // 1. Obtener balance de tokens desde token_ledger
+      const { data: ledgerData, error: ledgerError } = await supabase
+        .from('token_ledger')
+        .select('amount')
+        .eq('lawyer_id', user.id)
+
+      if (ledgerError) throw ledgerError
+      const balance = (ledgerData || []).reduce((acc, curr) => acc + curr.amount, 0)
+      setTokenBalance(balance)
+
+      // 2. Obtener el plan activo desde payments y token_packages
+      const { data: paymentData, error: paymentError } = await supabase
+        .from('payments')
+        .select('token_package_id')
+        .eq('lawyer_id', user.id)
+        .eq('status', 'succeeded')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (paymentError) throw paymentError
+
+      if (paymentData && paymentData.token_package_id) {
+        const { data: packageData, error: packageError } = await supabase
+          .from('token_packages')
+          .select('name, tokens_amount')
+          .eq('id', paymentData.token_package_id)
+          .maybeSingle()
+
+        if (packageError) throw packageError
+        if (packageData) {
+          setActivePlan({
+            name: packageData.name,
+            tokens_amount: packageData.tokens_amount || 0
+          })
+        }
+      }
+
+      // 3. Obtener tokens consumidos este mes (transacciones negativas del mes actual)
+      const startOfMonth = new Date()
+      startOfMonth.setDate(1)
+      startOfMonth.setHours(0, 0, 0, 0)
+
+      const { data: usedData, error: usedError } = await supabase
+        .from('token_ledger')
+        .select('amount')
+        .eq('lawyer_id', user.id)
+        .lt('amount', 0)
+        .gte('created_at', startOfMonth.toISOString())
+
+      if (usedError) throw usedError
+      const usedSum = (usedData || []).reduce((acc, curr) => acc + Math.abs(curr.amount), 0)
+      setUsedTokensThisMonth(usedSum)
+
+    } catch (err) {
+      console.error('Error al obtener datos de tokens:', err)
+    } finally {
+      setLoadingTokens(false)
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      fetchTokenData()
+    }
+  }, [user])
 
   // Cargar casos inicialmente y suscribirse a cambios en tiempo real
   useEffect(() => {
@@ -163,7 +243,9 @@ const Dashboard = () => {
               <span className="material-symbols-outlined">toll</span>
             </div>
             <div>
-              <h3 className="text-5xl font-black text-slate-800 mb-1 tracking-tight">450</h3>
+              <h3 className="text-5xl font-black text-slate-800 mb-1 tracking-tight">
+                {loadingTokens ? '...' : tokenBalance}
+              </h3>
               <p className="font-semibold text-slate-500 text-sm">Tokens Disponibles</p>
             </div>
           </div>
@@ -478,9 +560,60 @@ const Dashboard = () => {
     const unitPrice = getUnitPrice(individualTokens)
     const totalCost = individualTokens * unitPrice
 
-    const usedTokens = 18
-    const limitTokens = 40
-    const progressPercent = Math.min((usedTokens / limitTokens) * 100, 100)
+    const usedTokens = usedTokensThisMonth
+    const limitTokens = activePlan.tokens_amount || 0
+    const progressPercent = limitTokens > 0 ? Math.min((usedTokens / limitTokens) * 100, 100) : 0
+
+    const renderPlanCard = (planName, priceStr, tokensCount, tokenExtraPrice, features, isPopular) => {
+      const isActive = activePlan.name === planName;
+      return (
+        <div key={planName} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${isActive ? 'border-2 border-[#EE6C4D] shadow-md' : 'border border-slate-100 shadow-sm'}`}>
+          {isActive && (
+            <span className="absolute -top-3 right-4 bg-[#EE6C4D] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
+              Tu Plan
+            </span>
+          )}
+          {!isActive && isPopular && (
+            <span className="absolute -top-3 right-4 bg-slate-800 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
+              Popular
+            </span>
+          )}
+          <div>
+            <h4 className="font-bold text-slate-800 text-base">{planName}</h4>
+            <div className="flex items-baseline gap-1 mt-2 mb-4">
+              <span className="text-xs text-slate-400 font-medium">$</span>
+              <span className="text-2xl font-black text-slate-800">{priceStr}</span>
+              <span className="text-xs text-slate-400 font-medium">/mes</span>
+            </div>
+            <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
+              <li className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                <span>{tokensCount} tokens incluidos</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                <span>Token extra a ${tokenExtraPrice}</span>
+              </li>
+              {features.map((feat, idx) => (
+                <li key={idx} className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
+                  <span>{feat}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {isActive ? (
+            <button className="w-full py-2.5 bg-[#EE6C4D] text-white font-bold rounded-xl text-xs transition-colors border border-transparent shadow-sm cursor-default" disabled>
+              Plan Activo
+            </button>
+          ) : (
+            <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
+              {activePlan.name !== 'Ninguno' ? 'Cambiar Plan' : 'Contratar'}
+            </button>
+          )}
+        </div>
+      );
+    }
 
     return (
       <div className="w-full">
@@ -511,7 +644,9 @@ const Dashboard = () => {
               <div className="flex items-center gap-3 mt-4">
                 <span className="material-symbols-outlined text-[#EE6C4D] text-5xl" style={{ fontVariationSettings: '"FILL" 1' }}>toll</span>
                 <div>
-                  <h3 className="text-5xl font-black tracking-tight">450</h3>
+                  <h3 className="text-5xl font-black tracking-tight">
+                    {loadingTokens ? '...' : tokenBalance}
+                  </h3>
                   <p className="text-slate-400 font-semibold text-xs mt-1">Tokens Disponibles</p>
                 </div>
               </div>
@@ -529,7 +664,9 @@ const Dashboard = () => {
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-2xl font-black text-slate-800">{usedTokens}</span>
+                  <span className="text-2xl font-black text-slate-800">
+                    {loadingTokens ? '...' : usedTokens}
+                  </span>
                   <span className="text-slate-400 font-bold text-sm"> / {limitTokens} tokens</span>
                 </div>
               </div>
@@ -544,14 +681,14 @@ const Dashboard = () => {
               
               <div className="flex justify-between items-center text-xs font-semibold text-slate-400">
                 <span>0% usado</span>
-                <span>{progressPercent}% del límite de tu plan actual</span>
+                <span>{progressPercent.toFixed(0)}% del límite de tu plan actual</span>
                 <span>100% ({limitTokens} tokens)</span>
               </div>
             </div>
             
             <p className="text-xs text-slate-400 font-medium mt-4 border-t border-slate-100 pt-3 flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px] text-slate-400">info</span>
-              Tu plan (Plan Plus) se renueva automáticamente cada mes. Los tokens adicionales comprados de manera individual no expiran.
+              Tu plan ({activePlan.name}) se renueva automáticamente cada mes. Los tokens adicionales comprados de manera individual no expiran.
             </p>
           </div>
         </div>
@@ -634,124 +771,10 @@ const Dashboard = () => {
 
             {/* Lista de planes */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Plan Base */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
-                <div>
-                  <h4 className="font-bold text-slate-800 text-base">Plan Base</h4>
-                  <div className="flex items-baseline gap-1 mt-2 mb-4">
-                    <span className="text-xs text-slate-400 font-medium">$</span>
-                    <span className="text-2xl font-black text-slate-800">12.990</span>
-                    <span className="text-xs text-slate-400 font-medium">/mes</span>
-                  </div>
-                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>12 tokens incluidos</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Token extra a $1.500</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Dashboard básico</span>
-                    </li>
-                  </ul>
-                </div>
-                <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
-                  Contratar
-                </button>
-              </div>
-
-              {/* Plan Core */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
-                <div>
-                  <h4 className="font-bold text-slate-800 text-base">Plan Core</h4>
-                  <div className="flex items-baseline gap-1 mt-2 mb-4">
-                    <span className="text-xs text-slate-400 font-medium">$</span>
-                    <span className="text-2xl font-black text-slate-800">23.990</span>
-                    <span className="text-xs text-slate-400 font-medium">/mes</span>
-                  </div>
-                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>25 tokens incluidos</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Token extra a $1.300</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Documentos legales simples</span>
-                    </li>
-                  </ul>
-                </div>
-                <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
-                  Contratar
-                </button>
-              </div>
-
-              {/* Plan Plus */}
-              <div className="bg-white rounded-2xl p-5 border-2 border-[#EE6C4D] shadow-md flex flex-col justify-between relative">
-                <span className="absolute -top-3 right-4 bg-[#EE6C4D] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                  Tu Plan
-                </span>
-                <div>
-                  <h4 className="font-bold text-slate-800 text-base">Plan Plus</h4>
-                  <div className="flex items-baseline gap-1 mt-2 mb-4">
-                    <span className="text-xs text-slate-400 font-medium">$</span>
-                    <span className="text-2xl font-black text-slate-800">34.990</span>
-                    <span className="text-xs text-slate-400 font-medium">/mes</span>
-                  </div>
-                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>40 tokens incluidos</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Token extra a $1.100</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Jurisprudencia avanzada</span>
-                    </li>
-                  </ul>
-                </div>
-                <button className="w-full py-2.5 bg-[#EE6C4D] text-white font-bold rounded-xl text-xs transition-colors border border-transparent shadow-sm cursor-default" disabled>
-                  Plan Activo
-                </button>
-              </div>
-
-              {/* Plan Apex */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
-                <div>
-                  <h4 className="font-bold text-slate-800 text-base">Plan Apex</h4>
-                  <div className="flex items-baseline gap-1 mt-2 mb-4">
-                    <span className="text-xs text-slate-400 font-medium">$</span>
-                    <span className="text-2xl font-black text-slate-800">79.990</span>
-                    <span className="text-xs text-slate-400 font-medium">/mes</span>
-                  </div>
-                  <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>60 tokens incluidos</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Token extra a $990</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                      <span>Coaching & Soporte 24/7</span>
-                    </li>
-                  </ul>
-                </div>
-                <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
-                  Mejorar Plan
-                </button>
-              </div>
+              {renderPlanCard('Plan Base', '12.990', 12, '1.500', ['Dashboard básico'])}
+              {renderPlanCard('Plan Core', '23.990', 25, '1.300', ['Documentos legales simples'])}
+              {renderPlanCard('Plan Plus', '34.990', 40, '1.100', ['Jurisprudencia avanzada'], true)}
+              {renderPlanCard('Plan Apex', '79.990', 60, '990', ['Coaching & Soporte 24/7'])}
             </div>
           </div>
         </div>

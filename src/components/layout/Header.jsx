@@ -58,6 +58,9 @@ const Header = () => {
               <Link to="/" className="bg-primary-container text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block">
                 Soy usuario
               </Link>
+              <Link to="/auth/login" className="bg-white text-secondary border border-slate-200 px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block">
+                Iniciar sesión
+              </Link>
               <Link to="/auth/registro" className="abogado-gradient text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block">
                 Registrarme
               </Link>

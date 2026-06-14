@@ -74,18 +74,18 @@ export default function AdminLayout() {
     <div className="flex min-h-screen bg-gray-100 text-gray-900 font-sans">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 text-white flex flex-col flex-shrink-0 border-r border-gray-700">
-        <div className="p-4 border-b border-gray-700 flex justify-center items-center">
-          <Link to="/admin" className="flex items-center justify-center">
+        <div className="py-2 px-6 border-b border-gray-700 flex justify-center items-center">
+          <Link to="/admin" className="w-full flex items-center justify-center">
             <img
               src="/assets/images/logo-admin.png"
               alt="LegalPath Logo"
-              className="h-40 w-auto object-contain"
+              className="w-full h-auto object-contain"
             />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 pt-3 pb-6 space-y-2">
+        <nav className="flex-1 px-4 pt-2 pb-6 space-y-2">
           <NavLink
             to="/admin"
             end

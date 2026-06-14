@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
 
 const Dashboard = () => {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('dashboard')
   const [expandedCaseId, setExpandedCaseId] = useState(null)
   const [expandedSearchCaseId, setExpandedSearchCaseId] = useState(null)
@@ -798,11 +799,21 @@ const Dashboard = () => {
             <SidebarItem icon="toll" label="Mis tokens" active={activeTab === 'tokens'} onClick={() => setActiveTab('tokens')} />
           </nav>
         </div>
-        <div className="p-4 border-t border-slate-100">
+        <div className="p-4 border-t border-slate-100 space-y-1">
           <Link to="/auth/perfil" className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#EE6C4D] rounded-xl transition-all font-semibold">
             <span className="material-symbols-outlined">settings</span>
             <span>Configuración</span>
           </Link>
+          <button 
+            onClick={async () => {
+              await signOut()
+              navigate('/auth/login')
+            }} 
+            className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all font-semibold text-left"
+          >
+            <span className="material-symbols-outlined">logout</span>
+            <span>Cerrar sesión</span>
+          </button>
         </div>
       </aside>
 

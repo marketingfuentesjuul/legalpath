@@ -54,11 +54,11 @@ export default function AdminLogin() {
       <div className="w-full max-w-md">
 
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-2">
           <img
             src="/assets/images/logo-admin.png"
             alt="LegalPath Logo"
-            className="h-40 w-auto mx-auto mb-4"
+            className="h-56 w-auto mx-auto mb-2"
           />
           <p className="text-gray-400 text-sm tracking-widest uppercase">
             Panel de Administración

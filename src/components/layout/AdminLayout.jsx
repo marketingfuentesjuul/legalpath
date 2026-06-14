@@ -66,7 +66,7 @@ export default function AdminLayout() {
   const handleSignOut = async () => {
     if (window.confirm('¿Estás seguro de que deseas cerrar sesión?')) {
       await supabase.auth.signOut();
-      navigate('/');
+      navigate('/admin/login', { replace: true });
     }
   };
 

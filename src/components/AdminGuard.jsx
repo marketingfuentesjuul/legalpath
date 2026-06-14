@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 
 export default function AdminGuard({ children }) {
+  const location = useLocation();
   const [status, setStatus] = useState('loading'); // 'loading' | 'authorized' | 'unauthorized'
 
   useEffect(() => {
@@ -45,8 +46,15 @@ export default function AdminGuard({ children }) {
   }
 
   if (status === 'unauthorized') {
-    return <Navigate to="/" replace />;
+    return (
+      <Navigate
+        to="/admin/login"
+        state={{ from: location.pathname }}
+        replace
+      />
+    );
   }
 
   return children;
 }
+

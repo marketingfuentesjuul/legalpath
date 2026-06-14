@@ -20,6 +20,7 @@ import LawyerQueue from './pages/admin/LawyerQueue'
 import LawyerReview from './pages/admin/LawyerReview'
 import CaseQueue from './pages/admin/CaseQueue'
 import CaseEditor from './pages/admin/CaseEditor'
+import AdminLogin from './pages/admin/AdminLogin'
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
@@ -46,6 +47,8 @@ function App() {
           <Route path="/auth/registro" element={<PageTransition><Registro /></PageTransition>} />
           <Route path="/auth/validacion" element={<PageTransition><Validacion /></PageTransition>} />
           <Route path="/dashboard" element={<PageTransition><ProtectedRoute><Dashboard /></ProtectedRoute></PageTransition>} />
+
+          <Route path="/admin/login" element={<PageTransition><AdminLogin /></PageTransition>} />
 
           {/* Admin panel routes */}
           <Route

@@ -17,8 +17,16 @@ const Login = () => {
   }, [user])
 
   const redirectByRole = async (userId) => {
-    const { data } = await supabase.from('lawyer_profiles').select('role').eq('id', userId).maybeSingle()
-    navigate(data?.role === 'lawyer' ? '/dashboard' : '/', { replace: true })
+    const { data } = await supabase.from('lawyer_profiles').select('role, verification_status').eq('id', userId).maybeSingle()
+    if (data?.role === 'lawyer') {
+      if (data.verification_status === 'approved') {
+        navigate('/dashboard', { replace: true })
+      } else {
+        navigate('/auth/validacion', { replace: true })
+      }
+    } else {
+      navigate('/', { replace: true })
+    }
   }
 
   const handleChange = (e) => {

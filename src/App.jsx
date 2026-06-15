@@ -14,6 +14,7 @@ import ScrollToTop from './components/layout/ScrollToTop'
 import PageTransition from './components/layout/PageTransition'
 
 import AdminGuard from './components/AdminGuard'
+import LawyerGuard from './components/LawyerGuard'
 import AdminLayout from './components/layout/AdminLayout'
 import AdminDashboard from './pages/admin/Dashboard'
 import LawyerQueue from './pages/admin/LawyerQueue'
@@ -46,7 +47,7 @@ function App() {
           <Route path="/auth/perfil" element={<PageTransition><ProtectedRoute><Perfil /></ProtectedRoute></PageTransition>} />
           <Route path="/auth/registro" element={<PageTransition><Registro /></PageTransition>} />
           <Route path="/auth/validacion" element={<PageTransition><Validacion /></PageTransition>} />
-          <Route path="/dashboard" element={<PageTransition><ProtectedRoute><Dashboard /></ProtectedRoute></PageTransition>} />
+          <Route path="/dashboard" element={<PageTransition><LawyerGuard><Dashboard /></LawyerGuard></PageTransition>} />
 
           <Route path="/admin/login" element={<PageTransition><AdminLogin /></PageTransition>} />
 

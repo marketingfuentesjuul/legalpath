@@ -19,18 +19,18 @@ const Header = () => {
     <header className={`fixed top-0 w-full z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-2' : 'pt-[15px]'}`}>
       <div className={`w-full transition-all duration-500 mx-4 ${
         scrolled 
-          ? 'max-w-5xl bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/40 rounded-[2rem] py-2 px-6' 
+          ? 'max-w-6xl bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/40 rounded-[2rem] py-2 px-6' 
           : 'max-w-7xl bg-transparent border border-transparent py-2 px-2'
       }`}>
         <nav className="w-full flex justify-between items-center font-['Plus_Jakarta_Sans'] text-xs lg:text-sm font-medium tracking-tight">
           <div className="flex items-center shrink-0">
           <Link to="/">
-            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className={`w-auto transition-all duration-500 ${scrolled ? 'h-[30px] lg:h-[34px]' : 'h-[36px] lg:h-[40.8px]'}`} />
+            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className={`w-auto transition-all duration-500 ${scrolled ? 'h-[26px] lg:h-[32px]' : 'h-[36px] lg:h-[40.8px]'}`} />
           </Link>
         </div>
 
         {!isPublicarCaso && (
-          <div className="hidden md:flex items-center gap-3 lg:gap-6 xl:gap-8">
+          <div className="hidden md:flex items-center gap-2 lg:gap-5 xl:gap-8">
             {isAbogado ? (
               <>
                 <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors whitespace-nowrap">¿Cómo funciona?</a>
@@ -55,22 +55,22 @@ const Header = () => {
             </Link>
           ) : isAbogado ? (
             <>
-              <Link to="/" className="bg-primary-container text-white px-3.5 py-2 lg:px-6 lg:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/" className="bg-primary-container text-white px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Soy usuario
               </Link>
-              <Link to="/auth/login" className="bg-white text-secondary border border-slate-200 px-3.5 py-2 lg:px-6 lg:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/auth/login" className="bg-white text-secondary border border-slate-200 px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Iniciar sesión
               </Link>
-              <Link to="/auth/registro" className="abogado-gradient text-white px-3.5 py-2 lg:px-6 lg:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/auth/registro" className="abogado-gradient text-white px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Registrarme
               </Link>
             </>
           ) : (
             <>
-              <Link to="/abogados" className="bg-[#EE6C4D] text-white px-4 py-2 lg:px-6 lg:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/abogados" className="bg-[#EE6C4D] text-white px-3 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Soy abogado
               </Link>
-              <Link to="/publicar-caso" className="mint-gradient text-white px-4 py-2 lg:px-6 lg:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/publicar-caso" className="mint-gradient text-white px-3 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Publicar mi caso
               </Link>
             </>

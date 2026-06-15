@@ -139,7 +139,7 @@ const Registro = () => {
       </div>
 
       {/* Right Side: Form */}
-      <div className="w-full lg:w-1/2 flex justify-center pt-[15vh] p-6 sm:p-12 relative overflow-y-auto bg-white">
+      <div className="w-full lg:w-1/2 flex justify-center items-center py-12 p-6 sm:p-12 relative overflow-y-auto bg-white">
         <div className="absolute top-6 left-6 lg:hidden flex items-end gap-2">
           <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className="h-7 w-auto" />
           <span className="text-secondary font-medium text-xs mb-0.5 tracking-tight">Abogados</span>

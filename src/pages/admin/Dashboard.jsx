@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import { StatusBadge } from '../../components/ui/StatusBadge';
+import AdminLoading from '../../components/ui/AdminLoading';
 
 export default function Dashboard() {
   const { fetchBadgeCounts } = useOutletContext();
@@ -83,6 +84,10 @@ export default function Dashboard() {
       minute: '2-digit'
     });
   };
+
+  if (loading) {
+    return <AdminLoading text="Cargando dashboard..." />;
+  }
 
   return (
     <div className="space-y-8">

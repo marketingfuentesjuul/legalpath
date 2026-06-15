@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import { StatusBadge } from '../../components/ui/StatusBadge';
+import AdminLoading from '../../components/ui/AdminLoading';
 
 const CATEGORIES = [
   'Penal', 'Civil', 'Laboral', 'Inmobiliario', 'Familia', 'Migratorio', 'Comercial', 'Tributario', 'Administrativo', 'Otro'
@@ -105,6 +106,10 @@ export default function CaseQueue() {
   };
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+  if (loading) {
+    return <AdminLoading text="Cargando casos..." />;
+  }
 
   return (
     <div className="space-y-6">

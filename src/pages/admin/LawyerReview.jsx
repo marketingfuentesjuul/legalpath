@@ -3,6 +3,7 @@ import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { DocumentViewer } from '../../components/ui/DocumentViewer';
+import AdminLoading from '../../components/ui/AdminLoading';
 
 const ALLOWED_SPECIALTIES = [
   'Derecho Civil', 'Derecho Penal', 'Derecho Laboral', 'Derecho de Familia',
@@ -215,12 +216,7 @@ export default function LawyerReview() {
   };
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center p-16 text-sm text-gray-500 gap-3">
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"></div>
-        <span>Cargando perfil del abogado...</span>
-      </div>
-    );
+    return <AdminLoading text="Cargando perfil del abogado..." />;
   }
 
   if (!lawyer) {

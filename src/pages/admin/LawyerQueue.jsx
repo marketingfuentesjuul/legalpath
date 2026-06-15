@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import { StatusBadge } from '../../components/ui/StatusBadge';
+import AdminLoading from '../../components/ui/AdminLoading';
 
 export default function LawyerQueue() {
   const { fetchBadgeCounts } = useOutletContext();
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all'); // 'all' | 'pending' | 'in_review'
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(0);
@@ -15,6 +17,7 @@ export default function LawyerQueue() {
 
   const fetchLawyers = async () => {
     setLoading(true);
+    setError(null);
     try {
       const from = page * itemsPerPage;
       const to = from + itemsPerPage - 1;
@@ -44,10 +47,11 @@ export default function LawyerQueue() {
       // Order by oldest first
       query = query
         .order('submitted_for_review_at', { ascending: true, nullsFirst: false })
+        .order('created_at', { ascending: true })
         .range(from, to);
 
-      const { data, count, error } = await query;
-      if (error) throw error;
+      const { data, count, error: queryError } = await query;
+      if (queryError) throw queryError;
 
       setLawyers(data || []);
       setTotalCount(count || 0);
@@ -58,6 +62,7 @@ export default function LawyerQueue() {
       }
     } catch (err) {
       console.error('Error fetching lawyers queue:', err);
+      setError(err.message || 'Error al cargar los abogados de la base de datos.');
     } finally {
       setLoading(false);
     }
@@ -97,6 +102,10 @@ export default function LawyerQueue() {
   };
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+  if (loading) {
+    return <AdminLoading text="Cargando abogados..." />;
+  }
 
   return (
     <div className="space-y-6">
@@ -156,6 +165,21 @@ export default function LawyerQueue() {
             <div className="p-16 text-center text-sm text-gray-500 flex flex-col items-center justify-center gap-3">
               <div className="w-8 h-8 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"></div>
               <span>Cargando abogados...</span>
+            </div>
+          ) : error ? (
+            <div className="p-8 text-center max-w-xl mx-auto my-8 space-y-4">
+              <span className="material-symbols-outlined text-red-500 text-[48px]">warning</span>
+              <h3 className="text-lg font-bold text-gray-800">Error al consultar la base de datos</h3>
+              <p className="text-sm text-gray-600">
+                Es probable que falte aplicar la migración de la base de datos para la cola de abogados (columna <code className="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-xs">submitted_for_review_at</code>).
+              </p>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 text-left font-mono text-xs text-gray-700 space-y-2">
+                <p className="font-semibold text-gray-900">// Ejecuta esto en la terminal de tu proyecto:</p>
+                <div className="bg-gray-900 text-gray-100 p-2.5 rounded-lg select-all">
+                  node supabase/run_migration.js
+                </div>
+              </div>
+              <p className="text-xs text-gray-400 font-medium font-mono truncate">{error}</p>
             </div>
           ) : filteredLawyers.length === 0 ? (
             <div className="p-16 text-center text-sm text-gray-400">

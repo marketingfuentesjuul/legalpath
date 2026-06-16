@@ -714,8 +714,11 @@ const Dashboard = () => {
                             <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white font-black text-[11px] leading-none shrink-0 border border-white/30 shadow-sm">
                               1
                             </div>
-                            <span>Usar un token e iniciar conversación</span>
+                            <span>Pujar por contacto</span>
                           </button>
+                          <p className="text-[11px] text-center text-slate-700 font-bold mt-2.5 leading-tight">
+                            al darle al boton estarás usando 1 token
+                          </p>
                         </div>
                      </div>
                    </div>

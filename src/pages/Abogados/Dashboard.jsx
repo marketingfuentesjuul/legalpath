@@ -164,13 +164,26 @@ const Dashboard = () => {
     try {
       const { data, error } = await supabase
         .from('cases')
-        .select('*')
+        .select(`
+          *,
+          proposals:proposals!proposals_case_id_fkey (
+            id,
+            lawyer_id
+          )
+        `)
         .eq('admin_status', 'aprobado')
         .eq('status', 'activo')
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setSearchCasesList(data || [])
+      
+      const processedCases = (data || []).map(c => ({
+        ...c,
+        bids_count: c.proposals ? c.proposals.length : 0,
+        has_applied: c.proposals ? c.proposals.some(p => p.lawyer_id === user?.id) : false
+      }))
+
+      setSearchCasesList(processedCases)
     } catch (err) {
       console.error('Error al obtener los casos publicados:', err)
     } finally {
@@ -294,6 +307,8 @@ const Dashboard = () => {
   const handleSubmitBid = async (e) => {
     e.preventDefault()
     if (!user) return
+    if (!selectedCaseForBid) return
+
     if (!bidName.trim()) {
       alert('Por favor ingresa tu nombre.')
       return
@@ -303,22 +318,57 @@ const Dashboard = () => {
       return
     }
 
+    // Validar saldo de tokens
+    if (tokenBalance < 1) {
+      alert('No tienes suficientes tokens para enviar una propuesta. Por favor adquiere más tokens.')
+      return
+    }
+
+    // Validar límite de propuestas
+    if ((selectedCaseForBid.bids_count || 0) >= 5) {
+      alert('Este caso ya ha alcanzado el límite máximo de 5 propuestas.')
+      return
+    }
+
+    // Validar si ya postuló
+    if (selectedCaseForBid.has_applied) {
+      alert('Ya has enviado una propuesta para este caso.')
+      return
+    }
+
     setSubmittingBid(true)
     try {
-      // 1. Deduct 1 token in Supabase
+      // 1. Insertar propuesta en Supabase
+      const { error: proposalError } = await supabase
+        .from('proposals')
+        .insert({
+          case_id: selectedCaseForBid.id,
+          lawyer_id: user.id,
+          message: `[Nombre/Estudio: ${bidName.trim()}]\n\n${bidMessage.trim()}`,
+          status: 'enviada'
+        })
+
+      if (proposalError) throw proposalError
+
+      // 2. Deduct 1 token in Supabase
       const { error: ledgerError } = await supabase
         .from('token_ledger')
         .insert({
           lawyer_id: user.id,
-          amount: -1
+          amount: -1,
+          transaction_type: 'send_proposal',
+          reference_id: selectedCaseForBid.id,
+          reference_type: 'cases',
+          note: `Propuesta para caso: ${selectedCaseForBid.title}`
         })
 
       if (ledgerError) throw ledgerError
 
-      // 2. Refresh token data
+      // 3. Refresh token data y casos
       await fetchTokenData()
+      await fetchPublishedCases()
 
-      // 3. Show success popup
+      // 4. Show success popup
       setShowBidModal(false)
       setShowSuccessModal(true)
     } catch (err) {
@@ -333,6 +383,7 @@ const Dashboard = () => {
     if (user) {
       fetchTokenData()
       fetchLawyerProfile()
+      fetchPublishedCases()
     }
   }, [user])
 
@@ -340,14 +391,22 @@ const Dashboard = () => {
   useEffect(() => {
     fetchPublishedCases()
 
-    // Suscripción al segundo (Realtime) para la tabla 'cases'
+    // Suscripción al segundo (Realtime) para la tabla 'cases' y 'proposals'
     const channel = supabase
-      .channel('realtime:cases')
+      .channel('realtime:cases_and_proposals')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'cases' },
         (payload) => {
-          console.log('Cambio en tiempo real detectado:', payload)
+          console.log('Cambio en tiempo real detectado en casos:', payload)
+          fetchPublishedCases()
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'proposals' },
+        (payload) => {
+          console.log('Cambio en tiempo real detectado en propuestas:', payload)
           fetchPublishedCases()
         }
       )
@@ -356,7 +415,7 @@ const Dashboard = () => {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [])
+  }, [user])
 
   // Datos provisorios recientes (Dashboard widget)
   const recentCases = [
@@ -764,11 +823,21 @@ const Dashboard = () => {
                     
                     <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
                       <div className="flex gap-4 text-right items-center">
-                         <div 
-                           title="Señala la cantidad de propuestas que este caso ha recibido por parte de otros abogados" 
-                           className="hidden sm:block bg-sky-500 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap cursor-help"
-                         >
-                           {(caseItem.bids_count || 0)} de 5 propuestas
+                         <div className="relative group sm:block hidden">
+                           <div className={`px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap cursor-help text-white ${
+                             (caseItem.bids_count || 0) >= 5 ? 'bg-red-500 shadow-sm shadow-red-500/20' : 'bg-sky-500'
+                           }`}>
+                             {(caseItem.bids_count || 0)} de 5 propuestas
+                           </div>
+                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2.5 bg-slate-900 text-white text-[11px] font-semibold rounded-xl shadow-xl pointer-events-none opacity-0 scale-95 origin-bottom transition-all duration-200 group-hover:opacity-100 group-hover:scale-100 group-hover:delay-1000 z-30 leading-relaxed text-center normal-case">
+                             Señala la cantidad de propuestas que este caso ha recibido por parte de otros abogados
+                             <div className="absolute top-full left-1/2 -translate-y-1 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                           </div>
+                           {(caseItem.bids_count || 0) >= 5 && (
+                             <div className="text-[10px] font-bold text-red-500 mt-1 uppercase tracking-wider text-right">
+                               No recibe más propuestas
+                             </div>
+                           )}
                          </div>
                          <div className="hidden sm:block">
                            <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
@@ -796,7 +865,7 @@ const Dashboard = () => {
                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
                            <span className="material-symbols-outlined text-[20px] text-slate-400">description</span> Descripción del expediente
                          </h4>
-                         <p className="text-slate-600 text-[15px] leading-relaxed">
+                         <p className="text-slate-650 text-[15px] leading-relaxed">
                            {displayDetails}
                          </p>
                          
@@ -808,21 +877,63 @@ const Dashboard = () => {
                              <span className="material-symbols-outlined text-[14px]">history</span> Expira en 7 días
                            </span>
                          </div>
+
+                         {caseItem.has_applied && (
+                           <div className="mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-lg shadow-sm">
+                             <h5 className="font-bold text-emerald-800 text-sm mb-1.5 flex items-center gap-2">
+                               <span className="material-symbols-outlined text-emerald-600 text-[18px]">contact_mail</span>
+                               Datos de contacto del cliente
+                             </h5>
+                             <p className="text-emerald-700 text-sm font-semibold">
+                               Email: <span className="text-slate-800 select-all font-mono">{caseItem.client_email || 'Anónimo'}</span>
+                             </p>
+                           </div>
+                         )}
                        </div>
                        
-                        <div className="w-full md:w-80 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6">
-                          <button 
-                            onClick={() => handleOpenBidModal(caseItem)}
-                            className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg focus:outline-none text-sm whitespace-nowrap"
-                          >
-                            <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white font-black text-[11px] leading-none shrink-0 border border-white/30 shadow-sm">
-                              1
-                            </div>
-                            <span>Pujar por contacto</span>
-                          </button>
-                          <p className="text-[11px] text-center text-slate-700 font-bold mt-2.5 leading-tight">
-                            al darle al boton estarás usando 1 token
-                          </p>
+                        <div className="w-full md:w-80 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6 space-y-2">
+                          {caseItem.has_applied ? (
+                            <>
+                              <button 
+                                disabled
+                                className="bg-slate-100 text-slate-400 w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 cursor-not-allowed text-sm whitespace-nowrap border border-slate-200"
+                              >
+                                <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                                <span>Propuesta enviada</span>
+                              </button>
+                              <p className="text-[11px] text-center text-emerald-600 font-bold leading-tight">
+                                ¡Ya postulaste! Contacto revelado a la izquierda.
+                              </p>
+                            </>
+                          ) : (caseItem.bids_count || 0) >= 5 ? (
+                            <>
+                              <button 
+                                disabled
+                                className="bg-slate-100 text-slate-400 w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 cursor-not-allowed text-sm whitespace-nowrap border border-slate-200"
+                              >
+                                <span className="material-symbols-outlined text-[18px]">block</span>
+                                <span>Límite alcanzado</span>
+                              </button>
+                              <p className="text-[11px] text-center text-red-500 font-bold leading-tight">
+                                Este caso ya no recibe más propuestas.
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <button 
+                                onClick={() => handleOpenBidModal(caseItem)}
+                                className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg focus:outline-none text-sm whitespace-nowrap"
+                              >
+                                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white font-black text-[11px] leading-none shrink-0 border border-white/30 shadow-sm">
+                                  1
+                                </div>
+                                <span>Pujar por contacto</span>
+                              </button>
+                              <p className="text-[11px] text-center text-slate-700 font-bold leading-tight">
+                                al darle al boton estarás usando 1 token
+                              </p>
+                            </>
+                          )}
                         </div>
                      </div>
                    </div>
@@ -1117,7 +1228,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-xl w-full p-8 relative space-y-6">
             <button 
               onClick={() => setShowBidModal(false)}
-              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors p-1.5 bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200"
+              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors w-8 h-8 flex items-center justify-center aspect-square shrink-0 bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200"
             >
               <span className="material-symbols-outlined text-[18px] block">close</span>
             </button>

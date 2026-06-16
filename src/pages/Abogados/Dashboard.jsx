@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
@@ -38,6 +38,41 @@ const Dashboard = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showNoTokensModal, setShowNoTokensModal] = useState(false)
   const [lawyerProfile, setLawyerProfile] = useState(null)
+
+  // Estados para Modal de Documentos Adjuntos del Caso
+  const [showDocumentsModal, setShowDocumentsModal] = useState(false)
+  const [selectedCaseForDocs, setSelectedCaseForDocs] = useState(null)
+  const [caseDocuments, setCaseDocuments] = useState([])
+  const [loadingDocuments, setLoadingDocuments] = useState(false)
+
+  const selectedCaseForDocsRef = useRef(null)
+  useEffect(() => {
+    selectedCaseForDocsRef.current = selectedCaseForDocs
+  }, [selectedCaseForDocs])
+
+  const handleOpenDocumentsModal = (caseItem) => {
+    setSelectedCaseForDocs(caseItem)
+    setShowDocumentsModal(true)
+    fetchCaseDocuments(caseItem.id)
+  }
+
+  const fetchCaseDocuments = async (caseId) => {
+    if (!caseId) return
+    setLoadingDocuments(true)
+    try {
+      const { data, error } = await supabase
+        .from('documents')
+        .select('*')
+        .eq('case_id', caseId)
+
+      if (error) throw error
+      setCaseDocuments(data || [])
+    } catch (err) {
+      console.error('Error al obtener documentos del caso:', err)
+    } finally {
+      setLoadingDocuments(false)
+    }
+  }
 
   const ALLOWED_SPECIALTIES = [
     'Derecho Civil', 'Derecho Penal', 'Derecho Laboral', 'Derecho de Familia',
@@ -425,7 +460,7 @@ const Dashboard = () => {
     fetchPublishedCases()
     fetchActiveCases()
 
-    // Suscripción al segundo (Realtime) para la tabla 'cases' y 'proposals'
+    // Suscripción al segundo (Realtime) para la tabla 'cases', 'proposals' y 'documents'
     const channel = supabase
       .channel('realtime:cases_and_proposals')
       .on(
@@ -444,6 +479,17 @@ const Dashboard = () => {
           console.log('Cambio en tiempo real detectado en propuestas:', payload)
           fetchPublishedCases()
           fetchActiveCases()
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'documents' },
+        (payload) => {
+          console.log('Cambio en tiempo real detectado en documentos:', payload)
+          const activeCaseId = selectedCaseForDocsRef.current?.id
+          if (activeCaseId) {
+            fetchCaseDocuments(activeCaseId)
+          }
         }
       )
       .subscribe()
@@ -832,15 +878,12 @@ const Dashboard = () => {
                      </div>
 
                      <div className="flex gap-3 pt-2">
-                       <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm flex items-center gap-2">
-                         <span className="material-symbols-outlined text-[18px]">visibility</span> Ver expediente completo
-                       </button>
-                       <a 
-                         href={`mailto:${caseItem.client_email}`}
-                         className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center gap-2"
-                       >
-                         <span className="material-symbols-outlined text-[18px]">chat</span> Contactar cliente
-                       </a>
+                        <button 
+                          onClick={() => handleOpenDocumentsModal(caseItem)}
+                          className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">folder_open</span> Ver documentos adjuntos del caso
+                        </button>
                      </div>
                    </div>
                  </div>
@@ -1447,6 +1490,99 @@ const Dashboard = () => {
                 className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm transition-colors"
               >
                 Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Documentos Adjuntos del Caso */}
+      {showDocumentsModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-xl w-full p-8 relative space-y-6 animate-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => {
+                setShowDocumentsModal(false)
+                setSelectedCaseForDocs(null)
+                setCaseDocuments([])
+              }}
+              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors w-8 h-8 flex items-center justify-center aspect-square shrink-0 bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200"
+            >
+              <span className="material-symbols-outlined text-[18px] block">close</span>
+            </button>
+
+            <div className="space-y-2">
+              <span className="bg-[#EE6C4D]/10 text-[#EE6C4D] text-[11px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-full inline-block">
+                Expediente Digital
+              </span>
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight leading-tight">
+                Documentos Adjuntos
+              </h3>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Caso: {selectedCaseForDocs?.title}
+              </p>
+            </div>
+
+            <div className="border-t border-slate-100 pt-4">
+              {loadingDocuments ? (
+                <div className="flex flex-col items-center justify-center p-12 text-slate-400">
+                  <span className="material-symbols-outlined text-[32px] animate-spin mb-2 text-[#EE6C4D]">sync</span>
+                  <p className="font-semibold text-sm">Cargando documentos en tiempo real...</p>
+                </div>
+              ) : caseDocuments.length === 0 ? (
+                <div className="flex flex-col items-center justify-center p-8 border border-dashed border-slate-200 rounded-2xl bg-slate-50/50 animate-in fade-in duration-200">
+                  <span className="material-symbols-outlined text-slate-300 text-4xl mb-2">folder_open</span>
+                  <p className="text-slate-500 font-bold text-sm">Sin documentos adjuntos</p>
+                  <p className="text-xs text-slate-400 mt-1">El cliente no ha subido archivos para este caso.</p>
+                </div>
+              ) : (
+                <div className="max-h-[350px] overflow-y-auto pr-1 space-y-3">
+                  <ul className="space-y-2.5">
+                    {caseDocuments.map(doc => {
+                      const fileExt = doc.file_name?.split('.').pop()?.toUpperCase() || 'DOC';
+                      return (
+                        <li key={doc.id} className="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/70 border border-slate-100 rounded-2xl transition-all duration-200 group">
+                          <div className="flex items-center gap-3 truncate mr-4">
+                            <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0 text-slate-500 group-hover:bg-[#EE6C4D]/10 group-hover:text-[#EE6C4D] group-hover:border-transparent transition-all">
+                              <span className="material-symbols-outlined text-[22px]">description</span>
+                            </div>
+                            <div className="truncate">
+                              <p className="text-sm font-bold text-slate-700 truncate" title={doc.file_name}>
+                                {doc.file_name}
+                              </p>
+                              <p className="text-[10px] text-slate-400 font-mono font-bold">
+                                {fileExt}
+                              </p>
+                            </div>
+                          </div>
+                          <a
+                            href={doc.storage_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-[#EE6C4D] bg-[#EE6C4D]/5 border border-[#EE6C4D]/10 hover:bg-[#EE6C4D] hover:text-white transition-all duration-200 shadow-sm"
+                          >
+                            <span className="material-symbols-outlined text-[14px]">visibility</span>
+                            Ver PDF
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDocumentsModal(false)
+                  setSelectedCaseForDocs(null)
+                  setCaseDocuments([])
+                }}
+                className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm transition-colors shadow-md w-full"
+              >
+                Cerrar
               </button>
             </div>
           </div>

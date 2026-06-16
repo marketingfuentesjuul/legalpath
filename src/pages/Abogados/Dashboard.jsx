@@ -756,8 +756,8 @@ const Dashboard = () => {
       <div className="bg-white rounded-[32px] border border-slate-100 shadow-sm p-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h3 className="text-xl font-bold text-slate-800">Casos Recientes</h3>
-            <p className="text-sm font-medium text-slate-500 mt-1">Última actividad en tus casos asesorados.</p>
+            <h3 className="text-xl font-bold text-slate-800">Casos Activos Recientes</h3>
+            <p className="text-sm font-medium text-slate-500 mt-1">Acceso rápido a tus casos en progreso.</p>
           </div>
           <button onClick={() => setActiveTab('casos')} className="flex items-center gap-1 text-[#EE6C4D] text-sm font-bold bg-[#EE6C4D]/5 hover:bg-[#EE6C4D]/10 px-4 py-2 rounded-xl transition-colors">
             Ver todos <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
@@ -765,29 +765,51 @@ const Dashboard = () => {
         </div>
         
         <div className="space-y-4">
-          {recentCases.map((caseItem) => (
-            <div key={caseItem.id} className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:border-[#EE6C4D]/30 hover:shadow-sm transition-all cursor-pointer group">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:text-[#EE6C4D] group-hover:bg-[#EE6C4D]/10 transition-colors">
-                  <span className="material-symbols-outlined">gavel</span>
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-800 mb-0.5">{caseItem.title}</h4>
-                  <p className="text-sm text-slate-500 font-medium">{caseItem.client} • {caseItem.date}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className={`px-3 py-1.5 rounded-lg text-xs font-bold ${
-                  caseItem.status === 'Nuevo' ? 'bg-blue-50 text-blue-600 border border-blue-100' :
-                  caseItem.status === 'En revisión' ? 'bg-orange-50 text-[#EE6C4D] border border-orange-100' :
-                  'bg-slate-50 text-slate-600 border border-slate-100'
-                }`}>
-                  {caseItem.status}
-                </span>
-                <span className="material-symbols-outlined text-slate-300 group-hover:text-[#EE6C4D] transition-colors">chevron_right</span>
-              </div>
+          {activeCasesList.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-8 border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+              <span className="material-symbols-outlined text-slate-300 text-3xl mb-2">folder_open</span>
+              <p className="text-slate-500 font-bold text-sm">Sin casos activos en este momento</p>
+              <p className="text-xs text-slate-400 mt-1 mb-4">Postula a casos para comenzar a asesorar clientes.</p>
+              <button 
+                onClick={() => setActiveTab('buscar')}
+                className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors focus:outline-none"
+              >
+                Buscar Casos
+              </button>
             </div>
-          ))}
+          ) : (
+            activeCasesList.slice(0, 5).map((caseItem) => {
+              const displayDate = caseItem.created_at
+                ? new Date(caseItem.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
+                : 'Reciente';
+              return (
+                <div 
+                  key={caseItem.id} 
+                  onClick={() => {
+                    setExpandedCaseId(caseItem.id)
+                    setActiveTab('casos')
+                  }}
+                  className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:border-[#EE6C4D]/30 hover:shadow-sm transition-all cursor-pointer group"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:text-[#EE6C4D] group-hover:bg-[#EE6C4D]/10 transition-colors">
+                      <span className="material-symbols-outlined">gavel</span>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800 mb-0.5">{caseItem.title || 'Caso sin título'}</h4>
+                      <p className="text-sm text-slate-500 font-medium">{caseItem.alias_client || 'Usuario Anónimo'} • {displayDate}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                      En progreso
+                    </span>
+                    <span className="material-symbols-outlined text-slate-300 group-hover:text-[#EE6C4D] transition-colors">chevron_right</span>
+                  </div>
+                </div>
+              )
+            })
+          )}
         </div>
       </div>
     </div>

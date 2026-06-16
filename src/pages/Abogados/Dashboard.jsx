@@ -430,35 +430,7 @@ const Dashboard = () => {
   ]
 
   // Casos activos
-  const activeCasesList = [
-    { 
-      id: 1, 
-      type: 'Migratorio', 
-      title: 'Regularización de visa sujeta a contrato',
-      client: 'Carlos M.', 
-      date: '10 Oct 2026', 
-      status: 'En progreso',
-      details: 'El cliente ingresó a Chile hace 3 años. El empleador actual no ha pagado cotizaciones en los últimos 6 meses, lo que está trabando la renovación de la visa. Se requiere preparar la documentación para apelación en el Servicio Nacional de Migraciones.'
-    },
-    { 
-      id: 2, 
-      type: 'Inmobiliario', 
-      title: 'Estudio de títulos para compraventa',
-      client: 'Inversiones Sur SpA', 
-      date: '05 Oct 2026', 
-      status: 'Documentación pendiente',
-      details: 'Revisión exhaustiva de 20 años de inscripciones en el Conservador de Bienes Raíces de Santiago para una propiedad comercial en Providencia. Faltan certificados de hipotecas y gravámenes actualizados y verificar estado de contribuciones.'
-    },
-    { 
-      id: 3, 
-      type: 'Fraude bancario', 
-      title: 'Phishing y suplantación de identidad en BancoEstado',
-      client: 'Ana R.', 
-      date: '12 Oct 2026', 
-      status: 'Auditoría',
-      details: 'La clienta fue víctima de estafa telefónica donde se le sustrajeron $4.500.000 CLP. El banco niega restitución de fondos alegando negligencia. Se preparará reclamo ante la CMF y demanda por ley de fraudes (Ley 21.234).'
-    }
-  ]
+  const activeCasesList = []
 
   const renderCaseCard = (caseItem) => {
     const displayType = caseItem.category || 'General';
@@ -683,7 +655,7 @@ const Dashboard = () => {
                 <span className="material-symbols-outlined text-white">folder_open</span>
               </div>
               <div>
-                <h3 className="text-5xl font-black mb-1 tracking-tight">3</h3>
+                <h3 className="text-5xl font-black mb-1 tracking-tight">{activeCasesList.length}</h3>
                 <p className="font-semibold text-white/90 text-sm">Casos Activos</p>
               </div>
             </div>
@@ -757,63 +729,71 @@ const Dashboard = () => {
       </header>
 
       <div className="space-y-4">
-        {activeCasesList.map(caseItem => (
-          <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-             
-             {/* Acordion Header */}
-             <button 
-               onClick={() => setExpandedCaseId(expandedCaseId === caseItem.id ? null : caseItem.id)}
-               className="w-full flex items-center justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none"
-             >
-               <div className="flex items-center gap-5">
-                 <div className="w-14 h-14 bg-[#EE6C4D]/10 rounded-xl flex items-center justify-center text-[#EE6C4D]">
-                   <span className="material-symbols-outlined text-[24px]">
-                     {caseItem.type === 'Migratorio' ? 'public' : caseItem.type === 'Inmobiliario' ? 'real_estate_agent' : 'account_balance'}
-                   </span>
-                 </div>
-                 <div>
-                   <div className="flex items-center gap-2 mb-1">
-                     <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{caseItem.type}</span>
-                     <span className="text-sm font-bold text-slate-400">•</span>
-                     <span className="text-sm font-bold text-slate-500">{caseItem.date}</span>
-                   </div>
-                   <h3 className="text-lg font-bold text-slate-800">{caseItem.title}</h3>
-                   <p className="text-sm text-slate-500 font-medium">Cliente: {caseItem.client}</p>
-                 </div>
-               </div>
-               <div className="flex items-center gap-6">
-                 <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
-                   {caseItem.status}
-                 </span>
-                 <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
-                   <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
-                 </div>
-               </div>
-             </button>
-             
-             {/* Acordion Content */}
-             <div 
-               className="transition-all duration-300 ease-in-out overflow-hidden" 
-               style={{ maxHeight: expandedCaseId === caseItem.id ? '500px' : '0px', opacity: expandedCaseId === caseItem.id ? 1 : 0 }}
-             >
-               <div className="p-6 border-t border-slate-100 bg-slate-50/50">
-                 <h4 className="font-bold text-slate-800 mb-2">Detalles del caso</h4>
-                 <p className="text-slate-600 text-[15px] leading-relaxed mb-6 max-w-4xl">
-                   {caseItem.details}
-                 </p>
-                 <div className="flex gap-3">
-                   <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm flex items-center gap-2">
-                     <span className="material-symbols-outlined text-[18px]">visibility</span> Ver expediente completo
-                   </button>
-                   <button className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center gap-2">
-                     <span className="material-symbols-outlined text-[18px]">chat</span> Contactar cliente
-                   </button>
-                 </div>
-                </div>
-              </div>
-             
+        {activeCasesList.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+            <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">folder_open</span>
+            <p className="font-bold">No tienes casos activos en este momento.</p>
+            <p className="text-xs text-slate-400 mt-1">Cuando postules y seas seleccionado para un caso, aparecerá aquí.</p>
           </div>
-        ))}
+        ) : (
+          activeCasesList.map(caseItem => (
+            <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+               
+               {/* Acordion Header */}
+               <button 
+                 onClick={() => setExpandedCaseId(expandedCaseId === caseItem.id ? null : caseItem.id)}
+                 className="w-full flex items-center justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none"
+               >
+                 <div className="flex items-center gap-5">
+                   <div className="w-14 h-14 bg-[#EE6C4D]/10 rounded-xl flex items-center justify-center text-[#EE6C4D]">
+                     <span className="material-symbols-outlined text-[24px]">
+                       {caseItem.type === 'Migratorio' ? 'public' : caseItem.type === 'Inmobiliario' ? 'real_estate_agent' : 'account_balance'}
+                     </span>
+                   </div>
+                   <div>
+                     <div className="flex items-center gap-2 mb-1">
+                       <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{caseItem.type}</span>
+                       <span className="text-sm font-bold text-slate-400">•</span>
+                       <span className="text-sm font-bold text-slate-500">{caseItem.date}</span>
+                     </div>
+                     <h3 className="text-lg font-bold text-slate-800">{caseItem.title}</h3>
+                     <p className="text-sm text-slate-500 font-medium">Cliente: {caseItem.client}</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center gap-6">
+                   <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
+                     {caseItem.status}
+                   </span>
+                   <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                     <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+                   </div>
+                 </div>
+               </button>
+               
+               {/* Acordion Content */}
+               <div 
+                 className="transition-all duration-300 ease-in-out overflow-hidden" 
+                 style={{ maxHeight: expandedCaseId === caseItem.id ? '500px' : '0px', opacity: expandedCaseId === caseItem.id ? 1 : 0 }}
+               >
+                 <div className="p-6 border-t border-slate-100 bg-slate-50/50">
+                   <h4 className="font-bold text-slate-800 mb-2">Detalles del caso</h4>
+                    <p className="text-slate-600 text-[15px] leading-relaxed mb-6 max-w-4xl">
+                      {caseItem.details}
+                    </p>
+                    <div className="flex gap-3">
+                      <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[18px]">visibility</span> Ver expediente completo
+                      </button>
+                      <button className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[18px]">chat</span> Contactar cliente
+                      </button>
+                    </div>
+                  </div>
+                </div>
+               
+             </div>
+          ))
+        )}
       </div>
     </div>
   )

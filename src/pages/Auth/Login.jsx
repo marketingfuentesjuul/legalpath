@@ -45,6 +45,16 @@ const Login = () => {
       return
     }
 
+    // Fallback using user metadata if DB profile is not yet created or loaded
+    const metadataRole = user?.user_metadata?.role
+    if (metadataRole === 'lawyer') {
+      navigate('/auth/perfil', { replace: true })
+      return
+    } else if (metadataRole === 'client') {
+      navigate('/cliente/mis-casos', { replace: true })
+      return
+    }
+
     // 3. Default fallback
     navigate('/', { replace: true })
   }

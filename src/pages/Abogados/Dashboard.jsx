@@ -503,36 +503,68 @@ const Dashboard = () => {
               <span className="material-symbols-outlined text-[20px]">tune</span> Filtros:
             </div>
             <div className="flex flex-wrap items-center gap-3 flex-1">
-              <select 
-                value={filterSpecialty}
-                onChange={e => setFilterSpecialty(e.target.value)}
-                className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer"
-              >
-                <option value="">Área del derecho (Todas)</option>
-                {ALLOWED_SPECIALTIES.map(spec => (
-                  <option key={spec} value={spec}>{spec}</option>
-                ))}
-              </select>
-              <select 
-                value={filterUrgency}
-                onChange={e => setFilterUrgency(e.target.value)}
-                className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer"
-              >
-                <option value="">Nivel de urgencia (Cualquiera)</option>
-                <option value="baja">Baja</option>
-                <option value="media">Media</option>
-                <option value="alta">Alta</option>
-              </select>
-              <select 
-                value={filterRegion}
-                onChange={e => setFilterRegion(e.target.value)}
-                className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer"
-              >
-                <option value="">Región (Todas)</option>
-                {ALLOWED_REGIONS.map(reg => (
-                  <option key={reg} value={reg}>{reg}</option>
-                ))}
-              </select>
+              {/* Specialty Filter */}
+              <div className="relative">
+                <select 
+                  value={filterSpecialty}
+                  onChange={e => setFilterSpecialty(e.target.value)}
+                  className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterSpecialty ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
+                >
+                  <option value="" className="text-slate-600 font-normal">Área del derecho (Todas)</option>
+                  {ALLOWED_SPECIALTIES.map(spec => (
+                    <option key={spec} value={spec} className="text-slate-800 font-normal">{spec}</option>
+                  ))}
+                </select>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+                {filterSpecialty && (
+                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                  </span>
+                )}
+              </div>
+
+              {/* Urgency Filter */}
+              <div className="relative">
+                <select 
+                  value={filterUrgency}
+                  onChange={e => setFilterUrgency(e.target.value)}
+                  className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterUrgency ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
+                >
+                  <option value="" className="text-slate-600 font-normal">Nivel de urgencia (Cualquiera)</option>
+                  <option value="baja" className="text-slate-800 font-normal">Baja</option>
+                  <option value="media" className="text-slate-800 font-normal">Media</option>
+                  <option value="alta" className="text-slate-800 font-normal">Alta</option>
+                </select>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+                {filterUrgency && (
+                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                  </span>
+                )}
+              </div>
+
+              {/* Region Filter */}
+              <div className="relative">
+                <select 
+                  value={filterRegion}
+                  onChange={e => setFilterRegion(e.target.value)}
+                  className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterRegion ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
+                >
+                  <option value="" className="text-slate-600 font-normal">Región (Todas)</option>
+                  {ALLOWED_REGIONS.map(reg => (
+                    <option key={reg} value={reg} className="text-slate-800 font-normal">{reg}</option>
+                  ))}
+                </select>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+                {filterRegion && (
+                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
               <span className="text-sm font-bold text-slate-500">Ordenar por:</span>

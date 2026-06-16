@@ -12,9 +12,9 @@ export default function Propuestas() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchPropuestas = async () => {
+  const fetchPropuestas = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const { data: { user }, error: userErr } = await supabase.auth.getUser();
       if (userErr || !user) throw new Error('Usuario no autenticado.');
 
@@ -36,7 +36,7 @@ export default function Propuestas() {
             region,
             avatar_url
           ),
-          cases!inner (
+          cases!proposals_case_id_fkey!inner (
             id,
             title,
             status,
@@ -65,12 +65,37 @@ export default function Propuestas() {
       console.error('Error fetching proposals:', err);
       setError(err.message || 'No se pudieron cargar las propuestas.');
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchPropuestas();
+
+    // Suscripción en tiempo real para propuestas y casos
+    const channel = supabase
+      .channel('realtime:client_proposals')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'proposals' },
+        (payload) => {
+          console.log('Cambio en tiempo real detectado en propuestas:', payload);
+          fetchPropuestas(true);
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'cases' },
+        (payload) => {
+          console.log('Cambio en tiempo real detectado en casos:', payload);
+          fetchPropuestas(true);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // Action: Accept Proposal

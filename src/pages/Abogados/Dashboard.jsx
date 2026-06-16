@@ -739,48 +739,48 @@ const Dashboard = () => {
                  
                  {/* Accordion Header */}
                  <button 
-                   onClick={() => setExpandedSearchCaseId(expandedSearchCaseId === caseItem.id ? null : caseItem.id)}
-                   className="w-full flex md:items-center flex-col md:flex-row justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none gap-4 md:gap-0"
-                 >
-                   <div className="flex items-start md:items-center gap-5 w-full md:w-auto">
-                     <div className="w-14 h-14 shrink-0 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-500">
-                       <span className="material-symbols-outlined text-[24px]">
-                         {displayType === 'Migratorio' ? 'public' : displayType === 'Inmobiliario' ? 'real_estate_agent' : displayType === 'Herencia' ? 'home_work' : displayType === 'Minería' ? 'landscape' : 'account_balance'}
-                       </span>
-                     </div>
-                     <div>
-                       <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                         <span className="px-2.5 py-1 bg-sky-500 text-white rounded-md text-[10px] font-extrabold uppercase tracking-wider">
-                           Urgencia {displayUrgency}
-                         </span>
-                         <span className="px-2.5 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded-md text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1">
-                           <span className="material-symbols-outlined text-[12px]">group</span>
-                           {((caseItem.id % 5) + 1)} / 5 Propuestas
-                         </span>
-                         <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{displayType}</span>
-                         <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[12px]">location_on</span> {displayRegion}
-                         </span>
-                         <span className="text-sm font-bold text-slate-400 hidden sm:inline">•</span>
-                         <span className="text-sm font-bold text-slate-500">{displayDate}</span>
-                       </div>
-                       <h3 className="text-[17px] font-bold text-slate-800 leading-snug pr-4">{displayTitle}</h3>
-                       <p className="text-sm text-slate-500 font-medium mt-1">Usuario Anónimo</p>
-                     </div>
-                   </div>
-                   
-                   <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
-                     <div className="flex gap-4 text-right">
-                        <div>
-                          <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
-                          <p className="text-sm font-bold text-slate-800 mt-0.5">{displayAmount}</p>
+                    onClick={() => setExpandedSearchCaseId(expandedSearchCaseId === caseItem.id ? null : caseItem.id)}
+                    className="w-full flex md:items-center flex-col md:flex-row justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none gap-4 md:gap-0"
+                  >
+                    <div className="flex items-start md:items-center gap-5 w-full md:w-auto">
+                      <div className="w-14 h-14 shrink-0 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-500">
+                        <span className="material-symbols-outlined text-[24px]">
+                          {displayType === 'Migratorio' ? 'public' : displayType === 'Inmobiliario' ? 'real_estate_agent' : displayType === 'Herencia' ? 'home_work' : displayType === 'Minería' ? 'landscape' : 'account_balance'}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                          <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{displayType}</span>
+                          <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                             <span className="material-symbols-outlined text-[12px]">location_on</span> {displayRegion}
+                          </span>
+                          <span className="text-sm font-bold text-slate-400 hidden sm:inline">•</span>
+                          <span className="text-sm font-bold text-slate-500">{displayDate}</span>
                         </div>
-                     </div>
-                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedSearchCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
-                       <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedSearchCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
-                     </div>
-                   </div>
-                 </button>
+                        <h3 className="text-[17px] font-bold text-slate-800 leading-snug pr-4">{displayTitle}</h3>
+                        <p className="text-sm text-slate-500 font-medium mt-1">Usuario Anónimo</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
+                      <div className="flex gap-4 text-right items-center">
+                         <div className="hidden sm:block bg-sky-500 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap">
+                           {(caseItem.bids_count || 0)} de 5 propuestas recibidas
+                         </div>
+                         <div className="hidden sm:block">
+                           <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
+                           <p className={`text-sm font-bold mt-0.5 ${displayUrgency === 'Alta' ? 'text-red-500' : displayUrgency === 'Media' ? 'text-amber-500' : 'text-emerald-500'}`}>{displayUrgency}</p>
+                         </div>
+                         <div>
+                           <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
+                           <p className="text-sm font-bold text-slate-800 mt-0.5">{displayAmount}</p>
+                         </div>
+                      </div>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedSearchCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedSearchCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+                      </div>
+                    </div>
+                  </button>
                  
                  {/* Accordion Content */}
                  <div 

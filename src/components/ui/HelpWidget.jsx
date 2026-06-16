@@ -35,7 +35,7 @@ export default function HelpWidget() {
       {!isOpen && !isAdminPath && (
         <button
           onClick={() => setIsOpen(true)}
-          className={`fixed right-6 z-40 flex items-center justify-center w-14 h-14 rounded-full text-white shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 group focus:outline-none ${
+          className={`fixed right-6 z-[9999] flex items-center justify-center w-14 h-14 rounded-full text-white shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 group focus:outline-none ${
             location.pathname.startsWith('/abogados') || location.pathname.startsWith('/dashboard')
               ? 'bg-[#EE6C4D] hover:bg-[#d65f42] shadow-orange-500/20'
               : 'bg-[#1ECCA7] hover:bg-[#19b392] shadow-teal-500/20'
@@ -53,7 +53,7 @@ export default function HelpWidget() {
 
       {/* Modal Backdrop & Container */}
       {isOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[99999] p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 relative space-y-6 animate-in zoom-in-95 duration-200 font-sans">
             {/* Close Button */}
             <button

@@ -764,8 +764,11 @@ const Dashboard = () => {
                     
                     <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
                       <div className="flex gap-4 text-right items-center">
-                         <div className="hidden sm:block bg-sky-500 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap">
-                           {(caseItem.bids_count || 0)} de 5 propuestas recibidas
+                         <div 
+                           title="Señala la cantidad de propuestas que este caso ha recibido por parte de otros abogados" 
+                           className="hidden sm:block bg-sky-500 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap cursor-help"
+                         >
+                           {(caseItem.bids_count || 0)} de 5 propuestas
                          </div>
                          <div className="hidden sm:block">
                            <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>

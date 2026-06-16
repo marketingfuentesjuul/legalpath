@@ -12,6 +12,7 @@ import Dashboard from './pages/Abogados/Dashboard'
 import { useAuth } from './context/AuthContext'
 import ScrollToTop from './components/layout/ScrollToTop'
 import PageTransition from './components/layout/PageTransition'
+import HelpWidget from './components/ui/HelpWidget'
 
 import AdminGuard from './components/AdminGuard'
 import LawyerGuard from './components/LawyerGuard'
@@ -90,9 +91,11 @@ function App() {
           </Route>
         </Routes>
       </AnimatePresence>
+      <HelpWidget />
     </>
   )
 }
 
 export default App
+
 

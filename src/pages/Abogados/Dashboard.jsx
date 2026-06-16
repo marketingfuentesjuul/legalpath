@@ -1326,6 +1326,13 @@ const Dashboard = () => {
           </nav>
         </div>
         <div className="p-4 border-t border-slate-100 space-y-1">
+          <button 
+            onClick={() => window.dispatchEvent(new CustomEvent('open-help-modal'))}
+            className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#EE6C4D] rounded-xl transition-all font-semibold text-left"
+          >
+            <span className="material-symbols-outlined">help</span>
+            <span>Ayuda</span>
+          </button>
           <Link to="/auth/perfil" className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#EE6C4D] rounded-xl transition-all font-semibold">
             <span className="material-symbols-outlined">settings</span>
             <span>Configuración</span>

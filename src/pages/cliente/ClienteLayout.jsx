@@ -105,6 +105,14 @@ export default function ClienteLayout() {
             <span className="material-symbols-outlined text-[20px]">settings</span>
             <span>Configuración</span>
           </NavLink>
+
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('open-help-modal'))}
+            className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-bold transition-all text-slate-500 hover:bg-slate-50 hover:text-slate-800 text-left"
+          >
+            <span className="material-symbols-outlined text-[20px]">help</span>
+            <span>Ayuda</span>
+          </button>
         </nav>
 
         {/* Sidebar Footer (User Info & Sign Out) */}

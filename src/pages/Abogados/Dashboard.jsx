@@ -750,6 +750,13 @@ const Dashboard = () => {
                      </div>
                      <div>
                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                         <span className="px-2.5 py-1 bg-sky-500 text-white rounded-md text-[10px] font-extrabold uppercase tracking-wider">
+                           Urgencia {displayUrgency}
+                         </span>
+                         <span className="px-2.5 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded-md text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1">
+                           <span className="material-symbols-outlined text-[12px]">group</span>
+                           {((caseItem.id % 5) + 1)} / 5 Propuestas
+                         </span>
                          <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{displayType}</span>
                          <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
                             <span className="material-symbols-outlined text-[12px]">location_on</span> {displayRegion}
@@ -764,10 +771,6 @@ const Dashboard = () => {
                    
                    <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
                      <div className="flex gap-4 text-right">
-                        <div className="hidden sm:block">
-                          <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
-                          <p className={`text-sm font-bold mt-0.5 ${displayUrgency === 'Alta' ? 'text-red-500' : displayUrgency === 'Media' ? 'text-amber-500' : 'text-emerald-500'}`}>{displayUrgency}</p>
-                        </div>
                         <div>
                           <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
                           <p className="text-sm font-bold text-slate-800 mt-0.5">{displayAmount}</p>

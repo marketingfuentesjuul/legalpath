@@ -35,6 +35,7 @@ const Dashboard = () => {
   const [bidMessage, setBidMessage] = useState('')
   const [submittingBid, setSubmittingBid] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showNoTokensModal, setShowNoTokensModal] = useState(false)
   const [lawyerProfile, setLawyerProfile] = useState(null)
 
   const ALLOWED_SPECIALTIES = [
@@ -281,6 +282,10 @@ const Dashboard = () => {
   }
 
   const handleOpenBidModal = (caseItem) => {
+    if (tokenBalance < 1) {
+      setShowNoTokensModal(true)
+      return
+    }
     setSelectedCaseForBid(caseItem)
     setBidMessage('')
     if (lawyerProfile) {
@@ -1372,6 +1377,43 @@ const Dashboard = () => {
             >
               Entendido
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Sin Tokens */}
+      {showNoTokensModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 text-center space-y-6">
+            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto text-red-500 border border-red-100 animate-bounce">
+              <span className="material-symbols-outlined text-[32px]">toll</span>
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight">Ups, te quedaste sin tokens</h3>
+              <p className="text-slate-650 text-sm leading-relaxed">
+                Necesitas tener al menos 1 token para poder realizar una propuesta y obtener los datos de contacto de este cliente. Puedes adquirir más créditos en la sección de tokens.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
+              <button
+                onClick={() => {
+                  setShowNoTokensModal(false)
+                  setActiveTab('tokens')
+                }}
+                className="w-full py-3.5 bg-[#EE6C4D] hover:bg-[#d65f42] text-white font-bold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+              >
+                <span className="material-symbols-outlined text-[18px]">shopping_cart</span>
+                Adquirir tokens
+              </button>
+              <button
+                onClick={() => setShowNoTokensModal(false)}
+                className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
           </div>
         </div>
       )}

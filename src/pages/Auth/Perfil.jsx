@@ -17,7 +17,7 @@ const defaultStudy = () => ({ studyLevel: '', university: '', gradYear: '', file
 
 const Perfil = () => {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   
   const [firstName, setFirstName] = useState('')
   const [secondName, setSecondName] = useState('')
@@ -30,21 +30,31 @@ const Perfil = () => {
   const [colegioId, setColegioId] = useState('')
   
   const [studies, setStudies] = useState([defaultStudy()])
-  const [specialties, setSpecialties] = useState(['Derecho Penal', 'Derecho Civil'])
+  const [specialties, setSpecialties] = useState([])
   
   const [avatarFile, setAvatarFile] = useState(null)
   const [avatarPreview, setAvatarPreview] = useState(null)
   
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [existingProfile, setExistingProfile] = useState(null)
 
+  // Redirigir a login si termina de cargar y no hay usuario
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/auth/login')
+    }
+  }, [user, authLoading, navigate])
+
+  // Cargar datos de perfil y estudios
   useEffect(() => {
     const loadProfileData = async () => {
       if (!user) return
       
       try {
         setLoading(true)
+        setError(null)
+        
         // 1. Obtener perfil del abogado
         const { data: profileData, error: profileError } = await supabase
           .from('lawyer_profiles')
@@ -70,7 +80,7 @@ const Perfil = () => {
             setAvatarPreview(profileData.avatar_url)
           }
         } else {
-          // Si no hay perfil, pre-cargar de sessionStorage o metadatos de usuario
+          // Pre-cargar desde sessionStorage o metadatos de usuario
           setFirstName(sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || '')
           setLastNamePaternal(sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || '')
           setEmail(sessionStorage.getItem('lp_email') || user.email || '')
@@ -107,7 +117,9 @@ const Perfil = () => {
       }
     }
 
-    loadProfileData()
+    if (user) {
+      loadProfileData()
+    }
   }, [user])
 
   const addStudy = () => setStudies(prev => [...prev, defaultStudy()])
@@ -243,15 +255,25 @@ const Perfil = () => {
     }
   }
 
+  // Spinner de carga premium
+  if (authLoading || (loading && !existingProfile)) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
+        <div className="w-12 h-12 border-4 border-orange-400/20 border-t-[#EE6C4D] rounded-full animate-spin mb-4"></div>
+        <p className="text-slate-400 font-bold text-sm tracking-wide">Cargando perfil...</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="antialiased min-h-screen bg-[#F8FAFC] pb-20">
+    <div className="antialiased min-h-screen bg-[#F8FAFC] pb-20 font-sans">
       <main className="max-w-4xl mx-auto px-4 pt-10 sm:px-6">
         <header className="mb-10 text-center">
           <h1 className="text-3xl font-extrabold text-[#1E293B] tracking-tight">
-            {existingProfile ? 'Editar Configuración de Perfil' : 'Completa tu Perfil Profesional'}
+            {existingProfile ? 'Configuración de Perfil' : 'Completa tu Perfil Profesional'}
           </h1>
           <p className="text-slate-500 mt-2">
-            {existingProfile ? 'Mantén actualizados tus datos de especialización y estudios' : 'Sube tus antecedentes para verificar tu cuenta de abogado'}
+            {existingProfile ? 'Visualiza y actualiza tus datos profesionales' : 'Sube tus antecedentes para verificar tu cuenta de abogado'}
           </p>
         </header>
 
@@ -374,8 +396,7 @@ const Perfil = () => {
                     autoComplete="email" 
                     maxLength={254} 
                     value={email} 
-                    onChange={e => setEmail(e.target.value)} 
-                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-505" 
+                    className="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none text-slate-505" 
                     placeholder="elena.ramirez@legal.com" 
                     disabled={true} 
                   />
@@ -547,7 +568,7 @@ const Perfil = () => {
                   disabled={!!existingProfile}
                   autoComplete="off" 
                   maxLength={12} 
-                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-505" 
+                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
                   placeholder="12.345.678-9" 
                 />
               </div>
@@ -575,6 +596,9 @@ const Perfil = () => {
                     <option value="Los Lagos">X de Los Lagos</option>
                     <option value="Aysén">XI de Aysén del Gral. Carlos Ibáñez del Campo</option>
                     <option value="Magallanes">XII de Magallanes y de la Antártica Chilena</option>
+                    {region && !['Arica y Parinacota', 'Tarapacá', 'Antofagasta', 'Atacama', 'Coquimbo', 'Valparaíso', 'Metropolitana', "O'Higgins", 'Maule', 'Ñuble', 'Biobío', 'Araucanía', 'Los Ríos', 'Los Lagos', 'Aysén', 'Magallanes'].includes(region) && (
+                      <option value={region}>{region}</option>
+                    )}
                   </select>
                   <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none select-none text-[20px]">unfold_more</span>
                 </div>
@@ -599,7 +623,8 @@ const Perfil = () => {
             >
               {loading ? 'Guardando...' : (
                 <>
-                  {existingProfile ? 'Guardar Cambios' : 'Finalizar proceso de registro'} <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  {existingProfile ? 'Guardar Cambios' : 'Finalizar proceso de registro'} 
+                  {!existingProfile && <span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
                 </>
               )}
             </button>

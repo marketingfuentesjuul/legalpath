@@ -43,29 +43,38 @@ export default function ProposalCard({ proposal, onAccept, onReject }) {
     return (first + last).toUpperCase() || 'A';
   };
 
-  const handleAcceptClick = async () => {
-    if (window.confirm('¿Confirmas que deseas trabajar con este abogado?')) {
-      setLoading(true);
-      try {
-        await onAccept(id, case_id);
-      } catch (err) {
-        alert(err.message || 'Error al aceptar la propuesta.');
-      } finally {
-        setLoading(false);
-      }
+  const [showAcceptModal, setShowAcceptModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+
+  const handleAcceptClick = () => {
+    setShowAcceptModal(true);
+  };
+
+  const handleRejectClick = () => {
+    setShowRejectModal(true);
+  };
+
+  const confirmAccept = async () => {
+    setShowAcceptModal(false);
+    setLoading(true);
+    try {
+      await onAccept(id, case_id);
+    } catch (err) {
+      alert(err.message || 'Error al aceptar la propuesta.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRejectClick = async () => {
-    if (window.confirm('¿Estás seguro de que deseas rechazar esta propuesta?')) {
-      setLoading(true);
-      try {
-        await onReject(id);
-      } catch (err) {
-        alert(err.message || 'Error al rechazar la propuesta.');
-      } finally {
-        setLoading(false);
-      }
+  const confirmReject = async () => {
+    setShowRejectModal(false);
+    setLoading(true);
+    try {
+      await onReject(id);
+    } catch (err) {
+      alert(err.message || 'Error al rechazar la propuesta.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -150,6 +159,76 @@ export default function ProposalCard({ proposal, onAccept, onReject }) {
           <span>Aceptar</span>
         </button>
       </div>
+
+      {/* Custom Accept Modal */}
+      {showAcceptModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100/50 text-center animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
+            {/* Animated Icon Container */}
+            <div className="w-16 h-16 rounded-full bg-[#1ECCA7]/10 flex items-center justify-center text-[#1ECCA7] mb-6">
+              <span className="material-symbols-outlined text-[36px]">gavel</span>
+            </div>
+            
+            <h3 className="text-xl font-extrabold text-slate-800 mb-3">
+              ¿Confirmas que deseas trabajar con {lawyerName}?
+            </h3>
+            
+            <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6">
+              Al aceptar esta propuesta, el caso se marcará como <strong>en progreso</strong> con este abogado. Se rechazarán de manera automática las demás propuestas recibidas para este caso.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <button
+                onClick={() => setShowAcceptModal(false)}
+                className="flex-1 py-3 px-5 rounded-xl text-sm font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmAccept}
+                className="flex-1 py-3 px-5 rounded-xl text-sm font-bold text-white bg-[#1ECCA7] hover:bg-[#1bb896] hover:shadow-lg hover:shadow-[#1ECCA7]/25 transition-all cursor-pointer"
+              >
+                Sí, Aceptar abogado
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Reject Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100/50 text-center animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
+            {/* Animated Icon Container */}
+            <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-6">
+              <span className="material-symbols-outlined text-[36px]">close</span>
+            </div>
+            
+            <h3 className="text-xl font-extrabold text-slate-800 mb-3">
+              ¿Rechazar propuesta?
+            </h3>
+            
+            <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6">
+              ¿Estás seguro de que deseas rechazar la propuesta de <strong>{lawyerName}</strong>? Esta acción no se puede deshacer y el abogado ya no podrá postular a este caso.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="flex-1 py-3 px-5 rounded-xl text-sm font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmReject}
+                className="flex-1 py-3 px-5 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-700 hover:shadow-lg hover:shadow-red-600/25 transition-all cursor-pointer"
+              >
+                Sí, Rechazar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -17,16 +17,36 @@ const Login = () => {
   }, [user])
 
   const redirectByRole = async (userId) => {
-    const { data } = await supabase.from('lawyer_profiles').select('role, verification_status').eq('id', userId).maybeSingle()
-    if (data?.role === 'lawyer') {
-      if (data.verification_status === 'approved') {
+    // 1. Check if lawyer
+    const { data: lawyerData } = await supabase
+      .from('lawyer_profiles')
+      .select('role, verification_status')
+      .eq('id', userId)
+      .maybeSingle()
+
+    if (lawyerData?.role === 'lawyer') {
+      if (lawyerData.verification_status === 'approved') {
         navigate('/dashboard', { replace: true })
       } else {
         navigate('/auth/validacion', { replace: true })
       }
-    } else {
-      navigate('/', { replace: true })
+      return
     }
+
+    // 2. Check if client
+    const { data: clientData } = await supabase
+      .from('client_profiles')
+      .select('role')
+      .eq('id', userId)
+      .maybeSingle()
+
+    if (clientData?.role === 'client') {
+      navigate('/cliente/mis-casos', { replace: true })
+      return
+    }
+
+    // 3. Default fallback
+    navigate('/', { replace: true })
   }
 
   const handleChange = (e) => {

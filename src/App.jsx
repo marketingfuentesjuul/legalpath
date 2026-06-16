@@ -23,6 +23,13 @@ import CaseQueue from './pages/admin/CaseQueue'
 import CaseEditor from './pages/admin/CaseEditor'
 import AdminLogin from './pages/admin/AdminLogin'
 
+// Client imports
+import ClienteGuard from './components/ClienteGuard'
+import ClienteLayout from './pages/cliente/ClienteLayout'
+import MisCasos from './pages/cliente/MisCasos'
+import Propuestas from './pages/cliente/Propuestas'
+import Configuracion from './pages/cliente/Configuracion'
+
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
   if (loading) return null
@@ -50,6 +57,21 @@ function App() {
           <Route path="/dashboard" element={<PageTransition><LawyerGuard><Dashboard /></LawyerGuard></PageTransition>} />
 
           <Route path="/admin/login" element={<PageTransition><AdminLogin /></PageTransition>} />
+
+          {/* Client panel routes */}
+          <Route
+            path="/cliente"
+            element={
+              <ClienteGuard>
+                <ClienteLayout />
+              </ClienteGuard>
+            }
+          >
+            <Route index element={<Navigate to="/cliente/mis-casos" replace />} />
+            <Route path="mis-casos" element={<PageTransition><MisCasos /></PageTransition>} />
+            <Route path="propuestas" element={<PageTransition><Propuestas /></PageTransition>} />
+            <Route path="configuracion" element={<PageTransition><Configuracion /></PageTransition>} />
+          </Route>
 
           {/* Admin panel routes */}
           <Route

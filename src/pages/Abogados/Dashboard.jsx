@@ -1195,8 +1195,8 @@ const Dashboard = () => {
             
             <div className="space-y-2">
               <h3 className="text-2xl font-black text-slate-800 tracking-tight">¡Puja Enviada!</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">
-                Tu propuesta ha sido registrada correctamente. Se ha descontado <strong>1 token</strong> de tu saldo actual.
+              <p className="text-slate-650 text-sm leading-relaxed">
+                Genial, acabas de usar un token para contactar a este usuario. Recuerda que este usuario puede recibir hasta un máximo de 5 propuestas a la vez. Él va a evaluar cuáles de las propuestas son más interesantes y te enviaremos un mail para confirmar si fuiste seleccionado o si el usuario eligió a otro abogado.
               </p>
             </div>
 

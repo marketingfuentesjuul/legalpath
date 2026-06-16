@@ -70,8 +70,8 @@ const Header = () => {
               <Link to="/abogados" className="bg-[#EE6C4D] text-white px-3 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Soy abogado
               </Link>
-              <Link to="/publicar-caso" className="mint-gradient text-white px-3 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
-                Publicar mi caso
+              <Link to="/auth/login" className="mint-gradient text-white px-3 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+                Ingresar a mi cuenta
               </Link>
             </>
           )}

@@ -13,7 +13,7 @@ const ALLOWED_SPECIALTIES = [
   'Libre Competencia', 'Arbitraje y Mediación', 'Derecho Inmobiliario'
 ]
 
-const defaultStudy = () => ({ studyLevel: '', university: '', gradYear: '', file: null, fileName: '' })
+const defaultStudy = () => ({ studyLevel: '', university: '', gradYear: '', file: null, fileName: '', isSaved: false })
 
 const Perfil = () => {
   const navigate = useNavigate()
@@ -37,22 +37,77 @@ const Perfil = () => {
   
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [existingProfile, setExistingProfile] = useState(null)
 
   useEffect(() => {
-    // Intentar cargar desde sessionStorage (flujo inmediato tras registro)
-    setFirstName(sessionStorage.getItem('lp_firstName') || '')
-    // lastName from registration might be a single string, we'll put it in paternal for now
-    setLastNamePaternal(sessionStorage.getItem('lp_lastName') || '')
-    setEmail(sessionStorage.getItem('lp_email') || '')
+    const loadProfileData = async () => {
+      if (!user) return
+      
+      try {
+        setLoading(true)
+        // 1. Obtener perfil del abogado
+        const { data: profileData, error: profileError } = await supabase
+          .from('lawyer_profiles')
+          .select('*')
+          .eq('id', user.id)
+          .maybeSingle()
+          
+        if (profileError) throw profileError
+        
+        if (profileData) {
+          setExistingProfile(profileData)
+          setFirstName(profileData.first_name || '')
+          setSecondName(profileData.second_name || '')
+          setLastNamePaternal(profileData.last_name_paternal || '')
+          setLastNameMaternal(profileData.last_name_maternal || '')
+          setEmail(profileData.email || user.email || '')
+          setRut(profileData.rut_personal || '')
+          setRegion(profileData.region || '')
+          setCity(profileData.city || '')
+          setColegioId(profileData.colegio_id || '')
+          setSpecialties(profileData.specialties || [])
+          if (profileData.avatar_url) {
+            setAvatarPreview(profileData.avatar_url)
+          }
+        } else {
+          // Si no hay perfil, pre-cargar de sessionStorage o metadatos de usuario
+          setFirstName(sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || '')
+          setLastNamePaternal(sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || '')
+          setEmail(sessionStorage.getItem('lp_email') || user.email || '')
+        }
 
-    // Si ya hay usuario autenticado, podríamos precargar datos de la DB
-    if (user) {
-      setEmail(user.email || '')
-      if (user.user_metadata) {
-        setFirstName(user.user_metadata.first_name || '')
-        setLastNamePaternal(user.user_metadata.last_name || '')
+        // 2. Obtener antecedentes académicos
+        const { data: eduData, error: eduError } = await supabase
+          .from('lawyer_education')
+          .select('*')
+          .eq('profile_id', user.id)
+          
+        if (eduError) throw eduError
+        
+        if (eduData && eduData.length > 0) {
+          const formattedStudies = eduData.map(edu => ({
+            id: edu.id,
+            studyLevel: edu.study_level || '',
+            university: edu.institution || '',
+            gradYear: edu.graduation_year || '',
+            fileName: edu.certificate_url ? 'Certificado cargado' : '',
+            certificateUrl: edu.certificate_url || null,
+            isSaved: true
+          }))
+          setStudies(formattedStudies)
+        } else {
+          setStudies([defaultStudy()])
+        }
+
+      } catch (err) {
+        console.error('Error al cargar datos del perfil:', err)
+        setError('Error al cargar los datos del perfil.')
+      } finally {
+        setLoading(false)
       }
     }
+
+    loadProfileData()
   }, [user])
 
   const addStudy = () => setStudies(prev => [...prev, defaultStudy()])
@@ -69,7 +124,7 @@ const Perfil = () => {
     }
   }
 
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0]
     if (file) {
       setAvatarFile(file)
@@ -98,9 +153,9 @@ const Perfil = () => {
     setError(null)
 
     try {
-      let avatarUrl = null
+      let avatarUrl = existingProfile?.avatar_url || null
       
-      // 1. Subir Avatar si existe
+      // 1. Subir Avatar si se seleccionó una foto nueva
       if (avatarFile) {
         const fileExt = avatarFile.name.split('.').pop()
         const avatarPath = `${user.id}/avatar_${Date.now()}.${fileExt}`
@@ -113,7 +168,7 @@ const Perfil = () => {
         avatarUrl = publicUrl
       }
 
-      // 2. Upsert lawyer data
+      // 2. Preparar datos de perfil
       const lawyerProfileData = {
         id: user.id,
         first_name: firstName,
@@ -128,19 +183,21 @@ const Perfil = () => {
         city: city,
         colegio_id: colegioId,
         specialties: specialties,
-        verification_status: 'pending',
+        verification_status: existingProfile?.verification_status || 'pending',
         updated_at: new Date()
       }
       if (avatarUrl) lawyerProfileData.avatar_url = avatarUrl
 
+      // 3. Upsert en lawyer_profiles
       const { error: lawyerProfileError } = await supabase
         .from('lawyer_profiles')
         .upsert(lawyerProfileData)
 
       if (lawyerProfileError) throw lawyerProfileError
 
-      // 4. Subir certificados y guardar educación
+      // 4. Subir certificados e insertar solo los NUEVOS estudios académicos
       for (const study of studies) {
+        if (study.isSaved) continue // Ignorar los estudios ya existentes (no modificables)
         if (!study.studyLevel || !study.university) continue
 
         let certUrl = null
@@ -173,7 +230,12 @@ const Perfil = () => {
       sessionStorage.removeItem('lp_lastName')
       sessionStorage.removeItem('lp_email')
       
-      navigate('/auth/validacion')
+      // Redirección inteligente: si ya existía perfil, volver al dashboard. Si no, a validación.
+      if (existingProfile) {
+        navigate('/dashboard')
+      } else {
+        navigate('/auth/validacion')
+      }
     } catch (err) {
       setError(err.message || 'Error al guardar el perfil.')
     } finally {
@@ -185,8 +247,12 @@ const Perfil = () => {
     <div className="antialiased min-h-screen bg-[#F8FAFC] pb-20">
       <main className="max-w-4xl mx-auto px-4 pt-10 sm:px-6">
         <header className="mb-10 text-center">
-          <h1 className="text-3xl font-extrabold text-[#1E293B] tracking-tight">Completa tu Perfil Profesional</h1>
-          <p className="text-slate-500 mt-2">Sube tus antecedentes para verificar tu cuenta de abogado</p>
+          <h1 className="text-3xl font-extrabold text-[#1E293B] tracking-tight">
+            {existingProfile ? 'Editar Configuración de Perfil' : 'Completa tu Perfil Profesional'}
+          </h1>
+          <p className="text-slate-500 mt-2">
+            {existingProfile ? 'Mantén actualizados tus datos de especialización y estudios' : 'Sube tus antecedentes para verificar tu cuenta de abogado'}
+          </p>
         </header>
 
         {error && (
@@ -230,33 +296,89 @@ const Perfil = () => {
                     <span className="material-symbols-outlined text-white text-[14px]">edit</span>
                   </label>
                 </div>
-                <p className="text-[10px] text-center text-[#8A95AA] leading-tight">JPG, PNG or GIF. Max 5MB. Face must be visible.</p>
+                <p className="text-[10px] text-center text-[#8A95AA] leading-tight">JPG, PNG o GIF. Máx 5MB.</p>
               </div>
+              
               {/* Personal Fields */}
               <div className="flex-1 space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
                     <label htmlFor="firstName" className="block text-[13px] font-bold text-on-background">Primer Nombre <span className="text-[#EE6C4D]">*</span></label>
-                    <input type="text" id="firstName" name="firstName" required maxLength={80} value={firstName} onChange={e => setFirstName(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Elena" />
+                    <input 
+                      type="text" 
+                      id="firstName" 
+                      name="firstName" 
+                      required 
+                      maxLength={80} 
+                      value={firstName} 
+                      onChange={e => setFirstName(e.target.value)} 
+                      disabled={!!existingProfile}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
+                      placeholder="e.g. Elena" 
+                    />
                   </div>
                   <div className="space-y-1.5">
                     <label htmlFor="secondName" className="block text-[13px] font-bold text-on-background">Segundo Nombre</label>
-                    <input type="text" id="secondName" name="secondName" maxLength={80} value={secondName} onChange={e => setSecondName(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. María" />
+                    <input 
+                      type="text" 
+                      id="secondName" 
+                      name="secondName" 
+                      maxLength={80} 
+                      value={secondName} 
+                      onChange={e => setSecondName(e.target.value)} 
+                      disabled={!!existingProfile}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
+                      placeholder="e.g. María" 
+                    />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
                     <label htmlFor="lastNamePaternal" className="block text-[13px] font-bold text-on-background">Apellido Paterno <span className="text-[#EE6C4D]">*</span></label>
-                    <input type="text" id="lastNamePaternal" name="lastNamePaternal" required maxLength={80} value={lastNamePaternal} onChange={e => setLastNamePaternal(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Ramirez" />
+                    <input 
+                      type="text" 
+                      id="lastNamePaternal" 
+                      name="lastNamePaternal" 
+                      required 
+                      maxLength={80} 
+                      value={lastNamePaternal} 
+                      onChange={e => setLastNamePaternal(e.target.value)} 
+                      disabled={!!existingProfile}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
+                      placeholder="e.g. Ramirez" 
+                    />
                   </div>
                   <div className="space-y-1.5">
                     <label htmlFor="lastNameMaternal" className="block text-[13px] font-bold text-on-background">Apellido Materno <span className="text-[#EE6C4D]">*</span></label>
-                    <input type="text" id="lastNameMaternal" name="lastNameMaternal" required maxLength={80} value={lastNameMaternal} onChange={e => setLastNameMaternal(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Soto" />
+                    <input 
+                      type="text" 
+                      id="lastNameMaternal" 
+                      name="lastNameMaternal" 
+                      required 
+                      maxLength={80} 
+                      value={lastNameMaternal} 
+                      onChange={e => setLastNameMaternal(e.target.value)} 
+                      disabled={!!existingProfile}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
+                      placeholder="e.g. Soto" 
+                    />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <label htmlFor="email" className="block text-[13px] font-bold text-on-background">Correo Electrónico</label>
-                  <input type="email" id="email" name="email" required autoComplete="email" maxLength={254} value={email} onChange={e => setEmail(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-50 disabled:text-slate-400" placeholder="elena.ramirez@legal.com" disabled={!!user} />
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    required 
+                    autoComplete="email" 
+                    maxLength={254} 
+                    value={email} 
+                    onChange={e => setEmail(e.target.value)} 
+                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-505" 
+                    placeholder="elena.ramirez@legal.com" 
+                    disabled={true} 
+                  />
                 </div>
               </div>
             </div>
@@ -275,48 +397,100 @@ const Perfil = () => {
                     <div className="space-y-1.5">
                       <label className="block text-[13px] font-bold text-on-background">Nivel de Estudio</label>
                       <div className="relative">
-                        <select value={study.studyLevel} onChange={e => updateStudy(idx, 'studyLevel', e.target.value)} required className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow appearance-none text-on-background">
+                        <select 
+                          value={study.studyLevel} 
+                          onChange={e => updateStudy(idx, 'studyLevel', e.target.value)} 
+                          required 
+                          disabled={study.isSaved}
+                          className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow appearance-none text-on-background disabled:bg-slate-100 disabled:text-slate-500"
+                        >
                           <option value="" disabled>Seleccionar nivel...</option>
                           <option value="pregrado">Licenciatura / Grado</option>
                           <option value="diplomado">Diplomado</option>
                           <option value="postgrado">Magíster / Postgrado</option>
                           <option value="doctorado">Doctorado</option>
                         </select>
-                        <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none select-none text-[20px]">unfold_more</span>
+                        {!study.isSaved && (
+                          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none select-none text-[20px]">unfold_more</span>
+                        )}
                       </div>
                     </div>
                     <div className="space-y-1.5">
                       <label className="block text-[13px] font-bold text-on-background">Universidad / Institución</label>
-                      <input type="text" value={study.university} onChange={e => updateStudy(idx, 'university', e.target.value)} required className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. Yale Law School" />
+                      <input 
+                        type="text" 
+                        value={study.university} 
+                        onChange={e => updateStudy(idx, 'university', e.target.value)} 
+                        required 
+                        disabled={study.isSaved}
+                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
+                        placeholder="e.g. Yale Law School" 
+                      />
                     </div>
                     <div className="space-y-1.5">
                       <label className="block text-[13px] font-bold text-on-background">Año de titulación</label>
-                      <input type="number" value={study.gradYear} onChange={e => updateStudy(idx, 'gradYear', e.target.value)} min="1950" max="2026" required className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="e.g. 2018" />
+                      <input 
+                        type="number" 
+                        value={study.gradYear} 
+                        onChange={e => updateStudy(idx, 'gradYear', e.target.value)} 
+                        min="1950" 
+                        max="2026" 
+                        required 
+                        disabled={study.isSaved}
+                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
+                        placeholder="e.g. 2018" 
+                      />
                     </div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="block text-[13px] font-bold text-on-background">Certificado de Título <span className="text-red-500">*</span></label>
-                    <input 
-                      type="file" 
-                      id={`cert-${idx}`} 
-                      className="hidden" 
-                      onChange={e => handleFileChange(idx, e)}
-                      accept=".pdf,image/*"
-                    />
-                    <label htmlFor={`cert-${idx}`} className="border border-dashed border-[#EE6C4D] bg-[#EE6C4D]/5 rounded-xl px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 cursor-pointer hover:bg-[#EE6C4D]/10 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <span className="material-symbols-outlined text-[#EE6C4D] text-[20px]">description</span>
-                        <span className="text-[13px] text-slate-500 text-center sm:text-left">
-                          {study.fileName || 'Subir PDF o documento JPG'}
-                        </span>
+                    {study.isSaved ? (
+                      <div className="border border-emerald-200 bg-emerald-50/50 rounded-xl px-4 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="material-symbols-outlined text-emerald-650 text-[20px]">verified</span>
+                          <span className="text-[13px] text-emerald-800 font-semibold">Certificado verificado y guardado</span>
+                        </div>
+                        {study.certificateUrl && (
+                          <a 
+                            href={study.certificateUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-[11px] font-extrabold text-emerald-600 hover:text-emerald-700 tracking-wide uppercase flex items-center gap-1.5"
+                          >
+                            Ver Archivo <span className="material-symbols-outlined text-[14px]">visibility</span>
+                          </a>
+                        )}
                       </div>
-                      <span className="text-[11px] font-extrabold text-[#EE6C4D] tracking-wide uppercase">
-                        {study.fileName ? 'CAMBIAR ARCHIVO' : 'SELECCIONAR ARCHIVO'}
-                      </span>
-                    </label>
+                    ) : (
+                      <>
+                        <input 
+                          type="file" 
+                          id={`cert-${idx}`} 
+                          className="hidden" 
+                          onChange={e => handleFileChange(idx, e)}
+                          accept=".pdf,image/*"
+                        />
+                        <label htmlFor={`cert-${idx}`} className="border border-dashed border-[#EE6C4D] bg-[#EE6C4D]/5 rounded-xl px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 cursor-pointer hover:bg-[#EE6C4D]/10 transition-colors">
+                          <div className="flex items-center gap-3">
+                            <span className="material-symbols-outlined text-[#EE6C4D] text-[20px]">description</span>
+                            <span className="text-[13px] text-slate-500 text-center sm:text-left">
+                              {study.fileName || 'Subir PDF o documento JPG'}
+                            </span>
+                          </div>
+                          <span className="text-[11px] font-extrabold text-[#EE6C4D] tracking-wide uppercase">
+                            {study.fileName ? 'CAMBIAR ARCHIVO' : 'SELECCIONAR ARCHIVO'}
+                          </span>
+                        </label>
+                      </>
+                    )}
                   </div>
-                  {idx > 0 && (
-                    <button type="button" onClick={() => removeStudy(idx)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors p-1 bg-white rounded-full shadow-sm border border-slate-200" title="Eliminar estudio">
+                  {!study.isSaved && idx > 0 && (
+                    <button 
+                      type="button" 
+                      onClick={() => removeStudy(idx)} 
+                      className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors p-1 bg-white rounded-full shadow-sm border border-slate-200" 
+                      title="Eliminar estudio"
+                    >
                       <span className="material-symbols-outlined text-[16px] block">close</span>
                     </button>
                   )}
@@ -363,7 +537,19 @@ const Perfil = () => {
             <div className="grid grid-cols-1 gap-5 mb-5">
               <div className="space-y-1.5">
                 <label htmlFor="rut" className="block text-[13px] font-bold text-on-background">RUT (Personal) <span className="text-[#EE6C4D]">*</span></label>
-                <input type="text" id="rut" name="rut" required value={rut} onChange={e => setRut(e.target.value)} autoComplete="off" maxLength={12} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="12.345.678-9" />
+                <input 
+                  type="text" 
+                  id="rut" 
+                  name="rut" 
+                  required 
+                  value={rut} 
+                  onChange={e => setRut(e.target.value)} 
+                  disabled={!!existingProfile}
+                  autoComplete="off" 
+                  maxLength={12} 
+                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-505" 
+                  placeholder="12.345.678-9" 
+                />
               </div>
             </div>
 
@@ -413,7 +599,7 @@ const Perfil = () => {
             >
               {loading ? 'Guardando...' : (
                 <>
-                  Finalizar proceso de registro <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  {existingProfile ? 'Guardar Cambios' : 'Finalizar proceso de registro'} <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </>
               )}
             </button>

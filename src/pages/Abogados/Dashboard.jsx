@@ -455,6 +455,170 @@ const Dashboard = () => {
     }
   ]
 
+  const renderCaseCard = (caseItem) => {
+    const displayType = caseItem.category || 'General';
+    const displayRegion = caseItem.region || caseItem.city || 'No especificada';
+    const displayDate = caseItem.created_at
+      ? new Date(caseItem.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })
+      : 'Reciente';
+    const displayTitle = caseItem.title || 'Caso sin título';
+    const displayUrgency = caseItem.urgency
+      ? caseItem.urgency.charAt(0).toUpperCase() + caseItem.urgency.slice(1)
+      : 'Baja';
+    const displayAmount = caseItem.estimated_amount
+      ? new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(caseItem.estimated_amount)
+      : 'Por definir';
+    const displayDetails = caseItem.polished_description || caseItem.description || 'Sin descripción';
+
+    return (
+      <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+         
+         {/* Accordion Header */}
+         <button 
+            onClick={() => setExpandedSearchCaseId(expandedSearchCaseId === caseItem.id ? null : caseItem.id)}
+            className="w-full flex md:items-center flex-col md:flex-row justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none gap-4 md:gap-0"
+          >
+            <div className="flex items-start md:items-center gap-5 w-full md:w-auto">
+              <div className="w-14 h-14 shrink-0 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-500">
+                <span className="material-symbols-outlined text-[24px]">
+                  {displayType === 'Migratorio' ? 'public' : displayType === 'Inmobiliario' ? 'real_estate_agent' : displayType === 'Herencia' ? 'home_work' : displayType === 'Minería' ? 'landscape' : 'account_balance'}
+                </span>
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                  <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{displayType}</span>
+                  <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                     <span className="material-symbols-outlined text-[12px]">location_on</span> {displayRegion}
+                  </span>
+                  <span className="text-sm font-bold text-slate-400 hidden sm:inline">•</span>
+                  <span className="text-sm font-bold text-slate-500">{displayDate}</span>
+                </div>
+                <h3 className="text-[17px] font-bold text-slate-800 leading-snug pr-4">{displayTitle}</h3>
+                <p className="text-sm text-slate-500 font-medium mt-1">Usuario Anónimo</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
+              <div className="flex gap-4 text-right items-center">
+                 <div className="relative group sm:block hidden">
+                   <div className={`px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap cursor-help text-white ${
+                     (caseItem.bids_count || 0) >= 5 ? 'bg-red-500 shadow-sm shadow-red-500/20' : 'bg-sky-500'
+                   }`}>
+                     {(caseItem.bids_count || 0)} de 5 propuestas
+                   </div>
+                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2.5 bg-slate-900 text-white text-[11px] font-semibold rounded-xl shadow-xl pointer-events-none opacity-0 scale-95 origin-bottom transition-all duration-200 group-hover:opacity-100 group-hover:scale-100 group-hover:delay-1000 z-30 leading-relaxed text-center normal-case">
+                     Señala la cantidad de propuestas que este caso ha recibido por parte de otros abogados
+                     <div className="absolute top-full left-1/2 -translate-y-1 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                   </div>
+                   {(caseItem.bids_count || 0) >= 5 && (
+                     <div className="text-[10px] font-bold text-red-500 mt-1 uppercase tracking-wider text-right">
+                       No recibe más propuestas
+                     </div>
+                   )}
+                 </div>
+                 <div className="hidden sm:block">
+                   <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
+                   <p className={`text-sm font-bold mt-0.5 ${displayUrgency === 'Alta' ? 'text-red-500' : displayUrgency === 'Media' ? 'text-amber-500' : 'text-emerald-500'}`}>{displayUrgency}</p>
+                 </div>
+                 <div>
+                   <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
+                   <p className="text-sm font-bold text-slate-800 mt-0.5">{displayAmount}</p>
+                 </div>
+              </div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedSearchCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedSearchCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+              </div>
+            </div>
+         </button>
+         
+         {/* Accordion Content */}
+         <div 
+           className="transition-all duration-300 ease-in-out overflow-hidden" 
+           style={{ maxHeight: expandedSearchCaseId === caseItem.id ? '600px' : '0px', opacity: expandedSearchCaseId === caseItem.id ? 1 : 0 }}
+         >
+           <div className="p-6 border-t border-slate-100 bg-slate-50/70">
+             <div className="flex flex-col md:flex-row gap-6 justify-between">
+               <div className="flex-1 max-w-3xl">
+                 <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                   <span className="material-symbols-outlined text-[20px] text-slate-400">description</span> Descripción del expediente
+                 </h4>
+                 <p className="text-slate-650 text-[15px] leading-relaxed">
+                   {displayDetails}
+                 </p>
+                 
+                 <div className="mt-6 flex flex-wrap gap-2">
+                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
+                     <span className="material-symbols-outlined text-[14px]">lock</span> Confidencial
+                   </span>
+                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
+                     <span className="material-symbols-outlined text-[14px]">history</span> Expira en 7 días
+                   </span>
+                 </div>
+
+                 {caseItem.has_applied && (
+                   <div className="mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-lg shadow-sm">
+                     <h5 className="font-bold text-emerald-800 text-sm mb-1.5 flex items-center gap-2">
+                       <span className="material-symbols-outlined text-emerald-600 text-[18px]">contact_mail</span>
+                       Datos de contacto del cliente
+                     </h5>
+                     <p className="text-emerald-700 text-sm font-semibold">
+                       Email: <span className="text-slate-800 select-all font-mono">{caseItem.client_email || 'Anónimo'}</span>
+                     </p>
+                   </div>
+                 )}
+               </div>
+               
+                <div className="w-full md:w-80 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6 space-y-2">
+                  {caseItem.has_applied ? (
+                    <>
+                      <button 
+                        disabled
+                        className="bg-slate-100 text-slate-400 w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 cursor-not-allowed text-sm whitespace-nowrap border border-slate-200"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                        <span>Propuesta enviada</span>
+                      </button>
+                      <p className="text-[11px] text-center text-emerald-600 font-bold leading-tight">
+                        ¡Ya postulaste! Contacto revelado a la izquierda.
+                      </p>
+                    </>
+                  ) : (caseItem.bids_count || 0) >= 5 ? (
+                    <>
+                      <button 
+                        disabled
+                        className="bg-slate-100 text-slate-400 w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 cursor-not-allowed text-sm whitespace-nowrap border border-slate-200"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">block</span>
+                        <span>Límite alcanzado</span>
+                      </button>
+                      <p className="text-[11px] text-center text-red-500 font-bold leading-tight">
+                        Este caso ya no recibe más propuestas.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={() => handleOpenBidModal(caseItem)}
+                        className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg focus:outline-none text-sm whitespace-nowrap"
+                      >
+                        <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white font-black text-[11px] leading-none shrink-0 border border-white/30 shadow-sm">
+                          1
+                        </div>
+                        <span>Pujar por contacto</span>
+                      </button>
+                      <p className="text-[11px] text-center text-slate-700 font-bold leading-tight">
+                        al darle al boton estarás usando 1 token
+                      </p>
+                    </>
+                  )}
+                </div>
+             </div>
+           </div>
+         </div>
+      </div>
+    );
+  };
+
   const renderDashboardView = () => (
     <div className="w-full">
       <header className="flex justify-between items-center mb-10 w-full">
@@ -640,8 +804,8 @@ const Dashboard = () => {
                      <span className="material-symbols-outlined text-[18px]">chat</span> Contactar cliente
                    </button>
                  </div>
-               </div>
-             </div>
+                </div>
+              </div>
              
           </div>
         ))}
@@ -649,303 +813,180 @@ const Dashboard = () => {
     </div>
   )
 
-  const renderBuscarCasosView = () => (
-    <div className="w-full">
-      <header className="mb-10 w-full space-y-6">
-        <div>
-          <h1 className="text-3xl font-black text-slate-800 tracking-tight">Buscar Casos.</h1>
-          <p className="text-slate-500 mt-1 font-medium text-sm">Explora las últimas solicitudes ingresadas y conecta con nuevos prospectos.</p>
-        </div>
+  const renderBuscarCasosView = () => {
+    // Excluir casos donde el abogado ya postuló
+    const casesForBuscar = sortedCasesList.filter(c => !c.has_applied)
 
-        {/* Advanced Search & Filters */}
-        <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm space-y-5">
-          {/* Search Input */}
-          <div className="relative w-full">
-             <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[24px]">search</span>
-             <input 
-                type="text" 
-                placeholder="Busca por palabra clave, por ejemplo: fraude, visas, demanda..." 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-4 py-4 text-[15px] font-medium text-slate-700 placeholder:text-slate-400 focus:ring-2 focus:ring-[#EE6C4D]/30 focus:border-[#EE6C4D] outline-none transition-all" 
-             />
+    return (
+      <div className="w-full">
+        <header className="mb-10 w-full space-y-6">
+          <div>
+            <h1 className="text-3xl font-black text-slate-800 tracking-tight">Buscar Casos.</h1>
+            <p className="text-slate-500 mt-1 font-medium text-sm">Explora las últimas solicitudes ingresadas y conecta con nuevos prospectos.</p>
           </div>
-          
-          {/* Filters Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
-            <div className="flex items-center gap-1.5 text-sm font-bold text-slate-500 mr-2">
-              <span className="material-symbols-outlined text-[20px]">tune</span> Filtros:
+
+          {/* Advanced Search & Filters */}
+          <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm space-y-5">
+            {/* Search Input */}
+            <div className="relative w-full">
+               <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[24px]">search</span>
+               <input 
+                  type="text" 
+                  placeholder="Busca por palabra clave, por ejemplo: fraude, visas, demanda..." 
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-4 py-4 text-[15px] font-medium text-slate-700 placeholder:text-slate-400 focus:ring-2 focus:ring-[#EE6C4D]/30 focus:border-[#EE6C4D] outline-none transition-all" 
+               />
             </div>
-            <div className="flex flex-wrap items-center gap-3 flex-1">
-              {/* Specialty Filter */}
-              <div className="relative">
-                <select 
-                  value={filterSpecialty}
-                  onChange={e => setFilterSpecialty(e.target.value)}
-                  className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterSpecialty ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
-                >
-                  <option value="" className="text-slate-600 font-normal">Área del derecho (Todas)</option>
-                  {ALLOWED_SPECIALTIES.map(spec => (
-                    <option key={spec} value={spec} className="text-slate-800 font-normal">{spec}</option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
-                {filterSpecialty && (
-                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                  </span>
-                )}
+            
+            {/* Filters Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
+              <div className="flex items-center gap-1.5 text-sm font-bold text-slate-500 mr-2">
+                <span className="material-symbols-outlined text-[20px]">tune</span> Filtros:
               </div>
-
-              {/* Urgency Filter */}
-              <div className="relative">
-                <select 
-                  value={filterUrgency}
-                  onChange={e => setFilterUrgency(e.target.value)}
-                  className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterUrgency ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
-                >
-                  <option value="" className="text-slate-600 font-normal">Nivel de urgencia (Cualquiera)</option>
-                  <option value="baja" className="text-slate-800 font-normal">Baja</option>
-                  <option value="media" className="text-slate-800 font-normal">Media</option>
-                  <option value="alta" className="text-slate-800 font-normal">Alta</option>
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
-                {filterUrgency && (
-                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                  </span>
-                )}
-              </div>
-
-              {/* Region Filter */}
-              <div className="relative">
-                <select 
-                  value={filterRegion}
-                  onChange={e => setFilterRegion(e.target.value)}
-                  className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterRegion ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
-                >
-                  <option value="" className="text-slate-600 font-normal">Región (Todas)</option>
-                  {ALLOWED_REGIONS.map(reg => (
-                    <option key={reg} value={reg} className="text-slate-800 font-normal">{reg}</option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
-                {filterRegion && (
-                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
-              <span className="text-sm font-bold text-slate-500">Ordenar por:</span>
-              <select 
-                value={sortBy}
-                onChange={e => setSortBy(e.target.value)}
-                className="bg-slate-50 border-none rounded-lg px-3 py-2 text-sm font-bold text-slate-700 focus:outline-[#EE6C4D] cursor-pointer"
-              >
-                <option value="recientes">Más recientes</option>
-                <option value="cuantía">Mayor cuantía</option>
-                <option value="urgencia">Mayor urgencia</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* List of Search Results */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-bold text-slate-800 mb-4 ml-2">Casos Disponibles ({sortedCasesList.length})</h3>
-        
-        {loadingCases ? (
-          <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
-            <span className="material-symbols-outlined text-[32px] animate-spin mb-2 text-[#EE6C4D]">sync</span>
-            <p className="font-semibold text-sm">Cargando casos en tiempo real...</p>
-          </div>
-        ) : searchCasesList.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
-            <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">gavel</span>
-            <p className="font-bold">No hay casos publicados disponibles.</p>
-            <p className="text-xs text-slate-400 mt-1">Cuando los administradores revisen y publiquen casos, aparecerán aquí.</p>
-          </div>
-        ) : sortedCasesList.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
-            <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">gavel</span>
-            <p className="font-bold">No hay casos que coincidan con los filtros seleccionados.</p>
-            <p className="text-xs text-slate-400 mt-1">Prueba cambiando los criterios de búsqueda o filtros.</p>
-          </div>
-        ) : (
-          sortedCasesList.map(caseItem => {
-            const displayType = caseItem.category || 'General';
-            const displayRegion = caseItem.region || caseItem.city || 'No especificada';
-            const displayDate = caseItem.created_at
-              ? new Date(caseItem.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })
-              : 'Reciente';
-            const displayTitle = caseItem.title || 'Caso sin título';
-            const displayUrgency = caseItem.urgency
-              ? caseItem.urgency.charAt(0).toUpperCase() + caseItem.urgency.slice(1)
-              : 'Baja';
-            const displayAmount = caseItem.estimated_amount
-              ? new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(caseItem.estimated_amount)
-              : 'Por definir';
-            const displayDetails = caseItem.polished_description || caseItem.description || 'Sin descripción';
-
-            return (
-              <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                 
-                 {/* Accordion Header */}
-                 <button 
-                    onClick={() => setExpandedSearchCaseId(expandedSearchCaseId === caseItem.id ? null : caseItem.id)}
-                    className="w-full flex md:items-center flex-col md:flex-row justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none gap-4 md:gap-0"
+              <div className="flex flex-wrap items-center gap-3 flex-1">
+                {/* Specialty Filter */}
+                <div className="relative">
+                  <select 
+                    value={filterSpecialty}
+                    onChange={e => setFilterSpecialty(e.target.value)}
+                    className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterSpecialty ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
                   >
-                    <div className="flex items-start md:items-center gap-5 w-full md:w-auto">
-                      <div className="w-14 h-14 shrink-0 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-500">
-                        <span className="material-symbols-outlined text-[24px]">
-                          {displayType === 'Migratorio' ? 'public' : displayType === 'Inmobiliario' ? 'real_estate_agent' : displayType === 'Herencia' ? 'home_work' : displayType === 'Minería' ? 'landscape' : 'account_balance'}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                          <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{displayType}</span>
-                          <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                             <span className="material-symbols-outlined text-[12px]">location_on</span> {displayRegion}
-                          </span>
-                          <span className="text-sm font-bold text-slate-400 hidden sm:inline">•</span>
-                          <span className="text-sm font-bold text-slate-500">{displayDate}</span>
-                        </div>
-                        <h3 className="text-[17px] font-bold text-slate-800 leading-snug pr-4">{displayTitle}</h3>
-                        <p className="text-sm text-slate-500 font-medium mt-1">Usuario Anónimo</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pl-16 md:pl-0">
-                      <div className="flex gap-4 text-right items-center">
-                         <div className="relative group sm:block hidden">
-                           <div className={`px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap cursor-help text-white ${
-                             (caseItem.bids_count || 0) >= 5 ? 'bg-red-500 shadow-sm shadow-red-500/20' : 'bg-sky-500'
-                           }`}>
-                             {(caseItem.bids_count || 0)} de 5 propuestas
-                           </div>
-                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2.5 bg-slate-900 text-white text-[11px] font-semibold rounded-xl shadow-xl pointer-events-none opacity-0 scale-95 origin-bottom transition-all duration-200 group-hover:opacity-100 group-hover:scale-100 group-hover:delay-1000 z-30 leading-relaxed text-center normal-case">
-                             Señala la cantidad de propuestas que este caso ha recibido por parte de otros abogados
-                             <div className="absolute top-full left-1/2 -translate-y-1 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
-                           </div>
-                           {(caseItem.bids_count || 0) >= 5 && (
-                             <div className="text-[10px] font-bold text-red-500 mt-1 uppercase tracking-wider text-right">
-                               No recibe más propuestas
-                             </div>
-                           )}
-                         </div>
-                         <div className="hidden sm:block">
-                           <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
-                           <p className={`text-sm font-bold mt-0.5 ${displayUrgency === 'Alta' ? 'text-red-500' : displayUrgency === 'Media' ? 'text-amber-500' : 'text-emerald-500'}`}>{displayUrgency}</p>
-                         </div>
-                         <div>
-                           <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
-                           <p className="text-sm font-bold text-slate-800 mt-0.5">{displayAmount}</p>
-                         </div>
-                      </div>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedSearchCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
-                        <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedSearchCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
-                      </div>
-                    </div>
-                  </button>
-                 
-                 {/* Accordion Content */}
-                 <div 
-                   className="transition-all duration-300 ease-in-out overflow-hidden" 
-                   style={{ maxHeight: expandedSearchCaseId === caseItem.id ? '600px' : '0px', opacity: expandedSearchCaseId === caseItem.id ? 1 : 0 }}
-                 >
-                   <div className="p-6 border-t border-slate-100 bg-slate-50/70">
-                     <div className="flex flex-col md:flex-row gap-6 justify-between">
-                       <div className="flex-1 max-w-3xl">
-                         <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                           <span className="material-symbols-outlined text-[20px] text-slate-400">description</span> Descripción del expediente
-                         </h4>
-                         <p className="text-slate-650 text-[15px] leading-relaxed">
-                           {displayDetails}
-                         </p>
-                         
-                         <div className="mt-6 flex flex-wrap gap-2">
-                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
-                             <span className="material-symbols-outlined text-[14px]">lock</span> Confidencial
-                           </span>
-                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
-                             <span className="material-symbols-outlined text-[14px]">history</span> Expira en 7 días
-                           </span>
-                         </div>
+                    <option value="" className="text-slate-600 font-normal">Área del derecho (Todas)</option>
+                    {ALLOWED_SPECIALTIES.map(spec => (
+                      <option key={spec} value={spec} className="text-slate-800 font-normal">{spec}</option>
+                    ))}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+                  {filterSpecialty && (
+                    <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                    </span>
+                  )}
+                </div>
 
-                         {caseItem.has_applied && (
-                           <div className="mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-lg shadow-sm">
-                             <h5 className="font-bold text-emerald-800 text-sm mb-1.5 flex items-center gap-2">
-                               <span className="material-symbols-outlined text-emerald-600 text-[18px]">contact_mail</span>
-                               Datos de contacto del cliente
-                             </h5>
-                             <p className="text-emerald-700 text-sm font-semibold">
-                               Email: <span className="text-slate-800 select-all font-mono">{caseItem.client_email || 'Anónimo'}</span>
-                             </p>
-                           </div>
-                         )}
-                       </div>
-                       
-                        <div className="w-full md:w-80 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6 space-y-2">
-                          {caseItem.has_applied ? (
-                            <>
-                              <button 
-                                disabled
-                                className="bg-slate-100 text-slate-400 w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 cursor-not-allowed text-sm whitespace-nowrap border border-slate-200"
-                              >
-                                <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                                <span>Propuesta enviada</span>
-                              </button>
-                              <p className="text-[11px] text-center text-emerald-600 font-bold leading-tight">
-                                ¡Ya postulaste! Contacto revelado a la izquierda.
-                              </p>
-                            </>
-                          ) : (caseItem.bids_count || 0) >= 5 ? (
-                            <>
-                              <button 
-                                disabled
-                                className="bg-slate-100 text-slate-400 w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 cursor-not-allowed text-sm whitespace-nowrap border border-slate-200"
-                              >
-                                <span className="material-symbols-outlined text-[18px]">block</span>
-                                <span>Límite alcanzado</span>
-                              </button>
-                              <p className="text-[11px] text-center text-red-500 font-bold leading-tight">
-                                Este caso ya no recibe más propuestas.
-                              </p>
-                            </>
-                          ) : (
-                            <>
-                              <button 
-                                onClick={() => handleOpenBidModal(caseItem)}
-                                className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg focus:outline-none text-sm whitespace-nowrap"
-                              >
-                                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white font-black text-[11px] leading-none shrink-0 border border-white/30 shadow-sm">
-                                  1
-                                </div>
-                                <span>Pujar por contacto</span>
-                              </button>
-                              <p className="text-[11px] text-center text-slate-700 font-bold leading-tight">
-                                al darle al boton estarás usando 1 token
-                              </p>
-                            </>
-                          )}
-                        </div>
-                     </div>
-                   </div>
-                 </div>
-                 
+                {/* Urgency Filter */}
+                <div className="relative">
+                  <select 
+                    value={filterUrgency}
+                    onChange={e => setFilterUrgency(e.target.value)}
+                    className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterUrgency ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
+                  >
+                    <option value="" className="text-slate-600 font-normal">Nivel de urgencia (Cualquiera)</option>
+                    <option value="baja" className="text-slate-800 font-normal">Baja</option>
+                    <option value="media" className="text-slate-800 font-normal">Media</option>
+                    <option value="alta" className="text-slate-800 font-normal">Alta</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+                  {filterUrgency && (
+                    <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                    </span>
+                  )}
+                </div>
+
+                {/* Region Filter */}
+                <div className="relative">
+                  <select 
+                    value={filterRegion}
+                    onChange={e => setFilterRegion(e.target.value)}
+                    className={`bg-white border rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] focus:border-[#EE6C4D] appearance-none cursor-pointer transition-all ${filterRegion ? 'border-[#EE6C4D] ring-1 ring-[#EE6C4D]/25 font-semibold text-[#EE6C4D]' : 'border-slate-200'}`}
+                  >
+                    <option value="" className="text-slate-600 font-normal">Región (Todas)</option>
+                    {ALLOWED_REGIONS.map(reg => (
+                      <option key={reg} value={reg} className="text-slate-800 font-normal">{reg}</option>
+                    ))}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+                  {filterRegion && (
+                    <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                    </span>
+                  )}
+                </div>
               </div>
-            );
-          })
-        )}
+              <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
+                <span className="text-sm font-bold text-slate-500">Ordenar por:</span>
+                <select 
+                  value={sortBy}
+                  onChange={e => setSortBy(e.target.value)}
+                  className="bg-slate-50 border-none rounded-lg px-3 py-2 text-sm font-bold text-slate-700 focus:outline-[#EE6C4D] cursor-pointer"
+                >
+                  <option value="recientes">Más recientes</option>
+                  <option value="cuantía">Mayor cuantía</option>
+                  <option value="urgencia">Mayor urgencia</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* List of Search Results */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-slate-800 mb-4 ml-2">Casos Disponibles ({casesForBuscar.length})</h3>
+          
+          {loadingCases ? (
+            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+              <span className="material-symbols-outlined text-[32px] animate-spin mb-2 text-[#EE6C4D]">sync</span>
+              <p className="font-semibold text-sm">Cargando casos en tiempo real...</p>
+            </div>
+          ) : searchCasesList.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+              <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">gavel</span>
+              <p className="font-bold">No hay casos publicados disponibles.</p>
+              <p className="text-xs text-slate-400 mt-1">Cuando los administradores revisen y publiquen casos, aparecerán aquí.</p>
+            </div>
+          ) : casesForBuscar.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+              <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">gavel</span>
+              <p className="font-bold">No hay casos que coincidan con los filtros seleccionados o a los que no hayas postulado.</p>
+              <p className="text-xs text-slate-400 mt-1">Prueba cambiando los criterios de búsqueda o filtros.</p>
+            </div>
+          ) : (
+            casesForBuscar.map(caseItem => renderCaseCard(caseItem))
+          )}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+
+  const renderPujasPendientesView = () => {
+    // Casos donde el abogado ya postuló
+    const casesForPujas = sortedCasesList.filter(c => c.has_applied)
+
+    return (
+      <div className="w-full">
+        <header className="mb-10 w-full">
+          <div>
+            <h1 className="text-3xl font-black text-slate-800 tracking-tight">Pujas Pendientes.</h1>
+            <p className="text-slate-500 mt-1 font-medium text-sm">Revisa el estado de las propuestas que has enviado a los clientes.</p>
+          </div>
+        </header>
+
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-slate-800 mb-4 ml-2">Tus Propuestas Enviadas ({casesForPujas.length})</h3>
+          
+          {loadingCases ? (
+            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+              <span className="material-symbols-outlined text-[32px] animate-spin mb-2 text-[#EE6C4D]">sync</span>
+              <p className="font-semibold text-sm">Cargando propuestas...</p>
+            </div>
+          ) : casesForPujas.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+              <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">hourglass_empty</span>
+              <p className="font-bold">Aún no has enviado propuestas a ningún caso.</p>
+              <p className="text-xs text-slate-400 mt-1">Explora la sección "Buscar casos" para postular a solicitudes activas.</p>
+            </div>
+          ) : (
+            casesForPujas.map(caseItem => renderCaseCard(caseItem))
+          )}
+        </div>
+      </div>
+    )
+  }
 
   const renderTokensView = () => {
     const getUnitPrice = (count) => {
@@ -1190,6 +1231,13 @@ const Dashboard = () => {
           <nav className="mt-4 px-4 space-y-1.5">
             <SidebarItem icon="grid_view" label="Dashboard" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
             <SidebarItem icon="folder_open" label="Casos activos" active={activeTab === 'casos'} onClick={() => setActiveTab('casos')} />
+            <SidebarItem 
+              icon="history" 
+              label="Pujas pendientes" 
+              active={activeTab === 'pujas'} 
+              onClick={() => setActiveTab('pujas')}
+              badge={searchCasesList.filter(c => c.has_applied).length > 0 ? searchCasesList.filter(c => c.has_applied).length : null}
+            />
             <SidebarItem icon="search" label="Buscar casos" active={activeTab === 'buscar'} onClick={() => setActiveTab('buscar')} />
             <SidebarItem icon="toll" label="Mis tokens" active={activeTab === 'tokens'} onClick={() => setActiveTab('tokens')} />
           </nav>
@@ -1217,6 +1265,7 @@ const Dashboard = () => {
         <div className="max-w-6xl mx-auto">
           {activeTab === 'dashboard' && renderDashboardView()}
           {activeTab === 'casos' && renderCasosActivosView()}
+          {activeTab === 'pujas' && renderPujasPendientesView()}
           {activeTab === 'buscar' && renderBuscarCasosView()}
           {activeTab === 'tokens' && renderTokensView()}
         </div>
@@ -1331,7 +1380,7 @@ const Dashboard = () => {
 }
 
 // Helper Component for Sidebar Items
-const SidebarItem = ({ icon, label, active, onClick }) => {
+const SidebarItem = ({ icon, label, active, onClick, badge }) => {
   return (
     <button 
       onClick={onClick}
@@ -1343,7 +1392,12 @@ const SidebarItem = ({ icon, label, active, onClick }) => {
     >
       <span className="material-symbols-outlined text-[20px]">{icon}</span>
       <span>{label}</span>
-      {active && <div className="ml-auto w-1.5 h-1.5 bg-[#EE6C4D] rounded-full"></div>}
+      {badge && (
+        <span className="ml-auto bg-[#EE6C4D] text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
+          {badge}
+        </span>
+      )}
+      {active && !badge && <div className="ml-auto w-1.5 h-1.5 bg-[#EE6C4D] rounded-full"></div>}
     </button>
   )
 }

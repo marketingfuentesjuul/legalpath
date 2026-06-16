@@ -28,6 +28,15 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('recientes')
 
+  // Estados para Modal de Puja
+  const [showBidModal, setShowBidModal] = useState(false)
+  const [selectedCaseForBid, setSelectedCaseForBid] = useState(null)
+  const [bidName, setBidName] = useState('')
+  const [bidMessage, setBidMessage] = useState('')
+  const [submittingBid, setSubmittingBid] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [lawyerProfile, setLawyerProfile] = useState(null)
+
   const ALLOWED_SPECIALTIES = [
     'Derecho Civil', 'Derecho Penal', 'Derecho Laboral', 'Derecho de Familia',
     'Fraude bancario', 'Choques',
@@ -235,9 +244,95 @@ const Dashboard = () => {
     }
   }
 
+  const fetchLawyerProfile = async () => {
+    if (!user) return
+    try {
+      const { data, error } = await supabase
+        .from('lawyer_profiles')
+        .select('first_name, last_name')
+        .eq('id', user.id)
+        .maybeSingle()
+
+      if (error) throw error
+      if (data) {
+        setLawyerProfile(data)
+      }
+    } catch (err) {
+      console.error('Error al obtener perfil del abogado:', err)
+    }
+  }
+
+  const countWords = (text) => {
+    if (!text) return 0
+    return text.trim().split(/\s+/).filter(word => word.length > 0).length
+  }
+
+  const handleOpenBidModal = (caseItem) => {
+    setSelectedCaseForBid(caseItem)
+    setBidMessage('')
+    if (lawyerProfile) {
+      setBidName(`${lawyerProfile.first_name || ''} ${lawyerProfile.last_name || ''}`.trim())
+    } else if (user && user.user_metadata) {
+      setBidName(`${user.user_metadata.first_name || ''} ${user.user_metadata.last_name || ''}`.trim())
+    } else {
+      setBidName('')
+    }
+    setShowBidModal(true)
+  }
+
+  const handleMessageChange = (e) => {
+    const text = e.target.value
+    const words = text.trim().split(/\s+/).filter(w => w.length > 0)
+    if (words.length <= 500) {
+      setBidMessage(text)
+    } else {
+      const limitedWords = text.split(/\s+/).slice(0, 500)
+      setBidMessage(limitedWords.join(' '))
+    }
+  }
+
+  const handleSubmitBid = async (e) => {
+    e.preventDefault()
+    if (!user) return
+    if (!bidName.trim()) {
+      alert('Por favor ingresa tu nombre.')
+      return
+    }
+    if (!bidMessage.trim()) {
+      alert('Por favor ingresa tu propuesta.')
+      return
+    }
+
+    setSubmittingBid(true)
+    try {
+      // 1. Deduct 1 token in Supabase
+      const { error: ledgerError } = await supabase
+        .from('token_ledger')
+        .insert({
+          lawyer_id: user.id,
+          amount: -1
+        })
+
+      if (ledgerError) throw ledgerError
+
+      // 2. Refresh token data
+      await fetchTokenData()
+
+      // 3. Show success popup
+      setShowBidModal(false)
+      setShowSuccessModal(true)
+    } catch (err) {
+      console.error('Error al enviar la puja:', err)
+      alert('Ocurrió un error al enviar tu puja. Por favor verifica tu saldo de tokens.')
+    } finally {
+      setSubmittingBid(false)
+    }
+  }
+
   useEffect(() => {
     if (user) {
       fetchTokenData()
+      fetchLawyerProfile()
     }
   }, [user])
 
@@ -710,7 +805,10 @@ const Dashboard = () => {
                        </div>
                        
                         <div className="w-full md:w-80 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6">
-                          <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg focus:outline-none text-sm whitespace-nowrap">
+                          <button 
+                            onClick={() => handleOpenBidModal(caseItem)}
+                            className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg focus:outline-none text-sm whitespace-nowrap"
+                          >
                             <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white font-black text-[11px] leading-none shrink-0 border border-white/30 shadow-sm">
                               1
                             </div>
@@ -1006,6 +1104,111 @@ const Dashboard = () => {
           {activeTab === 'tokens' && renderTokensView()}
         </div>
       </main>
+
+      {/* Modal de Puja por Caso */}
+      {showBidModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-xl w-full p-8 relative space-y-6">
+            <button 
+              onClick={() => setShowBidModal(false)}
+              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors p-1.5 bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200"
+            >
+              <span className="material-symbols-outlined text-[18px] block">close</span>
+            </button>
+
+            <div className="space-y-2">
+              <span className="bg-[#EE6C4D]/10 text-[#EE6C4D] text-[11px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-full inline-block">
+                Confirmación de Puja
+              </span>
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight leading-tight">
+                Pujar por Caso: {selectedCaseForBid?.title}
+              </h3>
+            </div>
+
+            <div className="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-orange-850 text-sm leading-relaxed font-medium">
+              Estás a punto de entrar en la puja por tomar este caso. A continuación puedes escribir, puedes presentarte, puedes señalar tus honorarios, tiempos estimados y todo lo que estimes conveniente.
+            </div>
+
+            <form onSubmit={handleSubmitBid} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">Tu Nombre / Estudio</label>
+                <input 
+                  type="text"
+                  required
+                  value={bidName}
+                  onChange={e => setBidName(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-[#EE6C4D]/30 focus:border-[#EE6C4D] outline-none transition-all font-semibold text-slate-800"
+                  placeholder="Ej: Elena Ramírez o Estudio Jurídico Asociado"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">Presentación y Propuesta</label>
+                  <span className={`text-[11px] font-mono font-bold ${countWords(bidMessage) > 450 ? 'text-red-500' : 'text-slate-400'}`}>
+                    {countWords(bidMessage)} / 500 palabras
+                  </span>
+                </div>
+                <textarea 
+                  required
+                  rows={6}
+                  value={bidMessage}
+                  onChange={handleMessageChange}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-[#EE6C4D]/30 focus:border-[#EE6C4D] outline-none transition-all min-h-[140px] resize-none text-slate-800 leading-relaxed"
+                  placeholder="Escribe tus honorarios estimados, plazos de respuesta, tu experiencia relevante en esta área, y por qué eres la mejor opción..."
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowBidModal(false)}
+                  className="px-5 py-3 rounded-xl border border-slate-200 font-bold hover:bg-slate-50 transition-all text-slate-500 text-sm focus:outline-none"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={submittingBid}
+                  className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-6 py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg text-sm flex items-center gap-2 focus:outline-none disabled:opacity-50"
+                >
+                  {submittingBid ? 'Procesando...' : (
+                    <>
+                      <div className="flex items-center justify-center w-4 h-4 rounded-full bg-amber-500 text-white font-black text-[9px] leading-none shrink-0 border border-white/20">1</div>
+                      Confirmar y Usar Token
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Éxito de Puja */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 text-center space-y-6">
+            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-500 border border-emerald-100">
+              <span className="material-symbols-outlined text-[32px]">check_circle</span>
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight">¡Puja Enviada!</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                Tu propuesta ha sido registrada correctamente. Se ha descontado <strong>1 token</strong> de tu saldo actual.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm transition-colors shadow-md"
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

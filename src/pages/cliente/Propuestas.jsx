@@ -11,6 +11,8 @@ export default function Propuestas() {
   const [casosMap, setCasosMap] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null); // { type: 'success' | 'error', title, message }
+  const [rejectAllCaseId, setRejectAllCaseId] = useState(null);
 
   const fetchPropuestas = async (silent = false) => {
     try {
@@ -129,7 +131,11 @@ export default function Propuestas() {
 
       // Reload data
       await fetchPropuestas();
-      alert('¡Propuesta aceptada con éxito! El caso ya se encuentra en progreso con el abogado asignado.');
+      setNotification({
+        type: 'success',
+        title: '¡Propuesta Aceptada!',
+        message: '¡Propuesta aceptada con éxito! El caso ya se encuentra en progreso con el abogado asignado.'
+      });
     } catch (err) {
       console.error('Error accepting proposal:', err);
       throw new Error(err.message || 'Error al procesar la aceptación de la propuesta.');
@@ -154,23 +160,35 @@ export default function Propuestas() {
   };
 
   // Action: Reject All Proposals for a Case
-  const handleRejectAllProposals = async (caseId) => {
-    if (window.confirm('¿Estás seguro? Esto rechazará todas las propuestas y el caso seguirá disponible para nuevos abogados.')) {
-      try {
-        const { error } = await supabase
-          .from('proposals')
-          .update({ status: 'rechazada' })
-          .eq('case_id', caseId)
-          .eq('status', 'enviada');
-        if (error) throw error;
+  const handleRejectAllProposals = (caseId) => {
+    setRejectAllCaseId(caseId);
+  };
 
-        // Reload data
-        await fetchPropuestas();
-        alert('Todas las propuestas para este caso han sido rechazadas.');
-      } catch (err) {
-        console.error('Error rejecting all proposals:', err);
-        alert(err.message || 'Error al rechazar todas las propuestas.');
-      }
+  const confirmRejectAllProposals = async () => {
+    const caseId = rejectAllCaseId;
+    setRejectAllCaseId(null);
+    try {
+      const { error } = await supabase
+        .from('proposals')
+        .update({ status: 'rechazada' })
+        .eq('case_id', caseId)
+        .eq('status', 'enviada');
+      if (error) throw error;
+
+      // Reload data
+      await fetchPropuestas();
+      setNotification({
+        type: 'success',
+        title: 'Propuestas Rechazadas',
+        message: 'Todas las propuestas para este caso han sido rechazadas.'
+      });
+    } catch (err) {
+      console.error('Error rejecting all proposals:', err);
+      setNotification({
+        type: 'error',
+        title: 'Error',
+        message: err.message || 'Error al rechazar todas las propuestas.'
+      });
     }
   };
 
@@ -307,6 +325,69 @@ export default function Propuestas() {
             <span className="material-symbols-outlined text-[18px]">arrow_back</span>
             <span>Volver a Mis Casos</span>
           </Link>
+        </div>
+      )}
+
+      {/* Custom Confirmation Dialog for Reject All */}
+      {rejectAllCaseId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100/50 text-center animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
+            <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-6">
+              <span className="material-symbols-outlined text-[36px]">delete_sweep</span>
+            </div>
+            <h3 className="text-xl font-extrabold text-slate-800 mb-3">
+              ¿Rechazar todas las propuestas?
+            </h3>
+            <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6">
+              ¿Estás seguro? Esto rechazará todas las propuestas recibidas para este caso y el caso seguirá disponible en el marketplace para recibir nuevos abogados.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <button
+                onClick={() => setRejectAllCaseId(null)}
+                className="flex-1 py-3 px-5 rounded-xl text-sm font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmRejectAllProposals}
+                className="flex-1 py-3 px-5 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-700 hover:shadow-lg hover:shadow-red-600/25 transition-all cursor-pointer"
+              >
+                Sí, Rechazar todas
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Alert/Notification Popup */}
+      {notification && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100/50 text-center animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
+            {notification.type === 'success' ? (
+              <div className="w-16 h-16 rounded-full bg-[#1ECCA7]/10 flex items-center justify-center text-[#1ECCA7] mb-6">
+                <span className="material-symbols-outlined text-[36px]">check_circle</span>
+              </div>
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-6">
+                <span className="material-symbols-outlined text-[36px]">error</span>
+              </div>
+            )}
+            
+            <h3 className="text-xl font-extrabold text-slate-800 mb-3">
+              {notification.title}
+            </h3>
+            
+            <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6">
+              {notification.message}
+            </p>
+
+            <button
+              onClick={() => setNotification(null)}
+              className="w-full py-3 px-5 rounded-xl text-sm font-bold text-white bg-[#1ECCA7] hover:bg-[#1bb896] hover:shadow-lg hover:shadow-[#1ECCA7]/25 transition-all cursor-pointer"
+            >
+              Entendido
+            </button>
+          </div>
         </div>
       )}
     </div>

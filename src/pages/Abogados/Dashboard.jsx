@@ -44,12 +44,21 @@ const Dashboard = () => {
     'Los Ríos', 'Los Lagos', 'Aysén', 'Magallanes'
   ]
 
+  const normalizeText = (str) => {
+    if (!str) return ''
+    return str
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+  }
+
   const isSpecialtyMatch = (caseCategory, selectedSpecialty) => {
     if (!selectedSpecialty) return true
     if (!caseCategory) return false
 
-    const cat = caseCategory.toLowerCase().trim()
-    const spec = selectedSpecialty.toLowerCase().trim()
+    const cat = normalizeText(caseCategory)
+    const spec = normalizeText(selectedSpecialty)
 
     if (cat === spec) return true
 
@@ -78,8 +87,8 @@ const Dashboard = () => {
     if (!selectedRegion) return true
     if (!caseRegion) return false
     
-    const cReg = caseRegion.toLowerCase().trim()
-    const sReg = selectedRegion.toLowerCase().trim()
+    const cReg = normalizeText(caseRegion)
+    const sReg = normalizeText(selectedRegion)
 
     if (sReg === 'metropolitana' && (cReg.includes('metropolitana') || cReg.includes('rm') || cReg.includes('santiago'))) {
       return true
@@ -96,15 +105,26 @@ const Dashboard = () => {
 
   const isSearchMatch = (caseItem, query) => {
     if (!query) return true
-    const q = query.toLowerCase()
-    const title = (caseItem.title || '').toLowerCase()
-    const desc = (caseItem.description || '').toLowerCase()
-    const polished = (caseItem.polished_description || '').toLowerCase()
-    const cat = (caseItem.category || '').toLowerCase()
-    const region = (caseItem.region || '').toLowerCase()
-    const city = (caseItem.city || '').toLowerCase()
+    const cleanQuery = normalizeText(query)
+    if (!cleanQuery) return true
+
+    const noiseWords = ['de', 'la', 'el', 'al', 'va', 'un', 'una', 'y', 'o', 'en', 'con', 'para', 'del', 'los', 'las']
+    const keywords = cleanQuery.split(/\s+/).filter(word => word.length > 1 && !noiseWords.includes(word))
     
-    return title.includes(q) || desc.includes(q) || polished.includes(q) || cat.includes(q) || region.includes(q) || city.includes(q)
+    const searchTerms = keywords.length > 0 ? keywords : [cleanQuery]
+    
+    const fieldsToSearch = [
+      normalizeText(caseItem.title),
+      normalizeText(caseItem.description),
+      normalizeText(caseItem.polished_description),
+      normalizeText(caseItem.category),
+      normalizeText(caseItem.region),
+      normalizeText(caseItem.city)
+    ]
+
+    return searchTerms.every(term => 
+      fieldsToSearch.some(field => field.includes(term))
+    )
   }
 
   const filteredCasesList = searchCasesList.filter(caseItem => {

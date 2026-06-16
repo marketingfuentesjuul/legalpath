@@ -527,11 +527,14 @@ const Dashboard = () => {
                          </div>
                        </div>
                        
-                       <div className="w-full md:w-64 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6">
-                         <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg focus:outline-none text-center text-sm">
-                           <span className="material-symbols-outlined text-[20px]">chat</span> Usar un token e iniciar conversación
-                         </button>
-                       </div>
+                        <div className="w-full md:w-80 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6">
+                          <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg focus:outline-none text-sm whitespace-nowrap">
+                            <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white font-black text-[11px] leading-none shrink-0 border border-white/30 shadow-sm">
+                              1
+                            </div>
+                            <span>Usar un token e iniciar conversación</span>
+                          </button>
+                        </div>
                      </div>
                    </div>
                  </div>

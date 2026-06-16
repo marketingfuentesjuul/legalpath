@@ -19,6 +19,7 @@ const Dashboard = () => {
 
   // Estados para casos de la base de datos
   const [searchCasesList, setSearchCasesList] = useState([])
+  const [activeCasesList, setActiveCasesList] = useState([])
   const [loadingCases, setLoadingCases] = useState(true)
 
   // Estados para filtros
@@ -189,6 +190,32 @@ const Dashboard = () => {
       console.error('Error al obtener los casos publicados:', err)
     } finally {
       setLoadingCases(false)
+    }
+  }
+
+  // Función para obtener casos activos (en progreso donde el abogado fue aceptado)
+  const fetchActiveCases = async () => {
+    if (!user) return
+    try {
+      const { data, error } = await supabase
+        .from('cases')
+        .select(`
+          *,
+          proposals!proposals_case_id_fkey!inner (
+            id,
+            lawyer_id,
+            status
+          )
+        `)
+        .eq('status', 'en_progreso')
+        .eq('proposals.lawyer_id', user.id)
+        .eq('proposals.status', 'aceptada')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setActiveCasesList(data || [])
+    } catch (err) {
+      console.error('Error al obtener casos activos:', err)
     }
   }
 
@@ -389,12 +416,14 @@ const Dashboard = () => {
       fetchTokenData()
       fetchLawyerProfile()
       fetchPublishedCases()
+      fetchActiveCases()
     }
   }, [user])
 
   // Cargar casos inicialmente y suscribirse a cambios en tiempo real
   useEffect(() => {
     fetchPublishedCases()
+    fetchActiveCases()
 
     // Suscripción al segundo (Realtime) para la tabla 'cases' y 'proposals'
     const channel = supabase
@@ -405,6 +434,7 @@ const Dashboard = () => {
         (payload) => {
           console.log('Cambio en tiempo real detectado en casos:', payload)
           fetchPublishedCases()
+          fetchActiveCases()
         }
       )
       .on(
@@ -413,6 +443,7 @@ const Dashboard = () => {
         (payload) => {
           console.log('Cambio en tiempo real detectado en propuestas:', payload)
           fetchPublishedCases()
+          fetchActiveCases()
         }
       )
       .subscribe()
@@ -428,9 +459,6 @@ const Dashboard = () => {
     { id: 2, title: 'Divorcio de mutuo acuerdo', client: 'María G.', date: 'Ayer', status: 'En revisión' },
     { id: 3, title: 'Asesoría creación de empresa', client: 'Empresa SpA', date: 'Hace 2 días', status: 'Cerrado' }
   ]
-
-  // Casos activos
-  const activeCasesList = []
 
   const renderCaseCard = (caseItem) => {
     const displayType = caseItem.category || 'General';
@@ -533,16 +561,16 @@ const Dashboard = () => {
                  </div>
 
                  {caseItem.has_applied && (
-                   <div className="mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-lg shadow-sm">
-                     <h5 className="font-bold text-emerald-800 text-sm mb-1.5 flex items-center gap-2">
-                       <span className="material-symbols-outlined text-emerald-600 text-[18px]">contact_mail</span>
-                       Datos de contacto del cliente
-                     </h5>
-                     <p className="text-emerald-700 text-sm font-semibold">
-                       Email: <span className="text-slate-800 select-all font-mono">{caseItem.client_email || 'Anónimo'}</span>
-                     </p>
-                   </div>
-                 )}
+                    <div className="mt-5 p-4 bg-blue-50 border border-blue-200 rounded-2xl max-w-lg shadow-sm">
+                      <h5 className="font-bold text-blue-800 text-sm mb-1.5 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-blue-600 text-[18px]">info</span>
+                        Propuesta enviada
+                      </h5>
+                      <p className="text-blue-700 text-xs font-semibold leading-relaxed">
+                        Los datos de contacto del cliente se revelarán en la pestaña de <strong>Casos Activos</strong> una vez que el cliente acepte tu propuesta.
+                      </p>
+                    </div>
+                  )}
                </div>
                
                 <div className="w-full md:w-80 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-6 space-y-2">
@@ -555,8 +583,8 @@ const Dashboard = () => {
                         <span className="material-symbols-outlined text-[18px]">check_circle</span>
                         <span>Propuesta enviada</span>
                       </button>
-                      <p className="text-[11px] text-center text-emerald-600 font-bold leading-tight">
-                        ¡Ya postulaste! Contacto revelado a la izquierda.
+                      <p className="text-[11px] text-center text-blue-600 font-bold leading-tight">
+                        ¡Ya postulaste! Esperando respuesta del cliente.
                       </p>
                     </>
                   ) : (caseItem.bids_count || 0) >= 5 ? (
@@ -736,63 +764,90 @@ const Dashboard = () => {
             <p className="text-xs text-slate-400 mt-1">Cuando postules y seas seleccionado para un caso, aparecerá aquí.</p>
           </div>
         ) : (
-          activeCasesList.map(caseItem => (
-            <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-               
-               {/* Acordion Header */}
-               <button 
-                 onClick={() => setExpandedCaseId(expandedCaseId === caseItem.id ? null : caseItem.id)}
-                 className="w-full flex items-center justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none"
-               >
-                 <div className="flex items-center gap-5">
-                   <div className="w-14 h-14 bg-[#EE6C4D]/10 rounded-xl flex items-center justify-center text-[#EE6C4D]">
-                     <span className="material-symbols-outlined text-[24px]">
-                       {caseItem.type === 'Migratorio' ? 'public' : caseItem.type === 'Inmobiliario' ? 'real_estate_agent' : 'account_balance'}
-                     </span>
-                   </div>
-                   <div>
-                     <div className="flex items-center gap-2 mb-1">
-                       <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{caseItem.type}</span>
-                       <span className="text-sm font-bold text-slate-400">•</span>
-                       <span className="text-sm font-bold text-slate-500">{caseItem.date}</span>
+          activeCasesList.map(caseItem => {
+            const displayType = caseItem.category || 'General';
+            const displayRegion = caseItem.region || caseItem.city || 'No especificada';
+            const displayDate = caseItem.created_at
+              ? new Date(caseItem.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })
+              : 'Reciente';
+            const displayTitle = caseItem.title || 'Caso sin título';
+            const displayDetails = caseItem.polished_description || caseItem.description || 'Sin descripción';
+
+            return (
+              <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                 
+                 {/* Accordion Header */}
+                 <button 
+                   onClick={() => setExpandedCaseId(expandedCaseId === caseItem.id ? null : caseItem.id)}
+                   className="w-full flex items-center justify-between p-6 hover:bg-slate-50 transition-colors text-left focus:outline-none"
+                 >
+                   <div className="flex items-center gap-5">
+                     <div className="w-14 h-14 bg-[#EE6C4D]/10 rounded-xl flex items-center justify-center text-[#EE6C4D]">
+                       <span className="material-symbols-outlined text-[24px]">
+                         {displayType === 'Migratorio' ? 'public' : displayType === 'Inmobiliario' ? 'real_estate_agent' : 'account_balance'}
+                       </span>
                      </div>
-                     <h3 className="text-lg font-bold text-slate-800">{caseItem.title}</h3>
-                     <p className="text-sm text-slate-500 font-medium">Cliente: {caseItem.client}</p>
+                     <div>
+                       <div className="flex items-center gap-2 mb-1">
+                         <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">{displayType}</span>
+                         <span className="text-sm font-bold text-slate-400">•</span>
+                         <span className="text-sm font-bold text-slate-500">{displayDate}</span>
+                       </div>
+                       <h3 className="text-lg font-bold text-slate-800">{displayTitle}</h3>
+                       <p className="text-sm text-slate-500 font-medium">Cliente: {caseItem.alias_client || 'Usuario Anónimo'}</p>
+                     </div>
+                   </div>
+                   <div className="flex items-center gap-6">
+                     <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                       En progreso
+                     </span>
+                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                       <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+                     </div>
+                   </div>
+                 </button>
+                 
+                 {/* Accordion Content */}
+                 <div 
+                   className="transition-all duration-300 ease-in-out overflow-hidden" 
+                   style={{ maxHeight: expandedCaseId === caseItem.id ? '600px' : '0px', opacity: expandedCaseId === caseItem.id ? 1 : 0 }}
+                 >
+                   <div className="p-6 border-t border-slate-100 bg-slate-50/50 space-y-4">
+                     <div>
+                       <h4 className="font-bold text-slate-800 mb-2">Detalles del caso</h4>
+                       <p className="text-slate-600 text-[15px] leading-relaxed max-w-4xl">
+                         {displayDetails}
+                       </p>
+                     </div>
+
+                     {/* Contact Information (Only revealed here because client accepted the lawyer's proposal) */}
+                     <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-lg shadow-sm">
+                       <h5 className="font-bold text-emerald-800 text-sm mb-1.5 flex items-center gap-2">
+                         <span className="material-symbols-outlined text-emerald-600 text-[18px]">contact_mail</span>
+                         Datos de contacto del cliente
+                       </h5>
+                       <p className="text-emerald-700 text-sm font-semibold">
+                         Email: <span className="text-slate-800 select-all font-mono">{caseItem.client_email || 'No disponible'}</span>
+                       </p>
+                     </div>
+
+                     <div className="flex gap-3 pt-2">
+                       <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm flex items-center gap-2">
+                         <span className="material-symbols-outlined text-[18px]">visibility</span> Ver expediente completo
+                       </button>
+                       <a 
+                         href={`mailto:${caseItem.client_email}`}
+                         className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center gap-2"
+                       >
+                         <span className="material-symbols-outlined text-[18px]">chat</span> Contactar cliente
+                       </a>
+                     </div>
                    </div>
                  </div>
-                 <div className="flex items-center gap-6">
-                   <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
-                     {caseItem.status}
-                   </span>
-                   <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
-                     <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
-                   </div>
-                 </div>
-               </button>
-               
-               {/* Acordion Content */}
-               <div 
-                 className="transition-all duration-300 ease-in-out overflow-hidden" 
-                 style={{ maxHeight: expandedCaseId === caseItem.id ? '500px' : '0px', opacity: expandedCaseId === caseItem.id ? 1 : 0 }}
-               >
-                 <div className="p-6 border-t border-slate-100 bg-slate-50/50">
-                   <h4 className="font-bold text-slate-800 mb-2">Detalles del caso</h4>
-                    <p className="text-slate-600 text-[15px] leading-relaxed mb-6 max-w-4xl">
-                      {caseItem.details}
-                    </p>
-                    <div className="flex gap-3">
-                      <button className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[18px]">visibility</span> Ver expediente completo
-                      </button>
-                      <button className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[18px]">chat</span> Contactar cliente
-                      </button>
-                    </div>
-                  </div>
-                </div>
-               
-             </div>
-          ))
+                 
+               </div>
+            );
+          })
         )}
       </div>
     </div>

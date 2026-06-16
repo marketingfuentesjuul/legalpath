@@ -21,6 +21,115 @@ const Dashboard = () => {
   const [searchCasesList, setSearchCasesList] = useState([])
   const [loadingCases, setLoadingCases] = useState(true)
 
+  // Estados para filtros
+  const [filterSpecialty, setFilterSpecialty] = useState('')
+  const [filterUrgency, setFilterUrgency] = useState('')
+  const [filterRegion, setFilterRegion] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('recientes')
+
+  const ALLOWED_SPECIALTIES = [
+    'Derecho Civil', 'Derecho Penal', 'Derecho Laboral', 'Derecho de Familia',
+    'Fraude bancario', 'Choques',
+    'Derecho Comercial / Mercantil', 'Derecho Tributario', 'Derecho Administrativo',
+    'Derecho Ambiental', 'Derecho de Aguas', 'Derecho de Minería',
+    'Derecho de Propiedad Intelectual', 'Derecho del Consumidor', 'Derecho Constitucional',
+    'Derecho de Seguros', 'Derecho Marítimo', 'Derecho de Salud', 'Derecho de Migración',
+    'Libre Competencia', 'Arbitraje y Mediación', 'Derecho Inmobiliario'
+  ]
+
+  const ALLOWED_REGIONS = [
+    'Arica y Parinacota', 'Tarapacá', 'Antofagasta', 'Atacama', 'Coquimbo', 'Valparaíso',
+    'Metropolitana', "O'Higgins", 'Maule', 'Ñuble', 'Biobío', 'Araucanía',
+    'Los Ríos', 'Los Lagos', 'Aysén', 'Magallanes'
+  ]
+
+  const isSpecialtyMatch = (caseCategory, selectedSpecialty) => {
+    if (!selectedSpecialty) return true
+    if (!caseCategory) return false
+
+    const cat = caseCategory.toLowerCase().trim()
+    const spec = selectedSpecialty.toLowerCase().trim()
+
+    if (cat === spec) return true
+
+    const mappings = {
+      'penal': ['derecho penal'],
+      'civil': ['derecho civil'],
+      'laboral': ['derecho laboral'],
+      'familia': ['derecho de familia'],
+      'migratorio': ['derecho de migración', 'derecho de migracion'],
+      'inmobiliario': ['derecho inmobiliario'],
+      'comercial': ['derecho comercial / mercantil', 'derecho comercial', 'derecho mercantil'],
+      'tributario': ['derecho tributario'],
+      'administrativo': ['derecho administrativo'],
+      'minería': ['derecho de minería', 'derecho de mineria'],
+      'herencia': ['derecho de familia', 'derecho civil']
+    }
+
+    if (mappings[cat] && mappings[cat].includes(spec)) {
+      return true
+    }
+    
+    return spec.includes(cat) || cat.includes(spec)
+  }
+
+  const isRegionMatch = (caseRegion, selectedRegion) => {
+    if (!selectedRegion) return true
+    if (!caseRegion) return false
+    
+    const cReg = caseRegion.toLowerCase().trim()
+    const sReg = selectedRegion.toLowerCase().trim()
+
+    if (sReg === 'metropolitana' && (cReg.includes('metropolitana') || cReg.includes('rm') || cReg.includes('santiago'))) {
+      return true
+    }
+
+    return cReg.includes(sReg) || sReg.includes(cReg)
+  }
+
+  const isUrgencyMatch = (caseUrgency, selectedUrgency) => {
+    if (!selectedUrgency) return true
+    if (!caseUrgency) return false
+    return caseUrgency.toLowerCase().trim() === selectedUrgency.toLowerCase().trim()
+  }
+
+  const isSearchMatch = (caseItem, query) => {
+    if (!query) return true
+    const q = query.toLowerCase()
+    const title = (caseItem.title || '').toLowerCase()
+    const desc = (caseItem.description || '').toLowerCase()
+    const polished = (caseItem.polished_description || '').toLowerCase()
+    const cat = (caseItem.category || '').toLowerCase()
+    const region = (caseItem.region || '').toLowerCase()
+    const city = (caseItem.city || '').toLowerCase()
+    
+    return title.includes(q) || desc.includes(q) || polished.includes(q) || cat.includes(q) || region.includes(q) || city.includes(q)
+  }
+
+  const filteredCasesList = searchCasesList.filter(caseItem => {
+    return isSpecialtyMatch(caseItem.category, filterSpecialty) &&
+           isRegionMatch(caseItem.region, filterRegion) &&
+           isUrgencyMatch(caseItem.urgency, filterUrgency) &&
+           isSearchMatch(caseItem, searchQuery)
+  })
+
+  const sortedCasesList = [...filteredCasesList].sort((a, b) => {
+    if (sortBy === 'recientes') {
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0)
+    }
+    if (sortBy === 'cuantía') {
+      return (b.estimated_amount || 0) - (a.estimated_amount || 0)
+    }
+    if (sortBy === 'urgencia') {
+      const urgencyScore = { alta: 3, media: 2, baja: 1 }
+      const aScore = urgencyScore[(a.urgency || '').toLowerCase()] || 0
+      const bScore = urgencyScore[(b.urgency || '').toLowerCase()] || 0
+      return bScore - aScore
+    }
+    return 0
+  })
+
   // Función para obtener casos publicados desde Supabase
   const fetchPublishedCases = async () => {
     try {
@@ -382,6 +491,8 @@ const Dashboard = () => {
              <input 
                 type="text" 
                 placeholder="Busca por palabra clave, por ejemplo: fraude, visas, demanda..." 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-4 py-4 text-[15px] font-medium text-slate-700 placeholder:text-slate-400 focus:ring-2 focus:ring-[#EE6C4D]/30 focus:border-[#EE6C4D] outline-none transition-all" 
              />
           </div>
@@ -392,34 +503,47 @@ const Dashboard = () => {
               <span className="material-symbols-outlined text-[20px]">tune</span> Filtros:
             </div>
             <div className="flex flex-wrap items-center gap-3 flex-1">
-              <select className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer">
-                <option value="">Área del derecho</option>
-                <option>Migratorio</option>
-                <option>Inmobiliario</option>
-                <option>Penal</option>
-                <option>Civil</option>
+              <select 
+                value={filterSpecialty}
+                onChange={e => setFilterSpecialty(e.target.value)}
+                className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer"
+              >
+                <option value="">Área del derecho (Todas)</option>
+                {ALLOWED_SPECIALTIES.map(spec => (
+                  <option key={spec} value={spec}>{spec}</option>
+                ))}
               </select>
-              <select className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer">
-                <option value="">Nivel de urgencia</option>
-                <option>Alta</option>
-                <option>Media</option>
-                <option>Baja</option>
+              <select 
+                value={filterUrgency}
+                onChange={e => setFilterUrgency(e.target.value)}
+                className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer"
+              >
+                <option value="">Nivel de urgencia (Cualquiera)</option>
+                <option value="baja">Baja</option>
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
               </select>
-              <select className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer">
-                <option value="">Región</option>
-                <option>Región Metropolitana</option>
-                <option>Valparaíso</option>
-                <option>Antofagasta</option>
-                <option>Atacama</option>
-                <option>Maule</option>
+              <select 
+                value={filterRegion}
+                onChange={e => setFilterRegion(e.target.value)}
+                className="bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 focus:outline-[#EE6C4D] appearance-none cursor-pointer"
+              >
+                <option value="">Región (Todas)</option>
+                {ALLOWED_REGIONS.map(reg => (
+                  <option key={reg} value={reg}>{reg}</option>
+                ))}
               </select>
             </div>
             <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
               <span className="text-sm font-bold text-slate-500">Ordenar por:</span>
-              <select className="bg-slate-50 border-none rounded-lg px-3 py-2 text-sm font-bold text-slate-700 focus:outline-[#EE6C4D] cursor-pointer">
-                <option>Más recientes</option>
-                <option>Mayor cuantía</option>
-                <option>Mayor urgencia</option>
+              <select 
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+                className="bg-slate-50 border-none rounded-lg px-3 py-2 text-sm font-bold text-slate-700 focus:outline-[#EE6C4D] cursor-pointer"
+              >
+                <option value="recientes">Más recientes</option>
+                <option value="cuantía">Mayor cuantía</option>
+                <option value="urgencia">Mayor urgencia</option>
               </select>
             </div>
           </div>
@@ -428,7 +552,7 @@ const Dashboard = () => {
 
       {/* List of Search Results */}
       <div className="space-y-4">
-        <h3 className="text-lg font-bold text-slate-800 mb-4 ml-2">Casos Disponibles ({searchCasesList.length})</h3>
+        <h3 className="text-lg font-bold text-slate-800 mb-4 ml-2">Casos Disponibles ({sortedCasesList.length})</h3>
         
         {loadingCases ? (
           <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
@@ -441,8 +565,14 @@ const Dashboard = () => {
             <p className="font-bold">No hay casos publicados disponibles.</p>
             <p className="text-xs text-slate-400 mt-1">Cuando los administradores revisen y publiquen casos, aparecerán aquí.</p>
           </div>
+        ) : sortedCasesList.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-slate-400">
+            <span className="material-symbols-outlined text-[48px] mb-3 text-slate-300">gavel</span>
+            <p className="font-bold">No hay casos que coincidan con los filtros seleccionados.</p>
+            <p className="text-xs text-slate-400 mt-1">Prueba cambiando los criterios de búsqueda o filtros.</p>
+          </div>
         ) : (
-          searchCasesList.map(caseItem => {
+          sortedCasesList.map(caseItem => {
             const displayType = caseItem.category || 'General';
             const displayRegion = caseItem.region || caseItem.city || 'No especificada';
             const displayDate = caseItem.created_at

@@ -58,11 +58,8 @@ const Header = () => {
               <Link to="/" className="bg-primary-container text-white px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Soy usuario
               </Link>
-              <Link to="/auth/login" className="bg-white text-secondary border border-slate-200 px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/auth/login?role=lawyer" className="bg-white text-secondary border border-slate-200 px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Iniciar sesión
-              </Link>
-              <Link to="/auth/registro" className="abogado-gradient text-white px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
-                Registrarme
               </Link>
             </>
           ) : (

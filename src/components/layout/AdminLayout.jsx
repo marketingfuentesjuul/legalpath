@@ -79,7 +79,8 @@ export default function AdminLayout() {
             <img
               src="/assets/images/logo-admin.png"
               alt="LegalPath Logo"
-              className="h-[86px] w-auto object-contain"
+              className="w-auto object-contain"
+              style={{ height: '86px' }}
             />
           </Link>
         </div>

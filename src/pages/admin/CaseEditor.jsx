@@ -32,6 +32,13 @@ export default function CaseEditor() {
 
   const [rejectionReason, setRejectionReason] = useState('');
   const [confirmModal, setConfirmModal] = useState({ show: false, action: null, title: '', message: '' });
+  const [notificationModal, setNotificationModal] = useState({
+    show: false,
+    title: '',
+    message: '',
+    type: 'success', // 'success', 'warning', 'error'
+    onClose: null
+  });
 
   const loadCaseData = async () => {
     setLoading(true);
@@ -70,7 +77,12 @@ export default function CaseEditor() {
       }
     } catch (err) {
       console.error('Error loading case:', err);
-      alert('Error al cargar la información del caso.');
+      setNotificationModal({
+        show: true,
+        title: 'Error de Carga',
+        message: 'Error al cargar la información del caso.',
+        type: 'error'
+      });
     } finally {
       setLoading(false);
     }
@@ -90,7 +102,12 @@ export default function CaseEditor() {
 
   const handleApproveClick = () => {
     if (!formData.title.trim() || !formData.polished_description.trim()) {
-      alert('El título y la descripción pulida son obligatorios para publicar.');
+      setNotificationModal({
+        show: true,
+        title: 'Campos Requeridos',
+        message: 'El título y la descripción pulida son obligatorios para publicar.',
+        type: 'warning'
+      });
       return;
     }
     setConfirmModal({
@@ -103,7 +120,12 @@ export default function CaseEditor() {
 
   const handleRejectClick = () => {
     if (!rejectionReason.trim()) {
-      alert('Debes escribir un motivo de rechazo.');
+      setNotificationModal({
+        show: true,
+        title: 'Motivo Requerido',
+        message: 'Debes escribir un motivo de rechazo.',
+        type: 'warning'
+      });
       return;
     }
     setConfirmModal({
@@ -152,8 +174,13 @@ export default function CaseEditor() {
           console.warn('Notification function not deployed or failed:', funcErr);
         }
 
-        alert('Caso publicado en el marketplace con éxito.');
-        navigate('/admin/casos');
+        setNotificationModal({
+          show: true,
+          title: 'Caso Publicado',
+          message: 'Caso publicado en el marketplace con éxito.',
+          type: 'success',
+          onClose: () => navigate('/admin/casos')
+        });
       } else if (action === 'reject') {
         const { error } = await supabase
           .from('cases')
@@ -180,12 +207,22 @@ export default function CaseEditor() {
           console.warn('Notification function not deployed or failed:', funcErr);
         }
 
-        alert('Caso rechazado. Se notificó al cliente.');
-        navigate('/admin/casos');
+        setNotificationModal({
+          show: true,
+          title: 'Caso Rechazado',
+          message: 'Caso rechazado. Se notificó al cliente.',
+          type: 'success',
+          onClose: () => navigate('/admin/casos')
+        });
       }
     } catch (err) {
       console.error('Error executing admin action on case:', err);
-      alert('Error al guardar los cambios del caso.');
+      setNotificationModal({
+        show: true,
+        title: 'Error de Acción',
+        message: 'Error al guardar los cambios del caso.',
+        type: 'error'
+      });
     } finally {
       setActionLoading(false);
     }
@@ -469,6 +506,48 @@ export default function CaseEditor() {
                 Confirmar
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Brand Notification Modal */}
+      {notificationModal.show && (
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-[60] animate-in fade-in duration-200">
+          <div className="bg-white border border-gray-150 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-5 mx-4 animate-in zoom-in-95 duration-200 text-center relative overflow-hidden">
+            {/* Design accents */}
+            <div className="absolute -right-10 -top-10 w-24 h-24 bg-[#1ecca7]/5 rounded-full blur-xl pointer-events-none"></div>
+
+            {/* Icon status container */}
+            <div className="mx-auto w-14 h-14 rounded-full flex items-center justify-center shadow-md">
+              {notificationModal.type === 'success' ? (
+                <div className="w-14 h-14 rounded-full mint-gradient flex items-center justify-center text-white">
+                  <span className="material-symbols-outlined text-[28px]">check_circle</span>
+                </div>
+              ) : notificationModal.type === 'warning' ? (
+                <div className="w-14 h-14 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500">
+                  <span className="material-symbols-outlined text-[28px]">warning</span>
+                </div>
+              ) : (
+                <div className="w-14 h-14 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-500">
+                  <span className="material-symbols-outlined text-[28px]">error</span>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <h4 className="text-lg font-bold text-gray-800 font-headline">{notificationModal.title}</h4>
+              <p className="text-xs text-gray-500 leading-relaxed font-body">{notificationModal.message}</p>
+            </div>
+
+            <button
+              onClick={() => {
+                setNotificationModal(prev => ({ ...prev, show: false }));
+                if (notificationModal.onClose) notificationModal.onClose();
+              }}
+              className="w-full py-2.5 mint-gradient hover:opacity-90 text-white rounded-xl font-bold text-xs shadow-md transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Aceptar
+            </button>
           </div>
         </div>
       )}

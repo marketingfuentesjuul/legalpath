@@ -76,7 +76,7 @@ export default function MisCasos() {
   const filteredCasos = casos.filter(caso => {
     if (activeTab === 'todos') return true;
     if (activeTab === 'activos') {
-      return caso.admin_status === 'aprobado' && caso.status === 'activo';
+      return caso.admin_status === 'aprobado' && (caso.status === 'activo' || caso.status === 'en_progreso');
     }
     if (activeTab === 'revision') {
       return caso.admin_status === 'en_revision';
@@ -133,7 +133,7 @@ export default function MisCasos() {
         <div className="border-b border-slate-100 flex gap-2 overflow-x-auto pb-px">
           {[
             { id: 'todos', label: 'Todos', count: casos.length },
-            { id: 'activos', label: 'Activos', count: casos.filter(c => c.admin_status === 'aprobado' && c.status === 'activo').length },
+            { id: 'activos', label: 'Activos', count: casos.filter(c => c.admin_status === 'aprobado' && (c.status === 'activo' || c.status === 'en_progreso')).length },
             { id: 'revision', label: 'En revisión', count: casos.filter(c => c.admin_status === 'en_revision').length },
           ].map(tab => (
             <button

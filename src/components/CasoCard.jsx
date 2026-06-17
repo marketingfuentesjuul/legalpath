@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LawyerInfoModal from './LawyerInfoModal';
+import CasoDetailsModal from './CasoDetailsModal';
 
 export default function CasoCard({ caso }) {
   const [showLawyerModal, setShowLawyerModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const {
     id,
@@ -120,13 +122,16 @@ export default function CasoCard({ caso }) {
           </div>
         )}
 
-        {/* Large "Ya tiene abogado" badge if in_progreso */}
+        {/* Actions for in_progreso */}
         {status === 'en_progreso' && (
           <div className="mt-2 flex flex-col gap-2">
-            <div className="bg-[#EE6C4D]/10 border border-[#EE6C4D]/20 text-[#EE6C4D] rounded-xl px-4 py-2.5 flex items-center justify-center gap-2 font-bold text-sm">
-              <span className="material-symbols-outlined text-[18px]">gavel</span>
-              Ya tiene abogado asignado
-            </div>
+            <button
+              onClick={() => setShowDetailsModal(true)}
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-bold text-[#EE6C4D] bg-[#EE6C4D]/10 hover:bg-[#EE6C4D]/25 border border-[#EE6C4D]/20 transition-all cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">visibility</span>
+              <span>Abrir información</span>
+            </button>
             {proposals && (
               <button
                 onClick={() => setShowLawyerModal(true)}
@@ -145,6 +150,13 @@ export default function CasoCard({ caso }) {
         lawyerId={proposals?.lawyer_id}
         isOpen={showLawyerModal}
         onClose={() => setShowLawyerModal(false)}
+      />
+
+      {/* Caso Details Modal */}
+      <CasoDetailsModal
+        caso={caso}
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
       />
 
       {/* Card Footer Actions */}

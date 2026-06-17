@@ -1465,22 +1465,54 @@ const Dashboard = () => {
 
       {/* Modal de Éxito de Puja */}
       {showSuccessModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 text-center space-y-6">
-            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-500 border border-emerald-100">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 text-center space-y-6 animate-in zoom-in-95 duration-200 relative overflow-hidden">
+            {/* Soft decorative blur */}
+            <div className="absolute -right-10 -top-10 w-24 h-24 bg-[#EE6C4D]/10 rounded-full blur-xl pointer-events-none"></div>
+            
+            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-500 border border-emerald-100 shadow-sm">
               <span className="material-symbols-outlined text-[32px]">check_circle</span>
             </div>
             
-            <div className="space-y-2">
-              <h3 className="text-2xl font-black text-slate-800 tracking-tight">¡Puja Enviada!</h3>
-              <p className="text-slate-650 text-sm leading-relaxed">
-                Genial, acabas de usar un token para contactar a este usuario. Recuerda que este usuario puede recibir hasta un máximo de 5 propuestas a la vez. Él va a evaluar cuáles de las propuestas son más interesantes y te enviaremos un mail para confirmar si fuiste seleccionado o si el usuario eligió a otro abogado.
+            <div className="space-y-1">
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight font-headline">¡Puja Enviada!</h3>
+              <p className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full inline-block">
+                1 token utilizado con éxito
               </p>
+            </div>
+
+            {/* Structured Next Steps */}
+            <div className="text-left bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3.5">
+              <p className="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">¿Qué pasa ahora?</p>
+              
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-slate-500 shrink-0 border border-slate-100">
+                  <span className="material-symbols-outlined text-[18px]">group</span>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-700">Límite de competencia</h4>
+                  <p className="text-[11px] text-slate-500 leading-normal mt-0.5 font-medium">
+                    El cliente recibe un máximo de 5 propuestas. ¡Ya estás compitiendo!
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-slate-500 shrink-0 border border-slate-100">
+                  <span className="material-symbols-outlined text-[18px]">mail</span>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-700">Notificación directa</h4>
+                  <p className="text-[11px] text-slate-500 leading-normal mt-0.5 font-medium">
+                    Te enviaremos un email tan pronto como el cliente te seleccione o elija otra opción.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <button
               onClick={() => setShowSuccessModal(false)}
-              className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm transition-colors shadow-md"
+              className="w-full py-3.5 bg-[#EE6C4D] hover:bg-[#d65f42] text-white font-extrabold rounded-xl text-sm transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             >
               Entendido
             </button>

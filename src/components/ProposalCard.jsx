@@ -46,6 +46,21 @@ export default function ProposalCard({ proposal, onAccept, onReject }) {
     return (first + last).toUpperCase() || 'A';
   };
 
+  // Parse message to remove/format brackets [Nombre/Estudio: ...] or [Nombre-Estudio: ...]
+  const getCleanedMessageAndName = () => {
+    if (!message) return { authorName: null, cleanMessage: 'Sin mensaje adicional.' };
+    const match = message.match(/^\[Nombre[-/]Estudio:\s*([^\]]+)\]\n*(.*)/i);
+    if (match) {
+      return {
+        authorName: match[1].trim(),
+        cleanMessage: match[2].trim()
+      };
+    }
+    return { authorName: null, cleanMessage: message };
+  };
+
+  const { authorName, cleanMessage } = getCleanedMessageAndName();
+
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
 
@@ -132,24 +147,22 @@ export default function ProposalCard({ proposal, onAccept, onReject }) {
 
       {/* Message content */}
       <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100 mb-4">
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
+        {authorName && (
+          <div className="mb-3">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">
+              Nombre / Estudio del Abogado
+            </span>
+            <span className="text-sm font-extrabold text-slate-700">
+              {authorName}
+            </span>
+          </div>
+        )}
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
           Mensaje de la propuesta
         </span>
         <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">
-          {message || 'Sin mensaje adicional.'}
+          {cleanMessage}
         </p>
-      </div>
-
-      {/* Price block */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 mb-4">
-        <div>
-          <span className="text-xs text-slate-400 font-semibold block uppercase tracking-wider">
-            Honorarios estimados
-          </span>
-          <span className="text-lg font-black text-slate-800">
-            {formatCLP(estimated_price)}
-          </span>
-        </div>
       </div>
 
       {/* Actions */}

@@ -17,12 +17,20 @@ const Login = () => {
   const [role, setRole] = useState(initialRole)
 
   useEffect(() => {
+    const checkSessionAndRedirect = async () => {
+      const { data: { user: currentUser } } = await supabase.auth.getUser()
+      if (currentUser && !currentUser.is_anonymous) {
+        await redirectByRole(currentUser.id, currentUser)
+      }
+    }
     if (user && !user.is_anonymous) {
-      redirectByRole(user.id)
+      checkSessionAndRedirect()
     }
   }, [user])
 
-  const redirectByRole = async (userId) => {
+  const redirectByRole = async (userId, currentUser = null) => {
+    const activeUser = currentUser || user
+
     // 1. Check if lawyer
     const { data: lawyerData } = await supabase
       .from('lawyer_profiles')
@@ -52,7 +60,7 @@ const Login = () => {
     }
 
     // Fallback using user metadata if DB profile is not yet created or loaded
-    const metadataRole = user?.user_metadata?.role
+    const metadataRole = activeUser?.user_metadata?.role
     if (metadataRole === 'lawyer') {
       navigate('/auth/perfil', { replace: true })
       return
@@ -93,7 +101,7 @@ const Login = () => {
       if (authError) throw authError
 
       if (data.session) {
-        await redirectByRole(data.user.id)
+        await redirectByRole(data.user.id, data.user)
       }
     } catch (err) {
       if (err.message === 'Invalid login credentials' || err.status === 400) {

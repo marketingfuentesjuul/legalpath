@@ -2,10 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 
-const CATEGORIES = [
-  'Civil', 'Penal', 'Laboral', 'Inmobiliario', 'Familia', 'Migratorio', 'Comercial', 'Tributario', 'Administrativo', 'Otro'
-];
-
 export default function PublicarCasoCliente() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -69,7 +65,7 @@ export default function PublicarCasoCliente() {
 
     try {
       // 1. Insert Case in DB
-      const caseTitle = title.trim() || `Consulta sobre Derecho ${category}`;
+      const caseTitle = title.trim() || 'Nueva Consulta Legal';
       const { data: caseData, error: caseError } = await supabase
         .from('cases')
         .insert({
@@ -229,51 +225,6 @@ export default function PublicarCasoCliente() {
               placeholder="Cuéntanos en detalle lo que sucede, quiénes están involucrados, fechas y qué tipo de solución buscas..."
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#1ECCA7]/50 focus:border-[#1ECCA7] outline-none transition-shadow leading-relaxed"
             />
-          </div>
-
-          {/* Category & Urgency */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label htmlFor="case-category" className="block text-[13px] font-bold text-slate-700">
-                Categoría / Especialidad
-              </label>
-              <div className="relative">
-                <select
-                  id="case-category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#1ECCA7]/50 outline-none cursor-pointer appearance-none text-slate-700 font-semibold"
-                >
-                  {CATEGORIES.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px] pointer-events-none">
-                  expand_more
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label htmlFor="case-urgency" className="block text-[13px] font-bold text-slate-700">
-                Nivel de Urgencia
-              </label>
-              <div className="relative">
-                <select
-                  id="case-urgency"
-                  value={urgency}
-                  onChange={(e) => setUrgency(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#1ECCA7]/50 outline-none cursor-pointer appearance-none text-slate-700 font-semibold"
-                >
-                  <option value="baja">Baja (Sin apuro)</option>
-                  <option value="media">Media (Pronto)</option>
-                  <option value="alta">Alta (Urgente)</option>
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px] pointer-events-none">
-                  expand_more
-                </span>
-              </div>
-            </div>
           </div>
 
           {/* Region & City */}

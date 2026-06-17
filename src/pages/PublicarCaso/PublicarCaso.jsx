@@ -4,9 +4,31 @@ import { supabase } from '../../lib/supabaseClient'
 
 const TYPING_TEXT = "Necesito ayuda con un contrato de arriendo que no se ha cumplido. El arrendatario no ha pagado en 3 meses y necesito asesoría para..."
 
+const REGIONS = [
+  "Arica y Parinacota",
+  "Tarapacá",
+  "Antofagasta",
+  "Atacama",
+  "Coquimbo",
+  "Valparaíso",
+  "Metropolitana",
+  "O'Higgins",
+  "Maule",
+  "Ñuble",
+  "Biobío",
+  "Araucanía",
+  "Los Ríos",
+  "Los Lagos",
+  "Aysén",
+  "Magallanes"
+]
+
 const PublicarCaso = () => {
   const [step, setStep] = useState(1)
   const [caseText, setCaseText] = useState('')
+  const [region, setRegion] = useState('')
+  const [city, setCity] = useState('')
+  const [step1Error, setStep1Error] = useState('')
   
   // Attachments
   const [attachments, setAttachments] = useState([])
@@ -80,7 +102,19 @@ const PublicarCaso = () => {
   }
 
   const goToStep2 = () => {
-    if (!caseText.trim()) return
+    if (!caseText.trim()) {
+      setStep1Error('Por favor, describe tu caso.')
+      return
+    }
+    if (!region.trim()) {
+      setStep1Error('Por favor, selecciona una región.')
+      return
+    }
+    if (!city.trim()) {
+      setStep1Error('Por favor, ingresa tu ciudad o comuna.')
+      return
+    }
+    setStep1Error('')
     window.scrollTo({ top: 0, behavior: 'smooth' })
     setStep(2)
   }
@@ -113,7 +147,11 @@ const PublicarCaso = () => {
         .insert({
           user_id: userId,
           description: caseText,
-          client_email: userEmail
+          client_email: userEmail,
+          region: region,
+          city: city,
+          admin_status: 'en_revision',
+          status: 'pending'
         })
         .select()
         .single()
@@ -329,7 +367,7 @@ const PublicarCaso = () => {
             {/* STEP 1 */}
             {step === 1 && (
               <div>
-                <div className="relative group mt-2 mb-8">
+                <div className="relative group mt-2 mb-6">
                   {showPlaceholder && !caseText && (
                     <div className="absolute inset-0 px-8 py-6 pointer-events-none text-[13px] md:text-[15px] text-slate-400 font-medium leading-[1.6] opacity-65 blur-[0.4px]">
                       <span>{typingText}</span>
@@ -345,6 +383,54 @@ const PublicarCaso = () => {
                     className="w-full bg-transparent border-[1.5px] border-slate-200 focus:border-[#1ECCA7]/60 focus:ring-4 focus:ring-[#1ECCA7]/10 rounded-[2.5rem] px-8 py-6 text-[13px] md:text-[15px] leading-[1.6] text-on-background font-medium resize-none transition-all outline-none placeholder-transparent relative z-10 shadow-sm hover:border-slate-300/80 hover:shadow-md"
                   />
                 </div>
+
+                {/* Región y Ciudad */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="space-y-2">
+                    <label className="block text-[13px] font-bold text-on-background pl-2">
+                      Región <span className="text-[#1ECCA7]">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={region}
+                        onChange={e => setRegion(e.target.value)}
+                        className="w-full bg-white border-[1.5px] border-slate-200 focus:border-[#1ECCA7]/60 focus:ring-4 focus:ring-[#1ECCA7]/10 rounded-[1.5rem] px-6 py-3.5 text-[13px] md:text-[15px] leading-[1.6] text-on-background font-medium transition-all outline-none appearance-none cursor-pointer shadow-sm hover:border-slate-300/80"
+                      >
+                        <option value="" disabled>Selecciona tu región...</option>
+                        {REGIONS.map(r => (
+                          <option key={r} value={r}>{r}</option>
+                        ))}
+                      </select>
+                      <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none select-none text-[20px]">
+                        unfold_more
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-[13px] font-bold text-on-background pl-2">
+                      Ciudad / Comuna <span className="text-[#1ECCA7]">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={city}
+                      onChange={e => setCity(e.target.value)}
+                      placeholder="Ej: Santiago, Concepción, Valparaíso..."
+                      className="w-full bg-white border-[1.5px] border-slate-200 focus:border-[#1ECCA7]/60 focus:ring-4 focus:ring-[#1ECCA7]/10 rounded-[1.5rem] px-6 py-3.5 text-[13px] md:text-[15px] leading-[1.6] text-on-background font-medium transition-all outline-none shadow-sm hover:border-slate-300/80"
+                    />
+                  </div>
+                </div>
+
+                {step1Error && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 text-[14px] rounded-2xl flex items-center gap-3 font-semibold shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+                    <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                      <span className="material-symbols-outlined text-[20px]">error</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold">{step1Error}</p>
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2">
                   <div className="flex-1">
                     <input 
@@ -557,7 +643,7 @@ const PublicarCaso = () => {
                     Volver al inicio
                     <span className="material-symbols-outlined text-[18px]">home</span>
                   </Link>
-                  <button onClick={() => { setStep(1); setCaseText(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '' }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-7 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+                  <button onClick={() => { setStep(1); setCaseText(''); setRegion(''); setCity(''); setStep1Error(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '' }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-7 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
                       Publicar otro caso
                       <span className="material-symbols-outlined text-[18px]">add</span>
                   </button>

@@ -302,62 +302,6 @@ export default function Dashboard() {
 
         {/* Right Column: Lawyers */}
         <div className="space-y-8 flex flex-col">
-          {/* Recent Lawyers */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-gray-500">gavel</span>
-                <h3 className="font-bold text-gray-800">Últimos Abogados Registrados</h3>
-              </div>
-              <Link to="/admin/abogados" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
-                Ver todos
-              </Link>
-            </div>
-            <div className="flex-1 overflow-x-auto">
-              {loading ? (
-                <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
-              ) : recentLawyers.length === 0 ? (
-                <div className="p-8 text-center text-sm text-gray-400">No hay abogados registrados recientemente.</div>
-              ) : (
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
-                      <th className="px-6 py-3">Nombre</th>
-                      <th className="px-6 py-3">Email</th>
-                      <th className="px-6 py-3">Estado</th>
-                      <th className="px-6 py-3">Registro</th>
-                      <th className="px-6 py-3 text-right">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {recentLawyers.map((l) => (
-                      <tr key={l.id} className="hover:bg-gray-50/50">
-                        <td className="px-6 py-4 font-semibold text-gray-700">
-                          {`${l.first_name} ${l.last_name_paternal || ''}`}
-                        </td>
-                        <td className="px-6 py-4 text-gray-500">{l.email}</td>
-                        <td className="px-6 py-4">
-                          <StatusBadge status={l.verification_status} />
-                        </td>
-                        <td className="px-6 py-4 text-xs text-gray-400">
-                          {formatDate(l.created_at)}
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <Link
-                            to={`/admin/abogados/${l.id}`}
-                            className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
-                          >
-                            Revisar
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          </div>
-
           {/* Lawyer Requests */}
           <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
@@ -397,6 +341,62 @@ export default function Dashboard() {
                         </td>
                         <td className="px-6 py-4 text-xs text-gray-400">
                           {formatDate(l.submitted_for_review_at || l.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <Link
+                            to={`/admin/abogados/${l.id}`}
+                            className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+                          >
+                            Revisar
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+
+          {/* Recent Lawyers */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-gray-500">gavel</span>
+                <h3 className="font-bold text-gray-800">Últimos Abogados Registrados</h3>
+              </div>
+              <Link to="/admin/abogados" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
+                Ver todos
+              </Link>
+            </div>
+            <div className="flex-1 overflow-x-auto">
+              {loading ? (
+                <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
+              ) : recentLawyers.length === 0 ? (
+                <div className="p-8 text-center text-sm text-gray-400">No hay abogados registrados recientemente.</div>
+              ) : (
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
+                      <th className="px-6 py-3">Nombre</th>
+                      <th className="px-6 py-3">Email</th>
+                      <th className="px-6 py-3">Estado</th>
+                      <th className="px-6 py-3">Registro</th>
+                      <th className="px-6 py-3 text-right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {recentLawyers.map((l) => (
+                      <tr key={l.id} className="hover:bg-gray-50/50">
+                        <td className="px-6 py-4 font-semibold text-gray-700">
+                          {`${l.first_name} ${l.last_name_paternal || ''}`}
+                        </td>
+                        <td className="px-6 py-4 text-gray-500">{l.email}</td>
+                        <td className="px-6 py-4">
+                          <StatusBadge status={l.verification_status} />
+                        </td>
+                        <td className="px-6 py-4 text-xs text-gray-400">
+                          {formatDate(l.created_at)}
                         </td>
                         <td className="px-6 py-4 text-right">
                           <Link

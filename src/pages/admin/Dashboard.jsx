@@ -43,10 +43,11 @@ export default function Dashboard() {
         approvedLawyers: abogadosV.count || 0,
       });
 
-      // Recent cases
+      // Recent cases (pending review)
       const { data: casesData } = await supabase
         .from('cases')
         .select('id, alias_client, category, urgency, created_at, admin_status')
+        .eq('admin_status', 'en_revision')
         .order('created_at', { ascending: false })
         .limit(5);
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ProposalCard from './ProposalCard';
+import LawyerInfoModal from './LawyerInfoModal';
 
 export default function CasoCard({ caso }) {
   const [showLawyerModal, setShowLawyerModal] = useState(false);
@@ -141,33 +141,11 @@ export default function CasoCard({ caso }) {
       </div>
 
       {/* Lawyer Info Modal */}
-      {showLawyerModal && proposals && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl border border-slate-100/50 relative animate-in fade-in zoom-in-95 duration-200">
-            {/* Close Button */}
-            <button
-              onClick={() => setShowLawyerModal(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-              title="Cerrar modal"
-            >
-              <span className="material-symbols-outlined text-[20px] block">close</span>
-            </button>
-
-            <h3 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#1ECCA7]">gavel</span>
-              Abogado Asignado
-            </h3>
-
-            <div className="max-h-[75vh] overflow-y-auto pr-1">
-              <ProposalCard
-                proposal={proposals}
-                onAccept={() => {}}
-                onReject={() => {}}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      <LawyerInfoModal
+        lawyerId={proposals?.lawyer_id}
+        isOpen={showLawyerModal}
+        onClose={() => setShowLawyerModal(false)}
+      />
 
       {/* Card Footer Actions */}
       {admin_status === 'aprobado' && status === 'activo' && (

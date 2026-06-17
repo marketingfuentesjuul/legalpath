@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import LawyerInfoModal from './LawyerInfoModal';
 
 export default function ProposalCard({ proposal, onAccept, onReject }) {
   const [loading, setLoading] = useState(false);
+  const [isLawyerModalOpen, setIsLawyerModalOpen] = useState(false);
 
   const {
     id,
     case_id,
     message,
     estimated_price,
-    lawyer_profiles
+    lawyer_profiles,
+    lawyer_id
   } = proposal;
 
   const lawyerName = lawyer_profiles
@@ -116,77 +119,16 @@ export default function ProposalCard({ proposal, onAccept, onReject }) {
           )}
 
           <button
-            onClick={() => setShowMoreInfo(!showMoreInfo)}
+            onClick={() => setIsLawyerModalOpen(true)}
             className="text-xs font-bold text-[#006b56] hover:underline flex items-center gap-1 mt-2 cursor-pointer"
           >
-            <span>{showMoreInfo ? 'Ocultar información' : 'Más información sobre el abogado'}</span>
+            <span>Más información sobre el abogado</span>
             <span className="material-symbols-outlined text-[16px]">
-              {showMoreInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+              open_in_new
             </span>
           </button>
         </div>
       </div>
-
-      {/* Expanded Lawyer Info */}
-      {showMoreInfo && (
-        <div className="mb-4 p-4 rounded-xl bg-slate-50/70 border border-slate-100 space-y-3.5 text-xs text-slate-700 animate-in fade-in slide-in-from-top-1 duration-200">
-          {/* Education */}
-          <div>
-            <h5 className="font-extrabold text-slate-500 uppercase tracking-wider text-[9px] mb-1.5 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px] text-[#006b56]">school</span>
-              Educación / Formación
-            </h5>
-            {lawyer_profiles?.lawyer_education && lawyer_profiles.lawyer_education.length > 0 ? (
-              <ul className="space-y-1.5 pl-1">
-                {lawyer_profiles.lawyer_education.map((edu) => (
-                  <li key={edu.id} className="list-disc list-inside leading-relaxed text-slate-650">
-                    <span className="font-semibold capitalize text-slate-700">{edu.study_level === 'pregrado' ? 'Pregrado' : edu.study_level === 'postgrado' ? 'Postgrado' : edu.study_level === 'diplomado' ? 'Diplomado' : edu.study_level === 'doctorado' ? 'Doctorado' : edu.study_level}:</span> {edu.institution} ({edu.graduation_year})
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-slate-400 italic pl-1">No hay información de educación registrada.</p>
-            )}
-          </div>
-
-          {/* Specialties */}
-          <div>
-            <h5 className="font-extrabold text-slate-500 uppercase tracking-wider text-[9px] mb-1.5 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px] text-[#006b56]">gavel</span>
-              Especialidades
-            </h5>
-            {lawyer_profiles?.specialties && lawyer_profiles.specialties.length > 0 ? (
-              <div className="flex flex-wrap gap-1.5 pl-1">
-                {lawyer_profiles.specialties.map((spec) => (
-                  <span key={spec} className="px-2 py-0.5 rounded bg-[#1ECCA7]/10 text-[#006b56] font-bold text-[10px]">
-                    {spec}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p className="text-slate-400 italic pl-1">No hay especialidades registradas.</p>
-            )}
-          </div>
-
-          {/* Region preference */}
-          <div>
-            <h5 className="font-extrabold text-slate-500 uppercase tracking-wider text-[9px] mb-1 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px] text-[#006b56]">location_on</span>
-              Preferencia Geográfica
-            </h5>
-            <p className="pl-1 text-slate-650">
-              {lawyer_profiles?.region ? (
-                <>
-                  Región: <span className="font-semibold text-slate-700">{lawyer_profiles.region}</span>
-                  {lawyer_profiles.city && <>, Ciudad: <span className="font-semibold text-slate-700">{lawyer_profiles.city}</span></>}
-                </>
-              ) : (
-                <span className="text-slate-400 italic">No especificada.</span>
-              )}
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Message content */}
       <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100 mb-4">
@@ -313,6 +255,12 @@ export default function ProposalCard({ proposal, onAccept, onReject }) {
           </div>
         </div>
       )}
+
+      <LawyerInfoModal
+        lawyerId={lawyer_id}
+        isOpen={isLawyerModalOpen}
+        onClose={() => setIsLawyerModalOpen(false)}
+      />
     </div>
   );
 }

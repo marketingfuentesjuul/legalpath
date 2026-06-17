@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
 
 const Login = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { user } = useAuth()
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  // Detect role from URL query parameter, e.g. /auth/login?role=lawyer
+  const queryParams = new URLSearchParams(location.search)
+  const initialRole = queryParams.get('role') === 'lawyer' ? 'lawyer' : 'client'
+  const [role, setRole] = useState(initialRole)
 
   useEffect(() => {
     if (user && !user.is_anonymous) {
@@ -100,11 +106,13 @@ const Login = () => {
     }
   }
 
+  const isClient = role === 'client'
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background px-4">
       {/* Background Gradients */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#e0e8ff]/80 via-[#f1f3ff] to-[#f9f9ff] -z-10"></div>
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#EE6C4D]/15 blur-[120px] rounded-full -z-10"></div>
+      <div className={`absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] blur-[120px] rounded-full -z-10 transition-colors duration-500 ${isClient ? 'bg-[#1ECCA7]/15' : 'bg-[#EE6C4D]/15'}`}></div>
 
       {/* Main Container */}
       <div className="w-full max-w-md">
@@ -117,14 +125,40 @@ const Login = () => {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-[2rem] p-8 sm:p-10 shadow-[0_15px_50px_-10px_rgba(238,108,77,0.1)] border border-slate-100">
+        <div className={`bg-white rounded-[2rem] p-8 sm:p-10 border border-slate-100 transition-all duration-500 ${isClient ? 'shadow-[0_15px_50px_-10px_rgba(30,204,167,0.12)]' : 'shadow-[0_15px_50px_-10px_rgba(238,108,77,0.12)]'}`}>
           
+          {/* Role selector tabs */}
+          <div className="flex border-b border-slate-100 mb-6 -mx-8 sm:-mx-10 px-8 sm:px-10">
+            <button
+              type="button"
+              onClick={() => setRole('client')}
+              className={`flex-1 pb-4 text-[14px] font-bold text-center border-b-2 transition-all ${
+                isClient
+                  ? 'border-[#1ECCA7] text-[#006b56]'
+                  : 'border-transparent text-slate-400 hover:text-slate-600'
+              }`}
+            >
+              Soy Cliente
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole('lawyer')}
+              className={`flex-1 pb-4 text-[14px] font-bold text-center border-b-2 transition-all ${
+                !isClient
+                  ? 'border-[#EE6C4D] text-[#EE6C4D]'
+                  : 'border-transparent text-slate-400 hover:text-slate-600'
+              }`}
+            >
+              Soy Abogado
+            </button>
+          </div>
+
           <div className="text-center mb-8">
             <h1 className="text-2xl sm:text-[28px] font-extrabold tracking-tight text-[#141b2c] mb-2 font-headline">
               Bienvenido de vuelta
             </h1>
             <p className="text-[14px] text-secondary font-medium">
-              Ingresa a tu cuenta para continuar
+              Ingresa a tu cuenta de {isClient ? 'cliente' : 'abogado'} para continuar
             </p>
           </div>
 
@@ -169,14 +203,14 @@ const Login = () => {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="tu@correo.com" 
-                className="w-full py-3 px-4 rounded-xl border-[1.5px] border-slate-200 text-[14px] font-medium focus:border-[#EE6C4D] focus:ring-2 focus:ring-[#EE6C4D]/20 outline-none transition-all placeholder:text-slate-300"
+                className={`w-full py-3 px-4 rounded-xl border-[1.5px] border-slate-200 text-[14px] font-medium focus:ring-2 outline-none transition-all placeholder:text-slate-300 ${isClient ? 'focus:border-[#1ECCA7] focus:ring-[#1ECCA7]/20' : 'focus:border-[#EE6C4D] focus:ring-[#EE6C4D]/20'}`}
                 required
               />
             </div>
             <div>
               <div className="flex justify-between items-center mb-1.5">
                 <label className="block text-[13px] font-bold text-on-background">Contraseña</label>
-                <a href="#" className="text-[12px] font-bold text-[#EE6C4D] hover:underline">¿Olvidaste tu contraseña?</a>
+                <a href="#" className={`text-[12px] font-bold hover:underline ${isClient ? 'text-[#006b56]' : 'text-[#EE6C4D]'}`}>¿Olvidaste tu contraseña?</a>
               </div>
               <input 
                 type="password" 
@@ -184,7 +218,7 @@ const Login = () => {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="••••••••" 
-                className="w-full py-3 px-4 rounded-xl border-[1.5px] border-slate-200 text-[14px] font-medium focus:border-[#EE6C4D] focus:ring-2 focus:ring-[#EE6C4D]/20 outline-none transition-all placeholder:text-slate-300"
+                className={`w-full py-3 px-4 rounded-xl border-[1.5px] border-slate-200 text-[14px] font-medium focus:ring-2 outline-none transition-all placeholder:text-slate-300 ${isClient ? 'focus:border-[#1ECCA7] focus:ring-[#1ECCA7]/20' : 'focus:border-[#EE6C4D] focus:ring-[#EE6C4D]/20'}`}
                 required
               />
             </div>
@@ -192,7 +226,7 @@ const Login = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className={`w-full mt-4 bg-[#EE6C4D] text-white py-3.5 rounded-full font-bold text-[15px] shadow-[0_8px_20px_rgba(238,108,77,0.25)] transition-all flex justify-center items-center gap-2 ${loading ? 'opacity-70' : 'hover:-translate-y-0.5 hover:shadow-[0_12px_25px_rgba(238,108,77,0.35)]'}`}
+              className={`w-full mt-4 text-white py-3.5 rounded-full font-bold text-[15px] transition-all flex justify-center items-center gap-2 ${loading ? 'opacity-70' : 'hover:-translate-y-0.5'} ${isClient ? 'bg-[#1ECCA7] shadow-[0_8px_20px_rgba(30,204,167,0.25)] hover:shadow-[0_12px_25px_rgba(30,204,167,0.35)]' : 'bg-[#EE6C4D] shadow-[0_8px_20px_rgba(238,108,77,0.25)] hover:shadow-[0_12px_25px_rgba(238,108,77,0.35)]'}`}
             >
               {loading ? 'Ingresando...' : (
                 <>
@@ -204,7 +238,15 @@ const Login = () => {
           </form>
 
           <div className="mt-8 text-center text-[13px] text-secondary">
-            ¿Aún no tienes cuenta? <Link to="/auth/registro" className="font-bold text-[#EE6C4D] hover:underline decoration-2 underline-offset-2 transition-colors">Regístrate como abogado</Link>.
+            {isClient ? (
+              <>
+                ¿Aún no tienes cuenta? <Link to="/publicar-caso" className="font-bold text-[#006b56] hover:underline decoration-2 underline-offset-2 transition-colors">Publica tu caso aquí</Link>.
+              </>
+            ) : (
+              <>
+                ¿Aún no tienes cuenta? <Link to="/auth/registro" className="font-bold text-[#EE6C4D] hover:underline decoration-2 underline-offset-2 transition-colors">Regístrate como abogado</Link>.
+              </>
+            )}
           </div>
 
         </div>

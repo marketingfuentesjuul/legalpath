@@ -15,6 +15,8 @@ export default function Dashboard() {
   });
   const [recentCases, setRecentCases] = useState([]);
   const [recentLawyers, setRecentLawyers] = useState([]);
+  const [approvedCases, setApprovedCases] = useState([]);
+  const [lawyerRequests, setLawyerRequests] = useState([]);
 
   const loadData = async () => {
     setLoading(true);
@@ -58,6 +60,26 @@ export default function Dashboard() {
         .limit(5);
 
       setRecentLawyers(lawyersData || []);
+
+      // Approved cases sorted by approved_at DESC
+      const { data: approvedCasesData } = await supabase
+        .from('cases')
+        .select('id, alias_client, category, urgency, approved_at, admin_status')
+        .eq('admin_status', 'aprobado')
+        .order('approved_at', { ascending: false, nullsFirst: false })
+        .limit(5);
+
+      setApprovedCases(approvedCasesData || []);
+
+      // Lawyer requests (pending/in_review) sorted by created_at DESC
+      const { data: lawyerRequestsData } = await supabase
+        .from('lawyer_profiles')
+        .select('id, first_name, last_name_paternal, email, verification_status, created_at, submitted_for_review_at')
+        .in('verification_status', ['pending', 'in_review'])
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      setLawyerRequests(lawyerRequestsData || []);
       
       // Update sidebar counts too
       if (fetchBadgeCounts) {
@@ -162,115 +184,233 @@ export default function Dashboard() {
 
       {/* Recent Activity Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Cases */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-gray-500">folder_open</span>
-              <h3 className="font-bold text-gray-800">Últimos Casos Recibidos</h3>
+        {/* Left Column: Cases */}
+        <div className="space-y-8 flex flex-col">
+          {/* Recent Cases */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-gray-500">folder_open</span>
+                <h3 className="font-bold text-gray-800">Últimos Casos Recibidos</h3>
+              </div>
+              <Link to="/admin/casos" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
+                Ver todos
+              </Link>
             </div>
-            <Link to="/admin/casos" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
-              Ver todos
-            </Link>
-          </div>
-          <div className="flex-1 overflow-x-auto">
-            {loading ? (
-              <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
-            ) : recentCases.length === 0 ? (
-              <div className="p-8 text-center text-sm text-gray-400">No hay casos registrados recientemente.</div>
-            ) : (
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
-                    <th className="px-6 py-3">Cliente</th>
-                    <th className="px-6 py-3">Categoría</th>
-                    <th className="px-6 py-3">Urgencia</th>
-                    <th className="px-6 py-3">Fecha</th>
-                    <th className="px-6 py-3 text-right">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {recentCases.map((c) => (
-                    <tr key={c.id} className="hover:bg-gray-50/50">
-                      <td className="px-6 py-4 font-semibold text-gray-700">
-                        {c.alias_client || 'Invitado'}
-                      </td>
-                      <td className="px-6 py-4 text-gray-500">{c.category || 'Sin categoría'}</td>
-                      <td className="px-6 py-4">
-                        <StatusBadge status={c.urgency} />
-                      </td>
-                      <td className="px-6 py-4 text-xs text-gray-400">
-                        {formatDate(c.created_at)}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <Link
-                          to={`/admin/casos/${c.id}`}
-                          className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
-                        >
-                          Curar
-                        </Link>
-                      </td>
+            <div className="flex-1 overflow-x-auto">
+              {loading ? (
+                <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
+              ) : recentCases.length === 0 ? (
+                <div className="p-8 text-center text-sm text-gray-400">No hay casos registrados recientemente.</div>
+              ) : (
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
+                      <th className="px-6 py-3">Cliente</th>
+                      <th className="px-6 py-3">Categoría</th>
+                      <th className="px-6 py-3">Urgencia</th>
+                      <th className="px-6 py-3">Fecha</th>
+                      <th className="px-6 py-3 text-right">Acciones</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {recentCases.map((c) => (
+                      <tr key={c.id} className="hover:bg-gray-50/50">
+                        <td className="px-6 py-4 font-semibold text-gray-700">
+                          {c.alias_client || 'Invitado'}
+                        </td>
+                        <td className="px-6 py-4 text-gray-500">{c.category || 'Sin categoría'}</td>
+                        <td className="px-6 py-4">
+                          <StatusBadge status={c.urgency} />
+                        </td>
+                        <td className="px-6 py-4 text-xs text-gray-400">
+                          {formatDate(c.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <Link
+                            to={`/admin/casos/${c.id}`}
+                            className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+                          >
+                            Curar
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+
+          {/* Approved Cases */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-emerald-600">check_circle</span>
+                <h3 className="font-bold text-gray-800">Casos Aprobados</h3>
+              </div>
+              <Link to="/admin/casos" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
+                Ver todos
+              </Link>
+            </div>
+            <div className="flex-1 overflow-x-auto">
+              {loading ? (
+                <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
+              ) : approvedCases.length === 0 ? (
+                <div className="p-8 text-center text-sm text-gray-400">No hay casos aprobados recientemente.</div>
+              ) : (
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
+                      <th className="px-6 py-3">Cliente</th>
+                      <th className="px-6 py-3">Categoría</th>
+                      <th className="px-6 py-3">Urgencia</th>
+                      <th className="px-6 py-3">Aprobado el</th>
+                      <th className="px-6 py-3 text-right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {approvedCases.map((c) => (
+                      <tr key={c.id} className="hover:bg-gray-50/50">
+                        <td className="px-6 py-4 font-semibold text-gray-700">
+                          {c.alias_client || 'Invitado'}
+                        </td>
+                        <td className="px-6 py-4 text-gray-500">{c.category || 'Sin categoría'}</td>
+                        <td className="px-6 py-4">
+                          <StatusBadge status={c.urgency} />
+                        </td>
+                        <td className="px-6 py-4 text-xs text-gray-400">
+                          {formatDate(c.approved_at || c.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <Link
+                            to={`/admin/casos/${c.id}`}
+                            className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+                          >
+                            Ver
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Recent Lawyers */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-gray-500">gavel</span>
-              <h3 className="font-bold text-gray-800">Últimos Abogados Registrados</h3>
+        {/* Right Column: Lawyers */}
+        <div className="space-y-8 flex flex-col">
+          {/* Recent Lawyers */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-gray-500">gavel</span>
+                <h3 className="font-bold text-gray-800">Últimos Abogados Registrados</h3>
+              </div>
+              <Link to="/admin/abogados" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
+                Ver todos
+              </Link>
             </div>
-            <Link to="/admin/abogados" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
-              Ver todos
-            </Link>
-          </div>
-          <div className="flex-1 overflow-x-auto">
-            {loading ? (
-              <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
-            ) : recentLawyers.length === 0 ? (
-              <div className="p-8 text-center text-sm text-gray-400">No hay abogados registrados recientemente.</div>
-            ) : (
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
-                    <th className="px-6 py-3">Nombre</th>
-                    <th className="px-6 py-3">Email</th>
-                    <th className="px-6 py-3">Estado</th>
-                    <th className="px-6 py-3">Registro</th>
-                    <th className="px-6 py-3 text-right">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {recentLawyers.map((l) => (
-                    <tr key={l.id} className="hover:bg-gray-50/50">
-                      <td className="px-6 py-4 font-semibold text-gray-700">
-                        {`${l.first_name} ${l.last_name_paternal || ''}`}
-                      </td>
-                      <td className="px-6 py-4 text-gray-500">{l.email}</td>
-                      <td className="px-6 py-4">
-                        <StatusBadge status={l.verification_status} />
-                      </td>
-                      <td className="px-6 py-4 text-xs text-gray-400">
-                        {formatDate(l.created_at)}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <Link
-                          to={`/admin/abogados/${l.id}`}
-                          className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
-                        >
-                          Revisar
-                        </Link>
-                      </td>
+            <div className="flex-1 overflow-x-auto">
+              {loading ? (
+                <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
+              ) : recentLawyers.length === 0 ? (
+                <div className="p-8 text-center text-sm text-gray-400">No hay abogados registrados recientemente.</div>
+              ) : (
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
+                      <th className="px-6 py-3">Nombre</th>
+                      <th className="px-6 py-3">Email</th>
+                      <th className="px-6 py-3">Estado</th>
+                      <th className="px-6 py-3">Registro</th>
+                      <th className="px-6 py-3 text-right">Acciones</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {recentLawyers.map((l) => (
+                      <tr key={l.id} className="hover:bg-gray-50/50">
+                        <td className="px-6 py-4 font-semibold text-gray-700">
+                          {`${l.first_name} ${l.last_name_paternal || ''}`}
+                        </td>
+                        <td className="px-6 py-4 text-gray-500">{l.email}</td>
+                        <td className="px-6 py-4">
+                          <StatusBadge status={l.verification_status} />
+                        </td>
+                        <td className="px-6 py-4 text-xs text-gray-400">
+                          {formatDate(l.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <Link
+                            to={`/admin/abogados/${l.id}`}
+                            className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+                          >
+                            Revisar
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+
+          {/* Lawyer Requests */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-amber-600">assignment_ind</span>
+                <h3 className="font-bold text-gray-800">Últimas Solicitudes de Abogados</h3>
+              </div>
+              <Link to="/admin/abogados" className="text-xs font-bold text-gray-600 hover:text-gray-900 hover:underline">
+                Ver todos
+              </Link>
+            </div>
+            <div className="flex-1 overflow-x-auto">
+              {loading ? (
+                <div className="p-8 text-center text-sm text-gray-500">Cargando actividad...</div>
+              ) : lawyerRequests.length === 0 ? (
+                <div className="p-8 text-center text-sm text-gray-400">No hay solicitudes de abogados pendientes.</div>
+              ) : (
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 text-gray-400 text-xs font-bold uppercase border-b border-gray-100">
+                      <th className="px-6 py-3">Nombre</th>
+                      <th className="px-6 py-3">Email</th>
+                      <th className="px-6 py-3">Estado</th>
+                      <th className="px-6 py-3">Solicitud</th>
+                      <th className="px-6 py-3 text-right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {lawyerRequests.map((l) => (
+                      <tr key={l.id} className="hover:bg-gray-50/50">
+                        <td className="px-6 py-4 font-semibold text-gray-700">
+                          {`${l.first_name} ${l.last_name_paternal || ''}`}
+                        </td>
+                        <td className="px-6 py-4 text-gray-500">{l.email}</td>
+                        <td className="px-6 py-4">
+                          <StatusBadge status={l.verification_status} />
+                        </td>
+                        <td className="px-6 py-4 text-xs text-gray-400">
+                          {formatDate(l.submitted_for_review_at || l.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <Link
+                            to={`/admin/abogados/${l.id}`}
+                            className="inline-flex items-center px-3 py-1 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+                          >
+                            Revisar
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
       </div>

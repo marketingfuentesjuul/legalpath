@@ -154,7 +154,8 @@ export default function CaseEditor() {
             region: formData.region,
             city: formData.city,
             admin_status: 'aprobado',
-            status: 'activo'
+            status: 'activo',
+            approved_at: new Date().toISOString()
           })
           .eq('id', caseId);
 

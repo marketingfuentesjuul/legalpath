@@ -81,9 +81,6 @@ export default function MisCasos() {
     if (activeTab === 'revision') {
       return caso.admin_status === 'en_revision';
     }
-    if (activeTab === 'progreso') {
-      return caso.status === 'en_progreso';
-    }
     return true;
   });
 
@@ -138,7 +135,6 @@ export default function MisCasos() {
             { id: 'todos', label: 'Todos', count: casos.length },
             { id: 'activos', label: 'Activos', count: casos.filter(c => c.admin_status === 'aprobado' && c.status === 'activo').length },
             { id: 'revision', label: 'En revisión', count: casos.filter(c => c.admin_status === 'en_revision').length },
-            { id: 'progreso', label: 'Con abogado', count: casos.filter(c => c.status === 'en_progreso').length },
           ].map(tab => (
             <button
               key={tab.id}

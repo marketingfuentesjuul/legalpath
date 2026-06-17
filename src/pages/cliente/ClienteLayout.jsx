@@ -56,9 +56,6 @@ export default function ClienteLayout() {
                 e.target.src = "https://ui-avatars.com/api/?name=Legal+Path&background=1ecca7&color=fff";
               }}
             />
-            <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-teal-700 to-[#1ECCA7] bg-clip-text text-transparent">
-              LegalPath
-            </span>
           </Link>
         </div>
 
@@ -152,9 +149,6 @@ export default function ClienteLayout() {
               e.target.src = "https://ui-avatars.com/api/?name=Legal+Path&background=1ecca7&color=fff";
             }}
           />
-          <span className="font-extrabold text-base tracking-tight bg-gradient-to-r from-teal-700 to-[#1ECCA7] bg-clip-text text-transparent">
-            LegalPath
-          </span>
         </Link>
 
         {/* User initials bubble on header */}

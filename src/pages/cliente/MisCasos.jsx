@@ -123,7 +123,7 @@ export default function MisCasos() {
           </p>
         </div>
         <Link
-          to="/publicar-caso"
+          to="/cliente/publicar-caso"
           className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-teal-700 to-[#1ECCA7] hover:shadow-lg hover:shadow-[#1ECCA7]/25 hover:scale-[1.01] transition-all cursor-pointer self-start sm:self-auto"
         >
           <span className="material-symbols-outlined text-[20px]">add</span>
@@ -180,7 +180,7 @@ export default function MisCasos() {
           </p>
           {activeTab === 'todos' && (
             <Link
-              to="/publicar-caso"
+              to="/cliente/publicar-caso"
               className="inline-flex items-center gap-2 py-3 px-6 rounded-2xl text-sm font-bold text-white bg-[#1ECCA7] hover:bg-[#1bb896] hover:shadow-lg hover:shadow-[#1ECCA7]/25 transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">add</span>

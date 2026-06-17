@@ -30,6 +30,7 @@ import ClienteLayout from './pages/cliente/ClienteLayout'
 import MisCasos from './pages/cliente/MisCasos'
 import Propuestas from './pages/cliente/Propuestas'
 import Configuracion from './pages/cliente/Configuracion'
+import PublicarCasoCliente from './pages/cliente/PublicarCasoCliente'
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
@@ -72,6 +73,7 @@ function App() {
             <Route path="mis-casos" element={<PageTransition><MisCasos /></PageTransition>} />
             <Route path="propuestas" element={<PageTransition><Propuestas /></PageTransition>} />
             <Route path="configuracion" element={<PageTransition><Configuracion /></PageTransition>} />
+            <Route path="publicar-caso" element={<PageTransition><PublicarCasoCliente /></PageTransition>} />
           </Route>
 
           {/* Admin panel routes */}

@@ -53,7 +53,7 @@ const PublicarCaso = () => {
 
   const titles = {
     1: { main: <>Describe con <span className="text-[#1ECCA7]">detalle</span> tu caso</>, sub: 'Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a entender tu caso.' },
-    2: { main: <>Ingresa como visitante o como <span className="text-[#1ECCA7]">usuario</span></>, sub: 'Crea una cuenta para acceder a todas las funcionalidades, o continúa como invitado para publicar tu caso rápidamente.' },
+    2: { main: <>Crea tu <span className="text-[#1ECCA7]">cuenta</span></>, sub: 'Regístrate para publicar tu caso y acceder a todas las funciones de LegalPath.' },
     3: { main: <>Caso <span className="text-[#1ECCA7]">publicado</span></>, sub: 'Tu caso ha sido publicado exitosamente. Pronto recibirás propuestas de abogados especializados.' }
   }
 
@@ -358,7 +358,7 @@ const PublicarCaso = () => {
             </div>
             <div className="flex flex-col items-center gap-3 relative z-10">
               <div className={stepCircleClass(2)}>2</div>
-              <span className={stepLabelClass(2)}>Ingresa como visitante o como usuario</span>
+              <span className={stepLabelClass(2)}>Crea tu cuenta</span>
             </div>
             <div className="flex flex-col items-center gap-3 relative z-10">
               <div className={stepCircleClass(3)}>3</div>
@@ -584,7 +584,9 @@ const PublicarCaso = () => {
                         'Acceso a todas las funcionalidades del sistema',
                         'Contacto directo con el abogado',
                         'Gestión digital de documentos y evidencias',
-                        'Máxima protección y respaldo de LegalPath'
+                        'Máxima protección y respaldo de LegalPath',
+                        'Poder revisar los antecedentes académicos del abogado',
+                        'Ver abogados certificados'
                       ].map((b, i) => (
                         <div key={i} className="benefit-item flex items-start gap-2.5">
                           <span className="material-symbols-outlined text-[#1ECCA7] text-[18px] mt-0.5" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>

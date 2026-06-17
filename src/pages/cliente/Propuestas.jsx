@@ -32,11 +32,18 @@ export default function Propuestas() {
           created_at,
           lawyer_id,
           lawyer_profiles (
+            id,
             first_name,
             last_name_paternal,
             specialties,
             region,
-            avatar_url
+            avatar_url,
+            lawyer_education (
+              id,
+              study_level,
+              institution,
+              graduation_year
+            )
           ),
           cases!proposals_case_id_fkey!inner (
             id,

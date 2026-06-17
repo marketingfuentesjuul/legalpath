@@ -29,6 +29,29 @@ export default function MisCasos() {
           status,
           admin_status,
           accepted_proposal_id,
+          proposals:accepted_proposal_id (
+            id,
+            case_id,
+            message,
+            estimated_price,
+            status,
+            created_at,
+            lawyer_id,
+            lawyer_profiles (
+              id,
+              first_name,
+              last_name_paternal,
+              specialties,
+              region,
+              avatar_url,
+              lawyer_education (
+                id,
+                study_level,
+                institution,
+                graduation_year
+              )
+            )
+          ),
           received_at,
           created_at
         `)

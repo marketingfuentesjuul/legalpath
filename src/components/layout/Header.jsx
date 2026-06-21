@@ -65,12 +65,12 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link to="/abogados" className="bg-[#EE6C4D] text-white px-2 py-1.5 sm:px-3 sm:py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
-                Soy abogado
-              </Link>
               <Link to="/auth/login" className="mint-gradient text-white px-2 py-1.5 sm:px-3 sm:py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 <span className="hidden sm:inline">Ingresar a mi cuenta</span>
                 <span className="sm:hidden">Ingresar</span>
+              </Link>
+              <Link to="/abogados" className="bg-[#EE6C4D] text-white px-2 py-1.5 sm:px-3 sm:py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+                Soy abogado
               </Link>
             </>
           )}

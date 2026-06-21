@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 import LawyerInfoModal from './LawyerInfoModal';
 import CasoDetailsModal from './CasoDetailsModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
-export default function CasoCard({ caso }) {
+export default function CasoCard({ caso, onDeleteSuccess }) {
   const [showLawyerModal, setShowLawyerModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const {
     id,
@@ -141,6 +145,15 @@ export default function CasoCard({ caso }) {
                 <span>Más información sobre el abogado</span>
               </button>
             )}
+            <div className="text-center mt-3 pt-1">
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                className="text-red-600 hover:text-red-700 text-xs font-bold transition-all cursor-pointer hover:underline bg-transparent border-none p-0 inline-flex items-center gap-1.5"
+              >
+                <span className="material-symbols-outlined text-[15px]">delete</span>
+                <span>Eliminar mi caso</span>
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -161,7 +174,7 @@ export default function CasoCard({ caso }) {
 
       {/* Card Footer Actions */}
       {admin_status === 'aprobado' && status === 'activo' && (
-        <div className="p-4 border-t border-slate-50 bg-slate-50/50">
+        <div className="p-4 border-t border-slate-50 bg-slate-50/50 flex flex-col gap-2.5">
           <Link
             to={`/cliente/propuestas?caso=${id}`}
             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-bold text-white bg-[#1ECCA7] hover:bg-[#1bb896] hover:shadow-lg hover:shadow-[#1ECCA7]/25 transition-all cursor-pointer"
@@ -169,8 +182,58 @@ export default function CasoCard({ caso }) {
             <span className="material-symbols-outlined text-[18px]">forum</span>
             <span>Ver propuestas</span>
           </Link>
+          <div className="text-center">
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="text-red-600 hover:text-red-700 text-xs font-bold transition-all cursor-pointer hover:underline bg-transparent border-none p-0 inline-flex items-center gap-1.5"
+            >
+              <span className="material-symbols-outlined text-[15px]">delete</span>
+              <span>Eliminar mi caso</span>
+            </button>
+          </div>
         </div>
       )}
+
+      {/* For revision or rejected cases, let's also show it at the bottom if it's the client's own panel */}
+      {(admin_status === 'en_revision' || admin_status === 'rechazado') && (
+        <div className="px-6 pb-4 pt-1 text-center">
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="text-red-600 hover:text-red-700 text-xs font-bold transition-all cursor-pointer hover:underline bg-transparent border-none p-0 inline-flex items-center gap-1.5"
+          >
+            <span className="material-symbols-outlined text-[15px]">delete</span>
+            <span>Eliminar mi caso</span>
+          </button>
+        </div>
+      )}
+
+      {/* Confirm Delete Modal */}
+      <ConfirmDeleteModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={async () => {
+          setDeleting(true);
+          try {
+            const { error: deleteErr } = await supabase
+              .from('cases')
+              .delete()
+              .eq('id', id);
+
+            if (deleteErr) throw deleteErr;
+
+            setShowDeleteModal(false);
+            if (onDeleteSuccess) {
+              onDeleteSuccess();
+            }
+          } catch (err) {
+            console.error('Error deleting case:', err);
+            alert('No se pudo eliminar el caso: ' + (err.message || err));
+          } finally {
+            setDeleting(false);
+          }
+        }}
+        loading={deleting}
+      />
     </div>
   );
 }

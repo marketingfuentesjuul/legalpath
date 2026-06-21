@@ -147,11 +147,11 @@ const Home = () => {
                 Justicia accesible para todos
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-on-background">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-on-background">
                 Publica tu caso y que los abogados te <span className="text-[#1ECCA7]">encuentren</span>.
               </h1>
               
-              <p className="text-lg md:text-xl text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0">
+              <p className="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0">
                 Publica tu caso de <b>forma anónima y gratuita, </b>espera a que los abogados te contacten y tú eres el que <b>elige</b> a cuál de los especialistas tomar<b>.</b>
               </p>
               
@@ -235,9 +235,9 @@ const Home = () => {
         {/* Vertical Process Section */}
         <section id="como-funciona" className="max-w-7xl mx-auto px-8 py-20 space-y-32">
           <div className="text-center mb-16">
-            <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
             <div className="w-16 h-1 bg-primary-container mx-auto mt-4 rounded-full"></div>
-            <p className="text-secondary text-lg max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-secondary text-sm sm:text-base md:text-lg max-w-3xl mx-auto mt-6 leading-relaxed">
               En <strong className="font-extrabold text-on-background">LegalPath</strong> puedes publicar tu consulta legal <strong className="font-extrabold text-on-background">gratis</strong> y <strong className="font-extrabold text-on-background">sin riesgos</strong>. En lugar de buscar abogados a ciegas en internet, aquí recibes sus propuestas sin que vean tus datos. <strong className="font-extrabold text-on-background">Tú tienes el control</strong>: solo cuando elijas la propuesta que más te convenza, el abogado podrá acceder a tus datos de contacto.
             </p>
           </div>
@@ -251,9 +251,9 @@ const Home = () => {
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
             <div className="space-y-8 text-center lg:text-left">
-              <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>01</div>
-              <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Publica tu caso</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>01</div>
+              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Publica tu caso</h3>
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Describe tu situación legal de<b> forma anónima</b>. No necesitas ser un experto, solo cuéntanos qué pasó y nosotros te ayudaremos a definir cuál es el área de legal del experto que necesitas.
               </p>
 
@@ -317,9 +317,9 @@ const Home = () => {
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
             <div className="lg:order-2 space-y-8 lg:pl-16 text-center lg:text-left">
-              <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>02</div>
-              <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Recibe Propuestas</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>02</div>
+              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Recibe Propuestas</h3>
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Una vez que envías tu caso, se publica. Los abogados que estén registrados en la página, especialistas en el área específica de tu caso, podrán postularse para que tú elijas con cuál de ellos trabajar.
               </p>
 
@@ -457,9 +457,9 @@ const Home = () => {
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
             <div className="space-y-8 text-center lg:text-left">
-              <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>03</div>
-              <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Elige y Actúa</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>03</div>
+              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Elige y Actúa</h3>
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Compara perfiles, lee opiniones verificadas de otros usuarios y contrata al profesional que te dé más confianza para llevar tu caso.
               </p>
 
@@ -493,7 +493,7 @@ const Home = () => {
         {/* Value Propositions - 4 Columns ref: Rankmi style */}
         <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20 space-y-12">
           <div className="text-center max-w-4xl mx-auto space-y-5 mb-12">
-            <h2 className="text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
               Una única <span className="text-[#1ECCA7] font-black">plataforma</span> para gestionar, comparar y contratar abogados con total seguridad.
             </h2>
             <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto font-medium leading-relaxed">
@@ -512,7 +512,7 @@ const Home = () => {
             <div className="bg-[#FFEFEB] text-[#4A2015] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,239,235,0.8)] border border-[#FFD3C4]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Publicación y Privacidad</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Publicación y Privacidad</h3>
                   <p className="text-sm text-[#7D493B] font-medium leading-relaxed">
                     Publica tu consulta de forma anónima y obtén orientación sin revelar tus datos.
                   </p>
@@ -554,7 +554,7 @@ const Home = () => {
             <div className="bg-[#EEF4FF] text-[#1E293B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(238,244,255,0.8)] border border-[#CFDDFB]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Abogados Certificados</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Abogados Certificados</h3>
                   <p className="text-sm text-[#475569] font-medium leading-relaxed">
                     Conéctate con profesionales con títulos verificados y reputación intachable.
                   </p>
@@ -596,7 +596,7 @@ const Home = () => {
             <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[380px] relative">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Propuestas a Medida</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Propuestas a Medida</h3>
                   <p className="text-sm text-[#0F766E] font-medium leading-relaxed">
                     Compara hasta 5 propuestas personalizadas y elige la opción que prefieras.
                   </p>
@@ -631,7 +631,7 @@ const Home = () => {
             <div className="bg-[#FFFBE5] text-[#78350F] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,251,229,0.8)] border border-[#FDE047]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Seguridad y Soporte</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Seguridad y Soporte</h3>
                   <p className="text-sm text-[#A16207] font-medium leading-relaxed">
                     Monitorea el avance de tu caso y comunícate con total respaldo.
                   </p>
@@ -682,7 +682,7 @@ const Home = () => {
                 Preguntas frecuentes
               </div>
               
-              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] text-on-background">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.1] text-on-background">
                 Preguntas <br />
                 <span className="text-[#1ECCA7]">frecuentes</span>
               </h2>
@@ -809,12 +809,12 @@ const Home = () => {
             </div>
 
             {/* Title */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-background max-w-3xl mx-auto leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-background max-w-3xl mx-auto leading-tight">
               ¿Listo para resolver tu situación legal?
             </h2>
 
             {/* Subheading */}
-            <p className="text-lg md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
+            <p className="text-sm sm:text-base md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
               Únete a miles de personas que ya encontraron la tranquilidad legal que necesitaban.
             </p>
 

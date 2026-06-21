@@ -133,7 +133,7 @@ const Home = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative min-h-[85vh] flex items-center justify-center overflow-hidden px-6 md:px-12 pt-16 pb-20 md:pb-28"
+          className="relative min-h-[85vh] flex items-center justify-center overflow-hidden px-6 md:px-12 pt-[54px] md:pt-16 pb-20 md:pb-28"
         >
           {/* Background Gradient Glowing Orbs */}
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container/10 blur-[120px] rounded-full -z-10"></div>

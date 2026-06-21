@@ -740,7 +740,7 @@ const Home = () => {
           className="relative overflow-hidden w-full bg-white border-t border-b border-slate-100 py-24 md:py-32"
         >
           {/* Decorative Background Glowing Pathway */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none select-none z-0 opacity-50" viewBox="0 0 1440 400" fill="none" preserveAspectRatio="none">
+          <svg className="hidden md:block absolute inset-0 w-full h-full pointer-events-none select-none z-0 opacity-50" viewBox="0 0 1440 400" fill="none" preserveAspectRatio="none">
             <defs>
               <linearGradient id="ctaPathGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#1ecca7" stopOpacity="0" />

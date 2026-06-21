@@ -17,15 +17,15 @@ const Header = () => {
 
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-2' : 'pt-[15px]'}`}>
-      <div className={`w-full transition-all duration-500 mx-4 ${
+      <div className={`w-full transition-all duration-500 mx-2 sm:mx-4 ${
         scrolled 
-          ? 'max-w-6xl bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/40 rounded-[2rem] py-2 px-6' 
+          ? 'max-w-6xl bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/40 rounded-[2rem] py-2 px-3 sm:px-6' 
           : 'max-w-7xl bg-transparent border border-transparent py-2 px-2'
       }`}>
-        <nav className="w-full flex justify-between items-center font-['Plus_Jakarta_Sans'] text-xs lg:text-sm font-medium tracking-tight">
+        <nav className="w-full flex justify-between items-center font-['Plus_Jakarta_Sans'] text-[10px] sm:text-xs lg:text-sm font-medium tracking-tight">
           <div className="flex items-center shrink-0">
           <Link to="/">
-            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className={`w-auto transition-all duration-500 ${scrolled ? 'h-[26px] lg:h-[32px]' : 'h-[36px] lg:h-[40.8px]'}`} />
+            <img src="/assets/images/logo-light.png" alt="LegalPath Logo" className={`w-auto transition-all duration-500 ${scrolled ? 'h-[22px] lg:h-[32px]' : 'h-[30px] lg:h-[40.8px]'}`} />
           </Link>
         </div>
 
@@ -48,26 +48,26 @@ const Header = () => {
           </div>
         )}
 
-        <div className="flex items-center gap-2 lg:gap-3 xl:gap-4 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 xl:gap-4 shrink-0">
           {isPublicarCaso ? (
-            <Link to="/auth/login" className="bg-[#EE6C4D] text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+            <Link to="/auth/login" className="bg-[#EE6C4D] text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
               Ingresar a mi cuenta
             </Link>
           ) : isAbogado ? (
             <>
-              <Link to="/" className="bg-primary-container text-white px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/" className="bg-primary-container text-white px-2 py-1.5 sm:px-2.5 sm:py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Soy usuario
               </Link>
-              <Link to="/auth/login?role=lawyer" className="bg-[#EE6C4D] text-white px-2.5 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/auth/login?role=lawyer" className="bg-[#EE6C4D] text-white px-2 py-1.5 sm:px-2.5 sm:py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Iniciar sesión
               </Link>
             </>
           ) : (
             <>
-              <Link to="/abogados" className="bg-[#EE6C4D] text-white px-3 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/abogados" className="bg-[#EE6C4D] text-white px-2 py-1.5 sm:px-3 sm:py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Soy abogado
               </Link>
-              <Link to="/auth/login" className="mint-gradient text-white px-3 py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
+              <Link to="/auth/login" className="mint-gradient text-white px-2 py-1.5 sm:px-3 sm:py-1.5 lg:px-5 lg:py-2 xl:px-6 xl:py-2.5 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold shadow-lg hover:scale-95 active:scale-90 transition-transform text-center inline-block whitespace-nowrap">
                 Ingresar a mi cuenta
               </Link>
             </>

@@ -237,7 +237,7 @@ const Home = () => {
           <div className="text-center mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo funciona?</h2>
             <div className="w-16 h-1 bg-primary-container mx-auto mt-4 rounded-full"></div>
-            <p className="text-secondary text-sm sm:text-base md:text-lg max-w-3xl mx-auto mt-6 leading-relaxed text-justify md:text-center">
+            <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto mt-6 leading-relaxed text-justify md:text-center">
               En <strong className="font-extrabold text-on-background">LegalPath</strong> puedes publicar tu consulta legal <strong className="font-extrabold text-on-background">gratis</strong> y <strong className="font-extrabold text-on-background">sin riesgos</strong>. En lugar de buscar abogados a ciegas en internet, aquí recibes sus propuestas sin que vean tus datos. <strong className="font-extrabold text-on-background">Tú tienes el control</strong>: solo cuando elijas la propuesta que más te convenza, el abogado podrá acceder a tus datos de contacto.
             </p>
           </div>
@@ -253,7 +253,7 @@ const Home = () => {
             <div className="space-y-8 text-center lg:text-left">
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>01</div>
               <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Publica tu caso</h3>
-              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
+              <p className="text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
                 Describe tu situación legal de<b> forma anónima</b>. No necesitas ser un experto, solo cuéntanos qué pasó y nosotros te ayudaremos a definir cuál es el área de legal del experto que necesitas.
               </p>
 
@@ -319,7 +319,7 @@ const Home = () => {
             <div className="lg:order-2 space-y-8 lg:pl-16 text-center lg:text-left">
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>02</div>
               <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Recibe Propuestas</h3>
-              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
+              <p className="text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
                 Una vez que envías tu caso, se publica. Los abogados que estén registrados en la página, especialistas en el área específica de tu caso, podrán postularse para que tú elijas con cuál de ellos trabajar.
               </p>
 
@@ -459,7 +459,7 @@ const Home = () => {
             <div className="space-y-8 text-center lg:text-left">
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>03</div>
               <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Elige y Actúa</h3>
-              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
+              <p className="text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
                 Compara perfiles, lee opiniones verificadas de otros usuarios y contrata al profesional que te dé más confianza para llevar tu caso.
               </p>
 
@@ -814,7 +814,7 @@ const Home = () => {
             </h2>
 
             {/* Subheading */}
-            <p className="text-sm sm:text-base md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium text-justify md:text-center">
+            <p className="text-base md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium text-justify md:text-center">
               Únete a miles de personas que ya encontraron la tranquilidad legal que necesitaban.
             </p>
 

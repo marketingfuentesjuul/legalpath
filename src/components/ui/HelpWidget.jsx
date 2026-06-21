@@ -35,12 +35,16 @@ export default function HelpWidget() {
       {!isOpen && !isAdminPath && (
         <button
           onClick={() => setIsOpen(true)}
-          className={`fixed right-6 z-[9999] flex items-center justify-center w-14 h-14 rounded-full text-white shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 group focus:outline-none ${
+          className={`fixed right-6 z-[9999] items-center justify-center w-14 h-14 rounded-full text-white shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 group focus:outline-none ${
             location.pathname.startsWith('/abogados') || location.pathname.startsWith('/dashboard')
               ? 'bg-[#EE6C4D] hover:bg-[#d65f42] shadow-orange-500/20'
               : 'bg-[#1ECCA7] hover:bg-[#19b392] shadow-teal-500/20'
           } ${
             isClientMobile ? 'bottom-20 md:bottom-6' : 'bottom-6'
+          } ${
+            (location.pathname === '/' || location.pathname === '/abogados')
+              ? 'hidden md:flex'
+              : 'flex'
           }`}
           title="Ayuda y Soporte"
           aria-label="Ayuda y Soporte"

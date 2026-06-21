@@ -147,11 +147,11 @@ const Home = () => {
                 Justicia accesible para todos
               </div>
               
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-on-background">
+              <h1 className="text-[33px] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-on-background">
                 Publica tu caso y que los abogados te <span className="text-[#1ECCA7]">encuentren</span>.
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0 text-justify lg:text-left">
+              <p className="text-base sm:text-lg md:text-xl text-slate-800 md:text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0 text-justify lg:text-left">
                 Publica tu caso de <b>forma anónima y gratuita, </b>espera a que los abogados te contacten y tú eres el que <b>elige</b> a cuál de los especialistas tomar<b>.</b>
               </p>
               

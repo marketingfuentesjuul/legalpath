@@ -141,8 +141,8 @@ const Home = () => {
           
           <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
             {/* Left Column: Text & Actions */}
-            <div className="lg:col-span-7 space-y-8 text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/10 text-primary-container rounded-full text-xs font-bold tracking-widest uppercase">
+            <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/10 text-primary-container rounded-full text-xs font-bold tracking-widest uppercase mx-auto lg:mx-0">
                 <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
                 Justicia accesible para todos
               </div>
@@ -151,11 +151,11 @@ const Home = () => {
                 Publica tu caso y que los abogados te <span className="text-[#1ECCA7]">encuentren</span>.
               </h1>
               
-              <p className="text-lg md:text-xl text-secondary leading-relaxed max-w-xl">
+              <p className="text-lg md:text-xl text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0">
                 Publica tu caso de <b>forma anónima y gratuita, </b>espera a que los abogados te contacten y tú eres el que <b>elige</b> a cuál de los especialistas tomar<b>.</b>
               </p>
               
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
                 <Link to="/publicar-caso" className="mint-gradient text-on-primary px-8 py-4 rounded-full text-lg font-bold shadow-2xl hover:scale-105 transition-transform text-center inline-block">
                   Publicar mi caso
                 </Link>
@@ -164,7 +164,7 @@ const Home = () => {
                 </a>
               </div>
               
-              <div className="flex items-center gap-4 pt-6 border-t border-slate-100 max-w-md">
+              <div className="flex items-center justify-center lg:justify-start gap-4 pt-6 border-t border-slate-100 max-w-md mx-auto lg:mx-0">
                 <div className="flex -space-x-3">
                   <img className="w-10 h-10 rounded-full border-2 border-white object-cover" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7gHVFA_44sVTI3dIJdNfmIHjR5MsEaaN756hFDsDofbdSw9lUu_90kkE5VEMCQd6uLzwCwVXHUYqX2tfTpdRwE7WAfuy45EXY2RaSUogIeRke2YnajdcGTnnRC2DsS_UD-7JtMHi5EYmNCTSOZ20tV9_zavYxdUNl5AbE9lq8tGIpb4X8hKZw2IA74Uq6Nv4ZdoeJCJDwtLUjT08aYuB07SnjLraCuGOKIoZGWMVdB6Y0EIkq6525T1bat4nwC3AdBmKh3EzHtuI" alt="Avatar" />
                   <img className="w-10 h-10 rounded-full border-2 border-white object-cover" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvREyG3tmjBSqXfmUxfvfT905OfRk5znbhwRt9xTq3jP7JWvpwQIgCPgZbxaKnUix6eL5tcpso8KdM-aMYgjRf8PQ0xhyyQOqb1FbEYTRKBQhNauh_0BGz9xmPNgE_QgHSbIJ2d0X60oarFQ02AZ-LlTtZVp9iCF8QU6MN98xlshkH_zO3il8blRajGQ00SOAPXNMVYfRGuFBmclkE320JLQBgLVIJ8fSBtwoGzF_jYblOOGWUF6qdCD73OZxyj7GVijILaeUdKUk" alt="Avatar" />
@@ -250,10 +250,10 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
-            <div className="space-y-8">
+            <div className="space-y-8 text-center lg:text-left">
               <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>01</div>
               <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Publica tu caso</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg">
+              <p className="text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Describe tu situación legal de<b> forma anónima</b>. No necesitas ser un experto, solo cuéntanos qué pasó y nosotros te ayudaremos a definir cuál es el área de legal del experto que necesitas.
               </p>
 
@@ -316,10 +316,10 @@ const Home = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
-            <div className="lg:order-2 space-y-8 lg:pl-16">
+            <div className="lg:order-2 space-y-8 lg:pl-16 text-center lg:text-left">
               <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>02</div>
               <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Recibe Propuestas</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg">
+              <p className="text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Una vez que envías tu caso, se publica. Los abogados que estén registrados en la página, especialistas en el área específica de tu caso, podrán postularse para que tú elijas con cuál de ellos trabajar.
               </p>
 
@@ -456,10 +456,10 @@ const Home = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
-            <div className="space-y-8">
+            <div className="space-y-8 text-center lg:text-left">
               <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#1ECCA7', opacity: 0.15 }}>03</div>
               <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Elige y Actúa</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg">
+              <p className="text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Compara perfiles, lee opiniones verificadas de otros usuarios y contrata al profesional que te dé más confianza para llevar tu caso.
               </p>
 
@@ -676,8 +676,8 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             
             {/* Left Column: Title & Description */}
-            <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28 text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#e6fcf7] text-primary font-bold text-xs rounded-full w-max border border-[#1ecca7]/20">
+            <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#e6fcf7] text-primary font-bold text-xs rounded-full border border-[#1ecca7]/20 mx-auto lg:mx-0">
                 <span className="material-symbols-outlined text-sm font-bold" style={{ fontVariationSettings: '"FILL" 1' }}>quiz</span>
                 Preguntas frecuentes
               </div>
@@ -687,7 +687,7 @@ const Home = () => {
                 <span className="text-[#1ECCA7]">frecuentes</span>
               </h2>
               
-              <p className="text-base md:text-lg text-secondary leading-relaxed max-w-sm">
+              <p className="text-base md:text-lg text-secondary leading-relaxed max-w-sm mx-auto lg:mx-0">
                 Aquí vas a poder encontrar todas las dudas que tengas respecto a cómo funciona LegalPath
               </p>
             </div>

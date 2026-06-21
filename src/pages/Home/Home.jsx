@@ -151,7 +151,7 @@ const Home = () => {
                 Publica tu caso y que los abogados te <span className="text-[#1ECCA7]">encuentren</span>.
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl text-slate-800 md:text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0 text-justify lg:text-left">
+              <p className="text-[17px] sm:text-lg md:text-xl text-slate-800 md:text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
                 Publica tu caso de <b>forma anónima y gratuita, </b>espera a que los abogados te contacten y tú eres el que <b>elige</b> a cuál de los especialistas tomar<b>.</b>
               </p>
               

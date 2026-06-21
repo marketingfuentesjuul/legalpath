@@ -61,11 +61,11 @@ const Abogados = () => {
               Para profesionales del derecho
             </div>
 
-            <h1 className="text-[41px] md:text-[66px] font-extrabold tracking-tighter leading-[1.1] text-on-background">
+            <h1 className="text-3xl sm:text-[41px] md:text-[66px] font-extrabold tracking-tighter leading-[1.1] text-on-background">
               <span className="text-[#EE6C4D]">Encuentra clientes</span> sin saber de marketing, sin grandes presupuestos y sin reuniones.
             </h1>
 
-            <p className="text-xl text-secondary leading-relaxed max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-3xl mx-auto">
               Ya no tienes que <b>aprender de publicidad</b>, <b>crear contenido en redes sociales</b>, ni <b>agendar cientos de reuniones</b>. En LegalPath <b>eliminamos estas barreras</b> para los abogados, concentrando a todos los clientes en <b>un solo lugar</b>.
             </p>
 
@@ -125,17 +125,17 @@ const Abogados = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
             {/* Left Column: Title and Paragraph */}
-            <div className="lg:col-span-6 space-y-6">
-              <h2 className="text-[36px] md:text-[46px] font-extrabold tracking-tight text-on-background leading-tight">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+              <h2 className="text-2xl sm:text-[36px] md:text-[46px] font-extrabold tracking-tight text-on-background leading-tight">
                 ¿Cómo funciona LegalPath?
               </h2>
-              <p className="text-lg text-secondary leading-relaxed text-justify">
+              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-center lg:text-justify mx-auto lg:mx-0 max-w-2xl">
                 <b>LegalPath</b> surge como una plataforma diseñada tanto para que las personas puedan <b>publicar sus casos de manera gratuita</b> como para <b>democratizar el derecho</b> para los abogados independientes y aquellos que acaban de comenzar en el mundo laboral.
               </p>
-              <p className="text-lg text-secondary leading-relaxed text-justify">
+              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-center lg:text-justify mx-auto lg:mx-0 max-w-2xl">
                 Concretamente, los ciudadanos pueden publicar su caso de forma 100% gratuita y los abogados, a través de nuestro <b>sistema de tokens</b>, pueden utilizar uno de ellos para obtener la información de contacto de los casos que ya están <b>precalificados</b>.
               </p>
-              <p className="text-lg text-secondary leading-relaxed text-justify">
+              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-center lg:text-justify mx-auto lg:mx-0 max-w-2xl">
                 De esta manera, te aseguras de acceder a <b>leads de calidad</b> y evitas tener que pasar por miles de reuniones sin sentido.
               </p>
             </div>
@@ -191,7 +191,7 @@ const Abogados = () => {
         {/* ======================== POR QUÉ LEGALPATH ======================== */}
         <section id="por-que-legalpath" className="max-w-7xl mx-auto px-8 py-20 space-y-12">
           <div className="text-center max-w-4xl mx-auto space-y-5 mb-12">
-            <h2 className="text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
               Una única <span className="text-[#EE6C4D] font-black">plataforma</span> para gestionar, cotizar y captar clientes con total seguridad.
             </h2>
             <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto font-medium leading-relaxed">
@@ -210,7 +210,7 @@ const Abogados = () => {
             <div className="bg-[#FFEFEB] text-[#4A2015] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,239,235,0.8)] border border-[#FFD3C4]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Casos Pre-calificados</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Casos Pre-calificados</h3>
                   <p className="text-sm text-[#7D493B] font-medium leading-relaxed">
                     Nuestro software califica cada caso antes de ser publicado, entregándote un resumen estructurado.
                   </p>
@@ -252,7 +252,7 @@ const Abogados = () => {
             <div className="bg-[#EEF4FF] text-[#1E293B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(238,244,255,0.8)] border border-[#CFDDFB]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Costo Controlado</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Costo Controlado</h3>
                   <p className="text-sm text-[#475569] font-medium leading-relaxed">
                     Olvídate de pagar agencias de publicidad o costosas campañas que no aseguran resultados.
                   </p>
@@ -294,7 +294,7 @@ const Abogados = () => {
             <div className="bg-[#E8FFF8] text-[#064E3B] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_20px_40px_rgba(232,255,248,0.9)] border border-[#A6E8D5]/50 hover:scale-[1.04] transition-all duration-300 min-h-[380px] relative">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Gestión Todo en Uno</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Gestión Todo en Uno</h3>
                   <p className="text-sm text-[#0F766E] font-medium leading-relaxed">
                     Todo lo que necesitas para interactuar con tus clientes y hacer seguimiento de tus causas.
                   </p>
@@ -336,7 +336,7 @@ const Abogados = () => {
             <div className="bg-[#FFFBE5] text-[#78350F] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,251,229,0.8)] border border-[#FDE047]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-black tracking-tight leading-tight">Competencia Justa</h3>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Competencia Justa</h3>
                   <p className="text-sm text-[#A16207] font-medium leading-relaxed">
                     Limitamos el número de postulaciones por caso para evitar la saturación.
                   </p>
@@ -379,16 +379,16 @@ const Abogados = () => {
         {/* ======================== ¿CÓMO EMPEZAR? ======================== */}
         <section id="como-empezar" className="max-w-7xl mx-auto px-8 py-20 space-y-32">
           <div className="text-center mb-16">
-            <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo empezar?</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-[41.4px] font-extrabold tracking-tight text-on-background leading-tight">¿Cómo empezar?</h2>
             <div className="w-16 h-1 bg-[#EE6C4D] mx-auto mt-4 rounded-full"></div>
           </div>
 
           {/* Step 01 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>01</div>
-              <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Regístrate y verifica tu perfil</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg">
+            <div className="space-y-8 text-center lg:text-left">
+              <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>01</div>
+              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Regístrate y verifica tu perfil</h3>
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Crea tu cuenta profesional y adjunta tus documentos para validar tu calidad de abogado. Verificamos tu <b>título profesional</b> y antecedentes ante la Corte Suprema.
               </p>
 
@@ -489,10 +489,10 @@ const Abogados = () => {
 
           {/* Step 02 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="lg:order-2 space-y-8 lg:pl-16">
-              <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>02</div>
-              <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Contrata un plan con tokens</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg">
+            <div className="lg:order-2 space-y-8 lg:pl-16 text-center lg:text-left">
+              <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>02</div>
+              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Contrata un plan con tokens</h3>
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Con nuestro <b>sistema de tokens</b>, cada token te permite contactar a un cliente pre-calificado en nuestro marketplace. Verás la información relevante del caso para decidir si vale la pena antes de usar tu token.
               </p>
 
@@ -543,10 +543,10 @@ const Abogados = () => {
 
           {/* Step 03 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>03</div>
-              <h3 className="text-[30.7px] font-extrabold tracking-tight text-on-background">Elige tu caso y conecta</h3>
-              <p className="text-xl text-secondary leading-relaxed max-w-lg">
+            <div className="space-y-8 text-center lg:text-left">
+              <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>03</div>
+              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Elige tu caso y conecta</h3>
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Según tu área de especialidad, <b>usa un token</b> para iniciar una conversación directa con el cliente. Preséntale tu propuesta y demuestra por qué eres la mejor opción para su caso.
               </p>
 
@@ -587,8 +587,8 @@ const Abogados = () => {
         <section id="pricing" className="max-w-7xl mx-auto px-8 py-20">
           <div className="text-center mb-16 space-y-4">
             <span className="inline-block bg-[#EE6C4D]/10 text-[#EE6C4D] font-bold text-xs tracking-widest uppercase px-4 py-2 rounded-full">Planes</span>
-            <h2 className="text-[41.4px] font-extrabold tracking-tight text-on-background">Elige el plan ideal para tu práctica</h2>
-            <p className="text-secondary max-w-2xl mx-auto">Cada token te conecta con un cliente pre-calificado. Más tokens, más oportunidades de negocio.</p>
+            <h2 className="text-2xl sm:text-3xl md:text-[41.4px] font-extrabold tracking-tight text-on-background">Elige el plan ideal para tu práctica</h2>
+            <p className="text-sm sm:text-base text-secondary max-w-2xl mx-auto">Cada token te conecta con un cliente pre-calificado. Más tokens, más oportunidades de negocio.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -816,12 +816,12 @@ const Abogados = () => {
             </div>
 
             {/* Title */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-background max-w-3xl mx-auto leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-background max-w-3xl mx-auto leading-tight">
               ¿Listo para encontrar nuevos clientes?
             </h2>
 
             {/* Subheading */}
-            <p className="text-lg md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
+            <p className="text-sm sm:text-base md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
               Únete a cientos de abogados que ya captaron clientes calificados sin perder tiempo en prospección.
             </p>
 

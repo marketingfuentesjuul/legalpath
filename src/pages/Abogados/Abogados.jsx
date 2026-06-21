@@ -126,7 +126,7 @@ const Abogados = () => {
             
             {/* Left Column: Title and Paragraph */}
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-              <h2 className="text-2xl sm:text-[36px] md:text-[46px] font-extrabold tracking-tight text-on-background leading-tight">
+              <h2 className="text-2xl sm:text-[36px] md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
                 ¿Cómo funciona <span className="text-[#EE6C4D]">LegalPath</span>?
               </h2>
               <p className="text-base md:text-lg text-secondary leading-relaxed text-justify mx-auto lg:mx-0 max-w-2xl">

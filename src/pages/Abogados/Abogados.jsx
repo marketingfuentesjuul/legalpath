@@ -65,7 +65,7 @@ const Abogados = () => {
               <span className="text-[#EE6C4D]">Encuentra clientes</span> sin saber de marketing, sin grandes presupuestos y sin reuniones.
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-3xl mx-auto text-justify md:text-center">
               Ya no tienes que <b>aprender de publicidad</b>, <b>crear contenido en redes sociales</b>, ni <b>agendar cientos de reuniones</b>. En LegalPath <b>eliminamos estas barreras</b> para los abogados, concentrando a todos los clientes en <b>un solo lugar</b>.
             </p>
 
@@ -129,13 +129,13 @@ const Abogados = () => {
               <h2 className="text-2xl sm:text-[36px] md:text-[46px] font-extrabold tracking-tight text-on-background leading-tight">
                 ¿Cómo funciona LegalPath?
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-center lg:text-justify mx-auto lg:mx-0 max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-justify mx-auto lg:mx-0 max-w-2xl">
                 <b>LegalPath</b> surge como una plataforma diseñada tanto para que las personas puedan <b>publicar sus casos de manera gratuita</b> como para <b>democratizar el derecho</b> para los abogados independientes y aquellos que acaban de comenzar en el mundo laboral.
               </p>
-              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-center lg:text-justify mx-auto lg:mx-0 max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-justify mx-auto lg:mx-0 max-w-2xl">
                 Concretamente, los ciudadanos pueden publicar su caso de forma 100% gratuita y los abogados, a través de nuestro <b>sistema de tokens</b>, pueden utilizar uno de ellos para obtener la información de contacto de los casos que ya están <b>precalificados</b>.
               </p>
-              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-center lg:text-justify mx-auto lg:mx-0 max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed text-justify mx-auto lg:mx-0 max-w-2xl">
                 De esta manera, te aseguras de acceder a <b>leads de calidad</b> y evitas tener que pasar por miles de reuniones sin sentido.
               </p>
             </div>
@@ -194,7 +194,7 @@ const Abogados = () => {
             <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold tracking-tight text-on-background leading-tight">
               Una única <span className="text-[#EE6C4D] font-black">plataforma</span> para gestionar, cotizar y captar clientes con total seguridad.
             </h2>
-            <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto font-medium leading-relaxed">
+            <p className="text-secondary text-base md:text-lg max-w-3xl mx-auto font-medium leading-relaxed text-justify md:text-center">
               LegalPath es una plataforma moderna que unifica la búsqueda de asesoría jurídica. Conectamos tus especialidades con clientes pre-calificados a través de tecnología transparente y segura.
             </p>
           </div>
@@ -388,7 +388,7 @@ const Abogados = () => {
             <div className="space-y-8 text-center lg:text-left">
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>01</div>
               <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Regístrate y verifica tu perfil</h3>
-              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
                 Crea tu cuenta profesional y adjunta tus documentos para validar tu calidad de abogado. Verificamos tu <b>título profesional</b> y antecedentes ante la Corte Suprema.
               </p>
 
@@ -492,7 +492,7 @@ const Abogados = () => {
             <div className="lg:order-2 space-y-8 lg:pl-16 text-center lg:text-left">
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>02</div>
               <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Contrata un plan con tokens</h3>
-              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
                 Con nuestro <b>sistema de tokens</b>, cada token te permite contactar a un cliente pre-calificado en nuestro marketplace. Verás la información relevante del caso para decidir si vale la pena antes de usar tu token.
               </p>
 
@@ -546,7 +546,7 @@ const Abogados = () => {
             <div className="space-y-8 text-center lg:text-left">
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>03</div>
               <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Elige tu caso y conecta</h3>
-              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <p className="text-sm sm:text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
                 Según tu área de especialidad, <b>usa un token</b> para iniciar una conversación directa con el cliente. Preséntale tu propuesta y demuestra por qué eres la mejor opción para su caso.
               </p>
 
@@ -588,7 +588,7 @@ const Abogados = () => {
           <div className="text-center mb-16 space-y-4">
             <span className="inline-block bg-[#EE6C4D]/10 text-[#EE6C4D] font-bold text-xs tracking-widest uppercase px-4 py-2 rounded-full">Planes</span>
             <h2 className="text-2xl sm:text-3xl md:text-[41.4px] font-extrabold tracking-tight text-on-background">Elige el plan ideal para tu práctica</h2>
-            <p className="text-sm sm:text-base text-secondary max-w-2xl mx-auto">Cada token te conecta con un cliente pre-calificado. Más tokens, más oportunidades de negocio.</p>
+            <p className="text-sm sm:text-base text-secondary max-w-2xl mx-auto text-justify md:text-center">Cada token te conecta con un cliente pre-calificado. Más tokens, más oportunidades de negocio.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -821,7 +821,7 @@ const Abogados = () => {
             </h2>
 
             {/* Subheading */}
-            <p className="text-sm sm:text-base md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium">
+            <p className="text-sm sm:text-base md:text-xl text-secondary max-w-xl mx-auto leading-relaxed font-medium text-justify md:text-center">
               Únete a cientos de abogados que ya captaron clientes calificados sin perder tiempo en prospección.
             </p>
 

@@ -216,7 +216,7 @@ export default function CasoCard({ caso, onDeleteSuccess }) {
           try {
             const { error: deleteErr } = await supabase
               .from('cases')
-              .delete()
+              .update({ status: 'cancelado' })
               .eq('id', id);
 
             if (deleteErr) throw deleteErr;

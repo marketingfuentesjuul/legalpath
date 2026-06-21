@@ -59,7 +59,8 @@ export default function MisCasos() {
         .order('created_at', { ascending: false });
 
       if (fetchErr) throw fetchErr;
-      setCasos(data || []);
+      const visibleCasos = (data || []).filter(c => c.status !== 'cancelado' && c.status !== 'finalizado');
+      setCasos(visibleCasos);
     } catch (err) {
       console.error('Error fetching cases:', err);
       setError(err.message || 'No se pudieron cargar tus casos.');

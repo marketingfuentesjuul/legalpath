@@ -22,6 +22,15 @@ const Dashboard = () => {
   const [activeCasesList, setActiveCasesList] = useState([])
   const [loadingCases, setLoadingCases] = useState(true)
 
+  // Estados para Finalización y Desistimiento de Casos
+  const [showFinishModal, setShowFinishModal] = useState(false)
+  const [selectedCaseForFinish, setSelectedCaseForFinish] = useState(null)
+  const [finishing, setFinishing] = useState(false)
+
+  const [showCancelCaseModal, setShowCancelCaseModal] = useState(false)
+  const [selectedCaseForCancel, setSelectedCaseForCancel] = useState(null)
+  const [canceling, setCanceling] = useState(false)
+
   // Estados para filtros
   const [filterSpecialty, setFilterSpecialty] = useState('')
   const [filterUrgency, setFilterUrgency] = useState('')
@@ -899,14 +908,32 @@ const Dashboard = () => {
                        </p>
                      </div>
 
-                     <div className="flex gap-3 pt-2">
-                        <button 
-                          onClick={() => handleOpenDocumentsModal(caseItem)}
-                          className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
-                        >
-                          <span className="material-symbols-outlined text-[18px]">folder_open</span> Ver documentos adjuntos del caso
-                        </button>
-                     </div>
+                     <div className="flex flex-wrap gap-3 pt-2 items-center">
+                         <button 
+                           onClick={() => handleOpenDocumentsModal(caseItem)}
+                           className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
+                         >
+                           <span className="material-symbols-outlined text-[18px]">folder_open</span> Ver documentos adjuntos del caso
+                         </button>
+                         <button 
+                           onClick={() => {
+                             setSelectedCaseForFinish(caseItem)
+                             setShowFinishModal(true)
+                           }}
+                           className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
+                         >
+                           <span className="material-symbols-outlined text-[18px]">check_circle</span> Finalizar caso
+                         </button>
+                         <button 
+                           onClick={() => {
+                             setSelectedCaseForCancel(caseItem)
+                             setShowCancelCaseModal(true)
+                           }}
+                           className="text-red-500 hover:text-red-750 text-xs font-bold transition-all cursor-pointer hover:underline bg-transparent border-none p-0 inline-flex items-center gap-1.5 ml-2"
+                         >
+                           <span className="material-symbols-outlined text-[16px]">cancel</span> Desistir del caso
+                         </button>
+                      </div>
                    </div>
                  </div>
                  
@@ -1324,6 +1351,68 @@ const Dashboard = () => {
     )
   }
 
+  const handleFinishCase = async () => {
+    if (!selectedCaseForFinish) return
+    setFinishing(true)
+    try {
+      const { error } = await supabase
+        .from('cases')
+        .update({ status: 'finalizado' })
+        .eq('id', selectedCaseForFinish.id)
+
+      if (error) throw error
+
+      setShowFinishModal(false)
+      setSelectedCaseForFinish(null)
+      await fetchActiveCases()
+    } catch (err) {
+      console.error('Error al finalizar el caso:', err)
+      alert('Error al finalizar el caso: ' + (err.message || err))
+    } finally {
+      setFinishing(false)
+    }
+  }
+
+  const handleCancelCaseAssignment = async () => {
+    if (!selectedCaseForCancel) return
+    setCanceling(true)
+    try {
+      const proposal = selectedCaseForCancel.proposals?.[0]
+      if (!proposal) {
+        throw new Error('No se encontró la propuesta aceptada para este caso.')
+      }
+
+      // 1. Update proposal status to 'rechazada'
+      const { error: propErr } = await supabase
+        .from('proposals')
+        .update({ status: 'rechazada' })
+        .eq('id', proposal.id)
+
+      if (propErr) throw propErr
+
+      // 2. Free the case (set accepted_proposal_id to null and status to 'activo')
+      const { error: caseErr } = await supabase
+        .from('cases')
+        .update({
+          accepted_proposal_id: null,
+          status: 'activo'
+        })
+        .eq('id', selectedCaseForCancel.id)
+
+      if (caseErr) throw caseErr
+
+      setShowCancelCaseModal(false)
+      setSelectedCaseForCancel(null)
+      await fetchActiveCases()
+      await fetchPublishedCases()
+    } catch (err) {
+      console.error('Error al desistir del caso:', err)
+      alert('Error al desistir del caso: ' + (err.message || err))
+    } finally {
+      setCanceling(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans">
       {/* Sidebar */}
@@ -1644,6 +1733,112 @@ const Dashboard = () => {
                 className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm transition-colors shadow-md w-full"
               >
                 Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Finalizar Caso */}
+      {showFinishModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 text-center space-y-6 animate-in zoom-in-95 duration-200 relative overflow-hidden flex flex-col items-center">
+            {/* Close Button */}
+            <button 
+              onClick={() => setShowFinishModal(false)}
+              disabled={finishing}
+              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors w-8 h-8 flex items-center justify-center aspect-square shrink-0 bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200 disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined text-[18px] block">close</span>
+            </button>
+
+            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-500 border border-emerald-100 shadow-sm">
+              <span className="material-symbols-outlined text-[36px]">check_circle</span>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight font-headline">¿Estás seguro que quieres dar el caso por finalizado?</h3>
+              <p className="text-slate-500 text-xs font-semibold leading-relaxed">
+                Esto implica que ya finalizaste todas las gestiones con el cliente, se da por concluido el servicio y el caso se archivará.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
+              <button
+                type="button"
+                onClick={() => setShowFinishModal(false)}
+                disabled={finishing}
+                className="flex-1 py-3 px-5 rounded-xl border border-slate-200 font-bold hover:bg-slate-50 transition-all text-slate-500 text-sm focus:outline-none disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleFinishCase}
+                disabled={finishing}
+                className="flex-1 py-3 px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg text-sm flex items-center justify-center gap-2 focus:outline-none disabled:opacity-50"
+              >
+                {finishing ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                    <span>Procesando...</span>
+                  </>
+                ) : (
+                  <span>Sí, Finalizar</span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Desistir de Caso */}
+      {showCancelCaseModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 text-center space-y-6 animate-in zoom-in-95 duration-200 relative overflow-hidden flex flex-col items-center">
+            {/* Close Button */}
+            <button 
+              onClick={() => setShowCancelCaseModal(false)}
+              disabled={canceling}
+              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors w-8 h-8 flex items-center justify-center aspect-square shrink-0 bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200 disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined text-[18px] block">close</span>
+            </button>
+
+            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto text-red-500 border border-red-100 shadow-sm">
+              <span className="material-symbols-outlined text-[36px]">warning</span>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight font-headline">¿Desistir de este caso?</h3>
+              <p className="text-slate-550 text-xs font-semibold leading-relaxed">
+                ¿Está seguro de que no desea continuar con este caso? Se liberará la publicación para que otros abogados puedan postular y ya no tendrás acceso a la información de contacto del cliente.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
+              <button
+                type="button"
+                onClick={() => setShowCancelCaseModal(false)}
+                disabled={canceling}
+                className="flex-1 py-3 px-5 rounded-xl border border-slate-200 font-bold hover:bg-slate-50 transition-all text-slate-500 text-sm focus:outline-none disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleCancelCaseAssignment}
+                disabled={canceling}
+                className="flex-1 py-3 px-5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg text-sm flex items-center justify-center gap-2 focus:outline-none disabled:opacity-50"
+              >
+                {canceling ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                    <span>Procesando...</span>
+                  </>
+                ) : (
+                  <span>Sí, Desistir</span>
+                )}
               </button>
             </div>
           </div>

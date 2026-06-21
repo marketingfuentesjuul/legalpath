@@ -342,8 +342,8 @@ const Home = () => {
                     </div>
                     <span className="text-[10px] text-slate-400 font-bold sm:hidden">20 min.</span>
                   </div>
-                  <div className="w-full sm:col-span-4 flex justify-start sm:justify-end">
-                    <button className="w-fit text-[9px] bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
+                  <div className="w-full sm:col-span-4 flex justify-center sm:justify-end">
+                    <button className="w-fit text-[9px] bg-primary-container text-white px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
                       Aceptar propuesta
                     </button>
                   </div>
@@ -368,8 +368,8 @@ const Home = () => {
                     </div>
                     <span className="text-[10px] text-slate-400 font-bold sm:hidden">2 horas</span>
                   </div>
-                  <div className="w-full sm:col-span-4 flex justify-start sm:justify-end">
-                    <button className="w-fit text-[9px] bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
+                  <div className="w-full sm:col-span-4 flex justify-center sm:justify-end">
+                    <button className="w-fit text-[9px] bg-primary-container text-white px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
                       Aceptar propuesta
                     </button>
                   </div>
@@ -394,8 +394,8 @@ const Home = () => {
                     </div>
                     <span className="text-[10px] text-slate-400 font-bold sm:hidden">8 horas</span>
                   </div>
-                  <div className="w-full sm:col-span-4 flex justify-start sm:justify-end">
-                    <button className="w-fit text-[9px] bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
+                  <div className="w-full sm:col-span-4 flex justify-center sm:justify-end">
+                    <button className="w-fit text-[9px] bg-primary-container text-white px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
                       Aceptar propuesta
                     </button>
                   </div>
@@ -420,8 +420,8 @@ const Home = () => {
                     </div>
                     <span className="text-[10px] text-slate-400 font-bold sm:hidden">1 día</span>
                   </div>
-                  <div className="w-full sm:col-span-4 flex justify-start sm:justify-end">
-                    <button className="w-fit text-[9px] bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
+                  <div className="w-full sm:col-span-4 flex justify-center sm:justify-end">
+                    <button className="w-fit text-[9px] bg-primary-container text-white px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
                       Aceptar propuesta
                     </button>
                   </div>
@@ -446,8 +446,8 @@ const Home = () => {
                     </div>
                     <span className="text-[10px] text-slate-400 font-bold sm:hidden">3 días</span>
                   </div>
-                  <div className="w-full sm:col-span-4 flex justify-start sm:justify-end">
-                    <button className="w-fit text-[9px] bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
+                  <div className="w-full sm:col-span-4 flex justify-center sm:justify-end">
+                    <button className="w-fit text-[9px] bg-primary-container text-white px-3 py-1 rounded-full font-bold hover:scale-105 transition-transform shadow-sm cursor-pointer whitespace-nowrap text-center">
                       Aceptar propuesta
                     </button>
                   </div>

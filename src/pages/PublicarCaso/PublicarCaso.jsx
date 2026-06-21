@@ -341,7 +341,9 @@ const PublicarCaso = () => {
           <h1 className="text-3xl md:text-[2.8rem] leading-tight font-extrabold tracking-tight text-[#141b2c] mb-2 font-headline">
             {titles[step].main}
           </h1>
-          <p className="text-secondary text-base max-w-2xl mx-auto font-medium">{titles[step].sub}</p>
+          {step !== 1 && (
+            <p className="text-secondary text-base max-w-2xl mx-auto font-medium">{titles[step].sub}</p>
+          )}
         </div>
 
         {/* Card */}
@@ -372,6 +374,7 @@ const PublicarCaso = () => {
             {/* STEP 1 */}
             {step === 1 && (
               <div>
+                <p className="text-secondary text-base max-w-2xl mx-auto font-medium text-center mb-6">{titles[1].sub}</p>
                 <div className="relative group mt-2 mb-6">
                   {showPlaceholder && !caseText && (
                     <div className="absolute inset-0 px-8 py-6 pointer-events-none text-[13px] md:text-[15px] text-slate-400 font-medium leading-[1.6] opacity-65 blur-[0.4px]">

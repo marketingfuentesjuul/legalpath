@@ -280,7 +280,7 @@ const Home = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-extrabold text-on-background tracking-tight">Describe con detalle tu caso</h3>
-                  <p className="text-xs text-slate-400 mt-1">Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos, contratos, todo lo que estimes conveniente para ayudarnos a entender tu caso.</p>
+                  <p className="text-xs text-slate-400 mt-1 text-justify lg:text-left">Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos, contratos, todo lo que estimes conveniente para ayudarnos a entender tu caso.</p>
                 </div>
                 <div className="bg-white rounded-xl border border-slate-200 p-4 min-h-[110px] relative shadow-sm">
                   <div className="text-sm text-slate-600 leading-relaxed">
@@ -288,18 +288,18 @@ const Home = () => {
                     <span className="inline-block w-[2px] h-4 bg-primary-container animate-pulse ml-0.5 align-text-bottom"></span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-1">
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium bg-slate-50 px-3 py-2 rounded-lg border border-dashed border-slate-200 cursor-default">
-                      <span className="material-symbols-outlined text-sm">attach_file</span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1 text-slate-400 text-[9px] sm:text-[11px] font-medium bg-slate-50 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg border border-dashed border-slate-200 cursor-default whitespace-nowrap">
+                      <span className="material-symbols-outlined text-xs sm:text-sm">attach_file</span>
                       Adjuntar documentos
                     </div>
-                    <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2.5 py-1.5 rounded-lg border border-emerald-200/60">
-                      <span className="material-symbols-outlined text-xs">check_circle</span>
+                    <div className="flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[8px] sm:text-[10px] font-bold px-1.5 py-1 sm:px-2.5 sm:py-1.5 rounded-lg border border-emerald-200/60 whitespace-nowrap">
+                      <span className="material-symbols-outlined text-[10px] sm:text-xs">check_circle</span>
                       contrato.pdf
                     </div>
                   </div>
-                  <Link to="/publicar-caso" className="mint-gradient text-white px-5 py-2.5 rounded-full text-xs font-extrabold shadow-lg flex items-center gap-1.5 hover:scale-105 transition-transform">
+                  <Link to="/publicar-caso" className="mint-gradient text-white px-5 py-2.5 rounded-full text-xs font-extrabold shadow-lg flex items-center justify-center gap-1.5 hover:scale-105 transition-transform w-full sm:w-auto">
                     Enviar caso
                     <span className="material-symbols-outlined text-sm">send</span>
                   </Link>

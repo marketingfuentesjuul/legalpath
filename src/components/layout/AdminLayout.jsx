@@ -113,14 +113,46 @@ export default function AdminLayout() {
             }
           >
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[20px]">gavel</span>
-              <span>Abogados</span>
+              <span className="material-symbols-outlined text-[20px]">assignment_ind</span>
+              <span>Cola Abogados</span>
             </div>
             {pendingLawyers > 0 && (
               <span className="bg-amber-500 text-gray-900 text-xs px-2 py-0.5 rounded-full font-extrabold shadow-sm">
                 {pendingLawyers}
               </span>
             )}
+          </NavLink>
+
+          <NavLink
+            to="/admin/abogados-gestor"
+            className={({ isActive }) =>
+              `flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                isActive
+                  ? 'bg-gray-700 text-white shadow-inner'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`
+            }
+          >
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-[20px]">gavel</span>
+              <span>Gestor Abogados</span>
+            </div>
+          </NavLink>
+
+          <NavLink
+            to="/admin/clientes"
+            className={({ isActive }) =>
+              `flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                isActive
+                  ? 'bg-gray-700 text-white shadow-inner'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`
+            }
+          >
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-[20px]">group</span>
+              <span>Gestor Clientes</span>
+            </div>
           </NavLink>
 
           <NavLink

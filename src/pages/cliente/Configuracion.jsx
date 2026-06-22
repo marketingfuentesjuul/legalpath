@@ -13,6 +13,9 @@ export default function Configuracion() {
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
   const fetchProfile = async () => {
     try {
       setLoadingProfile(true);
@@ -79,6 +82,32 @@ export default function Configuracion() {
       setErrorMsg(err.message || 'No se pudo actualizar la contraseña.');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    setErrorMsg('');
+    setSuccessMsg('');
+    try {
+      const { data: { user }, error: userErr } = await supabase.auth.getUser();
+      if (userErr || !user) throw new Error('Usuario no autenticado.');
+
+      const { error: updateErr } = await supabase
+        .from('client_profiles')
+        .update({ status: 'deleted' })
+        .eq('id', user.id);
+
+      if (updateErr) throw updateErr;
+
+      await supabase.auth.signOut();
+      window.location.href = '/';
+    } catch (err) {
+      console.error('Error deleting account:', err);
+      setErrorMsg(err.message || 'No se pudo eliminar la cuenta.');
+      setShowDeleteModal(false);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -167,73 +196,123 @@ export default function Configuracion() {
           </div>
         </div>
 
-        {/* Right Card: Security / Password Update */}
-        <div className="md:col-span-2 bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 shadow-sm">
-          <h3 className="text-lg font-extrabold text-slate-800 mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#1ECCA7] text-[22px]">lock</span>
-            Seguridad y Contraseña
-          </h3>
+        {/* Right Card: Security / Password Update & Danger Zone */}
+        <div className="md:col-span-2 space-y-8">
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <h3 className="text-lg font-extrabold text-slate-800 mb-6 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#1ECCA7] text-[22px]">lock</span>
+              Seguridad y Contraseña
+            </h3>
 
-          <form onSubmit={handlePasswordChange} className="space-y-5">
-            {errorMsg && (
-              <div className="p-4 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">error</span>
-                <span className="font-semibold">{errorMsg}</span>
-              </div>
-            )}
-
-            {successMsg && (
-              <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                <span className="font-semibold">{successMsg}</span>
-              </div>
-            )}
-
-            <div className="space-y-1.5">
-              <label htmlFor="pass" className="block text-[13px] font-bold text-slate-700">
-                Nueva Contraseña
-              </label>
-              <input
-                type="password"
-                id="pass"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Mínimo 8 caracteres"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#1ECCA7]/50 focus:border-[#1ECCA7] outline-none transition-shadow"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label htmlFor="confirmPass" className="block text-[13px] font-bold text-slate-700">
-                Confirmar Nueva Contraseña
-              </label>
-              <input
-                type="password"
-                id="confirmPass"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Repite la contraseña"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#1ECCA7]/50 focus:border-[#1ECCA7] outline-none transition-shadow"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full sm:w-auto px-6 py-3 bg-[#1ECCA7] hover:bg-[#1bb896] hover:shadow-lg hover:shadow-[#1ECCA7]/25 text-white font-bold text-sm rounded-xl transition-all flex justify-center items-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
-            >
-              {submitting ? (
-                <span>Actualizando...</span>
-              ) : (
-                <>
-                  <span className="material-symbols-outlined text-[18px]">vpn_key</span>
-                  <span>Cambiar contraseña</span>
-                </>
+            <form onSubmit={handlePasswordChange} className="space-y-5">
+              {errorMsg && (
+                <div className="p-4 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">error</span>
+                  <span className="font-semibold">{errorMsg}</span>
+                </div>
               )}
+
+              {successMsg && (
+                <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                  <span className="font-semibold">{successMsg}</span>
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <label htmlFor="pass" className="block text-[13px] font-bold text-slate-700">
+                  Nueva Contraseña
+                </label>
+                <input
+                  type="password"
+                  id="pass"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Mínimo 8 caracteres"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#1ECCA7]/50 focus:border-[#1ECCA7] outline-none transition-shadow"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label htmlFor="confirmPass" className="block text-[13px] font-bold text-slate-700">
+                  Confirmar Nueva Contraseña
+                </label>
+                <input
+                  type="password"
+                  id="confirmPass"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Repite la contraseña"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#1ECCA7]/50 focus:border-[#1ECCA7] outline-none transition-shadow"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full sm:w-auto px-6 py-3 bg-[#1ECCA7] hover:bg-[#1bb896] hover:shadow-lg hover:shadow-[#1ECCA7]/25 text-white font-bold text-sm rounded-xl transition-all flex justify-center items-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {submitting ? (
+                  <span>Actualizando...</span>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-[18px]">vpn_key</span>
+                    <span>Cambiar contraseña</span>
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+
+          {/* Danger Zone */}
+          <div className="bg-red-50/30 border border-red-100 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <h3 className="text-lg font-extrabold text-red-600 mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined text-red-500 text-[22px]">warning</span>
+              Zona de Peligro
+            </h3>
+            <p className="text-xs text-slate-500 font-medium mb-6 leading-relaxed">
+              Una vez que elimines tu cuenta, no podrás volver a ingresar. Toda tu información personal identificable será anonimizada permanentemente, aunque tu historial de casos se conservará para fines estadísticos e integridad del sistema.
+            </p>
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-sm rounded-xl transition-all cursor-pointer shadow-sm hover:shadow-red-600/20"
+            >
+              Eliminar mi cuenta
             </button>
-          </form>
+          </div>
         </div>
       </div>
+
+      {/* Delete Account Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-4">
+              <span className="material-symbols-outlined text-[28px]">report</span>
+            </div>
+            <h3 className="text-xl font-black text-slate-800 mb-2">¿Estás completamente seguro?</h3>
+            <p className="text-sm text-slate-500 leading-relaxed font-medium mb-6">
+              Esta acción es permanente e irreversible. Perderás el acceso a todos tus casos activos y tu información personal será borrada de la plataforma de forma definitiva.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleting}
+                className="flex-1 px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-sm rounded-xl transition-all disabled:opacity-50 cursor-pointer text-center"
+              >
+                {deleting ? 'Eliminando...' : 'Sí, eliminar cuenta'}
+              </button>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleting}
+                className="flex-1 px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition-all cursor-pointer text-center"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -38,6 +38,30 @@ const Perfil = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [existingProfile, setExistingProfile] = useState(null)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true)
+    setError(null)
+    try {
+      const { error: updateErr } = await supabase
+        .from('lawyer_profiles')
+        .update({ status: 'deleted' })
+        .eq('id', user.id)
+
+      if (updateErr) throw updateErr
+
+      await supabase.auth.signOut()
+      window.location.href = '/'
+    } catch (err) {
+      console.error('Error deleting lawyer profile:', err)
+      setError(err.message || 'No se pudo eliminar el perfil.')
+      setShowDeleteModal(false)
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   // Redirigir a login si termina de cargar y no hay usuario
   useEffect(() => {
@@ -630,7 +654,59 @@ const Perfil = () => {
             </button>
           </div>
         </form>
+
+        {existingProfile && (
+          <div className="mt-8 bg-red-50/30 border border-red-150 rounded-2xl p-8 shadow-sm">
+            <h3 className="text-lg font-bold text-red-650 mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined text-red-500 text-[22px]">warning</span>
+              Zona de Peligro
+            </h3>
+            <p className="text-xs text-slate-500 font-medium mb-6 leading-relaxed">
+              Al eliminar tu perfil, ya no figurarás en el directorio de búsqueda de abogados ni podrás postular a casos. Tus datos personales identificables (RUT, teléfono, etc.) serán anonimizados permanentemente. Esta acción es irreversible.
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowDeleteModal(true)}
+              className="px-6 py-3 bg-red-650 hover:bg-red-750 text-white font-bold text-sm rounded-xl transition-all cursor-pointer shadow-sm hover:shadow-red-600/20"
+            >
+              Eliminar mi perfil profesional
+            </button>
+          </div>
+        )}
       </main>
+
+      {/* Delete Lawyer Profile Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-12 h-12 bg-red-50 text-red-650 rounded-full flex items-center justify-center mb-4">
+              <span className="material-symbols-outlined text-[28px]">report</span>
+            </div>
+            <h3 className="text-xl font-black text-slate-800 mb-2">¿Estás completamente seguro?</h3>
+            <p className="text-sm text-slate-500 leading-relaxed font-medium mb-6">
+              Esta acción eliminará de forma permanente tu perfil profesional de la plataforma. Perderás el acceso a tu cuenta de abogado de forma definitiva.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={handleDeleteAccount}
+                disabled={deleting}
+                className="flex-1 px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-sm rounded-xl transition-all disabled:opacity-50 cursor-pointer text-center"
+              >
+                {deleting ? 'Eliminando...' : 'Sí, eliminar perfil'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleting}
+                className="flex-1 px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition-all cursor-pointer text-center"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

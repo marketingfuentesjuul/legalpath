@@ -23,6 +23,9 @@ import LawyerReview from './pages/admin/LawyerReview'
 import CaseQueue from './pages/admin/CaseQueue'
 import CaseEditor from './pages/admin/CaseEditor'
 import AdminLogin from './pages/admin/AdminLogin'
+import LawyersManagement from './pages/admin/LawyersManagement'
+import ClientsManagement from './pages/admin/ClientsManagement'
+
 
 // Client imports
 import ClienteGuard from './components/ClienteGuard'
@@ -88,6 +91,8 @@ function App() {
             <Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
             <Route path="abogados" element={<PageTransition><LawyerQueue /></PageTransition>} />
             <Route path="abogados/:id" element={<PageTransition><LawyerReview /></PageTransition>} />
+            <Route path="abogados-gestor" element={<PageTransition><LawyersManagement /></PageTransition>} />
+            <Route path="clientes" element={<PageTransition><ClientsManagement /></PageTransition>} />
             <Route path="casos" element={<PageTransition><CaseQueue /></PageTransition>} />
             <Route path="casos/:id" element={<PageTransition><CaseEditor /></PageTransition>} />
           </Route>

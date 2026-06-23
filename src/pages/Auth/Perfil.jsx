@@ -657,7 +657,7 @@ const Perfil = () => {
 
         {existingProfile && (
           <div className="mt-8 bg-red-50/30 border border-red-150 rounded-2xl p-8 shadow-sm">
-            <h3 className="text-lg font-bold text-red-650 mb-2 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-red-600 mb-2 flex items-center gap-2">
               <span className="material-symbols-outlined text-red-500 text-[22px]">warning</span>
               Zona de Peligro
             </h3>
@@ -667,7 +667,7 @@ const Perfil = () => {
             <button
               type="button"
               onClick={() => setShowDeleteModal(true)}
-              className="px-6 py-3 bg-red-650 hover:bg-red-750 text-white font-bold text-sm rounded-xl transition-all cursor-pointer shadow-sm hover:shadow-red-600/20"
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-sm rounded-xl transition-all cursor-pointer shadow-sm hover:shadow-red-600/20"
             >
               Eliminar mi perfil profesional
             </button>
@@ -679,7 +679,7 @@ const Perfil = () => {
       {showDeleteModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
-            <div className="w-12 h-12 bg-red-50 text-red-650 rounded-full flex items-center justify-center mb-4">
+            <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-4">
               <span className="material-symbols-outlined text-[28px]">report</span>
             </div>
             <h3 className="text-xl font-black text-slate-800 mb-2">¿Estás completamente seguro?</h3>

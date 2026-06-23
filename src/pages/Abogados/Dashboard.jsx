@@ -214,7 +214,8 @@ const Dashboard = () => {
           *,
           proposals:proposals!proposals_case_id_fkey (
             id,
-            lawyer_id
+            lawyer_id,
+            status
           )
         `)
         .eq('admin_status', 'aprobado')
@@ -223,11 +224,17 @@ const Dashboard = () => {
 
       if (error) throw error
       
-      const processedCases = (data || []).map(c => ({
-        ...c,
-        bids_count: c.proposals ? c.proposals.length : 0,
-        has_applied: c.proposals ? c.proposals.some(p => p.lawyer_id === user?.id) : false
-      }))
+      const processedCases = (data || [])
+        .filter(c => {
+          // Excluir casos donde el abogado actual tiene una propuesta rechazada
+          const myProposal = c.proposals?.find(p => p.lawyer_id === user?.id)
+          return !myProposal || myProposal.status !== 'rechazada'
+        })
+        .map(c => ({
+          ...c,
+          bids_count: c.proposals ? c.proposals.length : 0,
+          has_applied: c.proposals ? c.proposals.some(p => p.lawyer_id === user?.id) : false
+        }))
 
       setSearchCasesList(processedCases)
     } catch (err) {

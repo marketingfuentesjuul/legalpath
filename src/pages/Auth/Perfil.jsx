@@ -190,6 +190,27 @@ const Perfil = () => {
       return
     }
 
+    if (!rut.trim()) {
+      setError('El RUT es obligatorio.')
+      return
+    }
+
+    // Validar que cada estudio académico ingresado tenga un certificado adjunto
+    for (let i = 0; i < studies.length; i++) {
+      const study = studies[i];
+      // Si tiene algún campo completo, o si es la primera fila (que suele requerirse)
+      if (study.studyLevel || study.university || study.gradYear || study.file) {
+        if (!study.studyLevel || !study.university || !study.gradYear) {
+          setError(`Por favor, complete todos los campos de educación para la fila ${i + 1}.`);
+          return;
+        }
+        if (!study.isSaved && !study.file) {
+          setError(`Debe adjuntar un certificado que acredite su educación para la fila ${i + 1}.`);
+          return;
+        }
+      }
+    }
+
     setLoading(true)
     setError(null)
 
@@ -231,8 +252,8 @@ const Perfil = () => {
 
       // 3. Upsert en lawyer_profiles
       const { error: lawyerProfileError } = await supabase
-        .from('lawyer_profiles')
-        .upsert(lawyerProfileData)
+          .from('lawyer_profiles')
+          .upsert(lawyerProfileData)
 
       if (lawyerProfileError) throw lawyerProfileError
 
@@ -288,8 +309,19 @@ const Perfil = () => {
   if (authLoading || (loading && !existingProfile)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
-        <div className="w-12 h-12 border-4 border-orange-400/20 border-t-[#EE6C4D] rounded-full animate-spin mb-4"></div>
-        <p className="text-slate-400 font-bold text-sm tracking-wide">Cargando perfil...</p>
+        <div className="relative flex flex-col items-center justify-center">
+          <div className="relative w-36 h-36 flex items-center justify-center">
+            <div className="absolute inset-0 border-4 border-orange-400/20 border-t-[#EE6C4D] rounded-full animate-spin"></div>
+            <img
+              src="/assets/images/logo-light.png"
+              alt="LegalPath Logo"
+              className="w-24 h-24 object-contain relative z-10"
+            />
+          </div>
+          <p className="text-slate-500 text-xs font-semibold tracking-widest uppercase mt-6 animate-pulse">
+            Guardando perfil profesional...
+          </p>
+        </div>
       </div>
     )
   }
@@ -590,7 +622,6 @@ const Perfil = () => {
                   required 
                   value={rut} 
                   onChange={e => setRut(e.target.value)} 
-                  disabled={!!existingProfile}
                   autoComplete="off" 
                   maxLength={12} 
                   className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 

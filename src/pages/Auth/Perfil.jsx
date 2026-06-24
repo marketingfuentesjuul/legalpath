@@ -687,7 +687,7 @@ const Perfil = () => {
           </div>
         </form>
 
-        {existingProfile && (
+        {existingProfile && existingProfile.verification_status !== 'pending' && existingProfile.rut_personal && (
           <div className="mt-8 bg-red-50/30 border border-red-150 rounded-2xl p-8 shadow-sm">
             <h3 className="text-lg font-bold text-red-600 mb-2 flex items-center gap-2">
               <span className="material-symbols-outlined text-red-500 text-[22px]">warning</span>

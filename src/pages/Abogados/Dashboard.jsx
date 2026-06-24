@@ -1262,9 +1262,11 @@ const Dashboard = () => {
               </div>
             </div>
             
-            <p className="text-xs text-slate-400 font-medium mt-4 border-t border-slate-100 pt-3 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-slate-400">info</span>
-              Tu plan ({activePlan.name}) se renueva automáticamente cada mes. Los tokens adicionales comprados de manera individual no expiran.
+            <p className="text-xs text-slate-400 font-medium mt-4 border-t border-slate-100 pt-3 flex items-start gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-slate-400 mt-0.5">info</span>
+              <span>
+                Tu plan ({activePlan.name}) se renueva automáticamente cada mes. La vigencia de los tokens mensuales es de un mes; en caso de no utilizar su totalidad, estos no se acumularán para el mes siguiente y comenzarás con el saldo base de tu plan. Los tokens adicionales comprados de manera individual no expiran.
+              </span>
             </p>
           </div>
         </div>

@@ -29,28 +29,36 @@ CREATE INDEX IF NOT EXISTS idx_lawyer_reviewed_by
 -- 3. Trigger para notificación de cambio de estado
 CREATE OR REPLACE FUNCTION notify_lawyer_verification_change()
 RETURNS TRIGGER AS $$
+DECLARE
+  v_supabase_url TEXT;
+  v_service_role_key TEXT;
 BEGIN
   -- Solo actuar si el verification_status realmente cambió
   IF OLD.verification_status IS DISTINCT FROM NEW.verification_status THEN
     
     -- Solo enviar email si el nuevo estado es una decisión final
     IF NEW.verification_status IN ('approved', 'rejected') THEN
-      
-      -- Llamar a la Edge Function de manera asíncrona usando pg_net
-      -- (asegurarse de que la extensión pg_net esté habilitada en Supabase)
-      PERFORM net.http_post(
-        url     := current_setting('app.supabase_url') || '/functions/v1/send-verification-email',
-        headers := jsonb_build_object(
-          'Content-Type',  'application/json',
-          'Authorization', 'Bearer ' || current_setting('app.service_role_key')
-        ),
-        body    := jsonb_build_object(
-          'lawyer_id',        NEW.id,
-          'status',           NEW.verification_status,
-          'rejection_reason', NEW.rejection_reason,
-          'email',            NEW.email
-        )
-      );
+      v_supabase_url := current_setting('app.supabase_url', true);
+      v_service_role_key := current_setting('app.service_role_key', true);
+
+      IF v_supabase_url IS NOT NULL AND v_service_role_key IS NOT NULL THEN
+        -- Llamar a la Edge Function de manera asíncrona usando pg_net
+        PERFORM net.http_post(
+          url     := v_supabase_url || '/functions/v1/send-verification-email',
+          headers := jsonb_build_object(
+            'Content-Type',  'application/json',
+            'Authorization', 'Bearer ' || v_service_role_key
+          ),
+          body    := jsonb_build_object(
+            'lawyer_id',        NEW.id,
+            'status',           NEW.verification_status,
+            'rejection_reason', NEW.rejection_reason,
+            'email',            NEW.email
+          )
+        );
+      ELSE
+        RAISE WARNING 'app.supabase_url or app.service_role_key not set, skipping verification email notification.';
+      END IF;
 
     END IF;
   END IF;

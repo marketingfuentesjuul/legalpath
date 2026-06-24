@@ -35,6 +35,7 @@ export default function LawyerReview() {
   
   // Custom dialog state
   const [confirmModal, setConfirmModal] = useState({ show: false, action: null, title: '', message: '' });
+  const [successModal, setSuccessModal] = useState({ show: false, title: '', message: '', targetPath: null });
 
   const loadLawyerData = async () => {
     setLoading(true);
@@ -91,7 +92,12 @@ export default function LawyerReview() {
         .update({ admin_notes: adminNotes })
         .eq('id', lawyerId);
       if (error) throw error;
-      alert('Nota guardada correctamente.');
+      setSuccessModal({
+        show: true,
+        title: 'Nota Guardada',
+        message: 'Las notas internas se han actualizado correctamente.',
+        targetPath: null
+      });
     } catch (err) {
       console.error('Error saving admin note:', err);
       alert('Error al guardar la nota.');
@@ -190,22 +196,27 @@ export default function LawyerReview() {
 
       if (error) throw error;
 
-      alert(
-        action === 'approve'
-          ? 'Abogado aprobado con éxito.'
-          : action === 'reject'
-          ? 'Perfil rechazado. Se notificó al abogado.'
-          : 'Estado revertido a revisión.'
-      );
+      const successTitle = action === 'approve'
+        ? 'Abogado Aprobado'
+        : action === 'reject'
+        ? 'Abogado Rechazado'
+        : 'Perfil Revertido';
+
+      const successMessage = action === 'approve'
+        ? 'El abogado se traspasó correctamente a estado de aprobación.'
+        : action === 'reject'
+        ? 'El perfil se ha rechazado correctamente y se le notificará por correo electrónico.'
+        : 'El estado del perfil se ha revertido a revisión.';
+
+      setSuccessModal({
+        show: true,
+        title: successTitle,
+        message: successMessage,
+        targetPath: action === 'revert' ? null : '/admin/abogados'
+      });
       
       if (fetchBadgeCounts) {
         fetchBadgeCounts();
-      }
-
-      if (action === 'revert') {
-        loadLawyerData();
-      } else {
-        navigate('/admin/abogados');
       }
     } catch (err) {
       console.error('Error executing admin action:', err);
@@ -520,6 +531,36 @@ export default function LawyerReview() {
                 }`}
               >
                 Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Dialog Modal */}
+      {successModal.show && (
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-200">
+          <div className="bg-white border border-gray-150 rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 mx-4 text-center animate-in zoom-in-95 duration-200">
+            <div className="mx-auto w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shadow-sm">
+              <span className="material-symbols-outlined text-[32px]">check_circle</span>
+            </div>
+            <div>
+              <h4 className="text-xl font-black text-gray-800 tracking-tight">{successModal.title}</h4>
+              <p className="text-sm text-gray-500 mt-2 leading-relaxed">{successModal.message}</p>
+            </div>
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setSuccessModal({ ...successModal, show: false });
+                  if (successModal.targetPath) {
+                    navigate(successModal.targetPath);
+                  } else {
+                    loadLawyerData();
+                  }
+                }}
+                className="w-full py-3 bg-[#EE6C4D] hover:bg-[#EE6C4D]/90 text-white rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all cursor-pointer"
+              >
+                Aceptar
               </button>
             </div>
           </div>

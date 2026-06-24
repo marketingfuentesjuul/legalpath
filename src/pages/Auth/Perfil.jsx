@@ -185,6 +185,11 @@ const Perfil = () => {
       return
     }
 
+    if (!lastNameMaternal.trim()) {
+      setError('El Apellido Materno es obligatorio.')
+      return
+    }
+
     setLoading(true)
     setError(null)
 
@@ -358,7 +363,6 @@ const Perfil = () => {
                       maxLength={80} 
                       value={firstName} 
                       onChange={e => setFirstName(e.target.value)} 
-                      disabled={!!existingProfile}
                       className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
                       placeholder="e.g. Elena" 
                     />
@@ -372,7 +376,6 @@ const Perfil = () => {
                       maxLength={80} 
                       value={secondName} 
                       onChange={e => setSecondName(e.target.value)} 
-                      disabled={!!existingProfile}
                       className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
                       placeholder="e.g. María" 
                     />
@@ -389,7 +392,6 @@ const Perfil = () => {
                       maxLength={80} 
                       value={lastNamePaternal} 
                       onChange={e => setLastNamePaternal(e.target.value)} 
-                      disabled={!!existingProfile}
                       className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
                       placeholder="e.g. Ramirez" 
                     />
@@ -404,7 +406,6 @@ const Perfil = () => {
                       maxLength={80} 
                       value={lastNameMaternal} 
                       onChange={e => setLastNameMaternal(e.target.value)} 
-                      disabled={!!existingProfile}
                       className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow disabled:bg-slate-100 disabled:text-slate-500" 
                       placeholder="e.g. Soto" 
                     />

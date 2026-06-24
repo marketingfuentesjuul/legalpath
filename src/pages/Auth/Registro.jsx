@@ -182,7 +182,7 @@ const Registro = () => {
                 <input type="text" id="firstName" name="firstName" required autoComplete="given-name" maxLength={80} value={form.firstName} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="Ej. Ignacio" />
               </div>
               <div className="space-y-1.5">
-                <label htmlFor="lastName" className="block text-[13px] font-bold text-on-background">Apellidos <span className="text-[#EE6C4D]">*</span></label>
+                <label htmlFor="lastName" className="block text-[13px] font-bold text-on-background">Apellido Paterno <span className="text-[#EE6C4D]">*</span></label>
                 <input type="text" id="lastName" name="lastName" required autoComplete="family-name" maxLength={80} value={form.lastName} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="Ej. Torres" />
               </div>
             </div>

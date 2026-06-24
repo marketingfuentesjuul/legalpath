@@ -104,6 +104,7 @@ const Login = () => {
         await redirectByRole(data.user.id, data.user)
       }
     } catch (err) {
+      console.error('Login submit error detail:', err)
       if (err.message === 'Invalid login credentials' || err.status === 400) {
         setError('Clave inválida')
       } else {

@@ -146,7 +146,12 @@ export default function LawyerReview() {
 
   const handleReject = () => {
     if (!rejectionReason.trim()) {
-      alert('Debes escribir un motivo de rechazo.');
+      setSuccessModal({
+        show: true,
+        title: 'Atención',
+        message: 'Debes escribir un motivo de rechazo.',
+        targetPath: null
+      });
       return;
     }
     setConfirmModal({

@@ -50,14 +50,16 @@ const Registro = () => {
 
       // 2. Intentamos vincular la cuenta (esto puede fallar por rate limit de correo)
       try {
-        const { error: authError } = await supabase.auth.updateUser({
+        const { error: authError } = await supabase.auth.signUp({
           email,
           password,
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            full_name: `${firstName} ${lastName}`,
-            role: 'lawyer'
+          options: {
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+              full_name: `${firstName} ${lastName}`,
+              role: 'lawyer'
+            }
           }
         })
         if (authError) {
@@ -65,7 +67,7 @@ const Registro = () => {
           // No lanzamos error para no bloquear la navegación
         }
       } catch (updateErr) {
-        console.warn('Error crítico en updateUser:', updateErr)
+        console.warn('Error crítico en signUp:', updateErr)
       }
 
       // 3. Intentamos actualizar el perfil en la DB

@@ -297,10 +297,12 @@ const PublicarCaso = () => {
       await uploadAndSaveCase(anonData.user.id, registerForm.email)
 
       // 4. Vincular la cuenta anónima con email/contraseña (envía correo de confirmación)
-      await supabase.auth.updateUser({
+      await supabase.auth.signUp({
         email: registerForm.email,
         password: registerForm.password,
-        data: { first_name: firstName, last_name: lastName || '', role: 'client' }
+        options: {
+          data: { first_name: firstName, last_name: lastName || '', role: 'client' }
+        }
       })
     } catch (error) {
       setSubmitError(error.message || 'Error al registrar y publicar caso')

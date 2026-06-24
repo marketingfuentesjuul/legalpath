@@ -178,7 +178,7 @@ const Registro = () => {
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label htmlFor="firstName" className="block text-[13px] font-bold text-on-background">Nombre(s) <span className="text-[#EE6C4D]">*</span></label>
+                <label htmlFor="firstName" className="block text-[13px] font-bold text-on-background">Nombre <span className="text-[#EE6C4D]">*</span></label>
                 <input type="text" id="firstName" name="firstName" required autoComplete="given-name" maxLength={80} value={form.firstName} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="Ej. Ignacio" />
               </div>
               <div className="space-y-1.5">

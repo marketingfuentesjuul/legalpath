@@ -1285,8 +1285,17 @@ const Dashboard = () => {
 
     const renderPlanCard = (pkg, priceStr, tokensCount, tokenExtraPrice, features, isPopular) => {
       const isActive = activePlan.name === pkg.name;
+      const isPlus = pkg.name === 'Plan Plus';
+
+      let borderClass = 'border border-slate-100 shadow-sm';
+      if (isActive) {
+        borderClass = 'border-2 border-[#EE6C4D] shadow-md';
+      } else if (isPlus) {
+        borderClass = 'border-2 border-sky-400 shadow-md';
+      }
+
       return (
-        <div key={pkg.name} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${isActive ? 'border-2 border-[#EE6C4D] shadow-md' : 'border border-slate-100 shadow-sm'}`}>
+        <div key={pkg.name} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${borderClass}`}>
           {isActive && (
             <span className="absolute -top-3 right-4 bg-[#EE6C4D] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
               Tu Plan
@@ -1328,7 +1337,7 @@ const Dashboard = () => {
           ) : (
             <button 
               onClick={() => handleContractPlan(pkg)}
-              className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200"
+              className="w-full py-2.5 bg-[#EE6C4D] hover:bg-[#d65f42] text-white font-bold rounded-xl text-xs transition-colors border border-transparent shadow-sm"
             >
               {activePlan.name !== 'Ninguno' ? 'Cambiar Plan' : 'Contratar'}
             </button>

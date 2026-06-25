@@ -20,6 +20,35 @@ const Dashboard = () => {
   const [loadingPackages, setLoadingPackages] = useState(true)
 
   // Estados para casos de la base de datos
+  const getInitials = () => {
+    if (lawyerProfile) {
+      const first = lawyerProfile.first_name?.charAt(0) || '';
+      const last = lawyerProfile.last_name?.charAt(0) || '';
+      return (first + last).toUpperCase() || 'AB';
+    }
+    if (user && user.user_metadata) {
+      const first = user.user_metadata.first_name?.charAt(0) || '';
+      const last = user.user_metadata.last_name?.charAt(0) || '';
+      return (first + last).toUpperCase() || 'AB';
+    }
+    return 'AB';
+  }
+
+  const renderUserAvatar = () => {
+    if (lawyerProfile?.avatar_url) {
+      return (
+        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm cursor-pointer">
+          <img src={lawyerProfile.avatar_url} alt="Perfil" className="w-full h-full object-cover" />
+        </div>
+      );
+    }
+    const initials = getInitials();
+    return (
+      <div className="w-10 h-10 rounded-full bg-[#EE6C4D] text-white font-bold flex items-center justify-center border-2 border-white shadow-sm cursor-pointer text-sm font-sans tracking-wider select-none">
+        {initials}
+      </div>
+    );
+  }
   const [searchCasesList, setSearchCasesList] = useState([])
   const [activeCasesList, setActiveCasesList] = useState([])
   const [loadingCases, setLoadingCases] = useState(true)
@@ -365,7 +394,7 @@ const Dashboard = () => {
     try {
       const { data, error } = await supabase
         .from('lawyer_profiles')
-        .select('first_name, last_name')
+        .select('first_name, last_name, avatar_url')
         .eq('id', user.id)
         .maybeSingle()
 
@@ -719,13 +748,7 @@ const Dashboard = () => {
           <p className="text-slate-500 mt-1 font-medium text-sm">Tu actividad y estadísticas en LegalPath.</p>
         </div>
         <div className="flex items-center gap-4">
-          <button className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#EE6C4D] shadow-sm transition-all relative">
-            <span className="material-symbols-outlined text-[20px]">notifications</span>
-            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#EE6C4D] rounded-full border-2 border-white"></span>
-          </button>
-          <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm cursor-pointer">
-            <img src="https://ui-avatars.com/api/?name=A+B&background=EE6C4D&color=fff" alt="Perfil" />
-          </div>
+          {renderUserAvatar()}
         </div>
       </header>
 
@@ -1360,13 +1383,7 @@ const Dashboard = () => {
               <p className="text-slate-500 mt-1 font-medium text-sm">Administra tu saldo de tokens, revisa el consumo mensual y adquiere más créditos.</p>
             </div>
             <div className="flex items-center gap-4">
-              <button className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#EE6C4D] shadow-sm transition-all relative">
-                <span className="material-symbols-outlined text-[20px]">notifications</span>
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#EE6C4D] rounded-full border-2 border-white"></span>
-              </button>
-              <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm cursor-pointer">
-                <img src="https://ui-avatars.com/api/?name=A+B&background=EE6C4D&color=fff" alt="Perfil" />
-              </div>
+              {renderUserAvatar()}
             </div>
           </header>
 
@@ -1422,13 +1439,7 @@ const Dashboard = () => {
             <p className="text-slate-500 mt-1 font-medium text-sm">Administra tu saldo de tokens, revisa el consumo mensual y adquiere más créditos.</p>
           </div>
           <div className="flex items-center gap-4">
-            <button className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#EE6C4D] shadow-sm transition-all relative">
-              <span className="material-symbols-outlined text-[20px]">notifications</span>
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#EE6C4D] rounded-full border-2 border-white"></span>
-            </button>
-            <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm cursor-pointer">
-              <img src="https://ui-avatars.com/api/?name=A+B&background=EE6C4D&color=fff" alt="Perfil" />
-            </div>
+            {renderUserAvatar()}
           </div>
         </header>
 

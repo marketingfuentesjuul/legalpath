@@ -16,6 +16,8 @@ const Dashboard = () => {
   const [activePlan, setActivePlan] = useState({ name: 'Ninguno', tokens_amount: 0 })
   const [usedTokensThisMonth, setUsedTokensThisMonth] = useState(0)
   const [loadingTokens, setLoadingTokens] = useState(true)
+  const [packages, setPackages] = useState([])
+  const [loadingPackages, setLoadingPackages] = useState(true)
 
   // Estados para casos de la base de datos
   const [searchCasesList, setSearchCasesList] = useState([])
@@ -270,6 +272,24 @@ const Dashboard = () => {
     }
   }
 
+  const fetchPackages = async () => {
+    try {
+      setLoadingPackages(true)
+      const { data, error } = await supabase
+        .from('token_packages')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true })
+
+      if (error) throw error
+      setPackages(data || [])
+    } catch (err) {
+      console.error('Error al obtener paquetes de tokens:', err)
+    } finally {
+      setLoadingPackages(false)
+    }
+  }
+
   const fetchTokenData = async () => {
     if (!user) return
     try {
@@ -310,7 +330,11 @@ const Dashboard = () => {
             name: packageData.name,
             tokens_amount: packageData.tokens_amount || 0
           })
+        } else {
+          setActivePlan({ name: 'Ninguno', tokens_amount: 0 })
         }
+      } else {
+        setActivePlan({ name: 'Ninguno', tokens_amount: 0 })
       }
 
       // 3. Obtener tokens consumidos este mes (transacciones negativas del mes actual)
@@ -465,6 +489,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (user) {
       fetchTokenData()
+      fetchPackages()
       fetchLawyerProfile()
       fetchPublishedCases()
       fetchActiveCases()
@@ -1126,6 +1151,109 @@ const Dashboard = () => {
       </div>
     )
   }
+  const handleContractPlan = async (pkg) => {
+    if (!user) return
+    const confirmContract = window.confirm(`¿Estás seguro de que deseas contratar el ${pkg.name}?`)
+    if (!confirmContract) return
+
+    try {
+      setLoadingTokens(true)
+
+      // 1. Insert payment record
+      const { data: paymentData, error: paymentError } = await supabase
+        .from('payments')
+        .insert({
+          lawyer_id: user.id,
+          token_package_id: pkg.id,
+          amount: parseFloat(pkg.price_clp),
+          currency: 'CLP',
+          status: 'succeeded',
+          tokens_granted: pkg.tokens_amount
+        })
+        .select()
+        .single()
+
+      if (paymentError) throw paymentError
+
+      // 2. Insert token ledger record
+      const { error: ledgerError } = await supabase
+        .from('token_ledger')
+        .insert({
+          lawyer_id: user.id,
+          amount: pkg.tokens_amount,
+          transaction_type: 'purchase',
+          reference_id: paymentData.id,
+          reference_type: 'payments',
+          note: `Compra de plan: ${pkg.name}`
+        })
+
+      if (ledgerError) throw ledgerError
+
+      alert(`¡Felicidades! Has contratado el ${pkg.name} exitosamente.`)
+      await fetchTokenData()
+    } catch (err) {
+      console.error('Error al contratar el plan:', err)
+      alert('Ocurrió un error al procesar tu suscripción.')
+    } finally {
+      setLoadingTokens(false)
+    }
+  }
+
+  const handlePurchaseIndividualTokens = async () => {
+    if (!user) return
+    const getUnitPrice = (count) => {
+      if (count >= 25) return 1100
+      if (count >= 10) return 1300
+      return 1500
+    }
+    const unitPrice = getUnitPrice(individualTokens)
+    const totalCost = individualTokens * unitPrice
+
+    const confirmPurchase = window.confirm(`¿Estás seguro de que deseas comprar ${individualTokens} tokens por $${totalCost.toLocaleString('es-CL')} CLP?`)
+    if (!confirmPurchase) return
+
+    try {
+      setLoadingTokens(true)
+
+      // 1. Insert payment record
+      const { data: paymentData, error: paymentError } = await supabase
+        .from('payments')
+        .insert({
+          lawyer_id: user.id,
+          token_package_id: null,
+          amount: totalCost,
+          currency: 'CLP',
+          status: 'succeeded',
+          tokens_granted: individualTokens
+        })
+        .select()
+        .single()
+
+      if (paymentError) throw paymentError
+
+      // 2. Insert token ledger record
+      const { error: ledgerError } = await supabase
+        .from('token_ledger')
+        .insert({
+          lawyer_id: user.id,
+          amount: individualTokens,
+          transaction_type: 'purchase',
+          reference_id: paymentData.id,
+          reference_type: 'payments',
+          note: `Compra de ${individualTokens} tokens individuales`
+        })
+
+      if (ledgerError) throw ledgerError
+
+      alert(`¡Compra exitosa! Se han añadido ${individualTokens} tokens a tu saldo.`)
+      await fetchTokenData()
+    } catch (err) {
+      console.error('Error al comprar tokens:', err)
+      alert('Ocurrió un error al procesar tu compra.')
+    } finally {
+      setLoadingTokens(false)
+    }
+  }
 
   const renderTokensView = () => {
     const getUnitPrice = (count) => {
@@ -1140,10 +1268,25 @@ const Dashboard = () => {
     const limitTokens = activePlan.tokens_amount || 0
     const progressPercent = limitTokens > 0 ? Math.min((usedTokens / limitTokens) * 100, 100) : 0
 
-    const renderPlanCard = (planName, priceStr, tokensCount, tokenExtraPrice, features, isPopular) => {
-      const isActive = activePlan.name === planName;
+    const getPackageExtraInfo = (name) => {
+      switch (name) {
+        case 'Plan Base':
+          return { extraPrice: '1.500', features: ['Dashboard básico'], isPopular: false }
+        case 'Plan Core':
+          return { extraPrice: '1.300', features: ['Documentos legales simples'], isPopular: false }
+        case 'Plan Plus':
+          return { extraPrice: '1.100', features: ['Jurisprudencia avanzada'], isPopular: true }
+        case 'Plan Apex':
+          return { extraPrice: '990', features: ['Coaching & Soporte 24/7'], isPopular: false }
+        default:
+          return { extraPrice: '1.500', features: ['Dashboard básico'], isPopular: false }
+      }
+    }
+
+    const renderPlanCard = (pkg, priceStr, tokensCount, tokenExtraPrice, features, isPopular) => {
+      const isActive = activePlan.name === pkg.name;
       return (
-        <div key={planName} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${isActive ? 'border-2 border-[#EE6C4D] shadow-md' : 'border border-slate-100 shadow-sm'}`}>
+        <div key={pkg.name} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${isActive ? 'border-2 border-[#EE6C4D] shadow-md' : 'border border-slate-100 shadow-sm'}`}>
           {isActive && (
             <span className="absolute -top-3 right-4 bg-[#EE6C4D] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
               Tu Plan
@@ -1155,7 +1298,7 @@ const Dashboard = () => {
             </span>
           )}
           <div>
-            <h4 className="font-bold text-slate-800 text-base">{planName}</h4>
+            <h4 className="font-bold text-slate-800 text-base">{pkg.name}</h4>
             <div className="flex items-baseline gap-1 mt-2 mb-4">
               <span className="text-xs text-slate-400 font-medium">$</span>
               <span className="text-2xl font-black text-slate-800">{priceStr}</span>
@@ -1183,12 +1326,78 @@ const Dashboard = () => {
               Plan Activo
             </button>
           ) : (
-            <button className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200">
+            <button 
+              onClick={() => handleContractPlan(pkg)}
+              className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors border border-slate-200"
+            >
               {activePlan.name !== 'Ninguno' ? 'Cambiar Plan' : 'Contratar'}
             </button>
           )}
         </div>
       );
+    }
+
+    if (activePlan.name === 'Ninguno') {
+      return (
+        <div className="w-full">
+          <header className="flex justify-between items-center mb-10 w-full">
+            <div>
+              <h1 className="text-3xl font-black text-slate-800 tracking-tight">Mis Tokens.</h1>
+              <p className="text-slate-500 mt-1 font-medium text-sm">Administra tu saldo de tokens, revisa el consumo mensual y adquiere más créditos.</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <button className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#EE6C4D] shadow-sm transition-all relative">
+                <span className="material-symbols-outlined text-[20px]">notifications</span>
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#EE6C4D] rounded-full border-2 border-white"></span>
+              </button>
+              <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm cursor-pointer">
+                <img src="https://ui-avatars.com/api/?name=A+B&background=EE6C4D&color=fff" alt="Perfil" />
+              </div>
+            </div>
+          </header>
+
+          <div className="bg-slate-50 border border-slate-200/50 rounded-[32px] p-8 max-w-4xl mx-auto shadow-sm">
+            <div className="text-center max-w-2xl mx-auto mb-8">
+              <span className="bg-[#EE6C4D]/10 text-[#EE6C4D] text-[11px] uppercase tracking-wider font-extrabold px-4 py-1.5 rounded-full inline-block mb-3">
+                Suscripción Requerida
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight mb-2">
+                Contrata un plan de tokens y comienza a contactar clientes inmediatamente
+              </h2>
+              <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                Selecciona uno de nuestros planes diseñados para potenciar tu actividad profesional. Obtén tokens mensuales para enviar propuestas a clientes reales.
+              </p>
+            </div>
+
+            {/* Lista de planes */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              {loadingPackages ? (
+                <div className="col-span-2 text-center text-slate-500 font-semibold py-12 flex flex-col items-center justify-center gap-2">
+                  <span className="material-symbols-outlined text-[24px] animate-spin text-[#EE6C4D]">sync</span>
+                  <span>Cargando planes activos...</span>
+                </div>
+              ) : packages.length === 0 ? (
+                <div className="col-span-2 text-center text-slate-500 font-semibold py-12">
+                  No hay planes activos disponibles en este momento.
+                </div>
+              ) : (
+                packages.map((pkg) => {
+                  const info = getPackageExtraInfo(pkg.name)
+                  const formattedPrice = parseInt(pkg.price_clp).toLocaleString('es-CL')
+                  return renderPlanCard(
+                    pkg,
+                    formattedPrice,
+                    pkg.tokens_amount,
+                    info.extraPrice,
+                    info.features,
+                    info.isPopular
+                  )
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      )
     }
 
     return (
@@ -1332,7 +1541,10 @@ const Dashboard = () => {
                 <span className="text-base font-extrabold text-slate-800">Total a pagar:</span>
                 <span className="text-2xl font-black text-[#EE6C4D]">${totalCost.toLocaleString('es-CL')} CLP</span>
               </div>
-              <button className="w-full bg-[#EE6C4D] hover:bg-[#d65f42] text-white py-4 rounded-2xl font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+              <button 
+                onClick={handlePurchaseIndividualTokens}
+                className="w-full bg-[#EE6C4D] hover:bg-[#d65f42] text-white py-4 rounded-2xl font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+              >
                 <span className="material-symbols-outlined text-[20px]">shopping_cart</span> Comprar ahora
               </button>
             </div>
@@ -1349,10 +1561,28 @@ const Dashboard = () => {
 
             {/* Lista de planes */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {renderPlanCard('Plan Base', '12.990', 12, '1.500', ['Dashboard básico'])}
-              {renderPlanCard('Plan Core', '23.990', 25, '1.300', ['Documentos legales simples'])}
-              {renderPlanCard('Plan Plus', '34.990', 40, '1.100', ['Jurisprudencia avanzada'], true)}
-              {renderPlanCard('Plan Apex', '79.990', 60, '990', ['Coaching & Soporte 24/7'])}
+              {loadingPackages ? (
+                <div className="col-span-2 text-center text-slate-500 font-semibold py-6">
+                  Cargando planes...
+                </div>
+              ) : packages.length === 0 ? (
+                <div className="col-span-2 text-center text-slate-500 font-semibold py-6">
+                  No hay planes activos disponibles.
+                </div>
+              ) : (
+                packages.map((pkg) => {
+                  const info = getPackageExtraInfo(pkg.name)
+                  const formattedPrice = parseInt(pkg.price_clp).toLocaleString('es-CL')
+                  return renderPlanCard(
+                    pkg,
+                    formattedPrice,
+                    pkg.tokens_amount,
+                    info.extraPrice,
+                    info.features,
+                    info.isPopular
+                  )
+                })
+              )}
             </div>
           </div>
         </div>

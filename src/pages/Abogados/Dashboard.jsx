@@ -1291,7 +1291,7 @@ const Dashboard = () => {
       if (isActive) {
         borderClass = 'border-2 border-[#EE6C4D] shadow-md';
       } else if (isPlus) {
-        borderClass = 'border-2 border-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.5)]';
+        borderClass = 'border-2 border-[#1ecca7] shadow-[0_0_15px_rgba(30,204,167,0.6)]';
       }
 
       return (

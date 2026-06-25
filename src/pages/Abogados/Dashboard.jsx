@@ -1288,14 +1288,19 @@ const Dashboard = () => {
       const isPlus = pkg.name === 'Plan Plus';
 
       let borderClass = 'border border-slate-100 shadow-sm';
+      let cardStyle = {};
       if (isActive) {
         borderClass = 'border-2 border-[#EE6C4D] shadow-md';
       } else if (isPlus) {
-        borderClass = 'border-2 border-[#1ecca7] shadow-[0_0_15px_rgba(30,204,167,0.6)]';
+        borderClass = 'border-2 border-transparent';
+        cardStyle = {
+          borderColor: '#1ecca7',
+          boxShadow: '0 0 15px rgba(30, 204, 167, 0.6)'
+        };
       }
 
       return (
-        <div key={pkg.name} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${borderClass}`}>
+        <div key={pkg.name} style={cardStyle} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${borderClass}`}>
           {isActive && (
             <span className="absolute -top-3 right-4 bg-[#EE6C4D] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
               Tu Plan

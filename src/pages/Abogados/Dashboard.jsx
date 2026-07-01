@@ -1204,7 +1204,6 @@ const Dashboard = () => {
 
     try {
       const { data: { session } } = await supabase.auth.getSession()
-
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-payment`,
         {
@@ -1220,6 +1219,11 @@ const Dashboard = () => {
         }
       )
 
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`HTTP ${response.status}: ${text}`)
+      }
+
       const { checkoutUrl, error } = await response.json()
 
       if (error || !checkoutUrl) {
@@ -1228,7 +1232,6 @@ const Dashboard = () => {
 
       // Redirigir al checkout de la pasarela
       window.location.href = checkoutUrl
-
     } catch (err) {
       console.error('Payment error:', err)
       alert('Ocurrió un error al iniciar el pago. Por favor intenta nuevamente.')

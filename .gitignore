@@ -26,3 +26,8 @@ node_modules/
 dist/
 legalpath_bueno.zip
 
+# React Email
+emails/node_modules
+emails/.react-email
+emails/out
+emails/dist

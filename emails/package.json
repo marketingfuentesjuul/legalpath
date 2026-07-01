@@ -1,0 +1,21 @@
+{
+  "name": "legalpath-emails",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "email dev --dir templates --port 3001",
+    "build": "email build --dir templates",
+    "export": "email export --dir templates --outDir out"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.22",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-email": "3.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.4.5"
+  }
+}

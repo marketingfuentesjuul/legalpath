@@ -9,6 +9,8 @@ import Perfil from './pages/Auth/Perfil'
 import Validacion from './pages/Auth/Validacion'
 import Login from './pages/Auth/Login'
 import Dashboard from './pages/Abogados/Dashboard'
+import TokenConfirmacion from './pages/dashboard/tokens/Confirmacion'
+import TokenError from './pages/dashboard/tokens/Error'
 import { useAuth } from './context/AuthContext'
 import ScrollToTop from './components/layout/ScrollToTop'
 import PageTransition from './components/layout/PageTransition'
@@ -60,6 +62,8 @@ function App() {
           <Route path="/auth/registro" element={<PageTransition><Registro /></PageTransition>} />
           <Route path="/auth/validacion" element={<PageTransition><Validacion /></PageTransition>} />
           <Route path="/dashboard" element={<PageTransition><LawyerGuard><Dashboard /></LawyerGuard></PageTransition>} />
+          <Route path="/dashboard/tokens/confirmacion" element={<PageTransition><LawyerGuard><TokenConfirmacion /></LawyerGuard></PageTransition>} />
+          <Route path="/dashboard/tokens/error" element={<PageTransition><LawyerGuard><TokenError /></LawyerGuard></PageTransition>} />
 
           <Route path="/admin/login" element={<PageTransition><AdminLogin /></PageTransition>} />
 

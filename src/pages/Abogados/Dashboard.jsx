@@ -18,6 +18,12 @@ const Dashboard = () => {
   const [loadingTokens, setLoadingTokens] = useState(true)
   const [packages, setPackages] = useState([])
   const [loadingPackages, setLoadingPackages] = useState(true)
+  
+  // Nuevos estados para pagos reales y ledger
+  const [recentTransactions, setRecentTransactions] = useState([])
+  const [selectedPackage, setSelectedPackage] = useState(null)
+  const [showProviderModal, setShowProviderModal] = useState(false)
+  const [loadingPayment, setLoadingPayment] = useState(false)
 
   // Estados para casos de la base de datos
   const getInitials = () => {
@@ -306,9 +312,9 @@ const Dashboard = () => {
       setLoadingPackages(true)
       const { data, error } = await supabase
         .from('token_packages')
-        .select('*')
+        .select('id, name, tokens, price_clp')
         .eq('is_active', true)
-        .order('sort_order', { ascending: true })
+        .order('price_clp', { ascending: true })
 
       if (error) throw error
       setPackages(data || [])
@@ -337,7 +343,7 @@ const Dashboard = () => {
       // 2. Obtener el plan activo desde payments y token_packages
       const { data: paymentData, error: paymentError } = await supabase
         .from('payments')
-        .select('token_package_id')
+        .select('package_id')
         .eq('lawyer_id', user.id)
         .eq('status', 'succeeded')
         .order('created_at', { ascending: false })
@@ -346,19 +352,19 @@ const Dashboard = () => {
 
       if (paymentError) throw paymentError
 
-      if (paymentData && paymentData.token_package_id) {
+      if (paymentData && paymentData.package_id) {
         const { data: packageData, error: packageError } = await supabase
           .from('token_packages')
-          .select('name, tokens_amount')
-          .eq('id', paymentData.token_package_id)
+          .select('name, tokens')
+          .eq('id', paymentData.package_id)
           .maybeSingle()
 
         if (packageError) throw packageError
         if (packageData) {
-          setActivePlan({
-            name: packageData.name,
-            tokens_amount: packageData.tokens_amount || 0
-          })
+           setActivePlan({
+             name: packageData.name,
+             tokens_amount: packageData.tokens || 0
+           })
         } else {
           setActivePlan({ name: 'Ninguno', tokens_amount: 0 })
         }
@@ -381,6 +387,17 @@ const Dashboard = () => {
       if (usedError) throw usedError
       const usedSum = (usedData || []).reduce((acc, curr) => acc + Math.abs(curr.amount), 0)
       setUsedTokensThisMonth(usedSum)
+
+      // 4. Obtener las últimas 5 transacciones para el historial reciente
+      const { data: ledgerHistory, error: historyError } = await supabase
+        .from('token_ledger')
+        .select('*')
+        .eq('lawyer_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(5)
+
+      if (historyError) throw historyError
+      setRecentTransactions(ledgerHistory || [])
 
     } catch (err) {
       console.error('Error al obtener datos de tokens:', err)
@@ -1174,445 +1191,215 @@ const Dashboard = () => {
       </div>
     )
   }
-  const handleContractPlan = async (pkg) => {
-    if (!user) return
-    const confirmContract = window.confirm(`¿Estás seguro de que deseas contratar el ${pkg.name}?`)
-    if (!confirmContract) return
+  // Iniciar proceso de compra
+  const handleSelectPackage = (pkg) => {
+    setSelectedPackage(pkg)
+    setShowProviderModal(true)
+  }
+
+  // Llamar a la Edge Function y redirigir
+  const handlePayment = async (provider) => {
+    if (!selectedPackage) return
+    setLoadingPayment(true)
 
     try {
-      setLoadingTokens(true)
+      const { data: { session } } = await supabase.auth.getSession()
 
-      // 1. Insert payment record
-      const { data: paymentData, error: paymentError } = await supabase
-        .from('payments')
-        .insert({
-          lawyer_id: user.id,
-          token_package_id: pkg.id,
-          amount: parseFloat(pkg.price_clp),
-          currency: 'CLP',
-          status: 'succeeded',
-          tokens_granted: pkg.tokens_amount
-        })
-        .select()
-        .single()
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-payment`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({
+            packageId: selectedPackage.id,
+            provider,
+          }),
+        }
+      )
 
-      if (paymentError) throw paymentError
+      const { checkoutUrl, error } = await response.json()
 
-      // 2. Insert token ledger record
-      const { error: ledgerError } = await supabase
-        .from('token_ledger')
-        .insert({
-          lawyer_id: user.id,
-          amount: pkg.tokens_amount,
-          transaction_type: 'purchase',
-          reference_id: paymentData.id,
-          reference_type: 'payments',
-          note: `Compra de plan: ${pkg.name}`
-        })
+      if (error || !checkoutUrl) {
+        throw new Error(error || 'No checkout URL received')
+      }
 
-      if (ledgerError) throw ledgerError
+      // Redirigir al checkout de la pasarela
+      window.location.href = checkoutUrl
 
-      alert(`¡Felicidades! Has contratado el ${pkg.name} exitosamente.`)
-      await fetchTokenData()
     } catch (err) {
-      console.error('Error al contratar el plan:', err)
-      alert('Ocurrió un error al procesar tu suscripción.')
-    } finally {
-      setLoadingTokens(false)
+      console.error('Payment error:', err)
+      alert('Ocurrió un error al iniciar el pago. Por favor intenta nuevamente.')
+      setLoadingPayment(false)
     }
   }
 
-  const handlePurchaseIndividualTokens = async () => {
-    if (!user) return
-    const getUnitPrice = (count) => {
-      if (count >= 25) return 1100
-      if (count >= 10) return 1300
-      return 1500
-    }
-    const unitPrice = getUnitPrice(individualTokens)
-    const totalCost = individualTokens * unitPrice
-
-    const confirmPurchase = window.confirm(`¿Estás seguro de que deseas comprar ${individualTokens} tokens por $${totalCost.toLocaleString('es-CL')} CLP?`)
-    if (!confirmPurchase) return
-
-    try {
-      setLoadingTokens(true)
-
-      // 1. Insert payment record
-      const { data: paymentData, error: paymentError } = await supabase
-        .from('payments')
-        .insert({
-          lawyer_id: user.id,
-          token_package_id: null,
-          amount: totalCost,
-          currency: 'CLP',
-          status: 'succeeded',
-          tokens_granted: individualTokens
-        })
-        .select()
-        .single()
-
-      if (paymentError) throw paymentError
-
-      // 2. Insert token ledger record
-      const { error: ledgerError } = await supabase
-        .from('token_ledger')
-        .insert({
-          lawyer_id: user.id,
-          amount: individualTokens,
-          transaction_type: 'purchase',
-          reference_id: paymentData.id,
-          reference_type: 'payments',
-          note: `Compra de ${individualTokens} tokens individuales`
-        })
-
-      if (ledgerError) throw ledgerError
-
-      alert(`¡Compra exitosa! Se han añadido ${individualTokens} tokens a tu saldo.`)
-      await fetchTokenData()
-    } catch (err) {
-      console.error('Error al comprar tokens:', err)
-      alert('Ocurrió un error al procesar tu compra.')
-    } finally {
-      setLoadingTokens(false)
-    }
-  }
 
   const renderTokensView = () => {
-    const getUnitPrice = (count) => {
-      if (count >= 25) return 1100
-      if (count >= 10) return 1300
-      return 1500
-    }
-    const unitPrice = getUnitPrice(individualTokens)
-    const totalCost = individualTokens * unitPrice
-
-    const usedTokens = usedTokensThisMonth
-    const limitTokens = activePlan.tokens_amount || 0
-    const progressPercent = limitTokens > 0 ? Math.min((usedTokens / limitTokens) * 100, 100) : 0
-
-    const getPackageExtraInfo = (name) => {
+    const getPackageInfo = (name) => {
       switch (name) {
-        case 'Plan Base':
-          return { extraPrice: '1.500', features: ['Dashboard básico'], isPopular: false }
-        case 'Plan Core':
-          return { extraPrice: '1.300', features: ['Documentos legales simples'], isPopular: false }
-        case 'Plan Plus':
-          return { extraPrice: '1.100', features: ['Jurisprudencia avanzada'], isPopular: true }
-        case 'Plan Apex':
-          return { extraPrice: '990', features: ['Coaching & Soporte 24/7'], isPopular: false }
+        case 'Starter':
+          return { unitPrice: 998, popular: false }
+        case 'Pro':
+          return { unitPrice: 799, popular: true }
+        case 'Enterprise':
+          return { unitPrice: 700, popular: false }
         default:
-          return { extraPrice: '1.500', features: ['Dashboard básico'], isPopular: false }
+          return { unitPrice: 1000, popular: false }
       }
-    }
-
-    const renderPlanCard = (pkg, priceStr, tokensCount, tokenExtraPrice, features, isPopular) => {
-      const isActive = activePlan.name === pkg.name;
-      const isPlus = pkg.name === 'Plan Plus';
-
-      let borderClass = 'border border-slate-100 shadow-sm';
-      let cardStyle = {};
-      if (isActive) {
-        borderClass = 'border-2 border-[#EE6C4D] shadow-md';
-      } else if (isPlus) {
-        borderClass = 'border-2 border-transparent';
-        cardStyle = {
-          borderColor: '#1ecca7',
-          boxShadow: '0 0 15px rgba(30, 204, 167, 0.6)'
-        };
-      }
-
-      return (
-        <div key={pkg.name} style={cardStyle} className={`bg-white rounded-2xl p-5 flex flex-col justify-between relative ${borderClass}`}>
-          {isActive && (
-            <span className="absolute -top-3 right-4 bg-[#EE6C4D] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
-              Tu Plan
-            </span>
-          )}
-          {!isActive && isPopular && (
-            <span className="absolute -top-3 right-4 bg-slate-800 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
-              Popular
-            </span>
-          )}
-          <div>
-            <h4 className="font-bold text-slate-800 text-base">{pkg.name}</h4>
-            <div className="flex items-baseline gap-1 mt-2 mb-4">
-              <span className="text-xs text-slate-400 font-medium">$</span>
-              <span className="text-2xl font-black text-slate-800">{priceStr}</span>
-              <span className="text-xs text-slate-400 font-medium">/mes</span>
-            </div>
-            <ul className="space-y-2 text-xs font-semibold text-slate-500 mb-6">
-              <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                <span>{tokensCount} tokens incluidos</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                <span>Token extra a ${tokenExtraPrice}</span>
-              </li>
-              {features.map((feat, idx) => (
-                <li key={idx} className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#1ecca7] text-[16px]">check_circle</span>
-                  <span>{feat}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {isActive ? (
-            <button className="w-full py-2.5 bg-[#EE6C4D] text-white font-bold rounded-xl text-xs transition-colors border border-transparent shadow-sm cursor-default" disabled>
-              Plan Activo
-            </button>
-          ) : (
-            <button 
-              onClick={() => handleContractPlan(pkg)}
-              className="w-full py-2.5 bg-[#EE6C4D] hover:bg-[#d65f42] text-white font-bold rounded-xl text-xs transition-colors border border-transparent shadow-sm"
-            >
-              {activePlan.name !== 'Ninguno' ? 'Cambiar Plan' : 'Contratar'}
-            </button>
-          )}
-        </div>
-      );
-    }
-
-    if (activePlan.name === 'Ninguno') {
-      return (
-        <div className="w-full">
-          <header className="flex justify-between items-center mb-10 w-full">
-            <div>
-              <h1 className="text-3xl font-black text-slate-800 tracking-tight">Mis Tokens.</h1>
-              <p className="text-slate-500 mt-1 font-medium text-sm">Administra tu saldo de tokens, revisa el consumo mensual y adquiere más créditos.</p>
-            </div>
-            <div className="flex items-center gap-4">
-              {renderUserAvatar()}
-            </div>
-          </header>
-
-          <div className="bg-slate-50 border border-slate-200/50 rounded-[32px] p-8 max-w-4xl mx-auto shadow-sm">
-            <div className="text-center max-w-2xl mx-auto mb-8">
-              <span className="bg-[#EE6C4D]/10 text-[#EE6C4D] text-[11px] uppercase tracking-wider font-extrabold px-4 py-1.5 rounded-full inline-block mb-3">
-                Suscripción Requerida
-              </span>
-              <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight mb-2">
-                Contrata un plan de tokens y comienza a contactar clientes inmediatamente
-              </h2>
-              <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                Selecciona uno de nuestros planes diseñados para potenciar tu actividad profesional. Obtén tokens mensuales para enviar propuestas a clientes reales.
-              </p>
-            </div>
-
-            {/* Lista de planes */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-              {loadingPackages ? (
-                <div className="col-span-2 text-center text-slate-500 font-semibold py-12 flex flex-col items-center justify-center gap-2">
-                  <span className="material-symbols-outlined text-[24px] animate-spin text-[#EE6C4D]">sync</span>
-                  <span>Cargando planes activos...</span>
-                </div>
-              ) : packages.length === 0 ? (
-                <div className="col-span-2 text-center text-slate-500 font-semibold py-12">
-                  No hay planes activos disponibles en este momento.
-                </div>
-              ) : (
-                packages.map((pkg) => {
-                  const info = getPackageExtraInfo(pkg.name)
-                  const formattedPrice = parseInt(pkg.price_clp).toLocaleString('es-CL')
-                  return renderPlanCard(
-                    pkg,
-                    formattedPrice,
-                    pkg.tokens_amount,
-                    info.extraPrice,
-                    info.features,
-                    info.isPopular
-                  )
-                })
-              )}
-            </div>
-          </div>
-        </div>
-      )
     }
 
     return (
-      <div className="w-full">
-        <header className="flex justify-between items-center mb-10 w-full">
+      <div className="w-full space-y-10">
+        <header className="flex justify-between items-center w-full">
           <div>
             <h1 className="text-3xl font-black text-slate-800 tracking-tight">Mis Tokens.</h1>
-            <p className="text-slate-500 mt-1 font-medium text-sm">Administra tu saldo de tokens, revisa el consumo mensual y adquiere más créditos.</p>
+            <p className="text-slate-500 mt-1 font-medium text-sm">Administra tu saldo y adquiere tokens para enviar propuestas a los casos publicados.</p>
           </div>
           <div className="flex items-center gap-4">
             {renderUserAvatar()}
           </div>
         </header>
 
-        {/* Resumen & Consumo Mensual */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-          {/* Tarjeta de Balance */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/10 group flex flex-col justify-between">
+        {/* Balance and History Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Saldo Actual Card */}
+          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/10 flex flex-col justify-between min-h-[220px]">
             <div className="relative z-10">
-              <span className="bg-white/10 text-white text-[11px] uppercase tracking-wider font-bold px-4 py-1.5 rounded-full backdrop-blur-md mb-6 inline-block border border-white/5 shadow-sm">
+              <span className="bg-white/10 text-white text-[10px] uppercase tracking-wider font-extrabold px-4 py-1.5 rounded-full backdrop-blur-md mb-6 inline-block border border-white/5 shadow-sm">
                 Saldo Actual
               </span>
-              <div className="flex items-center gap-3 mt-4">
+              <div className="flex items-center gap-4 mt-2">
                 <span className="material-symbols-outlined text-[#EE6C4D] text-5xl" style={{ fontVariationSettings: '"FILL" 1' }}>toll</span>
                 <div>
-                  <h3 className="text-5xl font-black tracking-tight">
+                  <h3 className="text-5xl font-black tracking-tight leading-none animate-pulse">
                     {loadingTokens ? '...' : tokenBalance}
                   </h3>
-                  <p className="text-slate-400 font-semibold text-xs mt-1">Tokens Disponibles</p>
+                  <p className="text-slate-400 font-bold text-xs mt-2 uppercase tracking-wider">Tokens Disponibles</p>
                 </div>
               </div>
             </div>
-            <div className="absolute -right-10 -top-10 w-32 h-32 bg-[#EE6C4D]/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="absolute -right-10 -top-10 w-32 h-32 bg-[#EE6C4D]/25 rounded-full blur-3xl pointer-events-none"></div>
           </div>
 
-          {/* Tarjeta de Consumo Mensual (Contador solicitado por el usuario) */}
-          <div className="lg:col-span-2 bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <div>
-                  <span className="bg-[#EE6C4D]/10 text-[#EE6C4D] text-[11px] uppercase tracking-wider font-bold px-4 py-1.5 rounded-full inline-block">
-                    Consumo Mensual
-                  </span>
-                </div>
-                <div className="text-right">
-                  <span className="text-2xl font-black text-slate-800">
-                    {loadingTokens ? '...' : usedTokens}
-                  </span>
-                  <span className="text-slate-400 font-bold text-sm"> / {limitTokens} tokens</span>
-                </div>
-              </div>
+          {/* Historial Reciente */}
+          <div className="lg:col-span-2 bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm flex flex-col justify-between min-h-[220px]">
+            <div className="w-full">
+              <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-slate-400">history</span> Historial Reciente
+              </h3>
               
-              {/* Línea de contador/progreso */}
-              <div className="w-full bg-slate-100 rounded-full h-3.5 mb-3 overflow-hidden">
-                <div 
-                  className="bg-gradient-to-r from-[#EE6C4D] to-orange-400 h-full rounded-full transition-all duration-500" 
-                  style={{ width: `${progressPercent}%` }}
-                ></div>
-              </div>
-              
-              <div className="flex justify-between items-center text-xs font-semibold text-slate-400">
-                <span>0% usado</span>
-                <span>{progressPercent.toFixed(0)}% del límite de tu plan actual</span>
-                <span>100% ({limitTokens} tokens)</span>
+              <div className="space-y-3">
+                {recentTransactions.length === 0 ? (
+                  <p className="text-slate-400 text-xs font-semibold py-4">No se han registrado movimientos de tokens aún.</p>
+                ) : (
+                  recentTransactions.map((tx) => {
+                    const isCredit = tx.amount > 0;
+                    const dateStr = new Date(tx.created_at).toLocaleDateString('es-CL', {
+                      day: 'numeric',
+                      month: 'short',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    });
+                    return (
+                      <div key={tx.id} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0 text-xs font-semibold text-slate-650">
+                        <div className="flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full ${isCredit ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+                          <span className="text-slate-700">{tx.note || 'Movimiento de tokens'}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] text-slate-400">{dateStr}</span>
+                          <span className={`font-black font-mono text-sm ${isCredit ? 'text-emerald-600' : 'text-red-500'}`}>
+                            {isCredit ? `+${tx.amount}` : tx.amount}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
               </div>
             </div>
-            
-            <p className="text-xs text-slate-400 font-medium mt-4 border-t border-slate-100 pt-3 flex items-start gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-slate-400 mt-0.5">info</span>
-              <span>
-                Tu plan ({activePlan.name}) se renueva automáticamente cada mes. La vigencia de los tokens mensuales es de un mes; en caso de no utilizar su totalidad, estos no se acumularán para el mes siguiente y comenzarás con el saldo base de tu plan.
-              </span>
-            </p>
           </div>
         </div>
 
-        {/* Sección de Compra de Tokens */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          {/* Calculador de Tokens Individuales */}
-          <div className="lg:col-span-1 bg-white rounded-[32px] border border-slate-100 shadow-sm p-8 flex flex-col justify-between">
-            <div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2">Comprar de a uno</h3>
-              <p className="text-sm font-medium text-slate-500 mb-6 leading-relaxed">¿Necesitas pocos tokens? Adquiere la cantidad exacta que necesites al instante.</p>
-              
-              {/* Selector de cantidad */}
-              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex items-center justify-between mb-6">
-                <button 
-                  onClick={() => setIndividualTokens(Math.max(1, individualTokens - 1))}
-                  className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#EE6C4D] hover:border-[#EE6C4D]/30 transition-all font-black text-lg shadow-sm"
-                >
-                  -
-                </button>
-                <div className="text-center">
-                  <input 
-                    type="number" 
-                    value={individualTokens}
-                    onChange={(e) => setIndividualTokens(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-16 text-2xl font-black text-slate-800 text-center bg-transparent border-none outline-none focus:ring-0"
-                  />
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Tokens</p>
-                </div>
-                <button 
-                  onClick={() => setIndividualTokens(individualTokens + 1)}
-                  className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#EE6C4D] hover:border-[#EE6C4D]/30 transition-all font-black text-lg shadow-sm"
-                >
-                  +
-                </button>
-              </div>
-
-              {/* Tiers de precios individuales */}
-              <div className="space-y-2.5 mb-6">
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Tabla de Precios por Unidad:</p>
-                <div className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs font-semibold ${unitPrice === 1500 ? 'bg-orange-50 text-[#EE6C4D] border border-orange-100' : 'text-slate-500'}`}>
-                  <span>1 - 9 tokens</span>
-                  <span className="font-bold">$1.500 CLP / u</span>
-                </div>
-                <div className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs font-semibold ${unitPrice === 1300 ? 'bg-orange-50 text-[#EE6C4D] border border-orange-100' : 'text-slate-500'}`}>
-                  <span>10 - 24 tokens</span>
-                  <span className="font-bold">$1.300 CLP / u</span>
-                </div>
-                <div className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs font-semibold ${unitPrice === 1100 ? 'bg-orange-50 text-[#EE6C4D] border border-orange-100' : 'text-slate-500'}`}>
-                  <span>25 o más tokens</span>
-                  <span className="font-bold">$1.100 CLP / u</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Total y comprar */}
-            <div className="border-t border-slate-100 pt-6 mt-6">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-sm font-bold text-slate-500">Precio unitario:</span>
-                <span className="text-sm font-bold text-slate-700">${unitPrice.toLocaleString('es-CL')} CLP</span>
-              </div>
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-base font-extrabold text-slate-800">Total a pagar:</span>
-                <span className="text-2xl font-black text-[#EE6C4D]">${totalCost.toLocaleString('es-CL')} CLP</span>
-              </div>
-              <button 
-                onClick={handlePurchaseIndividualTokens}
-                className="w-full bg-[#EE6C4D] hover:bg-[#d65f42] text-white py-4 rounded-2xl font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-              >
-                <span className="material-symbols-outlined text-[20px]">shopping_cart</span> Comprar ahora
-              </button>
-            </div>
+        {/* Packages Grid */}
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-xl font-bold text-slate-800">Comprar Tokens</h3>
+            <p className="text-slate-500 text-sm font-medium mt-1">Elige uno de nuestros paquetes para sumar tokens al instante y pujar por más casos.</p>
           </div>
 
-          {/* Planes en Conjunto */}
-          <div className="lg:col-span-2 bg-slate-50 border border-slate-200/50 rounded-[32px] p-8">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-slate-800">Comprar en conjunto</h3>
-                <p className="text-sm font-medium text-slate-500 mt-1">Mejora tu suscripción mensual para obtener más tokens al mejor precio por unidad.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {loadingPackages ? (
+              <div className="col-span-3 text-center text-slate-500 font-semibold py-12 flex flex-col items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-[24px] animate-spin text-[#EE6C4D]">sync</span>
+                <span>Cargando paquetes de tokens...</span>
               </div>
-            </div>
+            ) : packages.length === 0 ? (
+              <div className="col-span-3 text-center text-slate-500 font-semibold py-12">
+                No hay paquetes de tokens activos disponibles en este momento.
+              </div>
+            ) : (
+              packages.map((pkg) => {
+                const pkgInfo = getPackageInfo(pkg.name);
+                const formattedPrice = parseInt(pkg.price_clp).toLocaleString('es-CL');
+                return (
+                  <div 
+                    key={pkg.id} 
+                    className={`bg-white rounded-3xl p-6 flex flex-col justify-between relative border shadow-sm transition-all duration-300 hover:shadow-md ${
+                      pkgInfo.popular ? 'border-2 border-[#EE6C4D] ring-2 ring-[#EE6C4D]/10' : 'border-slate-200'
+                    }`}
+                  >
+                    {pkgInfo.popular && (
+                      <span className="absolute -top-3 right-6 bg-[#EE6C4D] text-white text-[9px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                        ⭐ RECOMENDADO
+                      </span>
+                    )}
 
-            {/* Lista de planes */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {loadingPackages ? (
-                <div className="col-span-2 text-center text-slate-500 font-semibold py-6">
-                  Cargando planes...
-                </div>
-              ) : packages.length === 0 ? (
-                <div className="col-span-2 text-center text-slate-500 font-semibold py-6">
-                  No hay planes activos disponibles.
-                </div>
-              ) : (
-                packages.map((pkg) => {
-                  const info = getPackageExtraInfo(pkg.name)
-                  const formattedPrice = parseInt(pkg.price_clp).toLocaleString('es-CL')
-                  return renderPlanCard(
-                    pkg,
-                    formattedPrice,
-                    pkg.tokens_amount,
-                    info.extraPrice,
-                    info.features,
-                    info.isPopular
-                  )
-                })
-              )}
-            </div>
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="text-lg font-extrabold text-slate-800">{pkg.name}</h4>
+                        <p className="text-[#EE6C4D] text-2xl font-black mt-1">{pkg.tokens} tokens</p>
+                      </div>
+
+                      <div className="flex items-baseline gap-1 py-2">
+                        <span className="text-2xl font-black text-slate-800">${formattedPrice}</span>
+                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">CLP</span>
+                      </div>
+
+                      <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 text-center">
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Precio por Token</p>
+                        <p className="text-sm font-bold text-slate-700 mt-0.5">${pkgInfo.unitPrice} CLP</p>
+                      </div>
+
+                      <ul className="space-y-2 text-xs font-semibold text-slate-500 pt-2">
+                        <li className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-emerald-500 text-[16px]">check_circle</span>
+                          <span>Acreditación instantánea</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-emerald-500 text-[16px]">check_circle</span>
+                          <span>Sin vencimiento mensual</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <button 
+                      onClick={() => handleSelectPackage(pkg)}
+                      className="w-full mt-6 py-3.5 bg-[#EE6C4D] hover:bg-[#d65f42] text-white font-extrabold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg focus:outline-none"
+                    >
+                      Comprar
+                    </button>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   const handleFinishCase = async () => {
@@ -2105,6 +1892,58 @@ const Dashboard = () => {
                 )}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Selección de Pasarela de Pago */}
+      {showProviderModal && selectedPackage && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200 font-sans">
+          <div className="bg-white rounded-[32px] border border-slate-100 shadow-2xl max-w-md w-full p-8 text-center space-y-6 animate-in zoom-in-95 duration-200 relative overflow-hidden">
+            <button 
+              onClick={() => setShowProviderModal(false)}
+              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors w-8 h-8 flex items-center justify-center aspect-square shrink-0 bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200"
+            >
+              <span className="material-symbols-outlined text-[18px] block">close</span>
+            </button>
+
+            <div className="space-y-2">
+              <span className="bg-[#EE6C4D]/10 text-[#EE6C4D] text-[11px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-full inline-block">
+                Método de Pago
+              </span>
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight leading-tight">
+                Paquete {selectedPackage.name} — ${parseInt(selectedPackage.price_clp).toLocaleString('es-CL')} CLP
+              </h3>
+              <p className="text-slate-500 text-sm font-medium">¿Con qué método deseas pagar?</p>
+            </div>
+
+            <div className="flex flex-col gap-3 pt-2">
+              <button
+                onClick={() => handlePayment('flow')}
+                disabled={loadingPayment}
+                className="w-full py-4 bg-sky-500 hover:bg-sky-600 text-white font-extrabold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <span className="material-symbols-outlined">payments</span>
+                <span>Pagar con Flow (Webpay)</span>
+              </button>
+              
+              <button
+                onClick={() => handlePayment('mercadopago')}
+                disabled={loadingPayment}
+                className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white font-extrabold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <span className="material-symbols-outlined">credit_card</span>
+                <span>Pagar con MercadoPago</span>
+              </button>
+            </div>
+
+            <button
+              onClick={() => setShowProviderModal(false)}
+              disabled={loadingPayment}
+              className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm transition-colors disabled:opacity-50"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       )}

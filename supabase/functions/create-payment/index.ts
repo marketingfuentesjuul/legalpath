@@ -57,6 +57,7 @@ serve(async (req) => {
         commerceOrder,
         amount: pkg.price_clp,
         subject: `LegalPath — Paquete ${pkg.name} (${pkg.tokens} tokens)`,
+        email: user.email!, // Real email of the user
         urlReturn: `${appUrl}/dashboard/tokens/confirmacion`,
         urlConfirmation: `${supabaseUrl}/functions/v1/payment-webhook?provider=flow`,
       })
@@ -89,11 +90,12 @@ serve(async (req) => {
 // ── FLOW ─────────────────────────────────────────────────────────────────────
 
 async function createFlowPayment({
-  commerceOrder, amount, subject, urlReturn, urlConfirmation
+  commerceOrder, amount, subject, email, urlReturn, urlConfirmation
 }: {
   commerceOrder: string
   amount: number
   subject: string
+  email: string
   urlReturn: string
   urlConfirmation: string
 }): Promise<string> {
@@ -106,7 +108,7 @@ async function createFlowPayment({
     commerceOrder,
     subject,
     amount: amount.toString(),
-    email: '',
+    email,
     urlReturn,
     urlConfirmation,
     paymentMethod: '9',  // todos los métodos disponibles

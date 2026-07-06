@@ -1203,38 +1203,28 @@ const Dashboard = () => {
     setLoadingPayment(true)
 
     try {
-      const { data: { session } } = await supabase.auth.getSession()
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-payment`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({
-            packageId: selectedPackage.id,
-            provider,
-          }),
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          packageId: selectedPackage.id,
+          provider,
         }
-      )
+      })
 
-      if (!response.ok) {
-        const text = await response.text()
-        throw new Error(`HTTP ${response.status}: ${text}`)
+      if (error) {
+        throw new Error(error.message || 'Error al ejecutar la función de pago')
       }
 
-      const { checkoutUrl, error } = await response.json()
+      const { checkoutUrl } = data
 
-      if (error || !checkoutUrl) {
-        throw new Error(error || 'No checkout URL received')
+      if (!checkoutUrl) {
+        throw new Error('No se recibió la URL de redirección')
       }
 
       // Redirigir al checkout de la pasarela
       window.location.href = checkoutUrl
     } catch (err) {
       console.error('Payment error:', err)
-      alert('Ocurrió un error al iniciar el pago. Por favor intenta nuevamente.')
+      alert('Ocurrió un error al iniciar el pago: ' + (err.message || err))
       setLoadingPayment(false)
     }
   }

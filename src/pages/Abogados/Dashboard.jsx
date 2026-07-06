@@ -1953,6 +1953,33 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+
+      {/* Pantalla de Carga de Pago */}
+      {loadingPayment && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center z-50 p-4 animate-in fade-in duration-300 font-sans">
+          <div className="relative flex flex-col items-center justify-center max-w-sm text-center space-y-6">
+            <div className="relative w-32 h-32 flex items-center justify-center">
+              {/* Spinner circular con color de la marca */}
+              <div className="absolute inset-0 border-[6px] border-[#EE6C4D]/10 border-t-[#EE6C4D] rounded-full animate-spin"></div>
+              {/* Logo en el centro */}
+              <img
+                src="/assets/images/logo-loading.png"
+                alt="LegalPath Logo"
+                className="w-18 h-18 object-contain relative z-10 animate-pulse"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-xl font-black text-white tracking-tight">
+                Cargando pasarela de pago...
+              </h3>
+              <p className="text-slate-400 text-xs font-semibold leading-relaxed px-4">
+                Estamos conectando con la pasarela segura. Por favor, no cierres ni recargues esta ventana.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

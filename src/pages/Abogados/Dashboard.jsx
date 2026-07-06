@@ -1927,7 +1927,7 @@ const Dashboard = () => {
               <button
                 onClick={() => handlePayment('flow')}
                 disabled={loadingPayment}
-                className="w-full py-4 bg-sky-500 hover:bg-sky-600 text-white font-extrabold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <span className="material-symbols-outlined">payments</span>
                 <span>Pagar con Flow (Webpay)</span>
@@ -1936,7 +1936,7 @@ const Dashboard = () => {
               <button
                 onClick={() => handlePayment('mercadopago')}
                 disabled={loadingPayment}
-                className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white font-extrabold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-4 bg-sky-500 hover:bg-sky-600 text-white font-extrabold rounded-2xl text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <span className="material-symbols-outlined">credit_card</span>
                 <span>Pagar con MercadoPago</span>

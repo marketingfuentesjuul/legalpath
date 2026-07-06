@@ -1211,7 +1211,20 @@ const Dashboard = () => {
       })
 
       if (error) {
-        throw new Error(error.message || 'Error al ejecutar la función de pago')
+        let detailedMsg = error.message
+        try {
+          if (error.context) {
+            const errBody = await error.context.json()
+            if (errBody && errBody.error) {
+              detailedMsg = errBody.error
+            } else if (errBody && typeof errBody === 'object') {
+              detailedMsg = JSON.stringify(errBody)
+            }
+          }
+        } catch (parseErr) {
+          console.error('Error parsing function error context:', parseErr)
+        }
+        throw new Error(detailedMsg || 'Error al ejecutar la función de pago')
       }
 
       const { checkoutUrl } = data

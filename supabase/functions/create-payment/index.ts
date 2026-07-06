@@ -55,9 +55,24 @@ serve(async (req) => {
       return new Response('Package not found', { status: 404 })
     }
 
-    // El commerceOrder identifica la compra en el webhook
-    // Formato: "LAWYER_UUID:PACKAGE_UUID"
-    const commerceOrder = `${user.id}:${pkg.id}`
+    // Crear registro de pago pendiente
+    const { data: paymentRecord, error: insertError } = await supabase
+      .from('payments')
+      .insert({
+        lawyer_id: user.id,
+        package_id: pkg.id,
+        amount: pkg.price_clp,
+        provider,
+        status: 'pending',
+      })
+      .select('id')
+      .single()
+
+    if (insertError || !paymentRecord) {
+      throw new Error(`Failed to create pending payment: ${insertError?.message}`)
+    }
+
+    const commerceOrder = paymentRecord.id
     const appUrl = Deno.env.get('APP_URL')!
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 

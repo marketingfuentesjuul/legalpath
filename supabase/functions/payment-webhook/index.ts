@@ -101,18 +101,40 @@ async function creditTokens({
   amountClp: number
   commerceOrder: string
 }) {
-  // commerceOrder formato: "LAWYER_UUID:PACKAGE_UUID"
-  const [lawyerId, packageId] = commerceOrder.split(':')
+  // Obtener lawyerId y packageId desde el commerceOrder
+  let lawyerId: string
+  let packageId: string
+
+  // Si contiene un dos puntos (":"), es el formato antiguo (para compatibilidad)
+  if (commerceOrder.includes(':')) {
+    const parts = commerceOrder.split(':')
+    lawyerId = parts[0]
+    packageId = parts[1]
+  } else {
+    // Es el formato nuevo (ID de la fila de pagos)
+    const { data: paymentRecord, error: selectError } = await supabase
+      .from('payments')
+      .select('lawyer_id, package_id')
+      .eq('id', commerceOrder)
+      .maybeSingle()
+
+    if (selectError || !paymentRecord) {
+      console.error(`Payment record with transaction ID ${commerceOrder} not found.`)
+      return
+    }
+    lawyerId = paymentRecord.lawyer_id
+    packageId = paymentRecord.package_id
+  }
 
   // IDEMPOTENCIA — no procesar el mismo pago dos veces
   const { data: existing } = await supabase
     .from('payments')
-    .select('id')
+    .select('id, status')
     .eq('provider_payment_id', providerPaymentId)
     .maybeSingle()
 
-  if (existing) {
-    console.log(`Payment ${providerPaymentId} already processed. Skipping.`)
+  if (existing && existing.status === 'succeeded') {
+    console.log(`Payment ${providerPaymentId} already processed as succeeded. Skipping.`)
     return
   }
 
@@ -127,22 +149,36 @@ async function creditTokens({
     throw new Error(`Package ${packageId} not found`)
   }
 
-  // 1. Registrar el pago
-  const { data: paymentRecord, error: paymentError } = await supabase
-    .from('payments')
-    .insert({
-      lawyer_id: lawyerId,
-      package_id: packageId,
-      amount: amountClp,
-      provider,
-      provider_payment_id: providerPaymentId,
-      status: 'succeeded', // En la DB anterior es 'succeeded' o 'completed', let's use 'succeeded' as in the mock and user checks.
-      tokens_granted: pkg.tokens
-    })
-    .select('id')
-    .single()
+  // 1. Registrar o actualizar el pago
+  if (!commerceOrder.includes(':')) {
+    // Formato nuevo: actualizar fila existente
+    const { error: updateError } = await supabase
+      .from('payments')
+      .update({
+        status: 'succeeded',
+        provider_payment_id: providerPaymentId,
+        tokens_granted: pkg.tokens,
+        amount: amountClp // update with confirmed amount
+      })
+      .eq('id', commerceOrder)
 
-  if (paymentError) throw paymentError
+    if (updateError) throw updateError
+  } else {
+    // Formato antiguo: crear nueva fila en pagos
+    const { error: paymentError } = await supabase
+      .from('payments')
+      .insert({
+        lawyer_id: lawyerId,
+        package_id: packageId,
+        amount: amountClp,
+        provider,
+        provider_payment_id: providerPaymentId,
+        status: 'succeeded',
+        tokens_granted: pkg.tokens
+      })
+
+    if (paymentError) throw paymentError
+  }
 
   // 2. Acreditar tokens en el ledger
   const { error: ledgerError } = await supabase

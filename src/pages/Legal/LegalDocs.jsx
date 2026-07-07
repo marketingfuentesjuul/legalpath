@@ -11,6 +11,13 @@ const docTabs = [
   { id: 'aviso-legal', label: 'Aviso Legal y Descargo' },
 ]
 
+const definitionTerms = new Set([
+  'Usuario', 'Cliente', 'Abogado', 'Administrador', 'Caso', 'Propuesta', 'Match', 'Token', 'RUT', 'PJUD', 'Cuenta', 'Servicio', 'Plataforma', 'Términos',
+  'Datos Personales', 'Datos Sensibles', 'Responsable del Tratamiento', 'Encargado del Tratamiento', 'Titular', 'Tratamiento',
+  'Flow', 'MercadoPago', 'IVA', 'Ledger', 'Reembolso', 'Pasarela de Pago', 'Contracargo', 'Aviso Legal', 'Descargo'
+])
+
+
 const LegalDocs = () => {
   const { docType } = useParams()
   const navigate = useNavigate()
@@ -117,6 +124,14 @@ const LegalDocs = () => {
           <strong className="font-extrabold uppercase tracking-wide text-xs block mb-2">Declaración Esencial:</strong>
           <span className="italic">{restOfText}</span>
         </p>
+      )
+    }
+
+    if (p.type === 'paragraph' && definitionTerms.has(p.text)) {
+      return (
+        <h4 key={idx} className="text-[#141b2c] font-black text-[15px] md:text-base mt-6 mb-1 tracking-tight font-headline">
+          {p.text}
+        </h4>
       )
     }
 

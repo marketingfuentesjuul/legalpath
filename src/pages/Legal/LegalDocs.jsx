@@ -85,7 +85,7 @@ const LegalDocs = () => {
         <h2 
           key={idx} 
           id={anchorId} 
-          className="text-xl md:text-2xl font-black text-on-background mt-10 mb-4 pb-2 border-b border-slate-100 scroll-mt-28 tracking-tight font-headline"
+          className="text-xl md:text-2xl font-black text-on-background mt-16 mb-6 pb-3 border-b border-slate-100 scroll-mt-28 tracking-tight font-headline"
         >
           {p.text}
         </h2>
@@ -94,7 +94,7 @@ const LegalDocs = () => {
     
     if (p.type === 'subsection') {
       return (
-        <h3 key={idx} className="text-base md:text-lg font-bold text-on-background mt-6 mb-3 tracking-tight font-headline">
+        <h3 key={idx} className="text-base md:text-lg font-bold text-on-background mt-10 mb-4 tracking-tight font-headline">
           {p.text}
         </h3>
       )
@@ -102,7 +102,7 @@ const LegalDocs = () => {
     
     if (p.type === 'list-item') {
       return (
-        <li key={idx} className="ml-6 list-disc text-secondary text-sm md:text-base leading-relaxed mb-2 font-body text-slate-600">
+        <li key={idx} className="ml-6 list-disc text-slate-600 text-sm md:text-[15px] lg:text-base leading-relaxed mb-3 pl-1 font-body">
           {p.text}
         </li>
       )
@@ -113,15 +113,15 @@ const LegalDocs = () => {
     if (p.text.startsWith('Declaración esencial:') || p.text.startsWith('Declaración Esencial:')) {
       const restOfText = p.text.replace(/^[Dd]eclaración\s+esencial:\s*/, '')
       return (
-        <p key={idx} className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-xl text-primary font-body text-sm md:text-base leading-relaxed mb-5 shadow-sm">
-          <strong className="font-extrabold uppercase tracking-wide text-xs block mb-1">Declaración Esencial:</strong>
+        <p key={idx} className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-2xl text-primary font-body text-sm md:text-base leading-relaxed mb-6 shadow-sm">
+          <strong className="font-extrabold uppercase tracking-wide text-xs block mb-2">Declaración Esencial:</strong>
           <span className="italic">{restOfText}</span>
         </p>
       )
     }
 
     return (
-      <p key={idx} className="text-secondary text-sm md:text-base leading-relaxed mb-4 font-body text-slate-600">
+      <p key={idx} className="text-slate-600 text-sm md:text-[15px] lg:text-base leading-relaxed mb-6 font-body">
         {p.text}
       </p>
     )
@@ -130,32 +130,32 @@ const LegalDocs = () => {
   if (!activeDoc) return null
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-16">
+    <div className="min-h-screen bg-slate-50/50 pt-24 pb-16">
       {/* Banner / Header */}
-      <div className="w-full bg-[#0F141E] text-white py-16 px-6 md:px-12 relative overflow-hidden mb-8">
+      <div className="w-full bg-[#0F141E] text-white py-20 px-6 md:px-12 relative overflow-hidden mb-12">
         {/* Decorative background shapes */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-2xl pointer-events-none -ml-16 -mb-16"></div>
 
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight font-headline">
+        <div className="max-w-[1440px] mx-auto text-center relative z-10 px-4">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight font-headline">
             Centro de Documentación Legal
           </h1>
-          <p className="text-slate-400 mt-4 text-sm md:text-lg max-w-2xl mx-auto font-body font-light">
-            Consulta los términos y condiciones, políticas de privacidad, reglas de uso de la plataforma y devoluciones.
+          <p className="text-slate-400 mt-5 text-sm md:text-xl max-w-3xl mx-auto font-body font-light leading-relaxed">
+            Consulta los términos y condiciones, políticas de privacidad, reglas de uso de la plataforma y devoluciones de LegalPath.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Mobile Navigation Dropdown */}
-        <div className="block md:hidden mb-6">
+        <div className="block md:hidden mb-8">
           <label htmlFor="doc-selector" className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
             Documento Activo
           </label>
           <select
             id="doc-selector"
-            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none shadow-sm text-on-background font-medium"
+            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none shadow-sm text-on-background font-medium"
             value={activeTabId}
             onChange={(e) => navigate(`/legal/${e.target.value}`)}
           >
@@ -165,25 +165,25 @@ const LegalDocs = () => {
           </select>
         </div>
 
-        {/* 3-Column Layout */}
-        <div className="flex flex-col md:flex-row gap-8">
+        {/* 3-Column Layout with generous gap */}
+        <div className="flex flex-col md:flex-row gap-10 lg:gap-14">
           {/* Left Sidebar: Document List (Desktop only) */}
-          <aside className="hidden md:block w-full md:w-64 lg:w-72 flex-shrink-0">
-            <div className="sticky top-28 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+          <aside className="hidden md:block w-full md:w-72 lg:w-80 flex-shrink-0">
+            <div className="sticky top-28 bg-white rounded-3xl border border-slate-100/70 p-6 shadow-[0_8px_30px_rgba(20,27,44,0.02)]">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5 px-3">
                 Documentos
               </h3>
-              <nav className="flex flex-col gap-1.5">
+              <nav className="flex flex-col gap-2">
                 {docTabs.map((tab) => {
                   const isActive = tab.id === activeTabId
                   return (
                     <Link
                       key={tab.id}
                       to={`/legal/${tab.id}`}
-                      className={`text-sm py-3 px-4 rounded-xl font-bold tracking-tight transition-all duration-200 flex items-center justify-between ${
+                      className={`text-[14px] py-3.5 px-4 rounded-xl font-bold tracking-tight transition-all duration-200 flex items-center justify-between border-l-4 ${
                         isActive
-                          ? 'bg-primary text-white shadow-md shadow-primary/10'
-                          : 'text-slate-600 hover:bg-slate-50 hover:text-on-background'
+                          ? 'bg-primary/5 text-primary border-primary shadow-sm'
+                          : 'text-slate-500 border-transparent hover:bg-slate-50/80 hover:text-on-background'
                       }`}
                     >
                       <span>{tab.label}</span>
@@ -199,14 +199,14 @@ const LegalDocs = () => {
             </div>
           </aside>
 
-          {/* Middle Column: Document Content */}
-          <main className="flex-1 bg-white rounded-2xl border border-slate-100 p-6 md:p-10 shadow-sm min-w-0">
-            <div className="mb-8 border-b border-slate-100 pb-6">
-              <h1 className="text-2xl md:text-3xl font-black text-on-background tracking-tight font-headline mb-3">
+          {/* Middle Column: Document Content with generous padding */}
+          <main className="flex-1 bg-white rounded-3xl border border-slate-100/70 p-8 md:p-14 lg:p-20 shadow-[0_8px_30px_rgba(20,27,44,0.02)] min-w-0">
+            <div className="mb-10 border-b border-slate-100 pb-8">
+              <h1 className="text-3xl md:text-4xl font-black text-on-background tracking-tight font-headline mb-4 leading-tight">
                 {activeDoc.title}
               </h1>
               {activeDoc.version && (
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-500 text-xs font-bold font-body">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-500 text-xs font-bold font-body">
                   <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                   {activeDoc.version}
                 </div>
@@ -220,12 +220,12 @@ const LegalDocs = () => {
 
           {/* Right Sidebar: Table of Contents (Desktop only) */}
           {sections.length > 0 && (
-            <aside className="hidden lg:block w-52 xl:w-60 flex-shrink-0">
-              <div className="sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-4">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+            <aside className="hidden xl:block w-64 flex-shrink-0">
+              <div className="sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-6">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">
                   En esta sección
                 </h4>
-                <ul className="flex flex-col gap-2 border-l border-slate-100 pl-4 text-xs">
+                <ul className="flex flex-col gap-2 border-l border-slate-200/60 pl-4 text-[13px]">
                   {sections.map((sec) => {
                     const isSectionActive = activeSection === sec.id
                     return (

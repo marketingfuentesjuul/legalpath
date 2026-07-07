@@ -15,6 +15,7 @@ import { useAuth } from './context/AuthContext'
 import ScrollToTop from './components/layout/ScrollToTop'
 import PageTransition from './components/layout/PageTransition'
 import HelpWidget from './components/ui/HelpWidget'
+import LegalDocs from './pages/Legal/LegalDocs'
 
 import AdminGuard from './components/AdminGuard'
 import LawyerGuard from './components/LawyerGuard'
@@ -56,6 +57,10 @@ function App() {
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
             <Route path="/abogados" element={<PageTransition><Abogados /></PageTransition>} />
             <Route path="/publicar-caso" element={<PageTransition><PublicarCaso /></PageTransition>} />
+            <Route path="/legal/:docType" element={<PageTransition><LegalDocs /></PageTransition>} />
+            <Route path="/legal" element={<Navigate to="/legal/terminos" replace />} />
+            <Route path="/terminos" element={<Navigate to="/legal/terminos" replace />} />
+            <Route path="/privacidad" element={<Navigate to="/legal/privacidad" replace />} />
           </Route>
           <Route path="/auth/login" element={<PageTransition><Login /></PageTransition>} />
           <Route path="/auth/perfil" element={<PageTransition><ProtectedRoute><Perfil /></ProtectedRoute></PageTransition>} />

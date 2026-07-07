@@ -38,8 +38,8 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-8 lg:px-12 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
         <p>© 2024 LegalPath. Todos los derechos reservados.</p>
         <div className="flex gap-6">
-          <a href="#" className="hover:text-white transition-colors">Términos y Condiciones</a>
-          <a href="#" className="hover:text-white transition-colors">Política de Privacidad</a>
+          <Link to="/legal/terminos" className="hover:text-white transition-colors">Términos y Condiciones</Link>
+          <Link to="/legal/privacidad" className="hover:text-white transition-colors">Política de Privacidad</Link>
         </div>
       </div>
     </footer>

@@ -197,7 +197,7 @@ const Registro = () => {
             <div className="flex items-start gap-2 pt-2">
               <input id="terms" name="terms" type="checkbox" required checked={form.terms} onChange={handleChange} className="mt-1 h-4 w-4 bg-slate-50 border-slate-300 rounded text-[#EE6C4D] focus:ring-[#EE6C4D]" />
               <label htmlFor="terms" className="text-[12px] text-secondary leading-snug">
-                Al registrarme, acepto los <a href="#" className="font-bold text-[#EE6C4D] hover:underline">Términos de Servicio</a> y la <a href="#" className="font-bold text-[#EE6C4D] hover:underline">Política de Privacidad</a> de LegalPath. Confirmo que soy un profesional legal debidamente habilitado.
+                Al registrarme, acepto los <Link to="/legal/terminos" className="font-bold text-[#EE6C4D] hover:underline">Términos de Servicio</Link> y la <Link to="/legal/privacidad" className="font-bold text-[#EE6C4D] hover:underline">Política de Privacidad</Link> de LegalPath. Confirmo que soy un profesional legal debidamente habilitado.
               </label>
             </div>
             <button 

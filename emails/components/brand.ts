@@ -54,7 +54,7 @@ export const sender = {
 export const urls = {
   base:        process.env.APP_URL || 'https://legalpath.cl',
   dashboard:   `${process.env.APP_URL || 'https://legalpath.cl'}/dashboard`,
-  terminos:    `${process.env.APP_URL || 'https://legalpath.cl'}/terminos`,
-  privacidad:  `${process.env.APP_URL || 'https://legalpath.cl'}/privacidad`,
+  terminos:    `${process.env.APP_URL || 'https://legalpath.cl'}/legal/terminos`,
+  privacidad:  `${process.env.APP_URL || 'https://legalpath.cl'}/legal/privacidad`,
   tokens:      `${process.env.APP_URL || 'https://legalpath.cl'}/dashboard/tokens`,
 } as const

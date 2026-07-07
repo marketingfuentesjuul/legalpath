@@ -165,25 +165,25 @@ const LegalDocs = () => {
           </select>
         </div>
 
-        {/* 3-Column Layout with generous gap */}
-        <div className="flex flex-col md:flex-row gap-10 lg:gap-14">
+        {/* 3-Column Layout with optimized spacing */}
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-10">
           {/* Left Sidebar: Document List (Desktop only) */}
-          <aside className="hidden md:block w-full md:w-72 lg:w-80 flex-shrink-0">
-            <div className="sticky top-28 bg-white rounded-3xl border border-slate-100/70 p-6 shadow-[0_8px_30px_rgba(20,27,44,0.02)]">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5 px-3">
+          <aside className="hidden md:block w-full md:w-64 lg:w-72 flex-shrink-0">
+            <div className="sticky top-28 bg-white rounded-3xl border border-slate-100/70 p-5 shadow-[0_8px_30px_rgba(20,27,44,0.02)]">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-3">
                 Documentos
               </h3>
-              <nav className="flex flex-col gap-2">
+              <nav className="flex flex-col gap-1.5">
                 {docTabs.map((tab) => {
                   const isActive = tab.id === activeTabId
                   return (
                     <Link
                       key={tab.id}
                       to={`/legal/${tab.id}`}
-                      className={`text-[14px] py-3.5 px-4 rounded-xl font-bold tracking-tight transition-all duration-200 flex items-center justify-between border-l-4 ${
+                      className={`text-[14px] py-3 px-4 rounded-xl font-bold tracking-tight transition-all duration-200 flex items-center justify-between ${
                         isActive
-                          ? 'bg-primary/5 text-primary border-primary shadow-sm'
-                          : 'text-slate-500 border-transparent hover:bg-slate-50/80 hover:text-on-background'
+                          ? 'bg-primary text-white shadow-md shadow-primary/20'
+                          : 'text-slate-600 hover:bg-slate-50 hover:text-on-background'
                       }`}
                     >
                       <span>{tab.label}</span>
@@ -199,8 +199,8 @@ const LegalDocs = () => {
             </div>
           </aside>
 
-          {/* Middle Column: Document Content with generous padding */}
-          <main className="flex-1 bg-white rounded-3xl border border-slate-100/70 p-8 md:p-14 lg:p-20 shadow-[0_8px_30px_rgba(20,27,44,0.02)] min-w-0">
+          {/* Middle Column: Document Content (Wider, optimized padding) */}
+          <main className="flex-1 bg-white rounded-3xl border border-slate-100/70 p-6 md:p-10 lg:p-12 shadow-[0_8px_30px_rgba(20,27,44,0.02)] min-w-0">
             <div className="mb-10 border-b border-slate-100 pb-8">
               <h1 className="text-3xl md:text-4xl font-black text-on-background tracking-tight font-headline mb-4 leading-tight">
                 {activeDoc.title}
@@ -218,9 +218,9 @@ const LegalDocs = () => {
             </div>
           </main>
 
-          {/* Right Sidebar: Table of Contents (Desktop only) */}
+          {/* Right Sidebar: Table of Contents (Desktop only, slightly narrower) */}
           {sections.length > 0 && (
-            <aside className="hidden xl:block w-64 flex-shrink-0">
+            <aside className="hidden xl:block w-52 xl:w-56 flex-shrink-0">
               <div className="sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-6">
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">
                   En esta sección

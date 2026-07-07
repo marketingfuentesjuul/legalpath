@@ -54,15 +54,9 @@ export default function TokenConfirmacion() {
         <div className="flex flex-col gap-3">
           <button
             onClick={() => navigate('/dashboard')}
-            className="w-full bg-[#1B3A6B] text-white py-4 rounded-2xl font-bold hover:bg-[#15305a] transition-all shadow-md hover:shadow-lg"
+            className="w-full bg-[#EE6C4D] text-white py-4 rounded-2xl font-bold hover:bg-[#d55e42] transition-all shadow-md hover:shadow-lg"
           >
-            Ver casos disponibles
-          </button>
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="w-full text-slate-500 py-2 text-sm font-bold hover:text-slate-700 transition-colors"
-          >
-            Volver a Dashboard
+            Volver al dashboard
           </button>
         </div>
 

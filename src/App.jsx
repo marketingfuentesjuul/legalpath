@@ -67,8 +67,8 @@ function App() {
           <Route path="/auth/registro" element={<PageTransition><Registro /></PageTransition>} />
           <Route path="/auth/validacion" element={<PageTransition><Validacion /></PageTransition>} />
           <Route path="/dashboard" element={<PageTransition><LawyerGuard><Dashboard /></LawyerGuard></PageTransition>} />
-          <Route path="/dashboard/tokens/confirmacion" element={<PageTransition><TokenConfirmacion /></PageTransition>} />
-          <Route path="/dashboard/tokens/error" element={<PageTransition><TokenError /></PageTransition>} />
+          <Route path="/dashboard/tokens/confirmacion" element={<PageTransition><LawyerGuard><TokenConfirmacion /></LawyerGuard></PageTransition>} />
+          <Route path="/dashboard/tokens/error" element={<PageTransition><LawyerGuard><TokenError /></LawyerGuard></PageTransition>} />
 
           <Route path="/admin/login" element={<PageTransition><AdminLogin /></PageTransition>} />
 

@@ -57,7 +57,7 @@ function App() {
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
             <Route path="/abogados" element={<PageTransition><Abogados /></PageTransition>} />
             <Route path="/publicar-caso" element={<PageTransition><PublicarCaso /></PageTransition>} />
-            <Route path="/legal/:docType" element={<PageTransition><LegalDocs /></PageTransition>} />
+            <Route path="/legal/:docType" element={<LegalDocs />} />
             <Route path="/legal" element={<Navigate to="/legal/terminos" replace />} />
             <Route path="/terminos" element={<Navigate to="/legal/terminos" replace />} />
             <Route path="/privacidad" element={<Navigate to="/legal/privacidad" replace />} />

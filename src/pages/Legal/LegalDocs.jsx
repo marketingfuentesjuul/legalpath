@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { legalDocuments } from './legalData'
 
 const docTabs = [
@@ -195,18 +196,22 @@ const LegalDocs = () => {
                     <Link
                       key={tab.id}
                       to={`/legal/${tab.id}`}
-                      className={`text-[14px] py-3 px-4 rounded-xl font-bold tracking-tight transition-all duration-200 flex items-center justify-between ${
-                        isActive
-                          ? 'bg-primary text-white shadow-md shadow-primary/20'
-                          : 'text-slate-600 hover:bg-slate-50 hover:text-on-background'
-                      }`}
+                      className="text-[14px] py-3.5 px-4 rounded-xl font-bold tracking-tight transition-all duration-200 flex items-center justify-between relative"
+                      style={{ color: isActive ? '#ffffff' : '#475569' }}
                     >
-                      <span>{tab.label}</span>
                       {isActive && (
-                        <span className="material-symbols-outlined text-[16px] font-bold">
-                          chevron_right
-                        </span>
+                        <motion.div
+                          layoutId="activeDocBg"
+                          className="absolute inset-0 bg-primary rounded-xl shadow-md shadow-primary/20 -z-10"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
                       )}
+                      <span className="relative z-10">{tab.label}</span>
+                      <span className={`material-symbols-outlined text-[16px] font-bold relative z-10 transition-colors duration-200 ${
+                        isActive ? 'text-white' : 'text-slate-400'
+                      }`}>
+                        chevron_right
+                      </span>
                     </Link>
                   )
                 })}

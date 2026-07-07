@@ -1,56 +1,58 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { Resend } from 'npm:resend'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { sendEmail } from '../_shared/email.ts'
 
-const resend = new Resend(Deno.env.get('RESEND_API_KEY'))
-const FROM_EMAIL = 'hola@legalpath.cl'  // cambiar por dominio real
+const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 serve(async (req) => {
   try {
     const { lawyer_id, status, rejection_reason, email } = await req.json()
 
-    if (!email || !status) {
+    if (!email || !status || !lawyer_id) {
       return new Response(JSON.stringify({ error: 'Missing fields' }), { status: 400 })
     }
 
+    // Obtener los datos del perfil del abogado para personalizar el correo
+    const { data: profile, error: profileError } = await supabase
+      .from('lawyer_profiles')
+      .select('first_name, last_name_paternal')
+      .eq('id', lawyer_id)
+      .maybeSingle()
+
+    if (profileError) {
+      console.warn('Error fetching lawyer profile:', profileError)
+    }
+
+    const firstName = profile?.first_name || 'Abogado'
+    const lastName = profile?.last_name_paternal || ''
+
     let subject = ''
-    let html = ''
+    let templateName = ''
+    let variables: Record<string, string | number> = {
+      firstName,
+      lastName,
+      email,
+    }
 
     if (status === 'approved') {
       subject = '¡Tu perfil ha sido aprobado en LegalPath!'
-      html = `
-        <h2>¡Bienvenido a LegalPath!</h2>
-        <p>Tu perfil ha sido revisado y aprobado por nuestro equipo.</p>
-        <p>A partir de ahora puedes acceder a tu dashboard, comprar tokens y postularte a casos disponibles.</p>
-        <a href="https://legalpath.cl/dashboard" 
-           style="background:#EE6C4D;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:16px;">
-          Acceder al Dashboard
-        </a>
-        <p style="margin-top:24px;color:#666;font-size:14px;">
-          Si tienes dudas, responde este correo y te ayudamos.
-        </p>
-      `
+      templateName = 'aprobacionAbogado'
     } else if (status === 'rejected') {
       subject = 'Actualización sobre tu solicitud en LegalPath'
-      html = `
-        <h2>Actualización de tu perfil</h2>
-        <p>Hemos revisado tu solicitud y por el momento no podemos aprobar tu perfil.</p>
-        ${rejection_reason ? `<p><strong>Motivo:</strong> ${rejection_reason}</p>` : ''}
-        <p>Puedes corregir la información y volver a enviar tu solicitud desde tu perfil.</p>
-        <a href="https://legalpath.cl/perfil" 
-           style="background:#EE6C4D;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:16px;">
-          Actualizar mi perfil
-        </a>
-        <p style="margin-top:24px;color:#666;font-size:14px;">
-          Si crees que esto es un error, responde este correo.
-        </p>
-      `
+      templateName = 'rechazoAbogado'
+      variables.rejectionReason = rejection_reason || 'No se especificó un motivo. Por favor revisa tus documentos.'
+    } else {
+      return new Response(JSON.stringify({ error: 'Invalid status' }), { status: 400 })
     }
 
-    await resend.emails.send({
-      from: FROM_EMAIL,
+    await sendEmail({
       to: email,
       subject,
-      html,
+      templateName,
+      variables,
     })
 
     return new Response(JSON.stringify({ success: true }), { status: 200 })

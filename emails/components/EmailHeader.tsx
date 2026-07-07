@@ -1,6 +1,6 @@
 // emails/components/EmailHeader.tsx
-import { Section, Row, Column, Text, Hr } from '@react-email/components'
-import { colors, fonts } from './brand'
+import { Section, Row, Column, Text, Hr, Img } from '@react-email/components'
+import { colors, fonts, urls } from './brand'
 
 interface EmailHeaderProps {
   accentColor?: string   // color del divisor inferior — por defecto gold
@@ -14,27 +14,17 @@ export function EmailHeader({ accentColor = colors.gold }: EmailHeaderProps) {
       padding: '24px 32px 20px',
       borderTop: `4px solid ${colors.navy}`,
     }}>
-      {/* Logo textual */}
-      <Text style={{
-        fontFamily: fonts.sans,
-        fontSize: '22px',
-        fontWeight: 700,
-        color: colors.navy,
-        margin: 0,
-        letterSpacing: '-0.5px',
-      }}>
-        LegalPath
-      </Text>
-      <Text style={{
-        fontFamily: fonts.sans,
-        fontSize: '11px',
-        color: colors.textSecondary,
-        margin: '2px 0 0',
-        letterSpacing: '1.5px',
-        textTransform: 'uppercase',
-      }}>
-        Plataforma LegalTech Chilena
-      </Text>
+      {/* Logo corporativo */}
+      <Img
+        src={`${urls.base}/assets/images/logo-light.png`}
+        alt="LegalPath Logo"
+        width="140"
+        style={{
+          display: 'block',
+          margin: 0,
+        }}
+      />
+
       {/* Divisor con color de acento */}
       <Hr style={{
         borderColor: accentColor,

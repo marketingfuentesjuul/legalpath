@@ -1,6 +1,7 @@
 // supabase/functions/payment-webhook/index.ts
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { sendEmail } from '../_shared/email.ts'
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -195,6 +196,37 @@ async function creditTokens({
   if (ledgerError) throw ledgerError
 
   console.log(`✅ Credited ${pkg.tokens} tokens to lawyer ${lawyerId} via ${provider}`)
+
+  // 3. Enviar correo de confirmación de compra
+  try {
+    const { data: profile } = await supabase
+      .from('lawyer_profiles')
+      .select('first_name, last_name_paternal, email')
+      .eq('id', lawyerId)
+      .maybeSingle()
+
+    if (profile && profile.email) {
+      await sendEmail({
+        to: profile.email,
+        subject: `Confirmación de compra: ${pkg.name} — LegalPath`,
+        templateName: 'compraTokens',
+        variables: {
+          firstName: profile.first_name || 'Abogado',
+          lastName: profile.last_name_paternal || '',
+          email: profile.email,
+          pkgName: pkg.name,
+          tokensCount: pkg.tokens,
+          amountClp: amountClp,
+          provider: provider === 'mercadopago' ? 'Mercado Pago' : 'Flow'
+        }
+      })
+      console.log(`✉️ Purchase confirmation email sent to ${profile.email}`)
+    } else {
+      console.warn(`Could not send purchase confirmation: profile or email not found for lawyer ${lawyerId}`)
+    }
+  } catch (emailErr) {
+    console.error('Error sending purchase confirmation email:', emailErr)
+  }
 }
 
 // ── UTILIDAD HMAC-SHA256 ─────────────────────────────────────────────────────

@@ -73,7 +73,10 @@ serve(async (req) => {
     }
 
     const commerceOrder = paymentRecord.id
-    const appUrl = Deno.env.get('APP_URL')!
+    let appUrl = Deno.env.get('APP_URL')!
+    if (provider === 'mercadopago' && (!appUrl || !appUrl.startsWith('https://'))) {
+      appUrl = 'https://legalpath.cl'
+    }
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 
     let checkoutUrl: string

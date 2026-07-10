@@ -36,8 +36,8 @@ BEGIN
   -- Solo actuar si el verification_status realmente cambió
   IF OLD.verification_status IS DISTINCT FROM NEW.verification_status THEN
     
-    -- Solo enviar email si el nuevo estado es una decisión final
-    IF NEW.verification_status IN ('approved', 'rejected') THEN
+    -- Solo enviar email si el nuevo estado es una decisión final o envío a revisión
+    IF NEW.verification_status IN ('approved', 'rejected', 'pending') THEN
       v_supabase_url := current_setting('app.supabase_url', true);
       v_service_role_key := current_setting('app.service_role_key', true);
 

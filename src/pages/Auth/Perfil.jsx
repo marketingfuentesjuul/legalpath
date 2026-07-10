@@ -104,6 +104,27 @@ const Perfil = () => {
             setAvatarPreview(profileData.avatar_url)
           }
         } else {
+          // Si no existe perfil de abogado, pero el usuario está ingresando aquí,
+          // nos aseguramos de configurar su rol de abogado y crear el registro base.
+          try {
+            if (user.user_metadata?.role !== 'lawyer') {
+              await supabase.auth.updateUser({
+                data: { role: 'lawyer' }
+              })
+            }
+            await supabase.from('client_profiles').delete().eq('id', user.id)
+            await supabase.from('lawyer_profiles').upsert({
+              id: user.id,
+              first_name: sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || 'Sin nombre',
+              last_name: sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || '',
+              email: user.email,
+              role: 'lawyer',
+              verification_status: 'pending'
+            })
+          } catch (migrateErr) {
+            console.error('Error al inicializar el perfil de abogado:', migrateErr)
+          }
+
           // Pre-cargar desde sessionStorage o metadatos de usuario
           setFirstName(sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || '')
           setLastNamePaternal(sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || '')

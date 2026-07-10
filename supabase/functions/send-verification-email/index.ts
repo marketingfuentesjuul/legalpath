@@ -44,6 +44,9 @@ serve(async (req) => {
       subject = 'Actualización sobre tu solicitud en LegalPath'
       templateName = 'rechazoAbogado'
       variables.rejectionReason = rejection_reason || 'No se especificó un motivo. Por favor revisa tus documentos.'
+    } else if (status === 'pending' || status === 'submitted') {
+      subject = 'Recibimos tus antecedentes 📄'
+      templateName = 'abogadoPostulacionRevision'
     } else {
       return new Response(JSON.stringify({ error: 'Invalid status' }), { status: 400 })
     }

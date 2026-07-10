@@ -201,6 +201,22 @@ export default function LawyerReview() {
 
       if (error) throw error;
 
+      // Invocar la Edge Function de correos directamente (by-pass al trigger de la DB si no tiene las URL settings configuradas)
+      if (action === 'approve' || action === 'reject') {
+        try {
+          await supabase.functions.invoke('send-verification-email', {
+            body: {
+              lawyer_id: lawyerId,
+              status: action === 'approve' ? 'approved' : 'rejected',
+              rejection_reason: action === 'reject' ? rejectionReason : null,
+              email: lawyer.email
+            }
+          });
+        } catch (emailErr) {
+          console.error('Error invoking send-verification-email edge function:', emailErr);
+        }
+      }
+
       const successTitle = action === 'approve'
         ? 'Abogado Aprobado'
         : action === 'reject'

@@ -1,5 +1,7 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { supabase } from './lib/supabaseClient'
 import MainLayout from './components/layout/MainLayout'
 import Home from './pages/Home/Home'
 import PublicarCaso from './pages/PublicarCaso/PublicarCaso'
@@ -47,6 +49,46 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { user, loading } = useAuth()
+
+  useEffect(() => {
+    if (loading || !user) return
+
+    const guestPages = ['/', '/auth/login', '/auth/registro']
+    if (guestPages.includes(location.pathname)) {
+      const handleRedirect = async () => {
+        const role = user.user_metadata?.role || 'lawyer'
+
+        if (role === 'lawyer') {
+          const { data: profile } = await supabase
+            .from('lawyer_profiles')
+            .select('verification_status')
+            .eq('id', user.id)
+            .maybeSingle()
+
+          if (!profile) {
+            navigate('/auth/perfil', { replace: true })
+          } else if (profile.verification_status === 'approved') {
+            navigate('/dashboard', { replace: true })
+          } else {
+            navigate('/auth/validacion', { replace: true })
+          }
+        } else {
+          const { data: profile } = await supabase
+            .from('client_profiles')
+            .select('id')
+            .eq('id', user.id)
+            .maybeSingle()
+
+          if (profile) {
+            navigate('/cliente', { replace: true })
+          }
+        }
+      }
+      handleRedirect()
+    }
+  }, [user, loading, location.pathname, navigate])
 
   return (
     <>

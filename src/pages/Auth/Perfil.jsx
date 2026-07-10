@@ -231,6 +231,9 @@ const Perfil = () => {
       }
 
       // 2. Preparar datos de perfil
+      const isSubmittingForReview = !existingProfile || existingProfile?.verification_status === 'rejected'
+      const statusToSet = isSubmittingForReview ? 'pending' : (existingProfile?.verification_status || 'pending')
+
       const lawyerProfileData = {
         id: user.id,
         first_name: firstName,
@@ -245,7 +248,7 @@ const Perfil = () => {
         city: city,
         colegio_id: colegioId,
         specialties: specialties,
-        verification_status: existingProfile?.verification_status || 'pending',
+        verification_status: statusToSet,
         updated_at: new Date()
       }
       if (avatarUrl) lawyerProfileData.avatar_url = avatarUrl
@@ -291,9 +294,24 @@ const Perfil = () => {
       sessionStorage.removeItem('lp_firstName')
       sessionStorage.removeItem('lp_lastName')
       sessionStorage.removeItem('lp_email')
+
+      // 5. Enviar correo de "antecedentes recibidos" si es la primera postulación o una re-postulación
+      if (isSubmittingForReview) {
+        try {
+          await supabase.functions.invoke('send-verification-email', {
+            body: {
+              lawyer_id: user.id,
+              status: 'pending',
+              email: email
+            }
+          })
+        } catch (emailErr) {
+          console.error('Error invoking send-verification-email edge function:', emailErr)
+        }
+      }
       
-      // Redirección inteligente: si ya existía perfil, volver al dashboard. Si no, a validación.
-      if (existingProfile) {
+      // Redirección inteligente: si ya existía perfil aprobado, volver al dashboard. Si no, a validación.
+      if (statusToSet === 'approved') {
         navigate('/dashboard')
       } else {
         navigate('/auth/validacion')

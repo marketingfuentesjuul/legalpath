@@ -79,7 +79,8 @@ BEGIN
         'variables',    jsonb_build_object(
           'firstName',  COALESCE(v_first_name, 'Cliente'),
           'caseTitle',  NEW.title,
-          'caseId',     NEW.id
+          'caseId',     NEW.id,
+          'rejectionReason', COALESCE(substring(NEW.polished_description from 'Rechazado: (.*)'), '')
         )
       )
     );
@@ -223,7 +224,7 @@ DECLARE
   v_lawyer_name TEXT;
   v_client_name TEXT;
 BEGIN
-  IF OLD.status IS DISTINCT FROM NEW.status AND NEW.status = 'cerrado' THEN
+  IF OLD.status IS DISTINCT FROM NEW.status AND NEW.status = 'finalizado' THEN
     SELECT lp.email, lp.first_name, cp.first_name
     INTO v_lawyer_email, v_lawyer_name, v_client_name
     FROM proposals p
@@ -573,7 +574,7 @@ SELECT cron.schedule(
   WITH sent_cases AS (
     UPDATE cases
     SET survey_sent_at = NOW()
-    WHERE status = 'cerrado'
+    WHERE status = 'finalizado'
       AND closed_at <= NOW() - INTERVAL '24 hours'
       AND survey_sent_at IS NULL
     RETURNING id, title, client_email, user_id

@@ -47,7 +47,7 @@ export default function ClienteCasoAprobado({
           color: colors.textPrimary,
           margin: '0 0 20px',
         }}>
-          Hola {firstName}, tenemos excelentes noticias. Tu caso <strong>"{caseTitle}"</strong> ha sido verificado por nuestros curadores y ya se encuentra **publicado y activo** en el marketplace.
+          Hola {firstName}, tenemos excelentes noticias. Tu caso <strong>"{caseTitle}"</strong> ha sido verificado por nuestros especialistas y ya se encuentra <strong>publicado y activo</strong> en el marketplace.
         </Text>
 
         <Text style={{
@@ -67,7 +67,7 @@ export default function ClienteCasoAprobado({
             href={`${urls.base}/casos/${caseId}`}
             color={colors.client}
           >
-            Ver estado de mi caso
+            Ir a mi panel de LegalPath
           </EmailButton>
         </Section>
 

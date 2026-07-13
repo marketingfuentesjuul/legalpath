@@ -29,7 +29,7 @@ serve(async (req) => {
       else if (templateName === 'abogadoPostulacionRevision') finalSubject = 'Recibimos tus antecedentes 📄'
       else if (templateName === 'bienvenidaAbogado') finalSubject = '¡Bienvenido a LegalPath! 🚀'
       else if (templateName === 'clienteBienvenida') finalSubject = 'Tu camino legal comienza aquí 🚀'
-      else if (templateName === 'clienteRecepcionCaso') finalSubject = 'Recibimos tu caso en LegalPath 📄'
+      else if (templateName === 'clienteRecepcionCaso') finalSubject = 'Tu caso está en evaluación 📄'
       else if (templateName === 'clienteCasoAprobado') finalSubject = '¡Tu caso ha sido aprobado! 🎉'
       else if (templateName === 'clienteCasoRechazado') finalSubject = 'Actualización sobre tu caso en LegalPath'
       else if (templateName === 'clienteNuevaPropuesta') finalSubject = 'Recibiste una nueva propuesta 💼'

@@ -54,7 +54,7 @@ const PublicarCaso = () => {
   const titles = {
     1: { main: <>Describe con <span className="text-[#1ECCA7]">detalle</span> tu caso</>, sub: 'Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a entender tu caso.' },
     2: { main: <>Crea tu <span className="text-[#1ECCA7]">cuenta</span></>, sub: 'Regístrate para publicar tu caso y acceder a todas las funciones de LegalPath.' },
-    3: { main: <>Caso <span className="text-[#1ECCA7]">publicado</span></>, sub: 'Tu caso ha sido publicado exitosamente. Pronto recibirás propuestas de abogados especializados.' }
+    3: { main: <>Caso en <span className="text-[#1ECCA7]">evaluación</span></>, sub: 'Tu caso ha sido recibido y se encuentra en evaluación. Apenas pase este proceso, será publicado de forma inmediata.' }
   }
 
   useEffect(() => {
@@ -613,9 +613,9 @@ const PublicarCaso = () => {
                   <span className="material-symbols-outlined text-[#1ECCA7] text-[32px]" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                 </div>
                 <div className="space-y-3 max-w-lg">
-                  <h2 className="text-xl md:text-[28px] font-extrabold text-on-background tracking-tight font-headline leading-tight">¡Tu caso ha sido <span className="text-[#1ECCA7]">publicado</span>!</h2>
+                  <h2 className="text-xl md:text-[28px] font-extrabold text-on-background tracking-tight font-headline leading-tight">¡Tu caso está en <span className="text-[#1ECCA7]">evaluación</span>!</h2>
                   <p className="text-[14px] text-slate-500 leading-relaxed font-medium">
-                    Muchas gracias por haber publicado tu caso con nosotros. Te notificaremos vía correo electrónico cuando un abogado haya postulado para poder llevar tu caso.
+                    Tu caso ha sido recibido con éxito y actualmente está siendo revisado por nuestro equipo. Apenas pase este proceso de evaluación, será publicado de forma inmediata para que los abogados especializados puedan enviar sus propuestas.
                   </p>
                 </div>
                 <div className="bg-[#f0fdf9] border border-[#1ECCA7]/20 rounded-2xl px-6 py-3 inline-flex items-center gap-3">
@@ -623,9 +623,9 @@ const PublicarCaso = () => {
                   <p className="text-[13px] text-[#006b56] font-semibold">Las notificaciones llegarán a: <span className="text-[#141b2c]">{confirmedEmail}</span></p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <Link to="/" className="mint-gradient text-white px-7 py-3.5 rounded-full font-bold shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all text-[15px] flex items-center justify-center gap-2">
-                    Volver al inicio
-                    <span className="material-symbols-outlined text-[18px]">home</span>
+                  <Link to="/cliente" className="mint-gradient text-white px-7 py-3.5 rounded-full font-bold shadow-lg hover:shadow-[0_15px_30px_rgba(30,204,167,0.3)] hover:-translate-y-1 transition-all text-[15px] flex items-center justify-center gap-2">
+                    Ir a mi panel de cliente
+                    <span className="material-symbols-outlined text-[18px]">dashboard</span>
                   </Link>
                   <button onClick={() => { setStep(1); setCaseText(''); setRegion(''); setCity(''); setStep1Error(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '' }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-7 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
                       Publicar otro caso

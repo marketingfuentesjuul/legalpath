@@ -545,7 +545,7 @@ BEGIN
         'caseTitle',    NEW.title,
         'caseId',       NEW.id,
         'caseCategory', COALESCE(NEW.category, 'General'),
-        'caseUrgency',  COALESCE(NEW.urgency, 'Normal')
+        'caseUrgency',  COALESCE(NEW.urgency::text, 'Normal')
       )
     )
   );

@@ -115,8 +115,8 @@ const Perfil = () => {
             await supabase.from('client_profiles').delete().eq('id', user.id)
             await supabase.from('lawyer_profiles').upsert({
               id: user.id,
-              first_name: sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || 'Sin nombre',
-              last_name: sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || '',
+              first_name: sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || user.user_metadata?.given_name || 'Sin nombre',
+              last_name: sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || user.user_metadata?.family_name || '',
               email: user.email,
               role: 'lawyer',
               verification_status: 'pending'
@@ -126,8 +126,8 @@ const Perfil = () => {
           }
 
           // Pre-cargar desde sessionStorage o metadatos de usuario
-          setFirstName(sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || '')
-          setLastNamePaternal(sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || '')
+          setFirstName(sessionStorage.getItem('lp_firstName') || user.user_metadata?.first_name || user.user_metadata?.given_name || '')
+          setLastNamePaternal(sessionStorage.getItem('lp_lastName') || user.user_metadata?.last_name || user.user_metadata?.family_name || '')
           setEmail(sessionStorage.getItem('lp_email') || user.email || '')
         }
 
@@ -316,7 +316,9 @@ const Perfil = () => {
       sessionStorage.removeItem('lp_lastName')
       sessionStorage.removeItem('lp_email')
 
-      // 5. Enviar correo de "antecedentes recibidos" si es la primera postulación o una re-postulación
+      // 5. El envío del correo de "antecedentes recibidos" ahora es manejado de forma centralizada y segura 
+      // por el trigger de base de datos 'on_lawyer_verification_status_change' para evitar race conditions.
+      /*
       if (isSubmittingForReview) {
         try {
           await supabase.functions.invoke('send-verification-email', {
@@ -330,6 +332,7 @@ const Perfil = () => {
           console.error('Error invoking send-verification-email edge function:', emailErr)
         }
       }
+      */
       
       // Redirección inteligente: si ya existía perfil aprobado, volver al dashboard. Si no, a validación.
       if (statusToSet === 'approved') {

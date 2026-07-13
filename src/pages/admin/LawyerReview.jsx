@@ -201,7 +201,9 @@ export default function LawyerReview() {
 
       if (error) throw error;
 
-      // Invocar la Edge Function de correos directamente (by-pass al trigger de la DB si no tiene las URL settings configuradas)
+      // El envío de correos de aprobación o rechazo ahora es gestionado de manera centralizada e integrada
+      // por el trigger de base de datos 'on_lawyer_verification_status_change' para evitar duplicaciones.
+      /*
       if (action === 'approve' || action === 'reject') {
         try {
           await supabase.functions.invoke('send-verification-email', {
@@ -216,6 +218,7 @@ export default function LawyerReview() {
           console.error('Error invoking send-verification-email edge function:', emailErr);
         }
       }
+      */
 
       const successTitle = action === 'approve'
         ? 'Abogado Aprobado'

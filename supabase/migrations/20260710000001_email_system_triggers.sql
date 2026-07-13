@@ -324,7 +324,26 @@ RETURNS TRIGGER AS $$
 DECLARE
   v_supabase_url TEXT := 'https://wheslluscfpfqyuzywgy.supabase.co';
   v_service_role_key TEXT := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZXNsbHVzY2ZwZnF5dXp5d2d5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDk5ODc4NSwiZXhwIjoyMDkwNTc0Nzg1fQ.Mpj-h3p80qNC1ZgEfEMGfFhIbpyq1fkzO9pl0nNAaxY';
+  v_role TEXT;
 BEGIN
+  -- Si el email es nulo o vacío, no enviar nada (como en registro anónimo)
+  IF NEW.email IS NULL OR NEW.email = '' THEN
+    RETURN NEW;
+  END IF;
+
+  -- Solo enviar si el email realmente cambió (por ejemplo, pasó de NULL a un valor real)
+  IF TG_OP = 'UPDATE' AND (OLD.email IS NOT DISTINCT FROM NEW.email) THEN
+    RETURN NEW;
+  END IF;
+
+  -- Obtener el rol del metadato del usuario en auth.users
+  v_role := (SELECT COALESCE(raw_user_meta_data->>'role', '') FROM auth.users WHERE id = NEW.id);
+
+  -- Si el usuario se está registrando como abogado, no enviamos bienvenida de cliente
+  IF v_role = 'lawyer' THEN
+    RETURN NEW;
+  END IF;
+
   PERFORM net.http_post(
     url     := v_supabase_url || '/functions/v1/send-email',
     headers := jsonb_build_object(
@@ -345,42 +364,13 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 DROP TRIGGER IF EXISTS trg_client_registered ON client_profiles;
 CREATE TRIGGER trg_client_registered
-  AFTER INSERT ON client_profiles
+  AFTER UPDATE OF email ON client_profiles
   FOR EACH ROW
   EXECUTE FUNCTION notify_client_welcome();
 
--- 9. Trigger para bienvenida-abogado
-CREATE OR REPLACE FUNCTION notify_lawyer_welcome()
-RETURNS TRIGGER AS $$
-DECLARE
-  v_supabase_url TEXT := 'https://wheslluscfpfqyuzywgy.supabase.co';
-  v_service_role_key TEXT := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZXNsbHVzY2ZwZnF5dXp5d2d5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDk5ODc4NSwiZXhwIjoyMDkwNTc0Nzg1fQ.Mpj-h3p80qNC1ZgEfEMGfFhIbpyq1fkzO9pl0nNAaxY';
-BEGIN
-  PERFORM net.http_post(
-    url     := v_supabase_url || '/functions/v1/send-email',
-    headers := jsonb_build_object(
-      'Content-Type',  'application/json',
-      'Authorization', 'Bearer ' || v_service_role_key
-    ),
-    body    := jsonb_build_object(
-      'to',           NEW.email,
-      'templateName', 'bienvenidaAbogado',
-      'variables',    jsonb_build_object(
-        'firstName',  COALESCE(NEW.first_name, 'Abogado'),
-        'lastName',   COALESCE(NEW.last_name_paternal, ''),
-        'email',      NEW.email
-      )
-    )
-  );
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
+-- 9. Trigger para bienvenida-abogado (ELIMINADO)
 DROP TRIGGER IF EXISTS trg_lawyer_registered ON lawyer_profiles;
-CREATE TRIGGER trg_lawyer_registered
-  AFTER INSERT ON lawyer_profiles
-  FOR EACH ROW
-  EXECUTE FUNCTION notify_lawyer_welcome();
+DROP FUNCTION IF EXISTS notify_lawyer_welcome();
 
 -- 10. Trigger para abogado-postulacion-revision / abogado-perfil-aprobado / rechazo-abogado
 CREATE OR REPLACE FUNCTION notify_lawyer_verification_change()
@@ -390,47 +380,61 @@ DECLARE
   v_service_role_key TEXT := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZXNsbHVzY2ZwZnF5dXp5d2d5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDk5ODc4NSwiZXhwIjoyMDkwNTc0Nzg1fQ.Mpj-h3p80qNC1ZgEfEMGfFhIbpyq1fkzO9pl0nNAaxY';
   v_template_name TEXT;
   v_subject TEXT;
+  v_should_trigger BOOLEAN := FALSE;
 BEGIN
-  IF OLD.verification_status IS DISTINCT FROM NEW.verification_status THEN
-    IF NEW.verification_status = 'approved' THEN
-      v_template_name := 'aprobacionAbogado';
-      v_subject := '¡Tu perfil ha sido aprobado en LegalPath! 🎉';
-    ELSIF NEW.verification_status = 'rejected' THEN
-      v_template_name := 'rechazoAbogado';
-      v_subject := 'Actualización de tu perfil en LegalPath';
-    ELSIF NEW.verification_status = 'pending' THEN
+  IF TG_OP = 'INSERT' THEN
+    IF NEW.verification_status = 'pending' THEN
       v_template_name := 'abogadoPostulacionRevision';
       v_subject := 'Recibimos tus antecedentes 📄';
-    ELSE
-      RETURN NEW;
+      v_should_trigger := TRUE;
     END IF;
-
-    PERFORM net.http_post(
-      url     := v_supabase_url || '/functions/v1/send-email',
-      headers := jsonb_build_object(
-        'Content-Type',  'application/json',
-        'Authorization', 'Bearer ' || v_service_role_key
-      ),
-      body    := jsonb_build_object(
-        'to',           NEW.email,
-        'templateName', v_template_name,
-        'subject',      v_subject,
-        'variables',    jsonb_build_object(
-          'firstName',  COALESCE(NEW.first_name, 'Abogado'),
-          'lastName',   COALESCE(NEW.last_name_paternal, ''),
-          'email',      NEW.email,
-          'rejectionReason', COALESCE(NEW.rejection_reason, 'Por favor revisa tu documentación.')
-        )
-      )
-    );
+  ELSIF TG_OP = 'UPDATE' THEN
+    IF OLD.verification_status IS DISTINCT FROM NEW.verification_status THEN
+      IF NEW.verification_status = 'approved' THEN
+        v_template_name := 'aprobacionAbogado';
+        v_subject := '¡Tu perfil ha sido aprobado en LegalPath! 🎉';
+        v_should_trigger := TRUE;
+      ELSIF NEW.verification_status = 'rejected' THEN
+        v_template_name := 'rechazoAbogado';
+        v_subject := 'Actualización de tu perfil en LegalPath';
+        v_should_trigger := TRUE;
+      ELSIF NEW.verification_status = 'pending' THEN
+        v_template_name := 'abogadoPostulacionRevision';
+        v_subject := 'Recibimos tus antecedentes 📄';
+        v_should_trigger := TRUE;
+      END IF;
+    END IF;
   END IF;
+
+  IF NOT v_should_trigger THEN
+    RETURN NEW;
+  END IF;
+
+  PERFORM net.http_post(
+    url     := v_supabase_url || '/functions/v1/send-email',
+    headers := jsonb_build_object(
+      'Content-Type',  'application/json',
+      'Authorization', 'Bearer ' || v_service_role_key
+    ),
+    body    := jsonb_build_object(
+      'to',           NEW.email,
+      'templateName', v_template_name,
+      'subject',      v_subject,
+      'variables',    jsonb_build_object(
+        'firstName',  COALESCE(NEW.first_name, 'Abogado'),
+        'lastName',   COALESCE(NEW.last_name_paternal, ''),
+        'email',      NEW.email,
+        'rejectionReason', COALESCE(NEW.rejection_reason, 'Por favor revisa tu documentación.')
+      )
+    )
+  );
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 DROP TRIGGER IF EXISTS on_lawyer_verification_status_change ON lawyer_profiles;
 CREATE TRIGGER on_lawyer_verification_status_change
-  AFTER UPDATE OF verification_status ON lawyer_profiles
+  AFTER INSERT OR UPDATE ON lawyer_profiles
   FOR EACH ROW
   EXECUTE FUNCTION notify_lawyer_verification_change();
 
@@ -629,5 +633,117 @@ SELECT cron.schedule(
   JOIN client_profiles cp ON r.user_id = cp.id;
   $$
 );
+
+-- 16. Redefinir handle_auth_user_updated para resolver race conditions de metadatos en OAuth
+CREATE OR REPLACE FUNCTION public.handle_auth_user_updated()
+RETURNS TRIGGER AS $$
+DECLARE
+  v_role public.user_role;
+  v_role_str text;
+BEGIN
+  IF (OLD.email IS DISTINCT FROM NEW.email) OR (OLD.raw_user_meta_data IS DISTINCT FROM NEW.raw_user_meta_data) THEN
+    v_role_str := NEW.raw_user_meta_data->>'role';
+    
+    -- Safe mapping to avoid enum cast runtime exceptions
+    IF v_role_str = 'lawyer' OR v_role_str = 'abogado' THEN
+      v_role := 'lawyer'::public.user_role;
+    ELSIF v_role_str = 'admin' THEN
+      v_role := 'admin'::public.user_role;
+    ELSE
+      v_role := 'client'::public.user_role;
+    END IF;
+
+    IF v_role = 'lawyer'::public.user_role THEN
+      -- Si cambió a lawyer, nos aseguramos de limpiar client_profiles para no dejar registros huérfanos
+      DELETE FROM public.client_profiles WHERE id = NEW.id;
+
+      INSERT INTO public.lawyer_profiles (id, first_name, last_name, email, role, verification_status)
+      VALUES (
+        NEW.id,
+        COALESCE(NEW.raw_user_meta_data->>'first_name', NEW.raw_user_meta_data->>'given_name', 'Sin nombre'),
+        COALESCE(NEW.raw_user_meta_data->>'last_name', NEW.raw_user_meta_data->>'family_name', ''),
+        NEW.email,
+        v_role,
+        'pending'
+      )
+      ON CONFLICT (id) DO UPDATE SET
+        email      = COALESCE(EXCLUDED.email, lawyer_profiles.email),
+        first_name = CASE WHEN EXCLUDED.first_name <> 'Sin nombre' THEN EXCLUDED.first_name ELSE lawyer_profiles.first_name END,
+        last_name  = CASE WHEN EXCLUDED.last_name <> '' THEN EXCLUDED.last_name ELSE lawyer_profiles.last_name END,
+        updated_at = NOW();
+    ELSE
+      UPDATE public.client_profiles
+      SET
+        email      = COALESCE(NEW.email, client_profiles.email),
+        first_name = CASE WHEN COALESCE(NEW.raw_user_meta_data->>'first_name', NEW.raw_user_meta_data->>'given_name') IS NOT NULL AND COALESCE(NEW.raw_user_meta_data->>'first_name', NEW.raw_user_meta_data->>'given_name') <> 'Sin nombre' THEN COALESCE(NEW.raw_user_meta_data->>'first_name', NEW.raw_user_meta_data->>'given_name') ELSE client_profiles.first_name END,
+        last_name  = CASE WHEN COALESCE(NEW.raw_user_meta_data->>'last_name', NEW.raw_user_meta_data->>'family_name') IS NOT NULL AND COALESCE(NEW.raw_user_meta_data->>'last_name', NEW.raw_user_meta_data->>'family_name') <> '' THEN COALESCE(NEW.raw_user_meta_data->>'last_name', NEW.raw_user_meta_data->>'family_name') ELSE client_profiles.last_name END,
+        updated_at = NOW()
+      WHERE id = NEW.id;
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 17. Redefinir handle_new_user para resolver problemas de nombre con Google OAuth (given_name/family_name)
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+DECLARE
+  v_role public.user_role;
+  v_role_str text;
+BEGIN
+  v_role_str := NEW.raw_user_meta_data->>'role';
+  
+  -- Safe mapping to avoid enum cast runtime exceptions
+  IF v_role_str = 'lawyer' OR v_role_str = 'abogado' THEN
+    v_role := 'lawyer'::public.user_role;
+  ELSIF v_role_str = 'admin' THEN
+    v_role := 'admin'::public.user_role;
+  ELSE
+    v_role := 'client'::public.user_role;
+  END IF;
+
+  IF v_role = 'lawyer'::public.user_role THEN
+    INSERT INTO public.lawyer_profiles (id, first_name, last_name, email, role)
+    VALUES (
+      new.id,
+      COALESCE(new.raw_user_meta_data->>'first_name', new.raw_user_meta_data->>'given_name', 'Sin nombre'),
+      COALESCE(new.raw_user_meta_data->>'last_name', new.raw_user_meta_data->>'family_name', ''),
+      new.email,
+      v_role
+    )
+    ON CONFLICT (id) DO UPDATE SET
+      email       = COALESCE(EXCLUDED.email, lawyer_profiles.email),
+      first_name  = CASE WHEN EXCLUDED.first_name <> 'Sin nombre' THEN EXCLUDED.first_name ELSE lawyer_profiles.first_name END,
+      last_name   = CASE WHEN EXCLUDED.last_name <> '' THEN EXCLUDED.last_name ELSE lawyer_profiles.last_name END,
+      updated_at  = NOW();
+  ELSIF v_role = 'admin'::public.user_role THEN
+    INSERT INTO public.admin_profiles (id, email, full_name, role)
+    VALUES (
+      new.id,
+      new.email,
+      COALESCE(new.raw_user_meta_data->>'full_name', 'Admin'),
+      v_role
+    )
+    ON CONFLICT (id) DO NOTHING;
+  ELSE
+    INSERT INTO public.client_profiles (id, first_name, last_name, email, role)
+    VALUES (
+      new.id,
+      COALESCE(new.raw_user_meta_data->>'first_name', new.raw_user_meta_data->>'given_name', 'Sin nombre'),
+      COALESCE(new.raw_user_meta_data->>'last_name', new.raw_user_meta_data->>'family_name', ''),
+      new.email,
+      v_role
+    )
+    ON CONFLICT (id) DO UPDATE SET
+      email       = COALESCE(EXCLUDED.email, client_profiles.email),
+      first_name  = CASE WHEN EXCLUDED.first_name <> 'Sin nombre' THEN EXCLUDED.first_name ELSE client_profiles.first_name END,
+      last_name   = CASE WHEN EXCLUDED.last_name <> '' THEN EXCLUDED.last_name ELSE client_profiles.last_name END,
+      updated_at  = NOW();
+  END IF;
+
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 

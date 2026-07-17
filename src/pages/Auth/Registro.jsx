@@ -156,10 +156,6 @@ const Registro = () => {
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" className="w-5 h-5" />
               <span className="text-[14px] font-bold text-slate-700">Registrarse con Google</span>
             </button>
-            <button type="button" onClick={() => handleOAuthLogin('facebook')} className="w-full flex items-center justify-center gap-3 border border-slate-300 rounded-xl px-4 py-3 bg-white hover:bg-slate-50 transition-colors shadow-sm focus:ring-2 focus:ring-[#EE6C4D]/20 focus:outline-none">
-              <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook Logo" className="w-5 h-5" />
-              <span className="text-[14px] font-bold text-slate-700">Registrarse con Facebook</span>
-            </button>
           </div>
 
           <div className="flex items-center gap-3 mb-6">

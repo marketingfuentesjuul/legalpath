@@ -43,7 +43,7 @@ import PublicarCasoCliente from './pages/cliente/PublicarCasoCliente'
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
   if (loading) return null
-  if (!user) return <Navigate to="/auth/login" replace />
+  if (!user) return <Navigate to="/auth/login-abogado" replace />
   return children
 }
 
@@ -55,7 +55,7 @@ function App() {
   useEffect(() => {
     if (loading || !user) return
 
-    const guestPages = ['/', '/auth/login', '/auth/registro']
+    const guestPages = ['/', '/auth/login', '/auth/login-cliente', '/auth/login-abogado', '/auth/registro']
     if (guestPages.includes(location.pathname)) {
       const handleRedirect = async () => {
         const role = user.user_metadata?.role || 'lawyer'
@@ -104,7 +104,9 @@ function App() {
             <Route path="/terminos" element={<Navigate to="/legal/terminos" replace />} />
             <Route path="/privacidad" element={<Navigate to="/legal/privacidad" replace />} />
           </Route>
-          <Route path="/auth/login" element={<PageTransition><Login /></PageTransition>} />
+          <Route path="/auth/login" element={<Navigate to="/auth/login-cliente" replace />} />
+          <Route path="/auth/login-cliente" element={<PageTransition><Login role="client" /></PageTransition>} />
+          <Route path="/auth/login-abogado" element={<PageTransition><Login role="lawyer" /></PageTransition>} />
           <Route path="/auth/perfil" element={<PageTransition><ProtectedRoute><Perfil /></ProtectedRoute></PageTransition>} />
           <Route path="/auth/registro" element={<PageTransition><Registro /></PageTransition>} />
           <Route path="/auth/validacion" element={<PageTransition><Validacion /></PageTransition>} />

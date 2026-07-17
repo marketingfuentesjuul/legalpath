@@ -56,7 +56,7 @@ export default function LawyerGuard({ children }) {
   }
 
   if (status === 'unauthorized') {
-    return <Navigate to="/auth/login" replace />;
+    return <Navigate to="/auth/login-abogado" replace />;
   }
 
   if (status === 'pending_verification') {

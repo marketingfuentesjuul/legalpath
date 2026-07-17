@@ -59,7 +59,7 @@ export default function ClienteGuard({ children }) {
 
   if (status === 'unauthorized') {
     // If not authenticated, redirect to login, else redirect to home
-    return <Navigate to="/auth/login" state={{ from: location.pathname }} replace />;
+    return <Navigate to="/auth/login-cliente" state={{ from: location.pathname }} replace />;
   }
 
   return children;

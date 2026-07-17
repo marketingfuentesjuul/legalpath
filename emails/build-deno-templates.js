@@ -105,11 +105,9 @@ const templates = [
     replacements: [
       { search: 'Juan', replace: '{{firstName}}' },
       { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' },
-      { search: 'Carolina L. (Habilitado PJUD)', replace: '{{lawyerName}} (Habilitado PJUD)' },
-      { search: 'Carolina L.', replace: '{{lawyerName}}' },
-      { search: 'Derecho Civil y Contractual', replace: '{{lawyerSpecialty}}' },
-      { search: '$80.000 CLP', replace: '{{estimatedPrice}}' },
-      { search: '/casos/123', replace: '/casos/{{caseId}}' }
+      { search: 'Carolina López Rivas', replace: '{{lawyerName}}' },
+      { search: 'Estimado Juan, le escribo para manifestar mi interés en su caso. Cuento con amplia experiencia en la redacción de contratos civiles y de arriendo, por lo que podré guiarlo y asegurarle un documento legalmente sólido que proteja sus intereses. Quedo atento a su contacto.', replace: '{{proposalMessage}}' },
+      { search: '/cliente/propuestas?caso=123', replace: '/cliente/propuestas?caso={{caseId}}' }
     ]
   },
   {

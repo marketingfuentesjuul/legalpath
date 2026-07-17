@@ -12,17 +12,15 @@ interface ClienteNuevaPropuestaProps {
   firstName?: string
   caseTitle?: string
   lawyerName?: string
-  lawyerSpecialty?: string
-  estimatedPrice?: string
+  proposalMessage?: string
   caseId?: string
 }
 
 export default function ClienteNuevaPropuesta({
   firstName = 'Juan',
   caseTitle = 'Asesoría para contrato de arriendo habitacional',
-  lawyerName = 'Carolina L.',
-  lawyerSpecialty = 'Derecho Civil y Contractual',
-  estimatedPrice = '$80.000 CLP',
+  lawyerName = 'Carolina López Rivas',
+  proposalMessage = 'Estimado Juan, le escribo para manifestar mi interés en su caso. Cuento con amplia experiencia en la redacción de contratos civiles y de arriendo, por lo que podré guiarlo y asegurarle un documento legalmente sólido que proteja sus intereses. Quedo atento a su contacto.',
   caseId = '123',
 }: ClienteNuevaPropuestaProps) {
   return (
@@ -75,46 +73,31 @@ export default function ClienteNuevaPropuesta({
           padding: '16px 20px',
           margin: '0 0 24px',
         }}>
-          <Row style={{ marginBottom: '8px' }}>
-            <Column style={{ width: '130px' }}>
+          <Row style={{ marginBottom: '12px' }}>
+            <Column style={{ width: '100px' }}>
               <Text style={{ ...text.small, fontFamily: fonts.sans, color: colors.textSecondary, margin: 0 }}>
                 Abogado:
               </Text>
             </Column>
             <Column>
               <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.textPrimary, fontWeight: 700, margin: 0 }}>
-                {lawyerName} (Habilitado PJUD)
+                {lawyerName}
               </Text>
             </Column>
           </Row>
 
-          <Row style={{ marginBottom: '8px' }}>
-            <Column style={{ width: '130px' }}>
+          <Row style={{ marginBottom: '0px' }}>
+            <Column style={{ width: '100px', verticalAlign: 'top' }}>
               <Text style={{ ...text.small, fontFamily: fonts.sans, color: colors.textSecondary, margin: 0 }}>
-                Especialidad:
+                Mensaje:
               </Text>
             </Column>
             <Column>
-              <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.textPrimary, margin: 0 }}>
-                {lawyerSpecialty}
+              <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.textPrimary, whiteSpace: 'pre-wrap', margin: 0 }}>
+                {proposalMessage}
               </Text>
             </Column>
           </Row>
-
-          {estimatedPrice && (
-            <Row style={{ marginBottom: '8px' }}>
-              <Column style={{ width: '130px' }}>
-                <Text style={{ ...text.small, fontFamily: fonts.sans, color: colors.textSecondary, margin: 0 }}>
-                  Honorarios Est.:
-                </Text>
-              </Column>
-              <Column>
-                <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.client, fontWeight: 700, margin: 0 }}>
-                  {estimatedPrice}
-                </Text>
-              </Column>
-            </Row>
-          )}
         </Section>
 
         <Text style={{
@@ -129,10 +112,10 @@ export default function ClienteNuevaPropuesta({
         {/* CTA */}
         <Section style={{ textAlign: 'center' as const, margin: '0 0 8px' }}>
           <EmailButton
-            href={`${urls.base}/casos/${caseId}`}
+            href={`${urls.base}/cliente/propuestas?caso=${caseId}`}
             color={colors.client}
           >
-            Revisar propuesta
+            Revisar la propuesta en mis propuestas
           </EmailButton>
         </Section>
 

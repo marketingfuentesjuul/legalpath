@@ -112,7 +112,7 @@ BEGIN
   JOIN client_profiles cp ON c.user_id = cp.id
   WHERE c.id = NEW.case_id;
 
-  SELECT first_name INTO v_lawyer_name
+  SELECT TRIM(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) INTO v_lawyer_name
   FROM lawyer_profiles
   WHERE id = NEW.lawyer_id;
 
@@ -129,7 +129,8 @@ BEGIN
         'firstName',  COALESCE(v_client_name, 'Cliente'),
         'lawyerName', COALESCE(v_lawyer_name, 'Abogado'),
         'caseTitle',  v_case_title,
-        'caseId',     NEW.case_id
+        'caseId',     NEW.case_id,
+        'proposalMessage', COALESCE(NEW.message, '')
       )
     )
   );

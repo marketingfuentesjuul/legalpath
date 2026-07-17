@@ -21,7 +21,7 @@ export default function LawyerGuard({ children }) {
           .eq('id', user.id)
           .maybeSingle();
 
-        if (error || !data || data.role !== 'lawyer') {
+        if (error || !data) {
           setStatus('unauthorized');
         } else if (data.verification_status !== 'approved') {
           setStatus('pending_verification');

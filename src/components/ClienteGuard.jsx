@@ -21,7 +21,7 @@ export default function ClienteGuard({ children }) {
           .eq('id', user.id)
           .maybeSingle();
 
-        if (error || !data || data.role !== 'client') {
+        if (error || !data) {
           setStatus('unauthorized');
         } else {
           setStatus('authorized');

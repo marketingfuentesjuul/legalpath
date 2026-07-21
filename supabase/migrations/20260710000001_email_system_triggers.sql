@@ -385,13 +385,17 @@ DECLARE
   v_should_trigger BOOLEAN := FALSE;
 BEGIN
   IF TG_OP = 'INSERT' THEN
-    IF NEW.verification_status = 'pending' THEN
+    IF NEW.verification_status IN ('pending', 'in_review') AND NEW.rut_personal IS NOT NULL THEN
       v_template_name := 'abogadoPostulacionRevision';
       v_subject := 'Recibimos tus antecedentes 📄';
       v_should_trigger := TRUE;
     END IF;
   ELSIF TG_OP = 'UPDATE' THEN
-    IF OLD.verification_status IS DISTINCT FROM NEW.verification_status THEN
+    IF NEW.verification_status IN ('pending', 'in_review') AND OLD.rut_personal IS NULL AND NEW.rut_personal IS NOT NULL THEN
+      v_template_name := 'abogadoPostulacionRevision';
+      v_subject := 'Recibimos tus antecedentes 📄';
+      v_should_trigger := TRUE;
+    ELSIF OLD.verification_status IS DISTINCT FROM NEW.verification_status THEN
       IF NEW.verification_status = 'approved' THEN
         v_template_name := 'aprobacionAbogado';
         v_subject := '¡Tu perfil ha sido aprobado en LegalPath! 🎉';
@@ -399,10 +403,6 @@ BEGIN
       ELSIF NEW.verification_status = 'rejected' THEN
         v_template_name := 'rechazoAbogado';
         v_subject := 'Actualización de tu perfil en LegalPath';
-        v_should_trigger := TRUE;
-      ELSIF NEW.verification_status = 'pending' THEN
-        v_template_name := 'abogadoPostulacionRevision';
-        v_subject := 'Recibimos tus antecedentes 📄';
         v_should_trigger := TRUE;
       END IF;
     END IF;

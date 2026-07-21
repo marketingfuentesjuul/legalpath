@@ -21,6 +21,23 @@ serve(async (req) => {
       })
     }
 
+    // Truncate proposal message if it's too long
+    if (templateName === 'clienteNuevaPropuesta' && typeof variables.proposalMessage === 'string') {
+      const msg = variables.proposalMessage.trim();
+      const maxChars = 300;
+      if (msg.length > maxChars) {
+        const truncated = msg.substring(0, maxChars);
+        const lastSpace = truncated.lastIndexOf(' ');
+        if (lastSpace > maxChars * 0.8) {
+          variables.proposalMessage = truncated.substring(0, lastSpace).trim() + '...';
+        } else {
+          variables.proposalMessage = truncated.trim() + '...';
+        }
+      } else {
+        variables.proposalMessage = msg;
+      }
+    }
+
     // Default subjects if not provided
     let finalSubject = subject
     if (!finalSubject) {

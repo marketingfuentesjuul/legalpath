@@ -103,10 +103,10 @@ const templates = [
     file: 'cliente-nueva-propuesta.html',
     key: 'clienteNuevaPropuesta',
     replacements: [
+      { search: 'Estimado Juan, le escribo para manifestar mi interés en su caso. Cuento con amplia experiencia en la redacción de contratos civiles y de arriendo, por lo que podré guiarlo y asegurarle un documento legalmente sólido que proteja sus intereses. Quedo atento a su contacto.', replace: '{{proposalMessage}}' },
       { search: 'Juan', replace: '{{firstName}}' },
       { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' },
       { search: 'Carolina López Rivas', replace: '{{lawyerName}}' },
-      { search: 'Estimado Juan, le escribo para manifestar mi interés en su caso. Cuento con amplia experiencia en la redacción de contratos civiles y de arriendo, por lo que podré guiarlo y asegurarle un documento legalmente sólido que proteja sus intereses. Quedo atento a su contacto.', replace: '{{proposalMessage}}' },
       { search: '/cliente/propuestas?caso=123', replace: '/cliente/propuestas?caso={{caseId}}' }
     ]
   },
@@ -125,10 +125,7 @@ const templates = [
     key: 'clientePropuestaAceptada',
     replacements: [
       { search: 'Juan', replace: '{{firstName}}' },
-      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' },
-      { search: 'Carolina López Rivas', replace: '{{lawyerName}}' },
-      { search: 'carolina.lopez@colegioabogados.cl', replace: '{{lawyerEmail}}' },
-      { search: '+56 9 1234 5678', replace: '{{lawyerPhone}}' }
+      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' }
     ]
   },
   {
@@ -174,9 +171,7 @@ const templates = [
     key: 'abogadoPropuestaAceptada',
     replacements: [
       { search: 'Carlos', replace: '{{firstName}}' },
-      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' },
-      { search: 'Juan Gómez', replace: '{{clientName}}' },
-      { search: 'juan.gomez@ejemplo.cl', replace: '{{clientEmail}}' }
+      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' }
     ]
   },
   {

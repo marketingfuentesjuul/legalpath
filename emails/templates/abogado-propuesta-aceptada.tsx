@@ -56,81 +56,18 @@ export default function AbogadoPropuestaAceptada({
           ...text.body,
           fontFamily: fonts.sans,
           color: colors.textPrimary,
-          margin: '0 0 20px',
-        }}>
-          Te facilitamos los datos de contacto directo del cliente a continuación para que te comuniques e inicies formalmente la asesoría legal:
-        </Text>
-
-        <Hr style={{ borderColor: colors.border, margin: '0 0 20px' }} />
-
-        {/* Datos de contacto del cliente */}
-        <Text style={{
-          ...text.h2,
-          fontFamily: fonts.sans,
-          color: colors.navy,
-          margin: '0 0 12px',
-        }}>
-          Datos de Contacto del Cliente
-        </Text>
-
-        <Section style={{
-          backgroundColor: colors.bgMuted,
-          border: `1px solid ${colors.border}`,
-          borderRadius: '6px',
-          padding: '16px 20px',
           margin: '0 0 24px',
         }}>
-          <Row style={{ marginBottom: '8px' }}>
-            <Column style={{ width: '130px' }}>
-              <Text style={{ ...text.small, fontFamily: fonts.sans, color: colors.textSecondary, margin: 0 }}>
-                Cliente:
-              </Text>
-            </Column>
-            <Column>
-              <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.textPrimary, fontWeight: 700, margin: 0 }}>
-                {clientName}
-              </Text>
-            </Column>
-          </Row>
-
-          <Row style={{ marginBottom: '8px' }}>
-            <Column style={{ width: '130px' }}>
-              <Text style={{ ...text.small, fontFamily: fonts.sans, color: colors.textSecondary, margin: 0 }}>
-                Email:
-              </Text>
-            </Column>
-            <Column>
-              <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.navy, fontWeight: 700, margin: 0 }}>
-                {clientEmail}
-              </Text>
-            </Column>
-          </Row>
-        </Section>
-
-        <Section style={{
-          backgroundColor: '#F3F4F6',
-          borderRadius: '6px',
-          padding: '12px 16px',
-          margin: '0 0 24px',
-        }}>
-          <Text style={{
-            ...text.small,
-            fontFamily: fonts.sans,
-            color: colors.textSecondary,
-            margin: 0,
-            lineHeight: '1.5',
-          }}>
-            <strong>Nota operativa:</strong> El cliente ya ha recibido tus datos de contacto (nombre y correo registrado) y espera tu comunicación.
-          </Text>
-        </Section>
+          Para poder iniciar formalmente la asesoría legal, puedes revisar los datos de contacto directo del cliente en tu panel de control de LegalPath.
+        </Text>
 
         {/* CTA */}
         <Section style={{ textAlign: 'center' as const, margin: '0 0 8px' }}>
           <EmailButton
-            href={urls.dashboard}
+            href={`${urls.base}/dashboard?tab=casos`}
             color={colors.lawyer}
           >
-            Ver mis propuestas
+            Ver los datos del cliente
           </EmailButton>
         </Section>
 

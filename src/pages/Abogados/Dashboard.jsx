@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
 
 const Dashboard = () => {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('dashboard')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tabParam = searchParams.get('tab')
+  const [activeTab, setActiveTab] = useState(tabParam || 'dashboard')
   const [expandedCaseId, setExpandedCaseId] = useState(null)
   const [expandedSearchCaseId, setExpandedSearchCaseId] = useState(null)
   const [individualTokens, setIndividualTokens] = useState(10)
@@ -95,6 +97,13 @@ const Dashboard = () => {
   useEffect(() => {
     selectedCaseForDocsRef.current = selectedCaseForDocs
   }, [selectedCaseForDocs])
+
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab && ['dashboard', 'casos', 'pujas', 'buscar', 'tokens'].includes(tab)) {
+      setActiveTab(tab)
+    }
+  }, [searchParams])
 
   const handleOpenDocumentsModal = (caseItem) => {
     setSelectedCaseForDocs(caseItem)
@@ -289,6 +298,11 @@ const Dashboard = () => {
         .from('cases')
         .select(`
           *,
+          client_profiles:user_id (
+            first_name,
+            last_name,
+            last_name_paternal
+          ),
           proposals!proposals_case_id_fkey!inner (
             id,
             lawyer_id,
@@ -922,6 +936,16 @@ const Dashboard = () => {
             const displayTitle = caseItem.title || 'Caso sin título';
             const displayDetails = caseItem.polished_description || caseItem.description || 'Sin descripción';
 
+            const clientProfile = caseItem.client_profiles;
+            let clientFullName = 'Usuario Anónimo';
+            if (clientProfile) {
+              const first = clientProfile.first_name || '';
+              const last = clientProfile.last_name || clientProfile.last_name_paternal || '';
+              clientFullName = `${first} ${last}`.trim() || caseItem.alias_client || 'Usuario Anónimo';
+            } else {
+              clientFullName = caseItem.alias_client || 'Usuario Anónimo';
+            }
+
             return (
               <div key={caseItem.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                  
@@ -975,6 +999,9 @@ const Dashboard = () => {
                          <span className="material-symbols-outlined text-emerald-600 text-[18px]">contact_mail</span>
                          Datos de contacto del cliente
                        </h5>
+                       <p className="text-emerald-700 text-sm font-semibold mb-1">
+                         Nombre: <span className="text-slate-800 select-all font-sans">{clientFullName}</span>
+                       </p>
                        <p className="text-emerald-700 text-sm font-semibold">
                          Email: <span className="text-slate-800 select-all font-mono">{caseItem.client_email || 'No disponible'}</span>
                        </p>

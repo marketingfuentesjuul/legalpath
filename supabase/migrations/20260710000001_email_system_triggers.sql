@@ -385,7 +385,7 @@ DECLARE
   v_should_trigger BOOLEAN := FALSE;
 BEGIN
   IF TG_OP = 'INSERT' THEN
-    IF NEW.verification_status = 'in_review' THEN
+    IF NEW.verification_status = 'pending' THEN
       v_template_name := 'abogadoPostulacionRevision';
       v_subject := 'Recibimos tus antecedentes 📄';
       v_should_trigger := TRUE;
@@ -400,7 +400,7 @@ BEGIN
         v_template_name := 'rechazoAbogado';
         v_subject := 'Actualización de tu perfil en LegalPath';
         v_should_trigger := TRUE;
-      ELSIF NEW.verification_status = 'in_review' THEN
+      ELSIF NEW.verification_status = 'pending' THEN
         v_template_name := 'abogadoPostulacionRevision';
         v_subject := 'Recibimos tus antecedentes 📄';
         v_should_trigger := TRUE;

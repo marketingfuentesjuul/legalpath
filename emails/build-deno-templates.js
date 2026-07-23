@@ -192,6 +192,15 @@ const templates = [
     ]
   },
   {
+    file: 'abogado-caso-finalizado.html',
+    key: 'abogadoCasoFinalizado',
+    replacements: [
+      { search: 'Carlos', replace: '{{firstName}}' },
+      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' },
+      { search: 'Juan Gómez', replace: '{{clientName}}' }
+    ]
+  },
+  {
     file: 'abogado-perfil-desactivado.html',
     key: 'abogadoPerfilDesactivado',
     replacements: [

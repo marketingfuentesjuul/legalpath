@@ -54,6 +54,7 @@ serve(async (req) => {
       else if (templateName === 'clienteCasoFinalizado') finalSubject = 'Tu caso ha sido finalizado ⚖️'
       else if (templateName === 'abogadoPropuestaAceptada') finalSubject = '¡Tu propuesta fue aceptada! 🎉'
       else if (templateName === 'abogadoCasoCerrado') finalSubject = 'El caso ha sido finalizado ⚖️'
+      else if (templateName === 'abogadoCasoFinalizado') finalSubject = '¡Has finalizado el caso con éxito! 🎉'
       else if (templateName === 'compraTokens') finalSubject = '¡Gracias por tu compra! 💳'
       else if (templateName === 'adminNuevoAbogado') finalSubject = '[ADMIN] Validación de abogado pendiente ⚖️'
       else if (templateName === 'adminNuevoCaso') finalSubject = '[ADMIN] Nuevo caso pendiente de moderación 📝'

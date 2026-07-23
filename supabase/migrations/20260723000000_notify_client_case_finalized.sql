@@ -40,7 +40,7 @@ BEGIN
         ),
         body    := jsonb_build_object(
           'to',           v_lawyer_email,
-          'templateName', 'abogadoCasoCerrado',
+          'templateName', 'abogadoCasoFinalizado',
           'variables',    jsonb_build_object(
             'firstName',  COALESCE(v_lawyer_name, 'Abogado'),
             'clientName', COALESCE(v_client_name, 'Cliente'),

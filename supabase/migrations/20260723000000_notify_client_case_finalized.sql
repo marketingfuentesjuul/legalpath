@@ -100,3 +100,22 @@ CREATE POLICY cases_select ON cases
       )
     )
   );
+
+-- 3. Definir políticas de UPDATE para permitir a abogados asignados y clientes actualizar el caso
+DROP POLICY IF EXISTS cases_update_lawyer ON cases;
+CREATE POLICY cases_update_lawyer ON cases
+  FOR UPDATE
+  USING (
+    is_verified_lawyer() 
+    AND is_case_lawyer(id, auth.uid())
+  )
+  WITH CHECK (
+    is_verified_lawyer() 
+    AND is_case_lawyer(id, auth.uid())
+  );
+
+DROP POLICY IF EXISTS cases_update_client ON cases;
+CREATE POLICY cases_update_client ON cases
+  FOR UPDATE
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);

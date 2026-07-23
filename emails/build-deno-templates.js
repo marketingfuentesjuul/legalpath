@@ -138,6 +138,15 @@ const templates = [
     ]
   },
   {
+    file: 'cliente-caso-finalizado.html',
+    key: 'clienteCasoFinalizado',
+    replacements: [
+      { search: 'Juan', replace: '{{firstName}}' },
+      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' },
+      { search: 'Carolina López Rivas', replace: '{{lawyerName}}' }
+    ]
+  },
+  {
     file: 'cliente-cuenta-desactivada.html',
     key: 'clienteCuentaDesactivada',
     replacements: [

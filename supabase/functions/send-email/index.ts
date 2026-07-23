@@ -51,6 +51,7 @@ serve(async (req) => {
       else if (templateName === 'clienteCasoRechazado') finalSubject = 'Actualización sobre tu caso en LegalPath'
       else if (templateName === 'clienteNuevaPropuesta') finalSubject = 'Recibiste una nueva propuesta 💼'
       else if (templateName === 'clientePropuestaAceptada') finalSubject = '¡Propuesta aceptada con éxito! 🤝'
+      else if (templateName === 'clienteCasoFinalizado') finalSubject = 'Tu caso ha sido finalizado ⚖️'
       else if (templateName === 'abogadoPropuestaAceptada') finalSubject = '¡Tu propuesta fue aceptada! 🎉'
       else if (templateName === 'abogadoCasoCerrado') finalSubject = 'El caso ha sido finalizado ⚖️'
       else if (templateName === 'compraTokens') finalSubject = '¡Gracias por tu compra! 💳'

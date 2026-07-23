@@ -309,7 +309,7 @@ const Dashboard = () => {
             status
           )
         `)
-        .eq('status', 'en_progreso')
+        .in('status', ['en_progreso', 'finalizado'])
         .eq('proposals.lawyer_id', user.id)
         .eq('proposals.status', 'aceptada')
         .order('created_at', { ascending: false })
@@ -896,9 +896,15 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                      En progreso
-                    </span>
+                    {caseItem.status === 'finalizado' ? (
+                      <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
+                        Caso completado
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                        En progreso
+                      </span>
+                    )}
                     <span className="material-symbols-outlined text-slate-300 group-hover:text-[#EE6C4D] transition-colors">chevron_right</span>
                   </div>
                 </div>
@@ -971,10 +977,16 @@ const Dashboard = () => {
                      </div>
                    </div>
                    <div className="flex items-center gap-6">
-                     <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                       En progreso
-                     </span>
-                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                      {caseItem.status === 'finalizado' ? (
+                        <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
+                          Caso completado
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                          En progreso
+                        </span>
+                      )}
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
                        <span className="material-symbols-outlined transition-transform duration-300" style={{ transform: expandedCaseId === caseItem.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
                      </div>
                    </div>
@@ -1008,31 +1020,35 @@ const Dashboard = () => {
                      </div>
 
                      <div className="flex flex-wrap gap-3 pt-2 items-center">
-                         <button 
-                           onClick={() => handleOpenDocumentsModal(caseItem)}
-                           className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
-                         >
-                           <span className="material-symbols-outlined text-[18px]">folder_open</span> Ver documentos adjuntos del caso
-                         </button>
-                         <button 
-                           onClick={() => {
-                             setSelectedCaseForFinish(caseItem)
-                             setShowFinishModal(true)
-                           }}
-                           className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
-                         >
-                           <span className="material-symbols-outlined text-[18px]">check_circle</span> Finalizar caso
-                         </button>
-                         <button 
-                           onClick={() => {
-                             setSelectedCaseForCancel(caseItem)
-                             setShowCancelCaseModal(true)
-                           }}
-                           className="text-red-500 hover:text-red-750 text-xs font-bold transition-all cursor-pointer hover:underline bg-transparent border-none p-0 inline-flex items-center gap-1.5 ml-2"
-                         >
-                           <span className="material-symbols-outlined text-[16px]">cancel</span> Desistir del caso
-                         </button>
-                      </div>
+                          <button 
+                            onClick={() => handleOpenDocumentsModal(caseItem)}
+                            className="bg-[#EE6C4D] hover:bg-[#d65f42] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
+                          >
+                            <span className="material-symbols-outlined text-[18px]">folder_open</span> Ver documentos adjuntos del caso
+                          </button>
+                          {caseItem.status !== 'finalizado' && (
+                            <>
+                              <button 
+                                onClick={() => {
+                                  setSelectedCaseForFinish(caseItem)
+                                  setShowFinishModal(true)
+                                }}
+                                className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-2 hover:scale-[1.02] focus:outline-none"
+                              >
+                                <span className="material-symbols-outlined text-[18px]">check_circle</span> Finalizar caso
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  setSelectedCaseForCancel(caseItem)
+                                  setShowCancelCaseModal(true)
+                                }}
+                                className="text-red-500 hover:text-red-750 text-xs font-bold transition-all cursor-pointer hover:underline bg-transparent border-none p-0 inline-flex items-center gap-1.5 ml-2"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">cancel</span> Desistir del caso
+                              </button>
+                            </>
+                          )}
+                       </div>
                    </div>
                  </div>
                  

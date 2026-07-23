@@ -115,7 +115,3 @@ CREATE POLICY cases_update_lawyer ON cases
   );
 
 DROP POLICY IF EXISTS cases_update_client ON cases;
-CREATE POLICY cases_update_client ON cases
-  FOR UPDATE
-  USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);

@@ -1,43 +1,11 @@
 -- Migration: Lawyer Profile Deletion Flow
 -- Date: 2026-07-23
 
--- 1. Corregir la función anonymize_profile para usar columnas reales existentes en lawyer_profiles y client_profiles
-CREATE OR REPLACE FUNCTION anonymize_profile()
-RETURNS TRIGGER AS $$
-BEGIN
-  IF NEW.status = 'deleted' AND (OLD.status IS DISTINCT FROM 'deleted') THEN
-    NEW.first_name := 'Usuario';
-    NEW.email := 'deleted_' || substr(NEW.id::text, 1, 8) || '@legalpath.cl';
-    NEW.deleted_at := NOW();
-    
-    -- Limpieza para lawyer_profiles
-    IF TG_TABLE_NAME = 'lawyer_profiles' THEN
-      NEW.last_name := 'Eliminado';
-      NEW.last_name_paternal := 'Eliminado';
-      NEW.last_name_maternal := NULL;
-      NEW.rut_personal := NULL;
-      NEW.rut_pjud := NULL;
-      NEW.avatar_url := NULL;
-      NEW.specialties := NULL;
-      NEW.region := NULL;
-      NEW.city := NULL;
-      NEW.colegio_id := NULL;
-      NEW.rejection_reason := NULL;
-      NEW.admin_notes := NULL;
-      
-    -- Limpieza para client_profiles
-    ELSIF TG_TABLE_NAME = 'client_profiles' THEN
-      NEW.last_name := 'Eliminado';
-      NEW.last_name_paternal := 'Eliminado';
-      NEW.last_name_maternal := NULL;
-      NEW.avatar_url := NULL;
-    END IF;
-  END IF;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+-- 1. Eliminar por completo los triggers de anonimización para mantener los datos de los usuarios intactos
+DROP TRIGGER IF EXISTS trg_anonymize_lawyer ON lawyer_profiles;
+DROP TRIGGER IF EXISTS trg_anonymize_client ON client_profiles;
 
--- 2. Trigger para notificar al abogado cuando su perfil profesional es eliminado
+-- 2. Modificar la función de notificación para usar los datos reales del registro (NEW) y ejecutarse AFTER UPDATE
 CREATE OR REPLACE FUNCTION notify_lawyer_profile_deleted()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -53,11 +21,11 @@ BEGIN
         'Authorization', 'Bearer ' || v_service_role_key
       ),
       body    := jsonb_build_object(
-        'to',           OLD.email, -- Enviamos al correo original antes de ser anonimizado
+        'to',           NEW.email, -- Enviamos al correo real del abogado que ahora se mantiene
         'templateName', 'abogadoPerfilEliminado',
         'subject',      'Tu perfil en LegalPath',
         'variables',    jsonb_build_object(
-          'firstName',  COALESCE(OLD.first_name, 'Abogado')
+          'firstName',  COALESCE(NEW.first_name, 'Abogado')
         )
       )
     );
@@ -66,10 +34,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Recrear el trigger en la tabla lawyer_profiles
+-- 3. Recrear el trigger para ejecutarse AFTER UPDATE en la tabla lawyer_profiles
 DROP TRIGGER IF EXISTS trg_lawyer_deleted ON lawyer_profiles;
 CREATE TRIGGER trg_lawyer_deleted
-  BEFORE UPDATE OF status ON lawyer_profiles
+  AFTER UPDATE OF status ON lawyer_profiles
   FOR EACH ROW
   EXECUTE FUNCTION notify_lawyer_profile_deleted();
-

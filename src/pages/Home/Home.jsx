@@ -171,7 +171,7 @@ const Home = () => {
                   <img className="w-10 h-10 rounded-full border-2 border-white object-cover" referrerPolicy="no-referrer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmUTLayHNnlAwhhAnw3VZJVeJkggFeIbhVB5NpJ_bS8mZE9kgRyI46kBR3fk14LBh9gWUgWDU5kbLg9Qc_S8TDU5iFjC0fFdxY_W7iWH0mb5ypLzmVn_LERXosIWrFMxb28Jr8EWWiuabmQgqaYJfoCdpEtK4tTXX5_HSLpefXq1Ou8thbKXBC3ckFWO69iqMHOUzNFndigIa8JFqets3S7idfKFdrThXVSDuuIIlP0bVOa4Grd-MGdT5-RqFeYVaQid2vccPHpxY" alt="Avatar" />
                 </div>
                 <p className="text-sm font-medium text-secondary">
-                  <span className="text-on-background font-bold">Abogados registrados</span> listos para ayudarte.
+                  <span className="text-on-background font-bold">Abogados certificados</span> listos para ayudarte.
                 </p>
               </div>
             </div>

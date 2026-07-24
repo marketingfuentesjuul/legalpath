@@ -208,6 +208,13 @@ const templates = [
     ]
   },
   {
+    file: 'abogado-perfil-eliminado.html',
+    key: 'abogadoPerfilEliminado',
+    replacements: [
+      { search: 'Carlos', replace: '{{firstName}}' }
+    ]
+  },
+  {
     file: 'admin-nuevo-caso.html',
     key: 'adminNuevoCaso',
     replacements: [

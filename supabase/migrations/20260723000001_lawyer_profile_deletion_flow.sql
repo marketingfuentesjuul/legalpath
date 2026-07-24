@@ -1,7 +1,43 @@
 -- Migration: Lawyer Profile Deletion Flow
 -- Date: 2026-07-23
 
--- 1. Trigger para notificar al abogado cuando su perfil profesional es eliminado
+-- 1. Corregir la función anonymize_profile para usar columnas reales existentes en lawyer_profiles y client_profiles
+CREATE OR REPLACE FUNCTION anonymize_profile()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.status = 'deleted' AND (OLD.status IS DISTINCT FROM 'deleted') THEN
+    NEW.first_name := 'Usuario';
+    NEW.email := 'deleted_' || substr(NEW.id::text, 1, 8) || '@legalpath.cl';
+    NEW.deleted_at := NOW();
+    
+    -- Limpieza para lawyer_profiles
+    IF TG_TABLE_NAME = 'lawyer_profiles' THEN
+      NEW.last_name := 'Eliminado';
+      NEW.last_name_paternal := 'Eliminado';
+      NEW.last_name_maternal := NULL;
+      NEW.rut_personal := NULL;
+      NEW.rut_pjud := NULL;
+      NEW.avatar_url := NULL;
+      NEW.specialties := NULL;
+      NEW.region := NULL;
+      NEW.city := NULL;
+      NEW.colegio_id := NULL;
+      NEW.rejection_reason := NULL;
+      NEW.admin_notes := NULL;
+      
+    -- Limpieza para client_profiles
+    ELSIF TG_TABLE_NAME = 'client_profiles' THEN
+      NEW.last_name := 'Eliminado';
+      NEW.last_name_paternal := 'Eliminado';
+      NEW.last_name_maternal := NULL;
+      NEW.avatar_url := NULL;
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 2. Trigger para notificar al abogado cuando su perfil profesional es eliminado
 CREATE OR REPLACE FUNCTION notify_lawyer_profile_deleted()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -36,3 +72,4 @@ CREATE TRIGGER trg_lawyer_deleted
   BEFORE UPDATE OF status ON lawyer_profiles
   FOR EACH ROW
   EXECUTE FUNCTION notify_lawyer_profile_deleted();
+

@@ -104,7 +104,7 @@ export default function LawyersManagement() {
       const updates = {
         status: action === 'suspend' ? 'suspended' : action === 'ban' ? 'banned' : 'active',
         suspended_at: action === 'reactivate' ? null : new Date().toISOString(),
-        suspended_by: action === 'reactivate' ? null : user.id,
+        suspended_by: user.id,
         suspension_reason: action === 'reactivate' ? null : reason
       };
 

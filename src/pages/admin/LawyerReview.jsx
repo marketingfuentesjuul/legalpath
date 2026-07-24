@@ -32,6 +32,7 @@ export default function LawyerReview() {
   const [adminNotes, setAdminNotes] = useState('');
   const [specialties, setSpecialties] = useState([]);
   const [rejectionReason, setRejectionReason] = useState('');
+  const [moderationLogs, setModerationLogs] = useState([]);
   
   // Custom dialog state
   const [confirmModal, setConfirmModal] = useState({ show: false, action: null, title: '', message: '' });
@@ -67,6 +68,23 @@ export default function LawyerReview() {
         .eq('uploaded_by', lawyerId);
 
       setDocuments(docsData || []);
+
+      // Fetch moderation logs
+      const { data: logsData } = await supabase
+        .from('moderation_logs')
+        .select(`
+          id,
+          action,
+          reason,
+          created_at,
+          admin_profiles (
+            full_name
+          )
+        `)
+        .eq('profile_id', lawyerId)
+        .order('created_at', { ascending: false });
+
+      setModerationLogs(logsData || []);
 
       // Trigger sidebar badge refresh
       if (fetchBadgeCounts) {
@@ -402,6 +420,56 @@ export default function LawyerReview() {
           <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
             <h3 className="font-bold text-gray-800 text-lg border-b border-gray-100 pb-3">Documentos Adjuntos</h3>
             <DocumentViewer documents={documents} />
+          </section>
+
+          {/* Moderation History */}
+          <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
+            <h3 className="font-bold text-gray-800 text-lg border-b border-gray-100 pb-3">Historial de Moderación y Sanciones</h3>
+            {moderationLogs.length === 0 ? (
+              <p className="text-gray-400 text-sm italic">No se registran acciones de moderación (suspensiones, bloqueos o reactivaciones) para este perfil.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50 text-gray-400 text-[10px] font-bold uppercase border-b border-gray-100">
+                      <th className="px-4 py-3">Acción</th>
+                      <th className="px-4 py-3">Motivo</th>
+                      <th className="px-4 py-3">Fecha</th>
+                      <th className="px-4 py-3">Realizado por</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {moderationLogs.map((log) => (
+                      <tr key={log.id} className="hover:bg-gray-50/50 transition-colors">
+                        <td className="px-4 py-3.5">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                            log.action === 'suspended'
+                              ? 'bg-amber-50 text-amber-700 border border-amber-100'
+                              : log.action === 'banned'
+                              ? 'bg-red-50 text-red-700 border border-red-100'
+                              : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
+                          }`}>
+                            {log.action === 'suspended' ? 'Suspensión' : log.action === 'banned' ? 'Baneo' : 'Reactivación'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3.5 text-gray-600 font-medium max-w-xs break-words whitespace-pre-wrap">
+                          {log.reason || '-'}
+                        </td>
+                        <td className="px-4 py-3.5 text-gray-400 font-semibold whitespace-nowrap">
+                          {new Date(log.created_at).toLocaleString('es-CL', {
+                            dateStyle: 'short',
+                            timeStyle: 'short'
+                          })}
+                        </td>
+                        <td className="px-4 py-3.5 text-gray-500 font-bold whitespace-nowrap">
+                          {log.admin_profiles?.full_name || 'Sistema / Admin'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </section>
 
           {/* Admin Internal Notes */}

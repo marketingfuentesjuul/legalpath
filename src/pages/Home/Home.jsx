@@ -521,7 +521,7 @@ const Home = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
           >
             {/* Card 1: Peach */}
             <div className="bg-[#FFEFEB] text-[#4A2015] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,239,235,0.8)] border border-[#FFD3C4]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
@@ -642,7 +642,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Card 4: Yellow */}
+            {/* Temporarily hidden: Card 4: Yellow (Seguridad y Soporte)
             <div className="bg-[#FFFBE5] text-[#78350F] rounded-[2.2rem] p-8 flex flex-col justify-between shadow-[0_15px_35px_rgba(255,251,229,0.8)] border border-[#FDE047]/40 hover:scale-[1.03] transition-all duration-300 min-h-[380px]">
               <div className="space-y-6">
                 <div className="space-y-3">
@@ -683,6 +683,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
+            */}
           </motion.div>
         </section>
 

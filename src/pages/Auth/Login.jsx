@@ -34,11 +34,16 @@ const Login = ({ role: propRole }) => {
     // 1. Check if lawyer
     const { data: lawyerData } = await supabase
       .from('lawyer_profiles')
-      .select('role, verification_status')
+      .select('role, verification_status, status')
       .eq('id', userId)
       .maybeSingle()
 
     if (lawyerData?.role === 'lawyer') {
+      if (lawyerData.status === 'deleted') {
+        await supabase.auth.signOut()
+        setError('El perfil no existe. Por favor, crea uno nuevo si deseas volver a ingresar.')
+        return
+      }
       if (lawyerData.verification_status === 'approved') {
         navigate('/dashboard', { replace: true })
       } else {
@@ -50,11 +55,16 @@ const Login = ({ role: propRole }) => {
     // 2. Check if client
     const { data: clientData } = await supabase
       .from('client_profiles')
-      .select('role')
+      .select('role, status')
       .eq('id', userId)
       .maybeSingle()
 
     if (clientData?.role === 'client') {
+      if (clientData.status === 'deleted') {
+        await supabase.auth.signOut()
+        setError('El perfil no existe. Por favor, crea uno nuevo si deseas volver a ingresar.')
+        return
+      }
       navigate('/cliente/mis-casos', { replace: true })
       return
     }

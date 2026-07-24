@@ -1,6 +1,4 @@
 import pg from 'pg';
-import fs from 'fs';
-import path from 'url';
 import fileSystem from 'fs';
 import pathModule from 'path';
 import { fileURLToPath } from 'url';
@@ -25,14 +23,18 @@ if (!connectionString) {
   process.exit(1);
 }
 
-const sqlPath = pathModule.join(__dirname, 'migrations', '20260614000000_lawyer_verification_flow.sql');
+// Get the migration file from command line arguments or use default
+const migrationFile = process.argv[2] || '20260614000000_lawyer_verification_flow.sql';
+const sqlPath = pathModule.isAbsolute(migrationFile)
+  ? migrationFile
+  : pathModule.join(__dirname, 'migrations', migrationFile);
 
 const run = async () => {
   const client = new pg.Client({ connectionString });
   await client.connect();
   console.log("Connected to Supabase PostgreSQL database.");
   const sql = fileSystem.readFileSync(sqlPath, 'utf8');
-  console.log("Executing SQL migration script...");
+  console.log(`Executing SQL migration script: ${pathModule.basename(sqlPath)}...`);
   await client.query(sql);
   console.log("Migration script executed successfully!");
   await client.end();

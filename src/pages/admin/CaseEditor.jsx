@@ -473,7 +473,7 @@ export default function CaseEditor() {
               <button
                 disabled={actionLoading || !rejectionReason.trim()}
                 onClick={handleRejectClick}
-                className="w-full flex items-center justify-center gap-2 py-3 bg-red-650 hover:bg-red-550 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-none"
+                className="w-full flex items-center justify-center gap-2 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-none"
               >
                 <span className="material-symbols-outlined text-[18px]">cancel</span>
                 Rechazar Caso

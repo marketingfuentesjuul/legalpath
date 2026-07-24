@@ -336,7 +336,7 @@ export default function LawyersManagement() {
                 className={`px-4 py-2 rounded-xl text-xs font-bold text-white transition-all cursor-pointer ${
                   moderationModal.action === 'reactivate'
                     ? 'bg-emerald-600 hover:bg-emerald-500'
-                    : 'bg-red-650 hover:bg-red-550'
+                    : 'bg-red-600 hover:bg-red-700'
                 }`}
               >
                 {moderationLoading ? 'Procesando...' : 'Confirmar'}

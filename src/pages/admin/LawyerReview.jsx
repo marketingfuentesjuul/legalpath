@@ -585,7 +585,7 @@ export default function LawyerReview() {
                     ? 'bg-amber-50 border-amber-200 text-amber-800'
                     : 'bg-red-50 border-red-200 text-red-800'
                 }`}>
-                  <div className="flex items-center gap-2 font-bold mb-1.5">
+                  <div className="flex items-center gap-2 font-bold">
                     <span className="material-symbols-outlined text-[18px]">
                       {lawyer.status === 'suspended' ? 'warning' : 'block'}
                     </span>
@@ -593,19 +593,6 @@ export default function LawyerReview() {
                       {lawyer.status === 'suspended' ? 'Cuenta Suspendida' : 'Cuenta Baneada'}
                     </span>
                   </div>
-                  <p className="text-xs font-bold text-gray-700 mb-1">Motivo:</p>
-                  <p className={`text-xs p-2.5 rounded-lg border font-medium ${
-                    lawyer.status === 'suspended'
-                      ? 'bg-white/60 border-amber-100 text-amber-700'
-                      : 'bg-white/60 border-red-100 text-red-700'
-                  }`}>
-                    {lawyer.suspension_reason || 'Sin motivo indicado'}
-                  </p>
-                  {lawyer.suspended_at && (
-                    <p className="text-[10px] text-gray-400 mt-2 font-semibold">
-                      Desde: {new Date(lawyer.suspended_at).toLocaleDateString('es-CL')}
-                    </p>
-                  )}
                 </div>
 
                 <button

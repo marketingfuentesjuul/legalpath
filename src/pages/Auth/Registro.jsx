@@ -103,7 +103,7 @@ const Registro = () => {
   return (
     <div className="antialiased min-h-screen flex bg-background">
       {/* Left Side: Branding */}
-      <div className="hidden lg:flex w-1/2 bg-[#EE6C4D] text-white relative flex-col justify-between p-20 xl:p-28 overflow-hidden">
+      <div className="hidden lg:flex w-1/2 bg-[#EE6C4D] text-white relative flex-col p-20 xl:p-28 overflow-hidden">
         {/* Logo */}
         <div className="relative z-10">
           <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ const Registro = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-10">
+        <div className="relative z-10 my-auto">
           <h1 className="text-5xl xl:text-6xl font-black tracking-tight leading-[1.05] mb-8 max-w-xl">
             Únete a la red legal más grande de Chile.
           </h1>

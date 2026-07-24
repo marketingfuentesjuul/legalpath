@@ -17,12 +17,18 @@ export default function LawyerGuard({ children }) {
 
         const { data, error } = await supabase
           .from('lawyer_profiles')
-          .select('role, verification_status')
+          .select('role, verification_status, status')
           .eq('id', user.id)
           .maybeSingle();
 
         if (error || !data) {
           setStatus('unauthorized');
+        } else if (data.status === 'suspended') {
+          await supabase.auth.signOut();
+          setStatus('suspended');
+        } else if (data.status === 'banned') {
+          await supabase.auth.signOut();
+          setStatus('banned');
         } else if (data.verification_status !== 'approved') {
           setStatus('pending_verification');
         } else {
@@ -57,6 +63,14 @@ export default function LawyerGuard({ children }) {
 
   if (status === 'unauthorized') {
     return <Navigate to="/auth/login-abogado" replace />;
+  }
+
+  if (status === 'suspended') {
+    return <Navigate to="/auth/login-abogado?error=suspended" replace />;
+  }
+
+  if (status === 'banned') {
+    return <Navigate to="/auth/login-abogado?error=banned" replace />;
   }
 
   if (status === 'pending_verification') {

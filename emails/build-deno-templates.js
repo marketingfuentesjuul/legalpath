@@ -233,6 +233,36 @@ const templates = [
       { search: '12.345.678-9', replace: '{{lawyerRut}}' },
       { search: '/admin/abogados?id=123', replace: '/admin/abogados?id={{lawyerId}}' }
     ]
+  },
+  {
+    file: 'abogado-perfil-suspendido.html',
+    key: 'abogadoPerfilSuspendido',
+    replacements: [
+      { search: 'Carlos', replace: '{{firstName}}' },
+      { search: 'Infracción de los términos de la plataforma.', replace: '{{reason}}' }
+    ]
+  },
+  {
+    file: 'abogado-perfil-baneado.html',
+    key: 'abogadoPerfilBaneado',
+    replacements: [
+      { search: 'Carlos', replace: '{{firstName}}' },
+      { search: 'Infracción grave de los términos de la plataforma.', replace: '{{reason}}' }
+    ]
+  },
+  {
+    file: 'abogado-perfil-reactivado-suspension.html',
+    key: 'abogadoPerfilReactivadoSuspension',
+    replacements: [
+      { search: 'Carlos', replace: '{{firstName}}' }
+    ]
+  },
+  {
+    file: 'abogado-perfil-reactivado-ban.html',
+    key: 'abogadoPerfilReactivadoBan',
+    replacements: [
+      { search: 'Carlos', replace: '{{firstName}}' }
+    ]
   }
 ];
 

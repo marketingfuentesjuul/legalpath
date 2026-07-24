@@ -63,12 +63,21 @@ function App() {
         if (role === 'lawyer') {
           const { data: profile } = await supabase
             .from('lawyer_profiles')
-            .select('verification_status')
+            .select('verification_status, status')
             .eq('id', user.id)
             .maybeSingle()
 
           if (!profile) {
             navigate('/auth/perfil', { replace: true })
+          } else if (profile.status === 'deleted') {
+            await supabase.auth.signOut()
+            navigate('/auth/login-abogado', { replace: true })
+          } else if (profile.status === 'suspended') {
+            await supabase.auth.signOut()
+            navigate('/auth/login-abogado?error=suspended', { replace: true })
+          } else if (profile.status === 'banned') {
+            await supabase.auth.signOut()
+            navigate('/auth/login-abogado?error=banned', { replace: true })
           } else if (profile.verification_status === 'approved') {
             navigate('/dashboard', { replace: true })
           } else {

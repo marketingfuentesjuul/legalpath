@@ -17,6 +17,15 @@ const Login = ({ role: propRole }) => {
   const [role] = useState(initialRole)
 
   useEffect(() => {
+    const errorParam = queryParams.get('error')
+    if (errorParam === 'suspended') {
+      setError('Tu cuenta ha sido suspendida. Revisa tu correo electrónico para más detalles o contáctanos.')
+    } else if (errorParam === 'banned') {
+      setError('Tu cuenta ha sido bloqueada permanentemente debido a infracciones de los términos de servicio.')
+    }
+  }, [location.search])
+
+  useEffect(() => {
     const checkSessionAndRedirect = async () => {
       const { data: { user: currentUser } } = await supabase.auth.getUser()
       if (currentUser && !currentUser.is_anonymous) {
@@ -42,6 +51,16 @@ const Login = ({ role: propRole }) => {
       if (lawyerData.status === 'deleted') {
         await supabase.auth.signOut()
         setError('El perfil no existe. Por favor, crea uno nuevo si deseas volver a ingresar.')
+        return
+      }
+      if (lawyerData.status === 'suspended') {
+        await supabase.auth.signOut()
+        setError('Tu cuenta ha sido suspendida. Revisa tu correo electrónico para más detalles o contáctanos.')
+        return
+      }
+      if (lawyerData.status === 'banned') {
+        await supabase.auth.signOut()
+        setError('Tu cuenta ha sido bloqueada permanentemente debido a infracciones de los términos de servicio.')
         return
       }
       if (lawyerData.verification_status === 'approved') {

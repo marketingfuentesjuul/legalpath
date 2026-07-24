@@ -347,6 +347,9 @@ export default function ClientsManagement() {
               >
                 {moderationLoading ? 'Procesando...' : 'Confirmar'}
               </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Alert Modal */}

@@ -38,6 +38,69 @@ export default function LawyerReview() {
   const [confirmModal, setConfirmModal] = useState({ show: false, action: null, title: '', message: '' });
   const [successModal, setSuccessModal] = useState({ show: false, title: '', message: '', targetPath: null });
 
+  const [moderationModal, setModerationModal] = useState({
+    show: false,
+    action: 'suspend',
+    reason: ''
+  });
+
+  const handleOpenModeration = (action) => {
+    setModerationModal({
+      show: true,
+      action,
+      reason: ''
+    });
+  };
+
+  const handleExecuteModeration = async () => {
+    const { action, reason } = moderationModal;
+    if ((action === 'suspend' || action === 'ban') && !reason.trim()) {
+      setSuccessModal({
+        show: true,
+        title: 'Motivo requerido',
+        message: 'Debes ingresar un motivo para esta acción.',
+        targetPath: null
+      });
+      return;
+    }
+
+    setActionLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const updates = {
+        status: action === 'suspend' ? 'suspended' : action === 'ban' ? 'banned' : 'active',
+        suspended_at: action === 'reactivate' ? null : new Date().toISOString(),
+        suspended_by: user.id,
+        suspension_reason: action === 'reactivate' ? null : reason
+      };
+
+      const { error: updateErr } = await supabase
+        .from('lawyer_profiles')
+        .update(updates)
+        .eq('id', lawyerId);
+
+      if (updateErr) throw updateErr;
+
+      setSuccessModal({
+        show: true,
+        title: action === 'suspend' ? 'Abogado suspendido' : action === 'ban' ? 'Abogado baneado' : 'Abogado reactivado',
+        message: `El perfil del abogado ha sido ${action === 'suspend' ? 'suspendido' : action === 'ban' ? 'baneado' : 'reactivado'} con éxito.`,
+        targetPath: null
+      });
+      setModerationModal({ show: false, action: 'suspend', reason: '' });
+    } catch (err) {
+      console.error('Error executing lawyer moderation:', err);
+      setSuccessModal({
+        show: true,
+        title: 'Error de moderación',
+        message: 'Ocurrió un error al procesar la moderación: ' + err.message,
+        targetPath: null
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const loadLawyerData = async () => {
     setLoading(true);
     try {
@@ -296,6 +359,16 @@ export default function LawyerReview() {
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-extrabold text-gray-800 tracking-tight">{lawyerFullName}</h2>
             <StatusBadge status={lawyer.verification_status} />
+            {lawyer.status === 'suspended' && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                Suspendido
+              </span>
+            )}
+            {lawyer.status === 'banned' && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
+                Baneado
+              </span>
+            )}
           </div>
           <p className="text-gray-500 text-sm mt-0.5">ID del abogado: {lawyerId}</p>
         </div>
@@ -504,98 +577,163 @@ export default function LawyerReview() {
               Tomar Decisión
             </h3>
 
-            {/* If status is pending or in review */}
-            {(lawyer.verification_status === 'pending' || lawyer.verification_status === 'in_review') && (
-              <div className="space-y-5">
-                <button
-                  disabled={actionLoading}
-                  onClick={handleApprove}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
-                >
-                  <span className="material-symbols-outlined text-[18px]">verified</span>
-                  Aprobar Perfil
-                </button>
-
-                <div className="h-px bg-gray-100 my-2"></div>
-
-                <div className="space-y-2">
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide">
-                    Motivo de rechazo (requerido):
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={rejectionReason}
-                    onChange={(e) => setRejectionReason(e.target.value)}
-                    placeholder="Indica la razón por la cual rechazas el perfil..."
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:ring-2 focus:ring-gray-200 focus:border-gray-400 outline-none transition-all resize-none"
-                  />
-                </div>
-
-                <button
-                  disabled={actionLoading || !rejectionReason.trim()}
-                  onClick={handleReject}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-none"
-                >
-                  <span className="material-symbols-outlined text-[18px]">cancel</span>
-                  Rechazar Perfil
-                </button>
-              </div>
-            )}
-
-            {/* If status is approved */}
-            {lawyer.verification_status === 'approved' && (
+            {/* If account is suspended or banned */}
+            {lawyer.status === 'suspended' || lawyer.status === 'banned' ? (
               <div className="space-y-4">
-                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm">
-                  <div className="flex items-center gap-2 font-bold mb-1">
-                    <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                    <span>Perfil aprobado</span>
-                  </div>
-                  {lawyer.reviewed_at && (
-                    <p className="text-xs text-emerald-700/80">
-                      Revisado el: {new Date(lawyer.reviewed_at).toLocaleDateString('es-CL')}
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  disabled={actionLoading}
-                  onClick={handleRevert}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 border border-amber-300 rounded-xl text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100/70 transition-all cursor-pointer disabled:opacity-50"
-                >
-                  <span className="material-symbols-outlined text-[16px]">history</span>
-                  Revertir a revisión
-                </button>
-              </div>
-            )}
-
-            {/* If status is rejected */}
-            {lawyer.verification_status === 'rejected' && (
-              <div className="space-y-4">
-                <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
+                <div className={`p-4 rounded-xl text-sm border ${
+                  lawyer.status === 'suspended'
+                    ? 'bg-amber-50 border-amber-200 text-amber-800'
+                    : 'bg-red-50 border-red-200 text-red-800'
+                }`}>
                   <div className="flex items-center gap-2 font-bold mb-1.5">
-                    <span className="material-symbols-outlined text-[18px]">error</span>
-                    <span>Perfil rechazado</span>
+                    <span className="material-symbols-outlined text-[18px]">
+                      {lawyer.status === 'suspended' ? 'warning' : 'block'}
+                    </span>
+                    <span>
+                      {lawyer.status === 'suspended' ? 'Cuenta Suspendida' : 'Cuenta Baneada'}
+                    </span>
                   </div>
-                  <p className="text-xs font-bold text-red-700 mb-1">Motivo:</p>
-                  <p className="text-xs text-red-600 bg-white/60 p-2.5 rounded-lg border border-red-100 font-medium">
-                    {lawyer.rejection_reason || 'Sin motivo ingresado'}
+                  <p className="text-xs font-bold text-gray-700 mb-1">Motivo:</p>
+                  <p className={`text-xs p-2.5 rounded-lg border font-medium ${
+                    lawyer.status === 'suspended'
+                      ? 'bg-white/60 border-amber-100 text-amber-700'
+                      : 'bg-white/60 border-red-100 text-red-700'
+                  }`}>
+                    {lawyer.suspension_reason || 'Sin motivo indicado'}
                   </p>
-                  {lawyer.reviewed_at && (
-                    <p className="text-[10px] text-red-500/80 mt-2">
-                      Revisado el: {new Date(lawyer.reviewed_at).toLocaleDateString('es-CL')}
+                  {lawyer.suspended_at && (
+                    <p className="text-[10px] text-gray-400 mt-2 font-semibold">
+                      Desde: {new Date(lawyer.suspended_at).toLocaleDateString('es-CL')}
                     </p>
                   )}
                 </div>
 
                 <button
                   disabled={actionLoading}
-                  onClick={handleApprove}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100/70 transition-all cursor-pointer disabled:opacity-50"
+                  onClick={() => handleOpenModeration('reactivate')}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
                 >
-                  <span className="material-symbols-outlined text-[16px]">check</span>
-                  Aprobar de todas formas
+                  <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                  Reactivar Cuenta
                 </button>
               </div>
+            ) : (
+              <>
+                {/* If status is pending or in review */}
+                {(lawyer.verification_status === 'pending' || lawyer.verification_status === 'in_review') && (
+                  <div className="space-y-5">
+                    <button
+                      disabled={actionLoading}
+                      onClick={handleApprove}
+                      className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">verified</span>
+                      Aprobar Perfil
+                    </button>
+
+                    <div className="h-px bg-gray-100 my-2"></div>
+
+                    <div className="space-y-2">
+                      <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide">
+                        Motivo de rechazo (requerido):
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={rejectionReason}
+                        onChange={(e) => setRejectionReason(e.target.value)}
+                        placeholder="Indica la razón por la cual rechazas el perfil..."
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:ring-2 focus:ring-gray-200 focus:border-gray-400 outline-none transition-all resize-none"
+                      />
+                    </div>
+
+                    <button
+                      disabled={actionLoading || !rejectionReason.trim()}
+                      onClick={handleReject}
+                      className="w-full flex items-center justify-center gap-2 py-3 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-none"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">cancel</span>
+                      Rechazar Perfil
+                    </button>
+                  </div>
+                )}
+
+                {/* If status is approved */}
+                {lawyer.verification_status === 'approved' && (
+                  <div className="space-y-4">
+                    <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm">
+                      <div className="flex items-center gap-2 font-bold mb-1">
+                        <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                        <span>Perfil aprobado</span>
+                      </div>
+                      {lawyer.reviewed_at && (
+                        <p className="text-xs text-emerald-700/80">
+                          Revisado el: {new Date(lawyer.reviewed_at).toLocaleDateString('es-CL')}
+                        </p>
+                      )}
+                    </div>
+
+                    <button
+                      disabled={actionLoading}
+                      onClick={handleRevert}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 border border-amber-300 rounded-xl text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100/70 transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">history</span>
+                      Revertir a revisión
+                    </button>
+
+                    <div className="h-px bg-gray-100 my-1"></div>
+
+                    <div className="flex gap-2">
+                      <button
+                        disabled={actionLoading}
+                        onClick={() => handleOpenModeration('suspend')}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-amber-350 rounded-xl text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100/70 transition-all cursor-pointer disabled:opacity-50"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">warning</span>
+                        Suspender
+                      </button>
+                      <button
+                        disabled={actionLoading}
+                        onClick={() => handleOpenModeration('ban')}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-red-350 rounded-xl text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100/70 transition-all cursor-pointer disabled:opacity-50"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">block</span>
+                        Banear
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* If status is rejected */}
+                {lawyer.verification_status === 'rejected' && (
+                  <div className="space-y-4">
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
+                      <div className="flex items-center gap-2 font-bold mb-1.5">
+                        <span className="material-symbols-outlined text-[18px]">error</span>
+                        <span>Perfil rechazado</span>
+                      </div>
+                      <p className="text-xs font-bold text-red-700 mb-1">Motivo:</p>
+                      <p className="text-xs text-red-600 bg-white/60 p-2.5 rounded-lg border border-red-100 font-medium">
+                        {lawyer.rejection_reason || 'Sin motivo ingresado'}
+                      </p>
+                      {lawyer.reviewed_at && (
+                        <p className="text-[10px] text-red-500/80 mt-2">
+                          Revisado el: {new Date(lawyer.reviewed_at).toLocaleDateString('es-CL')}
+                        </p>
+                      )}
+                    </div>
+
+                    <button
+                      disabled={actionLoading}
+                      onClick={handleApprove}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100/70 transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">check</span>
+                      Aprobar de todas formas
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -653,6 +791,55 @@ export default function LawyerReview() {
                 className="w-full py-3 bg-[#EE6C4D] hover:bg-[#EE6C4D]/90 text-white rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all cursor-pointer"
               >
                 Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Moderation Modal */}
+      {moderationModal.show && (
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-200">
+          <div className="bg-white border border-gray-200 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 mx-4 animate-in zoom-in-95 duration-200">
+            <h4 className="text-lg font-bold text-gray-800 capitalize">
+              {moderationModal.action === 'suspend'
+                ? 'Suspender Abogado'
+                : moderationModal.action === 'ban'
+                ? 'Banear Abogado'
+                : 'Reactivar Abogado'}
+            </h4>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              {moderationModal.action === 'reactivate'
+                ? `¿Estás seguro de que deseas reactivar la cuenta de ${lawyerFullName}? Volverá a tener permisos para iniciar sesión y postular.`
+                : `Ingresa el motivo para ${moderationModal.action === 'suspend' ? 'suspender' : 'banear'} la cuenta de ${lawyerFullName}:`}
+            </p>
+
+            {moderationModal.action !== 'reactivate' && (
+              <textarea
+                rows={3}
+                value={moderationModal.reason}
+                onChange={(e) => setModerationModal({ ...moderationModal, reason: e.target.value })}
+                placeholder="Indica el motivo detallado de esta acción de moderación..."
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:bg-white focus:ring-2 focus:ring-gray-200 focus:border-gray-400 outline-none transition-all resize-none"
+              />
+            )}
+
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                onClick={() => setModerationModal({ show: false, action: 'suspend', reason: '' })}
+                className="px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleExecuteModeration}
+                disabled={actionLoading}
+                className={`px-4 py-2 rounded-xl text-xs font-bold text-white transition-all cursor-pointer ${
+                  moderationModal.action === 'reactivate'
+                    ? 'bg-emerald-600 hover:bg-emerald-500'
+                    : 'bg-red-600 hover:bg-red-700'
+                }`}
+              >
+                {actionLoading ? 'Procesando...' : 'Confirmar'}
               </button>
             </div>
           </div>

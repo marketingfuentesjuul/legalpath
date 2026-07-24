@@ -1,6 +1,9 @@
 -- Migration: Lawyer Profile Moderation (Suspension, Ban, and Reactivation) Notifications
 -- Date: 2026-07-24
 
+-- Drop duplicate trigger from old migrations that sends 'abogadoPerfilDesactivado'
+DROP TRIGGER IF EXISTS trg_lawyer_suspended ON lawyer_profiles;
+
 CREATE OR REPLACE FUNCTION notify_lawyer_moderation()
 RETURNS TRIGGER AS $$
 DECLARE

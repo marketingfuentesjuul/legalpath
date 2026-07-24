@@ -23,6 +23,12 @@ export default function LawyersManagement() {
     reason: ''
   });
   const [moderationLoading, setModerationLoading] = useState(false);
+  const [alertModal, setAlertModal] = useState({
+    show: false,
+    title: '',
+    message: '',
+    type: 'success'
+  });
 
   const fetchLawyers = async () => {
     setLoading(true);
@@ -83,7 +89,12 @@ export default function LawyersManagement() {
   const handleExecuteModeration = async () => {
     const { lawyer, action, reason } = moderationModal;
     if ((action === 'suspend' || action === 'ban') && !reason.trim()) {
-      alert('Debes ingresar un motivo para esta acción.');
+      setAlertModal({
+        show: true,
+        title: 'Motivo requerido',
+        message: 'Debes ingresar un motivo para esta acción.',
+        type: 'warning'
+      });
       return;
     }
 
@@ -107,12 +118,22 @@ export default function LawyersManagement() {
       // Opcional: Llamar a edge function de Supabase Auth para deshabilitar la sesión
       // (Supabase maneja esto de forma automática con RLS o desactivación del login).
 
-      alert(`El abogado ha sido ${action === 'suspend' ? 'suspendido' : action === 'ban' ? 'baneado' : 'reactivado'} con éxito.`);
+      setAlertModal({
+        show: true,
+        title: action === 'suspend' ? 'Abogado suspendido' : action === 'ban' ? 'Abogado baneado' : 'Abogado reactivado',
+        message: `El abogado ha sido ${action === 'suspend' ? 'suspendido' : action === 'ban' ? 'baneado' : 'reactivado'} con éxito.`,
+        type: 'success'
+      });
       setModerationModal({ show: false, lawyer: null, action: 'suspend', reason: '' });
       fetchLawyers();
     } catch (err) {
       console.error('Error executing lawyer moderation:', err);
-      alert('Ocurrió un error al procesar la moderación: ' + err.message);
+      setAlertModal({
+        show: true,
+        title: 'Error de moderación',
+        message: 'Ocurrió un error al procesar la moderación: ' + err.message,
+        type: 'error'
+      });
     } finally {
       setModerationLoading(false);
     }
@@ -342,6 +363,48 @@ export default function LawyersManagement() {
                 {moderationLoading ? 'Procesando...' : 'Confirmar'}
               </button>
             </div>
+      )}
+
+      {/* Alert Modal */}
+      {alertModal.show && (
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-200">
+          <div className="bg-white border border-gray-200 rounded-3xl max-w-md w-full p-8 shadow-2xl space-y-6 mx-4 text-center animate-in zoom-in-95 duration-200 flex flex-col items-center relative">
+            {/* Icon */}
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-2 ${
+              alertModal.type === 'success'
+                ? 'bg-emerald-50 text-emerald-500'
+                : alertModal.type === 'error'
+                ? 'bg-red-50 text-red-500'
+                : 'bg-amber-50 text-amber-500'
+            }`}>
+              <span className="material-symbols-outlined text-[36px]">
+                {alertModal.type === 'success' ? 'check_circle' : alertModal.type === 'error' ? 'error' : 'warning'}
+              </span>
+            </div>
+
+            {/* Title & Message */}
+            <div className="space-y-2">
+              <h4 className="text-xl font-extrabold text-gray-800">
+                {alertModal.title}
+              </h4>
+              <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                {alertModal.message}
+              </p>
+            </div>
+
+            {/* Button */}
+            <button
+              onClick={() => setAlertModal({ ...alertModal, show: false })}
+              className={`w-full py-3 rounded-xl font-bold text-sm text-white transition-all shadow-md hover:shadow-lg cursor-pointer ${
+                alertModal.type === 'success'
+                  ? 'bg-emerald-600 hover:bg-emerald-500 hover:shadow-emerald-600/20'
+                  : alertModal.type === 'error'
+                  ? 'bg-red-600 hover:bg-red-500 hover:shadow-red-650/20'
+                  : 'bg-amber-600 hover:bg-amber-500 hover:shadow-amber-600/20'
+              }`}
+            >
+              Aceptar
+            </button>
           </div>
         </div>
       )}

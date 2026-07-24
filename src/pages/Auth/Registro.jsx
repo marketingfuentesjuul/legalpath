@@ -121,7 +121,7 @@ const Registro = () => {
           </p>
         </div>
 
-        {/* Footer */}
+        {/* Footer (Temporarily hidden)
         <div className="relative z-10 flex items-center gap-4">
           <div className="flex -space-x-3">
             <div className="w-12 h-12 rounded-full border-4 border-[#EE6C4D] bg-slate-200 overflow-hidden">
@@ -136,6 +136,7 @@ const Registro = () => {
           </div>
           <p className="text-sm font-bold opacity-90">+2000 abogados ya confían en nosotros</p>
         </div>
+        */}
       </div>
 
       {/* Right Side: Form */}

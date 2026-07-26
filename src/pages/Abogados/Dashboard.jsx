@@ -1287,16 +1287,15 @@ const Dashboard = () => {
 
 
   const renderTokensView = () => {
-    const getPackageInfo = (name) => {
-      switch (name) {
-        case 'Starter':
-          return { unitPrice: 998, popular: false }
-        case 'Pro':
-          return { unitPrice: 799, popular: true }
-        case 'Enterprise':
-          return { unitPrice: 700, popular: false }
-        default:
-          return { unitPrice: 1000, popular: false }
+    const getPackageInfo = (pkg) => {
+      const name = pkg?.name || ''
+      const unitPrice = (pkg?.tokens && pkg.tokens > 0) 
+        ? Math.round(pkg.price_clp / pkg.tokens) 
+        : 0
+      const popular = name.toLowerCase().includes('plus') || name === 'Pro'
+      return { 
+        unitPrice: unitPrice.toLocaleString('es-CL'), 
+        popular 
       }
     }
 
@@ -1380,19 +1379,19 @@ const Dashboard = () => {
             <p className="text-slate-500 text-sm font-medium mt-1">Elige uno de nuestros paquetes para sumar tokens al instante y pujar por más casos.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {loadingPackages ? (
-              <div className="col-span-3 text-center text-slate-500 font-semibold py-12 flex flex-col items-center justify-center gap-2">
+              <div className="col-span-1 sm:col-span-2 lg:col-span-4 text-center text-slate-500 font-semibold py-12 flex flex-col items-center justify-center gap-2">
                 <span className="material-symbols-outlined text-[24px] animate-spin text-[#EE6C4D]">sync</span>
                 <span>Cargando paquetes de tokens...</span>
               </div>
             ) : packages.length === 0 ? (
-              <div className="col-span-3 text-center text-slate-500 font-semibold py-12">
+              <div className="col-span-1 sm:col-span-2 lg:col-span-4 text-center text-slate-500 font-semibold py-12">
                 No hay paquetes de tokens activos disponibles en este momento.
               </div>
             ) : (
               packages.map((pkg) => {
-                const pkgInfo = getPackageInfo(pkg.name);
+                const pkgInfo = getPackageInfo(pkg);
                 const formattedPrice = parseInt(pkg.price_clp).toLocaleString('es-CL');
                 return (
                   <div 

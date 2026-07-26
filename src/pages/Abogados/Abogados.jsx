@@ -612,10 +612,6 @@ const Abogados = () => {
                 </div>
                 <div className="flex items-start gap-2.5">
                   <span className="material-symbols-outlined text-primary-container text-[18px] mt-0.5" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
-                  <span className="text-[14px] text-on-background font-medium">Token extra $1.500</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="material-symbols-outlined text-primary-container text-[18px] mt-0.5" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                   <span className="text-[14px] text-on-background font-medium">Dashboard completo</span>
                 </div>
                 <div className="flex items-start gap-2.5">
@@ -640,10 +636,6 @@ const Abogados = () => {
                 <div className="flex items-start gap-2.5">
                   <span className="material-symbols-outlined text-primary-container text-[18px] mt-0.5" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                   <span className="text-[14px] text-on-background font-medium">25 tokens incluidos</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="material-symbols-outlined text-primary-container text-[18px] mt-0.5" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
-                  <span className="text-[14px] text-on-background font-medium">Token extra $1.300</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <span className="material-symbols-outlined text-primary-container text-[18px] mt-0.5" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>

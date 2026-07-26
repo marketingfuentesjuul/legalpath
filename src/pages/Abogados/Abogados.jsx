@@ -600,8 +600,7 @@ const Abogados = () => {
                 <h3 className="text-lg font-extrabold text-on-background tracking-tight">Pack Base</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
-                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">12.990</span>
-                  <span className="text-sm text-slate-400 font-medium">/mes</span>
+                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">14.990</span>
                 </div>
               </div>
               <Link to="/auth/registro" className="w-full text-center py-3.5 bg-slate-100 text-on-background font-bold rounded-full text-sm hover:bg-slate-200 transition-colors mb-8 inline-block">Comenzar</Link>
@@ -627,8 +626,7 @@ const Abogados = () => {
                 <h3 className="text-lg font-extrabold text-on-background tracking-tight">Pack Core</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
-                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">23.990</span>
-                  <span className="text-sm text-slate-400 font-medium">/mes</span>
+                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">27.990</span>
                 </div>
               </div>
               <Link to="/auth/registro" className="w-full text-center py-3.5 bg-slate-100 text-on-background font-bold rounded-full text-sm hover:bg-slate-200 transition-colors mb-8 inline-block">Comenzar</Link>
@@ -657,8 +655,7 @@ const Abogados = () => {
                 <h3 className="text-lg font-extrabold text-primary tracking-tight">Pack Plus</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
-                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">34.990</span>
-                  <span className="text-sm text-slate-400 font-medium">/mes</span>
+                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">39.990</span>
                 </div>
               </div>
               <Link to="/auth/registro" className="w-full text-center py-3.5 bg-primary-container text-white font-bold rounded-full text-sm hover:bg-primary-container/90 transition-colors mb-8 inline-block shadow-[0_4px_15px_rgba(30,204,167,0.3)]">Comenzar</Link>
@@ -688,8 +685,7 @@ const Abogados = () => {
                 <h3 className="text-lg font-extrabold text-on-background tracking-tight">Pack Apex</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
-                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">79.990</span>
-                  <span className="text-sm text-slate-400 font-medium">/mes</span>
+                  <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">54.990</span>
                 </div>
               </div>
               <Link to="/auth/registro" className="w-full text-center py-3.5 bg-slate-100 text-on-background font-bold rounded-full text-sm hover:bg-slate-200 transition-colors mb-8 inline-block">Comenzar</Link>

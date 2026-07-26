@@ -494,49 +494,68 @@ const Abogados = () => {
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>02</div>
               <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Contrata un pack de tokens</h3>
               <p className="text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
-                Con nuestro <b>sistema de tokens</b>, cada token te permite contactar a un cliente pre-calificado en nuestro marketplace. Verás la información relevante del caso para decidir si vale la pena antes de usar tu token.
+                Adquiere el <b>pack de tokens</b> que mejor se adapte al volumen de tu práctica profesional. Tus tokens quedan disponibles de inmediato en tu saldo para que puedas postular a los casos de tu interés cuando lo desees.
               </p>
-
             </div>
-            {/* Mockup: Token Dashboard */}
-            <div className="lg:order-1 relative bg-surface-container-low rounded-3xl p-8 shadow-inner overflow-hidden min-h-[450px]">
-              <div className="space-y-4">
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tu balance</p>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-4xl font-extrabold text-on-background">25</span>
-                        <span className="text-sm text-slate-400 font-medium">tokens</span>
+            {/* Mockup: Pack Selection & Purchase */}
+            <div className="lg:order-1 relative bg-slate-900 rounded-3xl p-8 text-white overflow-hidden min-h-[420px] flex items-center justify-center border border-slate-800 shadow-2xl">
+              <div className="space-y-4 w-full max-w-md">
+                <div className="flex items-center justify-between bg-white/5 p-3.5 rounded-2xl border border-white/10">
+                  <div className="flex items-center gap-2.5">
+                    <span className="material-symbols-outlined text-[#EE6C4D]">toll</span>
+                    <span className="text-xs font-bold tracking-wide">Recarga de Tokens</span>
+                  </div>
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">Acreditación Inmediata ⚡</span>
+                </div>
+
+                <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                  <span className="text-[11px] text-slate-300 font-medium">Tu saldo disponible:</span>
+                  <div className="flex items-center gap-1.5 font-bold text-xs text-[#EE6C4D]">
+                    <span className="material-symbols-outlined text-sm">toll</span>
+                    <span>10 Tokens</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5">
+                  <div className="bg-[#EE6C4D]/15 border-2 border-[#EE6C4D] p-3.5 rounded-2xl flex items-center justify-between relative shadow-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-[#EE6C4D] flex items-center justify-center text-white font-bold text-xs">
+                        25
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white flex items-center gap-2">
+                          Pack Core
+                          <span className="text-[8px] bg-[#EE6C4D] text-white font-bold px-1.5 py-0.5 rounded-full uppercase">Popular</span>
+                        </div>
+                        <div className="text-[10px] text-slate-300">25 Tokens incluidos</div>
                       </div>
                     </div>
-                    <div className="w-14 h-14 rounded-2xl bg-[#EE6C4D]/10 flex items-center justify-center token-badge">
-                      <span className="material-symbols-outlined text-[#EE6C4D] text-2xl" style={{ fontVariationSettings: '"FILL" 1' }}>toll</span>
+                    <span className="font-extrabold text-sm text-white">$27.990</span>
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between opacity-80">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-slate-300 font-bold text-xs">
+                        40
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white">Pack Plus</div>
+                        <div className="text-[10px] text-slate-400">40 Tokens incluidos</div>
+                      </div>
                     </div>
+                    <span className="font-bold text-xs text-slate-300">$39.990</span>
                   </div>
-                  <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full w-[60%] bg-gradient-to-r from-[#EE6C4D] to-[#f4a261] rounded-full transition-all"></div>
-                  </div>
-                  <p className="text-[10px] text-slate-400 mt-2">Pack Core · 15 tokens usados de 25</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col items-start">
-                  <div className="flex items-center gap-2 mb-2 w-full">
-                    <span className="text-[9px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded-full">Laboral</span>
-                    <span className="text-[9px] text-slate-400">Hace 1h</span>
-                  </div>
-                  <p className="text-xs font-bold text-on-background leading-tight mb-1">Despido injustificado tras licencia médica</p>
-                  <p className="text-[10px] text-slate-400 leading-relaxed mb-3">Trabajador despedido después de 3 años sin aviso previo ni pago de indem...</p>
-                  <button className="bg-[#EE6C4D] text-white text-[10px] font-bold px-3 py-1.5 rounded-full hover:scale-105 transition-transform self-end">Más información</button>
-                </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-primary-container/30 relative flex flex-col items-start">
-                  <div className="flex items-center gap-2 mb-2 w-full">
-                    <span className="text-[9px] bg-amber-50 text-amber-600 font-bold px-2 py-0.5 rounded-full">Civil</span>
-                    <span className="text-[9px] text-slate-400">Hace 30 min</span>
-                    <span className="text-[8px] bg-primary-container/10 text-primary-container font-bold px-2 py-0.5 rounded-full ml-auto">✨ Recomendado</span>
-                  </div>
-                  <p className="text-xs font-bold text-on-background leading-tight mb-1">Incumplimiento de contrato de arriendo</p>
-                  <p className="text-[10px] text-slate-400 leading-relaxed mb-3">Arrendatario con 4 meses de deuda, necesita apoyo para proceso de desah...</p>
-                  <button className="bg-[#EE6C4D] text-white text-[10px] font-bold px-3 py-1.5 rounded-full hover:scale-105 transition-transform self-end">Más información</button>
+
+                <div className="space-y-2 pt-1">
+                  <button className="w-full py-3 bg-[#EE6C4D] text-white font-bold rounded-xl text-xs shadow-lg hover:bg-[#EE6C4D]/90 transition-all flex items-center justify-center gap-2">
+                    <span className="material-symbols-outlined text-sm">shopping_cart</span>
+                    <span>Confirmar y recargar 25 Tokens</span>
+                  </button>
+                  <p className="text-[9px] text-center text-slate-400 flex items-center justify-center gap-1">
+                    <span className="material-symbols-outlined text-[12px] text-emerald-400">lock</span>
+                    <span>Pago 100% seguro · Activación al instante</span>
+                  </p>
                 </div>
               </div>
             </div>

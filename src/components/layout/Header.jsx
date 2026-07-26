@@ -36,7 +36,7 @@ const Header = () => {
                 <a href="#como-funciona" className="text-secondary hover:text-on-background transition-colors whitespace-nowrap">¿Cómo funciona?</a>
                 <a href="#por-que-legalpath" className="text-secondary hover:text-on-background transition-colors whitespace-nowrap">Beneficios</a>
                 <a href="#como-empezar" className="text-secondary hover:text-on-background transition-colors whitespace-nowrap">¿Cómo empezar?</a>
-                <a href="#pricing" className="text-secondary hover:text-on-background transition-colors whitespace-nowrap">Planes</a>
+                <a href="#pricing" className="text-secondary hover:text-on-background transition-colors whitespace-nowrap">Packs</a>
               </>
             ) : (
               <>

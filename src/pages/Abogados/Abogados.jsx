@@ -115,7 +115,7 @@ const Abogados = () => {
               <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
                 <div className="h-full w-[65%] bg-[#EE6C4D] rounded-full"></div>
               </div>
-              <p className="text-[9px] text-slate-400">Plan Core · 16 usados este mes</p>
+              <p className="text-[9px] text-slate-400">Pack Core · 16 usados este mes</p>
             </div>
           </div>
         </section>
@@ -284,7 +284,7 @@ const Abogados = () => {
                     <span className="w-5 h-5 rounded-full bg-[#3B82F6] flex items-center justify-center shrink-0 mt-0.5">
                       <span className="w-2 h-2 rounded-full bg-[#EEF4FF]"></span>
                     </span>
-                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Planes flexibles adaptados a tu ritmo de trabajo.</span>
+                    <span className="text-sm font-bold text-[#1E293B] leading-snug">Packs flexibles adaptados a tu ritmo de trabajo.</span>
                   </div>
                 </div>
               </div>
@@ -492,7 +492,7 @@ const Abogados = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="lg:order-2 space-y-8 lg:pl-16 text-center lg:text-left">
               <div className="text-[100px] sm:text-[120px] font-extrabold leading-none font-headline" style={{ color: '#EE6C4D', opacity: 0.15 }}>02</div>
-              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Contrata un plan con tokens</h3>
+              <h3 className="text-xl sm:text-2xl md:text-[30.7px] font-extrabold tracking-tight text-on-background">Contrata un pack de tokens</h3>
               <p className="text-base md:text-xl text-secondary leading-relaxed max-w-lg mx-auto lg:mx-0 text-justify lg:text-left">
                 Con nuestro <b>sistema de tokens</b>, cada token te permite contactar a un cliente pre-calificado en nuestro marketplace. Verás la información relevante del caso para decidir si vale la pena antes de usar tu token.
               </p>
@@ -517,7 +517,7 @@ const Abogados = () => {
                   <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                     <div className="h-full w-[60%] bg-gradient-to-r from-[#EE6C4D] to-[#f4a261] rounded-full transition-all"></div>
                   </div>
-                  <p className="text-[10px] text-slate-400 mt-2">Plan Core · 15 tokens usados de 25</p>
+                  <p className="text-[10px] text-slate-400 mt-2">Pack Core · 15 tokens usados de 25</p>
                 </div>
                 <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col items-start">
                   <div className="flex items-center gap-2 mb-2 w-full">
@@ -587,8 +587,8 @@ const Abogados = () => {
         {/* ======================== PRICING SECTION ======================== */}
         <section id="pricing" className="max-w-7xl mx-auto px-8 py-20">
           <div className="text-center mb-16 space-y-4">
-            <span className="inline-block bg-[#EE6C4D]/10 text-[#EE6C4D] font-bold text-xs tracking-widest uppercase px-4 py-2 rounded-full">Planes</span>
-            <h2 className="text-2xl sm:text-3xl md:text-[41.4px] font-extrabold tracking-tight text-on-background">Elige el plan ideal para tu práctica</h2>
+            <span className="inline-block bg-[#EE6C4D]/10 text-[#EE6C4D] font-bold text-xs tracking-widest uppercase px-4 py-2 rounded-full">Packs</span>
+            <h2 className="text-2xl sm:text-3xl md:text-[41.4px] font-extrabold tracking-tight text-on-background">Elige el pack ideal para tu práctica</h2>
             <p className="text-base text-secondary max-w-2xl mx-auto text-justify md:text-center">Cada token te conecta con un cliente pre-calificado. Más tokens, más oportunidades de negocio.</p>
           </div>
 
@@ -597,7 +597,7 @@ const Abogados = () => {
             {/* Plan Base */}
             <div className="pricing-card bg-white rounded-2xl p-8 shadow-sm border border-slate-100 flex flex-col">
               <div className="mb-8">
-                <h3 className="text-lg font-extrabold text-on-background tracking-tight">Plan Base</h3>
+                <h3 className="text-lg font-extrabold text-on-background tracking-tight">Pack Base</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
                   <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">12.990</span>
@@ -628,7 +628,7 @@ const Abogados = () => {
             {/* Plan Core */}
             <div className="pricing-card bg-white rounded-2xl p-8 shadow-sm border border-slate-100 flex flex-col">
               <div className="mb-8">
-                <h3 className="text-lg font-extrabold text-on-background tracking-tight">Plan Core</h3>
+                <h3 className="text-lg font-extrabold text-on-background tracking-tight">Pack Core</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
                   <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">23.990</span>
@@ -662,7 +662,7 @@ const Abogados = () => {
                 <span className="bg-primary-container text-white text-[11px] font-extrabold px-5 py-1.5 rounded-full uppercase tracking-wider shadow-md">Popular</span>
               </div>
               <div className="mb-8 mt-2">
-                <h3 className="text-lg font-extrabold text-primary tracking-tight">Plan Plus</h3>
+                <h3 className="text-lg font-extrabold text-primary tracking-tight">Pack Plus</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
                   <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">34.990</span>
@@ -693,7 +693,7 @@ const Abogados = () => {
             {/* Plan Apex */}
             <div className="pricing-card bg-white rounded-2xl p-8 shadow-sm border border-slate-100 flex flex-col">
               <div className="mb-8">
-                <h3 className="text-lg font-extrabold text-on-background tracking-tight">Plan Apex</h3>
+                <h3 className="text-lg font-extrabold text-on-background tracking-tight">Pack Apex</h3>
                 <div className="flex items-baseline gap-1 mt-4">
                   <span className="text-sm text-slate-400 font-medium">$</span>
                   <span className="text-[48px] font-extrabold text-on-background leading-none tracking-tight">79.990</span>
@@ -716,7 +716,7 @@ const Abogados = () => {
                 </div>
                 <div className="flex items-start gap-2.5">
                   <span className="material-symbols-outlined text-primary-container text-[18px] mt-0.5" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
-                  <span className="text-[14px] text-on-background font-medium">Todo el Plan Plus</span>
+                  <span className="text-[14px] text-on-background font-medium">Todo el Pack Plus</span>
                 </div>
               </div>
             </div>

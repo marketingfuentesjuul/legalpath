@@ -1,4 +1,4 @@
-name: Deploy to SiteGround
+name: Deploy to Hostinger
 
 on:
   push:
@@ -40,4 +40,4 @@ jobs:
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no" \
             dist/ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/www/legalpath.cl/public_html/
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/domains/legalpath.cl/public_html/

@@ -8,6 +8,7 @@ Plataforma LegalTech B2B/B2C que conecta a personas que necesitan asesoría lega
 - **Routing**: React Router 7
 - **Fuentes**: Plus Jakarta Sans (títulos), Inter (cuerpo) — vía Google Fonts
 - **Backend (planificado)**: Supabase (Auth + PostgreSQL + Storage)
+- **Hosting**: Hostinger (Despliegue automático vía GitHub Actions con rsync)
 
 ## Estructura del Proyecto
 

@@ -2,7 +2,11 @@
 import { Section, Text, Link, Hr } from '@react-email/components'
 import { colors, fonts, urls, sender } from './brand'
 
-export function EmailFooter() {
+interface EmailFooterProps {
+  showUnsubscribe?: boolean
+}
+
+export function EmailFooter({ showUnsubscribe = false }: EmailFooterProps) {
   return (
     <Section style={{
       backgroundColor: colors.bgMuted,
@@ -42,9 +46,18 @@ export function EmailFooter() {
         textAlign: 'center' as const,
         lineHeight: '1.6',
       }}>
-        LegalPath SpA · República de Chile{'\n'}
-        Este correo fue enviado a tu dirección registrada en LegalPath.{'\n'}
-        Si no creaste una cuenta, ignora este mensaje.
+        LegalPath SpA · RUT: 78.449.452-7 · República de Chile{'\n'}
+        Recibes este correo porque está asociado a transacciones, notificaciones o al correcto funcionamiento de tu cuenta en LegalPath.{'\n'}
+        Si no creaste una cuenta, por favor ignora este mensaje.
+        {showUnsubscribe && (
+          <>
+            {'\n'}
+            Para no recibir correos informativos o de encuestas, puedes{' '}
+            <Link href={`${urls.base}/unsubscribe`} style={{ color: colors.navy, textDecoration: 'underline' }}>
+              desuscribirte aquí
+            </Link>.
+          </>
+        )}
       </Text>
     </Section>
   )

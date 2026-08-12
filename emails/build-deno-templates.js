@@ -45,6 +45,7 @@ const templates = [
       { search: 'Carlos', replace: '{{firstName}}' },
       { search: 'Pérez', replace: '{{lastName}}' },
       { search: 'Plan Abogado Premium', replace: '{{pkgName}}' },
+      { search: '12 de agosto de 2026', replace: '{{purchaseDate}}' },
       { search: '+50 tokens', replace: '+{{tokensCount}} tokens' },
       { search: '$25.000', replace: '{{amountClp}}' },
       { search: 'Flow', replace: '{{provider}}' }
@@ -110,24 +111,8 @@ const templates = [
       { search: '/cliente/propuestas?caso=123', replace: '/cliente/propuestas?caso={{caseId}}' }
     ]
   },
-  {
-    file: 'cliente-recordatorio-propuestas.html',
-    key: 'clienteRecordatorioPropuestas',
-    replacements: [
-      { search: 'Juan', replace: '{{firstName}}' },
-      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' },
-      { search: '3 propuestas', replace: '{{proposalsCount}} propuestas' },
-      { search: '/casos/123', replace: '/casos/{{caseId}}' }
-    ]
-  },
-  {
-    file: 'cliente-propuesta-aceptada.html',
-    key: 'clientePropuestaAceptada',
-    replacements: [
-      { search: 'Juan', replace: '{{firstName}}' },
-      { search: 'Asesoría para contrato de arriendo habitacional', replace: '{{caseTitle}}' }
-    ]
-  },
+
+
   {
     file: 'cliente-encuesta-cierre.html',
     key: 'clienteEncuestaCierre',

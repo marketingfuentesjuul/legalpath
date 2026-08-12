@@ -17,6 +17,7 @@ interface CompraTokensProps {
   tokensCount?: number
   amountClp?: number
   provider?: string
+  purchaseDate?: string
 }
 
 export default function CompraTokens({
@@ -27,6 +28,7 @@ export default function CompraTokens({
   tokensCount = 50,
   amountClp   = 25000,
   provider    = 'Flow',
+  purchaseDate = '12 de agosto de 2026',
 }: CompraTokensProps) {
   // Formatear monto CLP
   const formattedAmount = new Intl.NumberFormat('es-CL', {
@@ -100,6 +102,19 @@ export default function CompraTokens({
           <Row style={{ marginBottom: '8px' }}>
             <Column style={{ width: '130px' }}>
               <Text style={{ ...text.small, fontFamily: fonts.sans, color: colors.textSecondary, margin: 0 }}>
+                Fecha de Compra:
+              </Text>
+            </Column>
+            <Column>
+              <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.textPrimary, fontWeight: 700, margin: 0 }}>
+                {purchaseDate}
+              </Text>
+            </Column>
+          </Row>
+
+          <Row style={{ marginBottom: '8px' }}>
+            <Column style={{ width: '130px' }}>
+              <Text style={{ ...text.small, fontFamily: fonts.sans, color: colors.textSecondary, margin: 0 }}>
                 Tokens Abonados:
               </Text>
             </Column>
@@ -137,17 +152,20 @@ export default function CompraTokens({
           </Row>
         </Section>
 
+        {/* Recordatorio de vencimiento */}
         <Text style={{
-          ...text.body,
+          ...text.small,
           fontFamily: fonts.sans,
-          color: colors.textPrimary,
-          margin: '0 0 24px',
+          color: colors.textSecondary,
+          textAlign: 'center' as const,
+          margin: '0 0 20px',
+          fontStyle: 'italic',
         }}>
-          Puedes revisar tu saldo actual e historial de uso de tokens directamente en la sección de tokens en tu dashboard.
+          * Recuerda que los tokens tienen una validez de 30 días y deben ser usados antes de esa fecha.
         </Text>
 
         {/* CTA */}
-        <Section style={{ textAlign: 'center' as const, margin: '0 0 8px' }}>
+        <Section style={{ textAlign: 'center' as const, margin: '0 0 16px' }}>
           <EmailButton
             href={urls.tokens}
             color={colors.lawyer}
@@ -155,6 +173,7 @@ export default function CompraTokens({
             Ver mis tokens
           </EmailButton>
         </Section>
+
 
       </Section>
 

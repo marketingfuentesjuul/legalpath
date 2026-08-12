@@ -1,12 +1,11 @@
 // emails/templates/cliente-caso-finalizado.tsx
 import {
-  Section, Text, Hr
+  Section, Text
 } from '@react-email/components'
 import { EmailLayout }  from '../components/EmailLayout'
 import { EmailHeader }  from '../components/EmailHeader'
 import { EmailFooter }  from '../components/EmailFooter'
-import { EmailButton }  from '../components/EmailButton'
-import { colors, fonts, text, urls } from '../components/brand'
+import { colors, fonts, text } from '../components/brand'
 
 interface ClienteCasoFinalizadoProps {
   firstName?: string
@@ -58,27 +57,6 @@ export default function ClienteCasoFinalizado({
         }}>
           Esperamos que la gestión y el resultado del caso hayan sido de tu completa satisfacción y todo haya salido de acuerdo a lo esperado.
         </Text>
-
-        <Text style={{
-          ...text.body,
-          fontFamily: fonts.sans,
-          color: colors.textPrimary,
-          margin: '0 0 20px',
-        }}>
-          Queremos recordarte que tu opinión es muy valiosa para nosotros y para ayudar a otros clientes a elegir a los mejores profesionales en LegalPath. Te invitamos a calificar tu experiencia.
-        </Text>
-
-        <Hr style={{ borderColor: colors.border, margin: '0 0 24px' }} />
-
-        {/* CTA */}
-        <Section style={{ textAlign: 'center' as const, margin: '0 0 8px' }}>
-          <EmailButton
-            href={urls.dashboard}
-            color={colors.client}
-          >
-            Ir a mi panel
-          </EmailButton>
-        </Section>
 
       </Section>
 

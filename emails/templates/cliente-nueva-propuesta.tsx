@@ -23,6 +23,11 @@ export default function ClienteNuevaPropuesta({
   proposalMessage = 'Estimado Juan, le escribo para manifestar mi interés en su caso. Cuento con amplia experiencia en la redacción de contratos civiles y de arriendo, por lo que podré guiarlo y asegurarle un documento legalmente sólido que proteja sus intereses. Quedo atento a su contacto.',
   caseId = '123',
 }: ClienteNuevaPropuestaProps) {
+  // Limitar a máximo 2 líneas (apróx. 120 caracteres) para incentivar la lectura en la plataforma
+  const truncatedMessage = proposalMessage.length > 120
+    ? `${proposalMessage.substring(0, 120).trim()}...`
+    : proposalMessage;
+
   return (
     <EmailLayout preview={`¡Has recibido una nueva propuesta de asesoría legal en LegalPath!`}>
 
@@ -94,7 +99,7 @@ export default function ClienteNuevaPropuesta({
             </Column>
             <Column>
               <Text style={{ ...text.body, fontFamily: fonts.sans, color: colors.textPrimary, whiteSpace: 'pre-wrap', margin: 0 }}>
-                {proposalMessage}
+                {truncatedMessage}
               </Text>
             </Column>
           </Row>
@@ -115,7 +120,7 @@ export default function ClienteNuevaPropuesta({
             href={`${urls.base}/cliente/propuestas?caso=${caseId}`}
             color={colors.client}
           >
-            Revisar la propuesta en mis propuestas
+            Revisar la propuesta
           </EmailButton>
         </Section>
 

@@ -74,7 +74,7 @@ export default function ClienteEncuestaCierre({
       </Section>
 
       {/* Footer */}
-      <EmailFooter />
+      <EmailFooter showUnsubscribe />
 
     </EmailLayout>
   )

@@ -10,6 +10,7 @@ const Login = ({ role: propRole }) => {
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
 
   // Detect role from URL query parameter or use role prop
   const queryParams = new URLSearchParams(location.search)
@@ -216,15 +217,27 @@ const Login = ({ role: propRole }) => {
                 <label className="block text-[13px] font-bold text-on-background">Contraseña</label>
                 <a href="#" className={`text-[12px] font-bold hover:underline ${isClient ? 'text-[#006b56]' : 'text-[#EE6C4D]'}`}>¿Olvidaste tu contraseña?</a>
               </div>
-              <input 
-                type="password" 
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="••••••••" 
-                className={`w-full py-3 px-4 rounded-xl border-[1.5px] border-slate-200 text-[14px] font-medium focus:ring-2 outline-none transition-all placeholder:text-slate-300 ${isClient ? 'focus:border-[#1ECCA7] focus:ring-[#1ECCA7]/20' : 'focus:border-[#EE6C4D] focus:ring-[#EE6C4D]/20'}`}
-                required
-              />
+              <div className="relative">
+                <input 
+                  type={showPassword ? 'text' : 'password'} 
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="••••••••" 
+                  className={`w-full py-3 pl-4 pr-11 rounded-xl border-[1.5px] border-slate-200 text-[14px] font-medium focus:ring-2 outline-none transition-all placeholder:text-slate-300 ${isClient ? 'focus:border-[#1ECCA7] focus:ring-[#1ECCA7]/20' : 'focus:border-[#EE6C4D] focus:ring-[#EE6C4D]/20'}`}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 flex items-center justify-center"
+                  tabIndex={-1}
+                >
+                  <span className="material-symbols-outlined text-[20px]">
+                    {showPassword ? 'visibility_off' : 'visibility'}
+                  </span>
+                </button>
+              </div>
             </div>
             
             <button 

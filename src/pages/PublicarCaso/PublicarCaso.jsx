@@ -45,6 +45,8 @@ const PublicarCaso = () => {
   const [registerLoading, setRegisterLoading] = useState(false)
   const [guestLoading, setGuestLoading] = useState(false)
   const [submitError, setSubmitError] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const [typingText, setTypingText] = useState('')
   const [showPlaceholder, setShowPlaceholder] = useState(true)
@@ -653,28 +655,52 @@ const PublicarCaso = () => {
                         className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
                       />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-[13px] font-bold text-on-background mb-1.5">Contraseña</label>
-                        <input 
-                          type="password" 
-                          required
-                          value={registerForm.password}
-                          onChange={e => setRegisterForm({...registerForm, password: e.target.value})}
-                          placeholder="••••••••" 
-                          className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
-                        />
+                        <div className="relative">
+                          <input 
+                            type={showPassword ? 'text' : 'password'} 
+                            required
+                            value={registerForm.password}
+                            onChange={e => setRegisterForm({...registerForm, password: e.target.value})}
+                            placeholder="••••••••" 
+                            className="w-full py-3 pl-5 pr-11 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 flex items-center justify-center"
+                            tabIndex={-1}
+                          >
+                            <span className="material-symbols-outlined text-[20px]">
+                              {showPassword ? 'visibility_off' : 'visibility'}
+                            </span>
+                          </button>
+                        </div>
                       </div>
                       <div>
                         <label className="block text-[13px] font-bold text-on-background mb-1.5">Confirmar contraseña</label>
-                        <input 
-                          type="password" 
-                          required
-                          value={registerForm.confirmPassword}
-                          onChange={e => setRegisterForm({...registerForm, confirmPassword: e.target.value})}
-                          placeholder="••••••••" 
-                          className="w-full py-3 px-5 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
-                        />
+                        <div className="relative">
+                          <input 
+                            type={showConfirmPassword ? 'text' : 'password'} 
+                            required
+                            value={registerForm.confirmPassword}
+                            onChange={e => setRegisterForm({...registerForm, confirmPassword: e.target.value})}
+                            placeholder="••••••••" 
+                            className="w-full py-3 pl-5 pr-11 rounded-xl border-[1.5px] border-slate-200 text-[15px] font-medium focus:border-[#1ECCA7] focus:ring-2 focus:ring-[#1ECCA7]/20 outline-none transition-all placeholder:text-slate-300" 
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 flex items-center justify-center"
+                            tabIndex={-1}
+                          >
+                            <span className="material-symbols-outlined text-[20px]">
+                              {showConfirmPassword ? 'visibility_off' : 'visibility'}
+                            </span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                     <button 

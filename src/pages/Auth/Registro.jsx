@@ -7,6 +7,7 @@ const Registro = () => {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', terms: false })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
@@ -189,7 +190,31 @@ const Registro = () => {
             </div>
             <div className="space-y-1.5">
               <label htmlFor="password" className="block text-[13px] font-bold text-on-background">Contraseña <span className="text-[#EE6C4D]">*</span></label>
-              <input type="password" id="password" name="password" required autoComplete="new-password" maxLength={128} minLength={8} value={form.password} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" placeholder="••••••••" />
+              <div className="relative">
+                <input 
+                  type={showPassword ? 'text' : 'password'} 
+                  id="password" 
+                  name="password" 
+                  required 
+                  autoComplete="new-password" 
+                  maxLength={128} 
+                  minLength={8} 
+                  value={form.password} 
+                  onChange={handleChange} 
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-4 pr-11 py-3 text-sm focus:ring-2 focus:ring-[#EE6C4D]/50 focus:border-[#EE6C4D] outline-none transition-shadow" 
+                  placeholder="••••••••" 
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 flex items-center justify-center"
+                  tabIndex={-1}
+                >
+                  <span className="material-symbols-outlined text-[20px]">
+                    {showPassword ? 'visibility_off' : 'visibility'}
+                  </span>
+                </button>
+              </div>
             </div>
             <div className="flex items-start gap-2 pt-2">
               <input id="terms" name="terms" type="checkbox" required checked={form.terms} onChange={handleChange} className="mt-1 h-4 w-4 bg-slate-50 border-slate-300 rounded text-[#EE6C4D] focus:ring-[#EE6C4D]" />

@@ -39,7 +39,7 @@ const PublicarCaso = () => {
   const [confirmedEmail, setConfirmedEmail] = useState('')
 
   // Register flow - state values
-  const [registerForm, setRegisterForm] = useState({ fullName: '', email: '', password: '', confirmPassword: '' })
+  const [registerForm, setRegisterForm] = useState({ fullName: '', email: '', password: '', confirmPassword: '', terms: false })
 
   // Error/Loading states
   const [registerLoading, setRegisterLoading] = useState(false)
@@ -327,10 +327,23 @@ const PublicarCaso = () => {
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault()
-    if (!registerForm.email || !registerForm.password || !registerForm.fullName || !registerForm.confirmPassword) return
+    if (!registerForm.email || !registerForm.password || !registerForm.fullName || !registerForm.confirmPassword) {
+      setSubmitError('Por favor, completa todos los campos obligatorios.')
+      return
+    }
+
+    if (registerForm.password.length < 8) {
+      setSubmitError('La contraseña debe tener al menos 8 caracteres.')
+      return
+    }
 
     if (registerForm.password !== registerForm.confirmPassword) {
       setSubmitError('Las contraseñas no coinciden.')
+      return
+    }
+
+    if (!registerForm.terms) {
+      setSubmitError('Debes aceptar los Términos y Condiciones y la Política de Privacidad.')
       return
     }
 
@@ -678,6 +691,7 @@ const PublicarCaso = () => {
                             </span>
                           </button>
                         </div>
+                        <p className="text-[12px] text-slate-400 mt-1">La contraseña debe tener al menos 8 caracteres.</p>
                       </div>
                       <div>
                         <label className="block text-[13px] font-bold text-on-background mb-1.5">Confirmar contraseña</label>
@@ -702,6 +716,20 @@ const PublicarCaso = () => {
                           </button>
                         </div>
                       </div>
+                    </div>
+                    <div className="flex items-start gap-2 pt-2 pb-1">
+                      <input 
+                        id="client-terms" 
+                        name="terms" 
+                        type="checkbox" 
+                        required 
+                        checked={registerForm.terms || false} 
+                        onChange={e => setRegisterForm({...registerForm, terms: e.target.checked})} 
+                        className="mt-1 h-4 w-4 rounded border-slate-300 text-[#1ECCA7] focus:ring-[#1ECCA7] focus:ring-2" 
+                      />
+                      <label htmlFor="client-terms" className="text-[12px] text-slate-500 leading-snug">
+                        Consiento recibir información relevante y acepto los <Link to="/legal/terminos" className="font-bold text-[#1ECCA7] hover:underline">Términos y Condiciones</Link> y la <Link to="/legal/privacidad" className="font-bold text-[#1ECCA7] hover:underline">Política de Privacidad</Link> de LegalPath.
+                      </label>
                     </div>
                     <button 
                       type="submit"
@@ -741,7 +769,7 @@ const PublicarCaso = () => {
                     Ir a mi panel de cliente
                     <span className="material-symbols-outlined text-[18px]">dashboard</span>
                   </Link>
-                  <button onClick={() => { setStep(1); setCaseText(''); setRegion(''); setCity(''); setStep1Error(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '' }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-7 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+                  <button onClick={() => { setStep(1); setCaseText(''); setRegion(''); setCity(''); setStep1Error(''); setGuestEmail(''); setConfirmedEmail(''); setAttachments([]); setRegisterForm({ fullName: '', email: '', password: '', confirmPassword: '', terms: false }); setSubmitError(null) }} className="bg-white text-on-background border-[1.5px] border-slate-200 px-7 py-3.5 rounded-full font-bold text-[15px] hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
                       Publicar otro caso
                       <span className="material-symbols-outlined text-[18px]">add</span>
                   </button>

@@ -30,9 +30,16 @@ const Registro = () => {
     setError(null)
     const { firstName, lastName, email, password, terms } = form
 
-    if (!firstName || !lastName || !email || !password || !terms) return
+    if (!firstName || !lastName || !email || !password) {
+      setError('Por favor, completa todos los campos obligatorios.')
+      return
+    }
     if (password.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres.')
+      return
+    }
+    if (!terms) {
+      setError('Debes aceptar los Términos de Servicio y la Política de Privacidad para registrarte.')
       return
     }
 
@@ -215,6 +222,7 @@ const Registro = () => {
                   </span>
                 </button>
               </div>
+              <p className="text-xs text-secondary mt-1">La contraseña debe tener al menos 8 caracteres.</p>
             </div>
             <div className="flex items-start gap-2 pt-2">
               <input id="terms" name="terms" type="checkbox" required checked={form.terms} onChange={handleChange} className="mt-1 h-4 w-4 bg-slate-50 border-slate-300 rounded text-[#EE6C4D] focus:ring-[#EE6C4D]" />

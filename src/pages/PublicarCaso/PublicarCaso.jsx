@@ -38,7 +38,7 @@ const PublicarCaso = () => {
   const [guestEmail, setGuestEmail] = useState('')
   const [confirmedEmail, setConfirmedEmail] = useState('')
 
-  // Register flow
+  // Register flow - state values
   const [registerForm, setRegisterForm] = useState({ fullName: '', email: '', password: '', confirmPassword: '' })
 
   // Error/Loading states

@@ -93,12 +93,8 @@ export default function Configuracion() {
       const { data: { user }, error: userErr } = await supabase.auth.getUser();
       if (userErr || !user) throw new Error('Usuario no autenticado.');
 
-      const { error: updateErr } = await supabase
-        .from('client_profiles')
-        .update({ status: 'deleted' })
-        .eq('id', user.id);
-
-      if (updateErr) throw updateErr;
+      const { error: deleteErr } = await supabase.rpc('delete_current_user');
+      if (deleteErr) throw deleteErr;
 
       await supabase.auth.signOut();
       window.location.href = '/';

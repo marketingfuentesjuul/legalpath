@@ -54,7 +54,7 @@ const PublicarCaso = () => {
   const typingRef = useRef({ i: 0, active: true, timeout: null })
 
   const titles = {
-    1: { main: <>Describe con <span className="text-[#1ECCA7]">detalle</span> tu caso</>, sub: 'Mientras más detalles nos des, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a entender tu caso.' },
+    1: { main: <>Describe con <span className="text-[#1ECCA7]">detalle</span> tu caso</>, sub: <><strong>Mientras más detalles nos des</strong>, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a <strong>entender tu caso</strong>. Si tu caso involucra montos de dinero, por favor no olvides mencionarlo.</> },
     2: { main: <>Crea tu <span className="text-[#1ECCA7]">cuenta</span></>, sub: 'Regístrate para publicar tu caso y acceder a todas las funciones de LegalPath.' },
     3: { main: <>Caso en <span className="text-[#1ECCA7]">evaluación</span></>, sub: 'Tu caso ha sido recibido y se encuentra en evaluación. Apenas pase este proceso, será publicado de forma inmediata.' }
   }

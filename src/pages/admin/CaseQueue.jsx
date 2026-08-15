@@ -216,7 +216,6 @@ export default function CaseQueue() {
                   <th className="px-6 py-4">Categoría</th>
                   <th className="px-6 py-4">Urgencia</th>
                   <th className="px-6 py-4">Ubicación</th>
-                  <th className="px-6 py-4">Monto Estimado</th>
                   <th className="px-6 py-4">Recibido</th>
                   <th className="px-6 py-4 text-right">Acciones</th>
                 </tr>
@@ -237,9 +236,6 @@ export default function CaseQueue() {
                     </td>
                     <td className="px-6 py-4 text-gray-500 text-xs">
                       {c.region ? `${c.city || ''}, ${c.region}` : '-'}
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 font-medium">
-                      {c.estimated_amount ? `$${Number(c.estimated_amount).toLocaleString('es-CL')}` : '-'}
                     </td>
                     <td className="px-6 py-4 text-xs text-gray-400">
                       {formatDate(c.created_at)}

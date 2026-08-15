@@ -239,9 +239,6 @@ const Dashboard = () => {
     if (sortBy === 'recientes') {
       return new Date(b.created_at || 0) - new Date(a.created_at || 0)
     }
-    if (sortBy === 'cuantía') {
-      return (b.estimated_amount || 0) - (a.estimated_amount || 0)
-    }
     if (sortBy === 'urgencia') {
       const urgencyScore = { alta: 3, media: 2, baja: 1 }
       const aScore = urgencyScore[(a.urgency || '').toLowerCase()] || 0
@@ -617,9 +614,6 @@ const Dashboard = () => {
     const displayUrgency = caseItem.urgency
       ? caseItem.urgency.charAt(0).toUpperCase() + caseItem.urgency.slice(1)
       : 'Baja';
-    const displayAmount = caseItem.estimated_amount
-      ? new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(caseItem.estimated_amount)
-      : 'Por definir';
     const displayDetails = caseItem.polished_description || caseItem.description || 'Sin descripción';
 
     return (
@@ -671,10 +665,6 @@ const Dashboard = () => {
                  <div className="hidden sm:block">
                    <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Urgencia</p>
                    <p className={`text-sm font-bold mt-0.5 ${displayUrgency === 'Alta' ? 'text-red-500' : displayUrgency === 'Media' ? 'text-amber-500' : 'text-emerald-500'}`}>{displayUrgency}</p>
-                 </div>
-                 <div>
-                   <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Cuantía Est.</p>
-                   <p className="text-sm font-bold text-slate-800 mt-0.5">{displayAmount}</p>
                  </div>
               </div>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${expandedSearchCaseId === caseItem.id ? 'bg-[#EE6C4D] text-white' : 'bg-slate-100 text-slate-500'}`}>
@@ -1163,7 +1153,6 @@ const Dashboard = () => {
                   className="bg-slate-50 border-none rounded-lg px-3 py-2 text-sm font-bold text-slate-700 focus:outline-[#EE6C4D] cursor-pointer"
                 >
                   <option value="recientes">Más recientes</option>
-                  <option value="cuantía">Mayor cuantía</option>
                   <option value="urgencia">Mayor urgencia</option>
                 </select>
               </div>

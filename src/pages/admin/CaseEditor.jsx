@@ -25,7 +25,6 @@ export default function CaseEditor() {
     polished_description: '',
     category: 'Otro',
     urgency: 'media',
-    estimated_amount: '',
     region: '',
     city: ''
   });
@@ -58,7 +57,6 @@ export default function CaseEditor() {
         polished_description: data.polished_description || '',
         category: data.category || 'Otro',
         urgency: data.urgency || 'media',
-        estimated_amount: data.estimated_amount || '',
         region: data.region || '',
         city: data.city || ''
       });
@@ -150,7 +148,6 @@ export default function CaseEditor() {
             polished_description: formData.polished_description,
             category: formData.category,
             urgency: formData.urgency,
-            estimated_amount: formData.estimated_amount ? Number(formData.estimated_amount) : null,
             region: formData.region,
             city: formData.city,
             admin_status: 'aprobado',
@@ -281,12 +278,6 @@ export default function CaseEditor() {
                   <StatusBadge status={caso.urgency} />
                 </div>
               </div>
-              <div>
-                <p className="text-gray-400 font-semibold text-xs uppercase tracking-wider">Monto Estimado Declarado</p>
-                <p className="text-gray-800 font-medium mt-1">
-                  {caso.estimated_amount ? `$${Number(caso.estimated_amount).toLocaleString('es-CL')}` : '-'}
-                </p>
-              </div>
               <div className="md:col-span-2">
                 <p className="text-gray-400 font-semibold text-xs uppercase tracking-wider">Ubicación declarada</p>
                 <p className="text-gray-800 font-medium mt-1">
@@ -397,19 +388,6 @@ export default function CaseEditor() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5 md:col-span-2">
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide">
-                    Monto estimado (CLP)
-                  </label>
-                  <input
-                    type="number"
-                    name="estimated_amount"
-                    value={formData.estimated_amount}
-                    onChange={handleInputChange}
-                    placeholder="Ej: 1500000"
-                    className="w-full bg-gray-50 border border-gray-250 rounded-xl px-4 py-2.5 text-sm focus:bg-white focus:ring-2 focus:ring-gray-200 focus:border-gray-400 outline-none transition-all font-semibold"
-                  />
-                </div>
               </div>
 
               {/* Geography fields */}

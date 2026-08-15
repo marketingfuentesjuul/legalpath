@@ -54,7 +54,7 @@ const PublicarCaso = () => {
   const typingRef = useRef({ i: 0, active: true, timeout: null })
 
   const titles = {
-    1: { main: <>Describe con <span className="text-[#1ECCA7]">detalle</span> tu caso</>, sub: <><strong>Mientras más detalles nos des</strong>, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a <strong>entender tu caso</strong>. Si tu caso involucra montos de dinero, por favor no olvides mencionarlo.</> },
+    1: { main: <>Describe con <span className="text-[#1ECCA7]">detalle</span> tu caso</>, sub: <><strong>Mientras más detalles nos des</strong>, mejores propuestas recibirás. Si quieres, puedes agregarle imágenes, pantallazos, correos o todo lo que estimes conveniente para poder ayudarnos a <strong>entender tu caso</strong>. Si tu caso involucra <strong>montos de dinero</strong>, por favor no olvides mencionarlo.</> },
     2: { main: <>Crea tu <span className="text-[#1ECCA7]">cuenta</span></>, sub: 'Regístrate para publicar tu caso y acceder a todas las funciones de LegalPath.' },
     3: { main: <>Caso en <span className="text-[#1ECCA7]">evaluación</span></>, sub: 'Tu caso ha sido recibido y se encuentra en evaluación. Apenas pase este proceso, será publicado de forma inmediata.' }
   }
@@ -460,7 +460,7 @@ const PublicarCaso = () => {
             {titles[step].main}
           </h1>
           {step !== 1 && (
-            <p className="text-secondary text-base max-w-2xl mx-auto font-medium">{titles[step].sub}</p>
+            <p className="text-slate-700 text-base max-w-2xl mx-auto font-medium">{titles[step].sub}</p>
           )}
         </div>
 
@@ -492,7 +492,7 @@ const PublicarCaso = () => {
             {/* STEP 1 */}
             {step === 1 && (
               <div>
-                <p className="text-secondary text-base max-w-2xl mx-auto font-medium text-center mb-6">{titles[1].sub}</p>
+                <p className="text-slate-700 text-base max-w-2xl mx-auto font-medium text-center mb-6">{titles[1].sub}</p>
                 <div className="relative group mt-2 mb-6">
                   {showPlaceholder && !caseText && (
                     <div className="absolute inset-0 px-8 py-6 pointer-events-none text-[13px] md:text-[15px] text-slate-400 font-medium leading-[1.6] opacity-65 blur-[0.4px]">

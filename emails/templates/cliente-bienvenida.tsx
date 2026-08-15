@@ -75,7 +75,7 @@ export default function ClienteBienvenida({
               color: colors.textPrimary,
               margin: 0,
             }}>
-              <strong>Describe tu caso:</strong> Publica de forma confidencial tu problema o necesidad legal. Nuestro equipo moderará el caso para proteger tu privacidad.
+              <strong>Tu primer caso ya ha sido publicado.</strong>
             </Text>
           </Column>
         </Row>
@@ -107,7 +107,7 @@ export default function ClienteBienvenida({
               color: colors.textPrimary,
               margin: 0,
             }}>
-              <strong>Recibe propuestas:</strong> Abogados debidamente certificados y habilitados ante el Poder Judicial analizarán tu caso y te enviarán propuestas.
+              <strong>Recibe propuestas:</strong> Ahora cuando te empiecen a llegar propuestas, tú tendrás que decidir si dejar, aceptar o seguir buscando que te lleguen más propuestas o esperando por propuestas.
             </Text>
           </Column>
         </Row>
@@ -139,7 +139,7 @@ export default function ClienteBienvenida({
               color: colors.textPrimary,
               margin: 0,
             }}>
-              <strong>Elige la mejor opción:</strong> Evalúa los perfiles de los abogados, sus honorarios y calificaciones, y selecciona al indicado para tu caso.
+              <strong>Elige la mejor opción:</strong> Una vez que eliges una de las propuestas, entonces le facilitamos tus datos de contacto al abogado y comenzarán con el proceso legal.
             </Text>
           </Column>
         </Row>
@@ -147,10 +147,10 @@ export default function ClienteBienvenida({
         {/* CTA */}
         <Section style={{ textAlign: 'center' as const, margin: '0 0 8px' }}>
           <EmailButton
-            href={`${urls.base}/casos/nuevo`}
+            href={`${urls.base}/cliente`}
             color={colors.client}
           >
-            Publicar mi primer caso
+            Ir a mi panel de cliente
           </EmailButton>
         </Section>
 

@@ -22,10 +22,6 @@ const Footer = () => {
         <div className="flex flex-col gap-4">
           <h4 className="text-xs font-bold text-white tracking-widest mb-2 uppercase">Contacto</h4>
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary-container text-xl" style={{ fontVariationSettings: '"FILL" 0' }}>call</span>
-            <span className="text-sm">+56 9 4052 2563</span>
-          </div>
-          <div className="flex items-center gap-3">
             <span className="material-symbols-outlined text-primary-container text-xl" style={{ fontVariationSettings: '"FILL" 0' }}>mail</span>
             <span className="text-sm">contacto@legalpath.cl</span>
           </div>

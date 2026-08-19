@@ -2,7 +2,7 @@ import { Resend } from 'npm:resend'
 import { templates } from './templates.ts'
 
 const resend = new Resend(Deno.env.get('RESEND_API_KEY') ?? '')
-const FROM_EMAIL = 'LegalPath <hola@legalpath.cl>'
+const FROM_EMAIL = 'LegalPath <hola@mail.legalpath.cl>'
 
 export interface SendEmailOptions {
   to: string | string[]

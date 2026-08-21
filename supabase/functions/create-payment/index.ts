@@ -3,7 +3,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://legalpath.cl',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
@@ -16,7 +16,7 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
   try {
-    // Verificar que el usuario está autenticado (con fallback de desarrollo)
+    // Verificar que el usuario está autenticado (sin fallback: se rechaza si no hay sesión real)
     let user = null
     const authHeader = req.headers.get('Authorization')
     if (authHeader) {
@@ -30,10 +30,10 @@ serve(async (req) => {
     }
 
     if (!user) {
-      user = {
-        id: '136a9b2e-ff30-4648-8592-5193116a4015',
-        email: 'gabrielmezaroo@gmail.com'
-      }
+      return new Response(JSON.stringify({ error: 'No autenticado' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      })
     }
 
     const { packageId, provider } = await req.json()
